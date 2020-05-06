@@ -6,4 +6,4 @@ Make sure to use Java 8 and execute:
 mvn
 ```
 
-Finally, the book wil appear at `target/generated-docs/aws101-guide-VERSION.pdf`
+Finally, the book will appear at `target/generated-docs/aws101-guide-VERSION.pdf`
