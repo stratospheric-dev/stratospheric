@@ -1,0 +1,20 @@
+= AWS101 Guide
+:authors: AWS101
+:email: aws101@aws101.com
+:version-label: AWS101
+:sectanchors:
+:doctype: book
+:source-highlighter: coderay
+:toc: left
+:toclevels: 1
+:sectnumlevels: 4
+:front-cover-image: images/ebookCover.jpg
+ifdef::backend-pdf[]
+:pagenums:
+endif::[]
+
+== Introduction
+
+Some introduction
+
+include::chapter/001-introduction.asciidoc[]

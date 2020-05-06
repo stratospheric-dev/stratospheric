@@ -1,0 +1,16 @@
+[[introduction]]
+== Introduction to XYZ
+
+Hello World!
+
+
+```java
+public class Example {
+
+  public static void main(String[] args) {
+    System.out.println("Hello World!");
+  }
+
+}
+```
+
