@@ -13,20 +13,30 @@
 ## Ideen fuer Themen
 
 * Amplify
+  * file system caching gotchas (e.g. with PWAs and Web Workers)
+* PubSub with AWS IoT
 * Cognito + Spring Security
 * Deployment / CloudFormation / CI/CD
 * Spring / Spring Cloud AWS
 * Serverless / AWS Lambdas
 * Caching / ElastiCache
+* RDS
+* DynamoDB
+* AWS Database Migration Service
 * DB Backups
 * AutoScaling
 * Monitoring / Logging
 * Simple Email Service (SES)
 * Privacy
 * S3
-* RDS
-* DynamoDB
-* SQS
+* SQS & / vs. Amazon MQ
+* SNS (notifications)
+* Amazon Elasticsearch Service
+* AWS AppFlow (low code)
+* AWS Cost Explorer
+* AWS Data Pipeline (& Spring Batch)
+* AWS Batch (& Spring Batch)
+* AWS Cloud9
 
 ## Ideen fuer die Beispielanwendung
 
