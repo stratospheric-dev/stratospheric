@@ -37,6 +37,8 @@
 * AWS Data Pipeline (& Spring Batch)
 * AWS Batch (& Spring Batch)
 * AWS Cloud9
+* leaky abstractions
+* SCM security / preventing secrets and credentials from leaking into source code repositories
 
 ## Ideen fuer die Beispielanwendung
 
