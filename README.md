@@ -18,7 +18,8 @@
 * Cognito + Spring Security
 * Deployment / CloudFormation / CI/CD
 * Spring / Spring Cloud AWS
-* Serverless / AWS Lambdas
+* AWS Java SDK v1 vs. v2
+* Serverless / AWS Lambda (with/without Spring Cloud Functions)
 * Caching / ElastiCache
 * RDS
 * DynamoDB
@@ -29,7 +30,7 @@
 * Simple Email Service (SES)
 * Privacy
 * S3
-* SQS & / vs. Amazon MQ
+* SQS & / vs. Amazon MQ (with JMS adapter/ AWS SDK)
 * SNS (notifications)
 * Amazon Elasticsearch Service
 * AWS AppFlow (low code)
