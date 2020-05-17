@@ -3,7 +3,7 @@
 ## Idee
 
 * wir schreiben jeder in unserem eigenen Blog koordiniert ueber AWS Themen
-* wir reviewen gegenseiting
+* wir reviewen gegenseitig
 * die Code Beispiele fuegen wir einer lauffaehigen Beispielanwendung auf GitHub hinzu
 * am Ende verpacken wir die Blog Posts in einem Guide/Buch/Lead Magnet/...
 
@@ -45,3 +45,43 @@
 
 * CMS
 * TODO App (Top-Kandidat)
+* Tom's Blogtrack App?!? Haette den Vorteil, dass es eine echte App ist, die auch wirklich live geht!
+
+## Chronology
+* Intro (What? Why?)
+  * goal: introduce the reader to why this book exist and what to expect
+* The Example Application
+  * goal: get to know the domain of the example application
+
+### Deploying the App to AWS
+* Deployment Options in AWS
+  * goal: give an idea of which options are available, introduce some common AWS acronyms, and define which of these options are being covered in the book
+  * Beanstalk
+  * ECS + ECR
+  * Custom EC2,
+  * EKS
+  * ... more?
+* Recipe: Publishing a Docker Image to ECR
+* Recipe: Deploying a Docker Image to ECS
+* Recipe: Implementing a Continuous Delivery Pipeline
+
+### Scaling
+* Recipe: Implementing Load Balancing
+
+* Recipe: AutoScaling the App
+
+### Observability
+* Observability options in AWS
+  * CloudWatch logs
+  * CloudWatch metrics
+  * 3rd party providers?
+* Recipe: Sending Logs to CloudWatch
+* Recipe: Sending Metrics to CloudWatch
+
+### Connecting Common Services
+
+* Recipe: Connecting the App to a relational database (RDS)
+* Recipe: Connecting the App to SQS
+* Recipe: Connecting the App to S3
+* Recipe: Sending emails with SES
+* Recipe: Connecting the App to DynamoDB
