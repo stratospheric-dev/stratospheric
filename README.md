@@ -9,6 +9,7 @@
 
 * Roter Faden: From 0 to 100: Get Your Software into AWS
 * Idealerweise arbeiten wir alle an derselben Beispielanwendung waehrend wir die Blog Posts schreiben
+* Zielgruppe: Java Entwickler mit Spring Boot Erfahrung
 
 ## Ideen fuer Themen
 
@@ -45,7 +46,6 @@
 
 * CMS
 * TODO App (Top-Kandidat)
-* Tom's Blogtrack App?!? Haette den Vorteil, dass es eine echte App ist, die auch wirklich live geht!
 
 ## Chronology
 * Intro (What? Why?)
@@ -53,35 +53,65 @@
 * The Example Application
   * goal: get to know the domain of the example application
 
-### Deploying the App to AWS
-* Deployment Options in AWS
-  * goal: give an idea of which options are available, introduce some common AWS acronyms, and define which of these options are being covered in the book
+### Getting Started
+* Installing AWS CLI
+* ...
+* introduce some common AWS acronyms, and define which of these options are being covered in the book
   * Beanstalk
   * ECS + ECR
   * Custom EC2,
   * EKS
+  * CloudFormation
   * ... more?
+* Hello World App with AWS Console
+* Deploy Hello World with CloudFormation
+
+### The Example Application
+* goal: the reader understands what to build (no code, just concept)
+  * data model
+  * screen shots
+  * architecture / context diagram
+  * technologies (Spring Boot, Thymeleaf, PostgreSQL, ...)
+  * ...
+* Feature Ideas:
+
+### Deploying the App to AWS (Tom)
+* Deployment Options in AWS
+  * goal: give an idea of which options are available, 
 * Recipe: Publishing a Docker Image to ECR
 * Recipe: Deploying a Docker Image to ECS
 * Recipe: Implementing a Continuous Delivery Pipeline
 
-### Scaling
-* Recipe: Implementing Load Balancing
+### Login (Lambda, S3, Thumbnail creator, Cognito + Spring Security) (Philip)
+* Explain the Feature...
+* Recipe: ...
 
+### Create Todos (RDS) (Tom)
+* 
+
+### Send Todos to friend (SES, SQS) (Bjoern)
+* 
+
+### Push Notifications (PubSub with AWS IoT / SNS?) (Bjoern)
+*
+
+### Deploy with GitHub Actions (CI/CD + CloudFormation) (Tom)
+* 
+
+### Notes (store schemaless notes in DynamoDB) (Philip)
+*
+  
+### Scaling (TODO)
+* Recipe: Implementing Load Balancing
+* Recipe: Caching with ElastiCache
 * Recipe: AutoScaling the App
 
-### Observability
+### Observability (TODO)
 * Observability options in AWS
   * CloudWatch logs
   * CloudWatch metrics
   * 3rd party providers?
 * Recipe: Sending Logs to CloudWatch
 * Recipe: Sending Metrics to CloudWatch
-
-### Connecting Common Services
-
-* Recipe: Connecting the App to a relational database (RDS)
-* Recipe: Connecting the App to SQS
-* Recipe: Connecting the App to S3
-* Recipe: Sending emails with SES
-* Recipe: Connecting the App to DynamoDB
+* Cost Explorer?!?
+  * Alarms?
