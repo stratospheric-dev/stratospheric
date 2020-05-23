@@ -18,3 +18,5 @@ endif::[]
 Some introduction
 
 include::chapter/001-introduction.asciidoc[]
+include::chapter/006-emails-and-messages.asciidoc[]
+include::chapter/007-pubsub-and-push-notifications.asciidoc[]

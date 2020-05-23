@@ -1,0 +1,40 @@
+[[collaboration]]
+== Collaboration - Sharing and Sending Todos to Other Users
+
+[[email]]
+=== Using Email for Sharing Information
+
+=== Recipe: Amazon SES - Credentials, Authorization Policies, and Permissions
+
+=== Recipe: Testing Email Sending in Amazon SES
+
+=== Recipe: Amazon SES - Sending Email using AWS SDKs
+
+=== Recipe: Amazon SES - Sending Email using the SMTP Interface
+
+=== Recipe: Email Deliverability With Amazon SES
+
+=== Recipe: Logging Amazon SES API Calls with AWS CloudTrail
+
+[[message-queues]]
+=== Reliably Deliver Messages with Amazon SQS
+
+=== Recipe: Creating Queues
+
+=== Recipe: Managing Queue Permssions
+
+=== Recipe: Sending Messages
+
+=== Recipe: Receiving Messages
+
+=== Recipe: Deleting Messages and Purging Queues
+
+=== Recipe: Configuring a Queue to Trigger an AWS Lambda Function
+
+=== Recipe: Using Amazon SQS with JMS
+
+=== Recipe: Data Protection and Access management
+
+=== Recipe: Logging Amazon SQS Calls with AWS CloudTrail
+
+=== Recipe: Monitoring Amazon SQS queues using CloudWatch
