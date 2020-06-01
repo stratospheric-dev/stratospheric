@@ -1,0 +1,24 @@
+[[login-feature]]
+== Login Feature
+
+Basic idea:
+
+- User registration feature to have a login-protected area
+- Within the registration process the user is asked to upload a profile image for which we can create a thumbnail (e.g. 200x200px) using an event-based (S3ObjectCreated) AWS Lambda
+- Protect Spring Web MVC endpoints with OAuth2 (JWT Token Authentication)
+
+=== Recipe: Manage user pool with AWS Cognito
+
+
+=== Recipe: Use AWS Cognito as OAuth 2 Authorization Server with Spring Security
+
+
+=== Recipe: Two-Factor Auth with AWS Cognito
+
+=== Recipe: Social Login (e.g. Facebook) to the TODO App with AWS Cognito
+
+
+=== Recipe: Java AWS Lambda with Serverless (plain)
+
+
+=== Recipe: Java AWS Lambda with Spring Cloud Function AWS
