@@ -1,0 +1,42 @@
+[[continuous-delivery]]
+== Implementing a Continuous Delivery Pipeline with Github Actions
+
+=== Continuous Delivery Strategies
+* what is continuous delivery?
+* discuss different strategies with their pros and cons
+  * Git Flow (sub optimal for continuous deployment)
+  * Auto-Deploy to production
+  * Staggered Deployment (soaking on staging, then, after a time without incidents, auto-deploy to master)
+
+=== Designing a Continuous Delivery Pipeline
+* designing the workflows, jobs and steps we want to build on an abstract level to have a goal (without using the GitHub vocabulary, yet)
+* workflow for branch deployment to a staging environment
+* workflow for production deployment
+* nice boxes & arrows visualization of the flow
+
+=== Creating a Zero-Downtime Deployment Script with CloudFormation
+* goal: create the scripts necessary to implement continuous delivery with CloudFormation
+  * create the new stack
+  * DNS failover to the new stack
+  * delete the old stack
+* this will be abstracted away in bigger companies, but we're keeping it simple here
+
+=== The Basics of Github Actions
+* what's a workflow
+* what's a job?
+* what's a step?
+* what's an action?
+
+=== Managing AWS Secrets in Github Actions
+* which secrets to we need? How to we configure them into Github Actions
+
+=== Implementing Continuous Delivery with Github Actions
+* for each box in the visualization go through the YML in Github Actions
+* use the scripts we created above
+
+
+
+
+
+
+

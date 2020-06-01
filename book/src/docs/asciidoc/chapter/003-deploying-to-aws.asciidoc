@@ -1,0 +1,23 @@
+[[deploying]]
+== Deploying the Application to AWS
+
+=== Deployment Options
+* goal: give an idea of the different deployment options with their pros and cons
+* Beanstalk
+* AWS Console
+* CloudFormation
+* AWS CDK
+* Terraform (?)
+* plain EC2
+* In the rest of the book, we're focussing on CloudFormation , because it provides the basis for the other technologies.
+
+=== Introduction to AWS CloudFormation
+
+=== Recipe: Creating a Basic Virtual Private Cloud (VPC)
+
+=== Recipe: Publishing a Docker Image to Elastic Container Registry (ECR)
+
+=== Recipe: Deploying a Docker Image to Elastic Container Service (ECS)
+* extend the basic stack to deploy the Docker Image into the VPC
+
+

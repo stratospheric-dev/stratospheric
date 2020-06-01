@@ -1,0 +1,24 @@
+[[rds]]
+== Storing Data in a Relational Database
+
+=== AWS Relational Database Service (RDS)
+* intro to RDS
+
+=== Defining the Database Schema
+
+=== Strategies for Creating the Database Schema
+* Flyway
+* Liquibase
+* schema.sql
+* data.sql
+* triggering it manually after application start (more control)
+* schema updates vs. data updates
+
+=== Creating a Database Stack
+see https://reflectoring.io/aws-cloudformation-rds/
+
+=== Creating a Dummy Application to Test Database Connectivity
+see https://reflectoring.io/aws-cloudformation-rds/
+
+=== Connecting the Applicationref to the Database
+see https://reflectoring.io/aws-cloudformation-rds/
