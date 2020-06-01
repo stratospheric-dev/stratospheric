@@ -1,0 +1,17 @@
+[[store-notes-feature]]
+== Store Notes Feature
+
+Basic idea:
+
+- utilize AWS DynamoDB for a feature for the TODO app
+- possible idea: store notes/attachments for a TODO in Dynamo
+- other idea: use DynamoDB for basic commenting system (Kommentarfunktion) on TODOs between users
+
+
+=== Recipe: Connect to AWS DynamoDB with the Java SDK
+
+
+=== Recipe: Connect to AWS DynamoDB with Spring Cloud AWS
+
+
+=== Recipe: Map a DynamoDB table to a Java object
