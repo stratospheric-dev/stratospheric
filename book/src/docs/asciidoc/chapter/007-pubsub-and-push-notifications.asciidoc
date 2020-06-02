@@ -6,32 +6,16 @@
 
 === Using Amazon SNS for Push Notifications
 
-==== Recipe: Creating a Topic
-
-==== Recipe: Publishing a Message to a Topic
-
-==== Recipe: Subscribing To a Topic
-
-==== Recipe: Deleting a Subscription and Topic
-
-==== Recipe: Security and Permissions
-
-==== Recipe: Using Amazon SNS in conjunction with Amazon SQS
-
-==== Recipe: Using Amazon SNS for System-To-System Messaging With an AWS Lambda Function as a Subscriber
-
-==== Recipe: Using Amazon SNS for System-To-System Messaging With an HTTP/S Endpoint as a Subscriber
-
-=== Recipe: Logging and Monitoring
-
-=== Using AWS IoT for Push Notifications
+=== Amazon SNS vs. Amazon SQS: What's the difference?
 
 ==== Recipe: Creating a Topic
 
-==== Recipe: Publishing a Message to a Topic
+==== Recipe: Publishing and Subscribing to a Topic
 
-==== Recipe: Subscribing To a Topic
+==== Recipe: Deleting Topics
 
-==== Recipe: Deleting a Subscription and Topic
+==== Recipe: Managing Topic Security and Permissions
+
+==== Recipe: Using Amazon SNS in Conjunction With Amazon SQS for Email Delivery
 
 ==== Recipe: Logging and Monitoring

@@ -4,15 +4,13 @@
 [[email]]
 === Using Email for Sharing Information
 
-=== Recipe: Amazon SES - Credentials, Authorization Policies, and Permissions
+=== Recipe: Managing Credentials, Authorization Policies, and Permissions for Amazon SES
 
-=== Recipe: Testing Email Sending in Amazon SES
+=== Recipe: Sending Email via Amazon SES Using the AWS SDK
 
-=== Recipe: Amazon SES - Sending Email using AWS SDKs
+=== Recipe: Testing Email Delivery With Amazon SES
 
-=== Recipe: Amazon SES - Sending Email using the SMTP Interface
-
-=== Recipe: Email Deliverability With Amazon SES
+=== Recipe: Improving Email Deliverability With Amazon SES
 
 === Recipe: Logging Amazon SES API Calls with AWS CloudTrail
 
@@ -23,15 +21,9 @@
 
 === Recipe: Managing Queue Permissions
 
-=== Recipe: Sending Messages
-
-=== Recipe: Receiving Messages
+=== Recipe: Sending and Receiving Messages
 
 === Recipe: Deleting Messages and Purging Queues
-
-=== Recipe: Configuring a Queue to Trigger an AWS Lambda Function
-
-=== Recipe: Using Amazon SQS with JMS
 
 === Recipe: Data Protection and Access management
 
