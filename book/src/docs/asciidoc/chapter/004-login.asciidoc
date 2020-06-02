@@ -22,3 +22,5 @@ Basic idea:
 
 
 === Recipe: Java AWS Lambda with Spring Cloud Function AWS
+
+=== Cognito Observability

@@ -5,6 +5,7 @@
 * intro to RDS
 
 === Defining the Database Schema
+* Spring Data JDBC Entities (here, or in next chapter?)
 
 === Strategies for Creating the Database Schema
 * Flyway
@@ -22,3 +23,6 @@ see https://reflectoring.io/aws-cloudformation-rds/
 
 === Connecting the Applicationref to the Database
 see https://reflectoring.io/aws-cloudformation-rds/
+* Actuator?
+
+=== RDS Observability

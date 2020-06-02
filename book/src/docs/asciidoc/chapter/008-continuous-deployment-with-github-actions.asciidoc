@@ -17,7 +17,7 @@
 === Creating a Zero-Downtime Deployment Script with CloudFormation
 * goal: create the scripts necessary to implement continuous delivery with CloudFormation
   * create the new stack
-  * DNS failover to the new stack
+  * DNS failover (?) to the new stack (or just loadbalancer failover?)
   * delete the old stack
 * this will be abstracted away in bigger companies, but we're keeping it simple here
 

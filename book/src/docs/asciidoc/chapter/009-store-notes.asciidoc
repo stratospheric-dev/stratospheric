@@ -7,6 +7,7 @@ Basic idea:
 - possible idea: store notes/attachments for a TODO in Dynamo
 - other idea: use DynamoDB for basic commenting system (Kommentarfunktion) on TODOs between users
 
+=== Relational DB vs. DynamoDB
 
 === Recipe: Connect to AWS DynamoDB with the Java SDK
 

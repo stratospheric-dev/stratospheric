@@ -21,7 +21,7 @@
 
 === Recipe: Creating Queues
 
-=== Recipe: Managing Queue Permssions
+=== Recipe: Managing Queue Permissions
 
 === Recipe: Sending Messages
 

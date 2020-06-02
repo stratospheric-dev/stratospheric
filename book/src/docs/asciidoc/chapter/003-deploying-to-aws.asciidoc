@@ -1,5 +1,5 @@
 [[deploying]]
-== Deploying the Application to AWS
+== Deploying the Application to AWS (DevOps?)
 
 === Deployment Options
 * goal: give an idea of the different deployment options with their pros and cons
@@ -19,5 +19,15 @@
 
 === Recipe: Deploying a Docker Image to Elastic Container Service (ECS)
 * extend the basic stack to deploy the Docker Image into the VPC
+
+=== Bonus: Deployment Patterns
+* Green / Blue
+* Canary
+* more ... ?
+
+=== Observability
+* CloudWatch
+* CloudTrail
+* basis for observability topics in future chapters
 
 
