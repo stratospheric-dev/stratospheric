@@ -115,3 +115,10 @@
 * Recipe: Sending Metrics to CloudWatch
 * Cost Explorer?!?
   * Alarms?
+
+### Side notes
+* Managing organizations
+  * Enforcing MFA
+    * https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_users-self-manage-mfa-and-creds.html
+    * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage.html
+    
