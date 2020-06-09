@@ -15,8 +15,22 @@
 <section class="section">
   <div class="container has-text-centered">
     <div>
-      <h1 class="title" th:text="${message}"></h1>
+      <h1 class="title" th:text="${message}"/>
 
+      <table class="table" th:if="${todos}">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="todo : ${todos}">
+          <td th:text="${todo.id}" scope="row"></td>
+          <td th:text="${todo.title}"></td>
+        </tr>
+        </tbody>
+      </table>
 
       <div sec:authorize="isAuthenticated()">
         <div class="box">
@@ -33,6 +47,11 @@
         <div class="box">
           <a class="button login is-primary" th:href="@{/oauth2/authorization/cognito}">Log in with Amazon Cognito</a>
         </div>
+      </div>
+      <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+          <input type="submit" value="Logout"/>
+        </form>
       </div>
     </div>
   </div>

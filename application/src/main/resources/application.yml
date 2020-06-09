@@ -6,6 +6,7 @@ cloud:
       auto: false
       static: eu-central-1
 
+
 spring:
   security:
     oauth2:
@@ -21,3 +22,6 @@ spring:
           cognito:
             issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_fLJkzrAVR
             usernameAttribute: username
+  h2:
+    console:
+      enabled: true

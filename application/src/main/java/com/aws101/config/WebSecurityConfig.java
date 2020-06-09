@@ -17,6 +17,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests(authorize ->
         authorize.mvcMatchers("/").permitAll()
           .anyRequest().authenticated()
-      );
+      )
+      .logout()
+      .logoutSuccessUrl("/");
   }
 }
