@@ -118,6 +118,8 @@
 
 ### Side notes
 * Managing organizations
+  * Enabling the admin role for invited users
+    * https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
   * Enforcing MFA
     * https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_users-self-manage-mfa-and-creds.html
     * https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage.html
