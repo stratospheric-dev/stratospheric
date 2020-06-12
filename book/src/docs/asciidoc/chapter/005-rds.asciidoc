@@ -21,7 +21,7 @@ see https://reflectoring.io/aws-cloudformation-rds/
 === Creating a Dummy Application to Test Database Connectivity
 see https://reflectoring.io/aws-cloudformation-rds/
 
-=== Connecting the Applicationref to the Database
+=== Connecting the Application to the Database
 see https://reflectoring.io/aws-cloudformation-rds/
 * Actuator?
 
