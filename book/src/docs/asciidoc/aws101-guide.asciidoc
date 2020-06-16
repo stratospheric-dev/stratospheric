@@ -11,6 +11,7 @@
 :front-cover-image: images/ebookCover.jpg
 ifdef::backend-pdf[]
 :pagenums:
+:sectnums:
 endif::[]
 
 == Introduction
