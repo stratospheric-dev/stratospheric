@@ -1,4 +1,4 @@
-package com.aws101;
+package dev.aws101;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

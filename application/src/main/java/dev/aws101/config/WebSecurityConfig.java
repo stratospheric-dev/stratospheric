@@ -1,4 +1,4 @@
-package com.aws101.config;
+package dev.aws101.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,8 +15,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .oauth2Login()
       .and()
       .authorizeRequests(authorize ->
-        authorize.mvcMatchers("/").permitAll()
-          .anyRequest().authenticated()
+        authorize
+          .mvcMatchers("/", "/h2-console/**")
+          .permitAll()
+          .anyRequest()
+          .authenticated()
       )
       .logout()
       .logoutSuccessUrl("/");

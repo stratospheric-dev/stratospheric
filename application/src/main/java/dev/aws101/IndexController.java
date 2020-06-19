@@ -1,8 +1,8 @@
-package com.aws101;
+package dev.aws101;
 
 import java.security.Principal;
 
-import com.aws101.todo.TodoRepository;
+import dev.aws101.todo.TodoRepository;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
