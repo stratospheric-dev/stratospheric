@@ -32,15 +32,21 @@ The application then should be available under [http://localhost:8080](http://lo
 ## Architecture
 
 ### Model
+
+**Class diagram**
 ![alt text][class-diagram]
+
+**Entity-relationship diagram**
 ![alt text][entity-relationship-diagram]
+
+**Database schema diagram**
 ![alt text][database-schema-diagram]
 
-[class-diagram]:../model/Todo App - Class Diagram.png "class diagram"
-[entity-relationship-diagram]:../model/Todo App - ER diagram.png "entity-relationship diagram"
-[database-schema-diagram]:../model/Todo App - ER diagram from database schema.png "database schema diagram"
+[class-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20Class%20Diagram.png "class diagram"
+[entity-relationship-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20ER%20diagram.png "entity-relationship diagram"
+[database-schema-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20ER%20diagram%20from%20database%20schema.png "database schema diagram"
 
-## Built With
+## Built with
 
 * [Spring Boot](https://projects.spring.io/spring-boot/)
 * [Gradle](https://gradle.org/)
