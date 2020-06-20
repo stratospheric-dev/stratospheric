@@ -33,13 +33,13 @@ The application then should be available under [http://localhost:8080](http://lo
 
 ### Model
 
-**Class diagram**
+#### Class structure
 ![alt text][class-diagram]
 
-**Entity-relationship diagram**
+#### Entity-relationship
 ![alt text][entity-relationship-diagram]
 
-**Database schema diagram**
+#### Database schema
 ![alt text][database-schema-diagram]
 
 [class-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20Class%20Diagram.png "class diagram"
