@@ -29,6 +29,17 @@ information on Spring Boot deployment techniques and alternatives:
 
 The application then should be available under [http://localhost:8080](http://localhost:8080)
 
+## Architecture
+
+### Model
+![alt text][class-diagram]
+![alt text][entity-relationship-diagram]
+![alt text][database-schema-diagram]
+
+[class-diagram]:../model/Todo App - Class Diagram.png "class diagram"
+[entity-relationship-diagram]:../model/Todo App - ER diagram.png "entity-relationship diagram"
+[database-schema-diagram]:../model/Todo App - ER diagram from database schema.png "database schema diagram"
+
 ## Built With
 
 * [Spring Boot](https://projects.spring.io/spring-boot/)
