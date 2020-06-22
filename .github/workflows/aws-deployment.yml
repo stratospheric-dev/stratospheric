@@ -19,9 +19,13 @@ jobs:
       - name: Build application
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          REGION: ${{ secrets.REGION }}
         run: |
           cd application
           ./gradlew build
           docker build -t todo-app .
-          docker tag
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/todo-app
+          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/todo-app
+          aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/todo-app
