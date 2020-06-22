@@ -17,7 +17,11 @@ jobs:
         with:
           java-version: 11.0
       - name: Build application
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         run: |
-          cd applicaiton
+          cd application
           ./gradlew build
           docker build -t todo-app .
+          docker tag
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.eu-central-1.amazonaws.com/todo-app
