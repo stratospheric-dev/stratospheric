@@ -46,9 +46,9 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn:
-        Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'ECSTaskExecutionRole']]
+      # TODO: @Tom I had issues here with using the template inside the basic-ecs. CloudFormation complained in could not assume the role as it could not find it.
+      # I did follow the last comment in https://github.com/aws/amazon-ecs-cli/issues/733 and create one manually
+      ExecutionRoleArn: arn:aws:iam::221875718260:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       ContainerDefinitions:
         - Name: !Ref 'ServiceName'
           Cpu: !Ref 'ContainerCpu'

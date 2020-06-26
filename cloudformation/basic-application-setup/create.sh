@@ -14,7 +14,7 @@ aws cloudformation create-stack \
   --parameters \
       ParameterKey=StackName,ParameterValue=aws101-application-network \
       ParameterKey=ServiceName,ParameterValue=aws101-todo-app \
-      ParameterKey=ImageUrl,ParameterValue=221875718260.dkr.ecr.eu-central-1.amazonaws.com/aws101 \
+      ParameterKey=ImageUrl,ParameterValue=221875718260.dkr.ecr.eu-central-1.amazonaws.com/aws101:6 \
       ParameterKey=ContainerPort,ParameterValue=8080
 
 aws cloudformation wait stack-create-complete --stack-name aws101-application-service
