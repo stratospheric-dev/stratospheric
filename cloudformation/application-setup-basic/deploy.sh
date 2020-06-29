@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Using https://ramblingsofasoftwaredevelopermanager.wordpress.com/2019/05/18/a-lighter-way-to-deploy-to-aws-ecs/ as a template
 # Usage: ./deploy DOCKER_BUILD_TAG -> ./deploy 10
+# Requires: https://stedolan.github.io/jq/
 
 set -eo pipefail
 
