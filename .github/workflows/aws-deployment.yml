@@ -27,5 +27,7 @@ jobs:
           ./gradlew build
           docker build -t todo-app .
           docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
+          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:latest
           aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:latest
