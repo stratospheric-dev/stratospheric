@@ -5,4 +5,4 @@
 target
 *.iml
 
-cloudformation/application-setup-basic/revision_*
+cloudformation/application-setup-basic/revision.json
