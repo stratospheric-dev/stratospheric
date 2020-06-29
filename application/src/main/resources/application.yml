@@ -7,10 +7,6 @@ cloud:
       static: eu-central-1
 
 spring:
-  datasource:
-    url: jdbc:h2:~/aws-101-dev;AUTO_SERVER=TRUE
-    username: sa
-    password:
   jpa:
     hibernate:
       ddl-auto: none
