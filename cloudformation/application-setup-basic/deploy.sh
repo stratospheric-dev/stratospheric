@@ -16,6 +16,6 @@ cat $DIR/ecs_task_template.json | jq --arg img "$DOCKER_IMAGE" --arg role "$ECS_
 REGISTER_RESULT=$(aws ecs register-task-definition --cli-input-json file://./revision.json)
 TASK_ARN=$(echo $REGISTER_RESULT | jq -r .taskDefinition.taskDefinitionArn)
 
-RESULT=$(aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $TASK_ARN --region $REGION)
+RESULT=$(aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $TASK_ARN)
 
 echo "Successfully deployed a new version of $ECS_SERVICE_NAME with build number $DOCKER_TAG"
