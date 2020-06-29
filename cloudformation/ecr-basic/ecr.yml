@@ -9,6 +9,24 @@ Resources:
     Type: AWS::ECR::Repository
     Properties:
       RepositoryName: !Ref 'RegistryName'
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+              "rules": [
+                  {
+                      "rulePriority": 10,
+                      "description": "Limit to 10 images",
+                      "selection": {
+                         "tagStatus": "any",
+                         "countType": "imageCountMoreThan",
+                         "countNumber": 10
+                     },
+                      "action": {
+                          "type": "expire"
+                      }
+                  }
+              ]
+          }
       RepositoryPolicyText:
         Version: "2012-10-17"
         Statement:

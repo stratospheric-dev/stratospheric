@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploys a Docker container registry.
+Parameters:
+  StackName:
+    Type: String
+    Description: The name of the networking stack that
+      these resources are put into.
+  RegistryName:
+    Type: String
+    Description: The name of the container registry
+Resources:
+  Registry:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Ref 'RegistryName'
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+              "rules": [
+                  {
+                      "rulePriority": 10,
+                      "description": "Limit to 10 images",
+                      "selection": {
+                         "tagStatus": "any",
+                         "countType": "imageCountMoreThan",
+                         "countNumber": 10
+                     },
+                      "action": {
+                          "type": "expire"
+                      }
+                  }
+              ]
+          }
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - "arn:aws:iam::221875718260:user/philip@aws101.dev"
+                - "arn:aws:iam::221875718260:user/tom@aws101.dev"
+                - "arn:aws:iam::221875718260:user/bjoern@aws101.dev"
+                - Fn::ImportValue: !Join [':', [!Ref 'StackName', 'ECSTaskExecutionRole']]
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
