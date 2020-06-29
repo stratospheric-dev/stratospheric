@@ -31,4 +31,5 @@ jobs:
           aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/aws101:latest
+          cd ..
           cloudformation/application-setup-basic/deploy.sh ${GITHUB_RUN_NUMBER}
