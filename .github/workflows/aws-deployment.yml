@@ -23,9 +23,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.REGION }}
         run: |
-          TODO_COGNITO_USER_POOL_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
-          TODO_COGNITO_CLIENT_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
-          TODO_COGNITO_CLIENT_SECRET=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientSecret`].OutputValue')
+          TODO_COGNITO_USER_POOL_ID=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
+          TODO_COGNITO_CLIENT_ID=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
+          TODO_COGNITO_CLIENT_SECRET=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientSecret`].OutputValue')
           cd application
           ./gradlew build
           docker build -t todo-app .
