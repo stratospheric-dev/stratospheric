@@ -1,0 +1,23 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ListUsersForConsole",
+            "Effect": "Allow",
+            "Action": "iam:ListUsers",
+            "Resource": "arn:aws:iam::*:*"
+        },
+        {
+            "Sid": "ViewAndUpdateAccessKeys",
+            "Effect": "Allow",
+            "Action": [
+                "iam:UpdateAccessKey",
+                "iam:CreateAccessKey",
+                "iam:DeleteAccessKey",
+                "iam:GetAccessKeyLastUsed",
+                "iam:ListAccessKeys"
+            ],
+            "Resource": "arn:aws:iam::*:user/${aws:username}"
+        }
+    ]
+}
