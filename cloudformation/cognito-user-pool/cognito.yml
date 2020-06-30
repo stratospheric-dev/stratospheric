@@ -49,7 +49,3 @@ Outputs:
     Value: !Ref UserPoolClient
     Export:
       Name: "UserPoolClient::Id"
-  UserPoolClientSecret:
-    Value: !Ref UserPoolClient
-    Export:
-      Name: "UserPoolClient::Secret"
