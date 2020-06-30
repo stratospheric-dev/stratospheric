@@ -31,7 +31,7 @@ aws cloudformation wait stack-create-complete --stack-name aws101-cognito-user-p
 
 USER_POOL_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
 USER_POOL_CLIENT_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
-USER_POOL_CLIENT_SECRET=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientSecret`].OutputValue')
+USER_POOL_CLIENT_SECRET=$(aws cognito-idp describe-user-pool-client --user-pool-id $USER_POOL_ID --client-id $USER_POOL_CLIENT_ID --output text --query 'UserPoolClient.ClientSecret')
 
 aws cloudformation create-stack \
   --stack-name aws101-application-stack \
