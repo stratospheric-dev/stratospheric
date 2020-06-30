@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "CloudFormation0",
             "Effect": "Allow",
             "Action": [
                 "cloudformation:DeleteStackInstances",
@@ -35,7 +35,7 @@
             "Resource": "arn:aws:cloudformation:*:*:stack/*/*"
         },
         {
-            "Sid": "VisualEditor1",
+            "Sid": "CloudFormation1",
             "Effect": "Allow",
             "Action": [
                 "cloudformation:CreateUploadBucket",

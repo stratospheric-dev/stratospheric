@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "CreateRole",
             "Effect": "Allow",
             "Action": "iam:CreateRole",
             "Resource": "*"

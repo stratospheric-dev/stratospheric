@@ -7,5 +7,8 @@ aws cloudformation wait stack-delete-complete --stack-name aws101-application-st
 aws cloudformation delete-stack --stack-name aws101-container-registry
 aws cloudformation wait stack-delete-complete --stack-name aws101-container-registry
 
+aws cloudformation delete-stack --stack-name aws101-cognito-user-pool
+aws cloudformation wait stack-delete-complete --stack-name aws101-cognito-user-pool
+
 aws cloudformation delete-stack --stack-name aws101-application-network
 aws cloudformation wait stack-delete-complete --stack-name aws101-application-network
