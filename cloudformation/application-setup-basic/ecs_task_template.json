@@ -18,13 +18,6 @@
           "containerPort": 8080
         }
       ],
-      "environment": {
-        "TODO_COGNITO_CLIENT_ID": { "Ref" : "UserPoolClientId" },
-        "TODO_COGNITO_USER_POOL_ID": { "Ref" : "UserPoolId" }
-      },
-      "secret": {
-        "TODO_COGNITO_CLIENT_SECRET": { "Ref" : "UserPoolClientSecret" }
-      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
