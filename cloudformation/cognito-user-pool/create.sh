@@ -10,3 +10,11 @@ aws cloudformation create-stack \
       ParameterKey=AuthName,ParameterValue=$AUTH_NAME
 
 aws cloudformation wait stack-create-complete --stack-name aws101-cognito-user-pool
+
+USER_POOL_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
+USER_POOL_CLIENT_ID=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
+USER_POOL_CLIENT_SECRET=$(aws cloudformation describe-stacks --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientSecret`].OutputValue')
+
+echo "AWS Cognito UserPool ID:       " $USER_POOL_ID
+echo "AWS Cognito UserPool client ID:       " $USER_POOL_CLIENT_ID
+echo "AWS Cognito UserPool client secret:       " $USER_POOL_CLIENT_SECRET

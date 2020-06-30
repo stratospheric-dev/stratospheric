@@ -22,7 +22,7 @@ spring:
             clientName: spring-boot-backend
         provider:
           cognito:
-            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_fLJkzrAVR
+            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${TODO_COGNITO_USER_POOL_ID}
             usernameAttribute: username
   h2:
     console:

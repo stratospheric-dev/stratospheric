@@ -33,9 +33,23 @@ Resources:
           AttributeDataType: String
           Mutable: false
           Required: true
+  UserPoolClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    Properties:
+      ClientName: !Sub ${AuthName}-client
+      GenerateSecret: true
+      UserPoolId: !Ref UserPool
 
 Outputs:
   UserPoolId:
     Value: !Ref UserPool
     Export:
       Name: "UserPool::Id"
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+    Export:
+      Name: "UserPoolClient::Id"
+  UserPoolClientSecret:
+    Value: !Ref UserPoolClient
+    Export:
+      Name: "UserPoolClient::Secret"
