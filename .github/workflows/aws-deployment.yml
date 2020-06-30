@@ -26,7 +26,6 @@ jobs:
           TODO_COGNITO_USER_POOL_ID=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
           TODO_COGNITO_CLIENT_ID=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
           TODO_COGNITO_CLIENT_SECRET=$(aws cloudformation describe-stacks --region ${AWS_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientSecret`].OutputValue')
-          echo $TODO_COGNITO_USER_POOL_ID
           cd application
           ./gradlew build
           docker build -t todo-app .

@@ -40,5 +40,9 @@ dependencyManagement {
 }
 
 test {
+  environment "TODO_COGNITO_CLIENT_ID", System.getenv('TODO_COGNITO_CLIENT_ID')
+  environment "TODO_COGNITO_CLIENT_SECRET", System.getenv('TODO_COGNITO_CLIENT_SECRET')
+  environment "TODO_COGNITO_USER_POOL_ID", System.getenv('TODO_COGNITO_USER_POOL_ID')
+
 	useJUnitPlatform()
 }
