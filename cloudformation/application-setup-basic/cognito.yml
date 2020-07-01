@@ -46,6 +46,7 @@ Resources:
         - !Sub ${ExternalUrl}/login/oauth2/code/cognito'
       SupportedIdentityProviders:
         - "COGNITO"
+      AllowedOAuthFlowsUserPoolClient: True
       AllowedOAuthFlows:
         - "code"
       AllowedOAuthScopes:
