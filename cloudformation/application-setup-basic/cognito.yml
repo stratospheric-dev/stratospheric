@@ -4,6 +4,9 @@ Parameters:
   AuthName:
     Type: String
     Description: Unique AuthName for Cognito resources
+  ExternalUrl:
+    Type: String
+    Description: The external URL of the application
 
 Resources:
   # Creates a UserPool in Cognito for an app to authenticate against.
@@ -39,6 +42,16 @@ Resources:
       ClientName: !Sub ${AuthName}-client
       GenerateSecret: true
       UserPoolId: !Ref UserPool
+      CallbackURLs:
+        - !Sub ${ExternalUrl}/login/oauth2/code/cognito'
+      SupportedIdentityProviders:
+        - "COGNITO"
+      AllowedOAuthFlows:
+        - "code"
+      AllowedOAuthScopes:
+        - "email"
+        - "openid"
+        - "profile"
 
 Outputs:
   UserPoolId:

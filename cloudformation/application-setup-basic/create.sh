@@ -20,12 +20,14 @@ aws cloudformation create-stack \
 aws cloudformation wait stack-create-complete --stack-name aws101-container-registry
 
 AUTH_NAME=aws101-users
+EXTERNAL_URL=$(aws cloudformation describe-stacks --stack-name aws101-application-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue')
 
 aws cloudformation create-stack \
   --stack-name aws101-cognito-user-pool \
   --template-body file://cognito.yml \
   --parameters \
-      ParameterKey=AuthName,ParameterValue=$AUTH_NAME
+      ParameterKey=AuthName,ParameterValue=$AUTH_NAME \
+      ParameterKey=ExternalUrl,ParameterValue=$EXTERNAL_URL
 
 aws cloudformation wait stack-create-complete --stack-name aws101-cognito-user-pool
 
