@@ -43,7 +43,7 @@ Resources:
       GenerateSecret: true
       UserPoolId: !Ref UserPool
       CallbackURLs:
-        - !Sub ${ExternalUrl}/login/oauth2/code/cognito'
+        - !Sub ${ExternalUrl}/login/oauth2/code/cognito
       SupportedIdentityProviders:
         - "COGNITO"
       AllowedOAuthFlowsUserPoolClient: True
