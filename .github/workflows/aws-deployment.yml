@@ -42,16 +42,25 @@ jobs:
           name: reports
           path: reports.zip
 
-      - name: Create ECR registry stack (if needed)
+      - name: Create or update ECR registry stack
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          cd cloudformation/application-setup-basic
-          ./check-registry-stack.sh
+          cd cloudformation/application-setup-basic/stacks/registry
+          ./create-or-update-registry-stack.sh
 
-      - name: Publish Docker image
+      - name: Create or update Cognito stack
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd cloudformation/application-setup-basic/stacks/cognito
+          ./create-or-update-cognito-stack.sh
+
+      - name: Publish Docker image to ECR registry
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -73,5 +82,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          cd cloudformation/application-setup-basic
+          cd cloudformation/application-setup-basic/stacks/application
           ./create-or-update-application-stack.sh ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}

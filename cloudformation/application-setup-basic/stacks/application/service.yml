@@ -45,6 +45,9 @@ Parameters:
     Type: Number
     Default: 2
     Description: How many copies of the service task to run.
+  UserPoolClientSecret:
+    Type: String
+    Description: The client secret to access the Cognito user pool.
 
 Resources:
   TargetGroup:
@@ -117,7 +120,7 @@ Resources:
                 Fn::ImportValue: 'UserPoolClient::Id'
             - Name: COGNITO_CLIENT_SECRET
               Value:
-                Fn::ImportValue: 'UserPoolClient::Secret'
+                !Ref 'UserPoolClientSecret'
             - Name: AWS_REGION
               Value: !Ref "AWS::Region"
 

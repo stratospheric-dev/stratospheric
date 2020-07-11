@@ -13,17 +13,6 @@ Parameters:
     Type: String
     Description: URL to the network stack template in an S3 bucket.
 
-  # Cognito user pool stack parameters
-  CognitoStackTemplateUrl:
-    Type: String
-    Description: URL to the Cognito registry stack template in an S3 bucket.
-  CognitoStackAuthName:
-    Type: String
-    Description: Unique AuthName for Cognito resources
-  CognitoStackExternalUrl:
-    Type: String
-    Description: The external URL of the application
-
   # Service stack parameters
   ServiceStackTemplateUrl:
     Type: String
@@ -31,6 +20,9 @@ Parameters:
   ServiceStackImageUrl:
     Type: String
     Description: URL to the Docker image
+  ServiceStackUserPoolClientSecret:
+    Type: String
+    Description: The client secret to access the Cognito UserPool.
 
 Resources:
 
@@ -38,14 +30,6 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Ref 'NetworkStackTemplateUrl'
-
-  CognitoStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Ref 'CognitoStackTemplateUrl'
-      Parameters:
-        AuthName: !Ref 'CognitoStackAuthName'
-        ExternalUrl: !Ref 'CognitoStackExternalUrl'
 
   ServiceStack:
     Type: AWS::CloudFormation::Stack
@@ -63,3 +47,4 @@ Resources:
         ContainerMemory: 512
         Path: '*'
         DesiredCount: 2
+        UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
