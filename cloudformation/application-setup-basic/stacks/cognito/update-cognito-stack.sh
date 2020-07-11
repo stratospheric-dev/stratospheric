@@ -8,6 +8,6 @@ aws cloudformation update-stack \
   --capabilities CAPABILITY_IAM \
   --parameters \
     ParameterKey=AuthName,ParameterValue=aws101-users \
-    ParameterKey=ExternalUrl,ParameterValue=https://app.aws101.dev \
+    ParameterKey=ExternalUrl,ParameterValue=https://app.aws101.dev || true # https://github.com/aws/aws-cli/issues/3625
 
 aws cloudformation wait stack-update-complete --stack-name aws101-cognito

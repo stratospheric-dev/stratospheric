@@ -7,6 +7,7 @@ aws cloudformation update-stack \
   --template-body file://registry.yml \
   --capabilities CAPABILITY_IAM \
   --parameters \
-    ParameterKey=RegistryName,ParameterValue=aws101
+    ParameterKey=RegistryName,ParameterValue=aws101 || true # https://github.com/aws/aws-cli/issues/3625
+
 
 aws cloudformation wait stack-update-complete --stack-name aws101-container-registry

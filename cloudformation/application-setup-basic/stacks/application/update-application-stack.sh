@@ -17,7 +17,7 @@ aws cloudformation update-stack \
     ParameterKey=ServiceStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/service.yml \
     ParameterKey=ServiceStackImageUrl,ParameterValue=$DOCKER_IMAGE_URL \
     ParameterKey=ServiceStackUserPoolClientSecret,ParameterValue=$USER_POOL_CLIENT_SECRET \
-    ParameterKey=RegistryStackName,ParameterValue=aws101-container-registry
+    ParameterKey=RegistryStackName,ParameterValue=aws101-container-registry || true # https://github.com/aws/aws-cli/issues/3625
 
 # wait for stack to be created
 aws cloudformation wait stack-update-complete --stack-name aws101-application-parent
