@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Combines all stacks necessary to deploy an application.
+
+Parameters:
+
+  # network stack parameters
+  NetworkStackTemplateUrl:
+    Type: String
+    Description: URL to the network stack template in an S3 bucket.
+
+  # Cognito user pool stack parameters
+  CognitoStackTemplateUrl:
+    Type: String
+    Description: URL to the Cognito registry stack template in an S3 bucket.
+  CognitoStackAuthName:
+    Type: String
+    Description: Unique AuthName for Cognito resources
+  CognitoStackExternalUrl:
+    Type: String
+    Description: The external URL of the application
+
+  # Service stack parameters
+  ServiceStackTemplateUrl:
+    Type: String
+    Description: URL to the service stack template in an S3 bucket.
+  ServiceStackImageUrl:
+    Type: String
+    Description: URL to the Docker image
+  ServiceStackECSTaskExecutionRoleArn:
+    Type: String
+    Description: ARN of the role that is allowed to push and pull Docker images to / from the ECR registry.
+
+Resources:
+
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'NetworkStackTemplateUrl'
+
+  CognitoStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'CognitoStackTemplateUrl'
+      Parameters:
+        AuthName: !Ref 'CognitoStackAuthName'
+        ExternalUrl: !Ref 'CognitoStackExternalUrl'
+
+  ServiceStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'ServiceStackTemplateUrl'
+      Parameters:
+        NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
+        ServiceName: 'aws101-todo-app'
+        HealthCheckPath: '/hello'
+        HealthCheckIntervalSeconds: 90
+        ImageUrl: !Ref 'ServiceStackImageUrl'
+        ContainerPort: 8080
+        ContainerCpu: 256
+        ContainerMemory: 512
+        Path: '*'
+        DesiredCount: 2
+        ECSTaskExecutionRoleArn: !Ref ServiceStackECSTaskExecutionRoleArn
