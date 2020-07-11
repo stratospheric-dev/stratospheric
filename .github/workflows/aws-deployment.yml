@@ -34,6 +34,17 @@ jobs:
           cd application
           ./gradlew build --stacktrace
 
+      - name: "Zip build reports"
+        if: failure()
+        run: zip -r reports.zip **/build/reports
+
+      - name: "Upload build reports"
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: reports
+          path: reports.zip
+
       - name: Create ECR registry (if needed)
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
