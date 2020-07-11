@@ -32,7 +32,7 @@ jobs:
           export TODO_COGNITO_CLIENT_ID=$(aws cloudformation describe-stacks --region ${AWS_DEFAULT_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
           export TODO_COGNITO_CLIENT_SECRET=$(aws cognito-idp describe-user-pool-client --region ${AWS_DEFAULT_REGION} --user-pool-id ${TODO_COGNITO_USER_POOL_ID} --client-id ${TODO_COGNITO_CLIENT_ID} --output text --query 'UserPoolClient.ClientSecret')
           cd application
-          ./gradlew build
+          ./gradlew build --stacktrace
 
       - name: Create ECR registry (if needed)
         env:
