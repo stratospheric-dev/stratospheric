@@ -28,9 +28,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          export TODO_COGNITO_USER_POOL_ID=123
-          export TODO_COGNITO_CLIENT_ID=123
-          export TODO_COGNITO_CLIENT_SECRET=123
           cd application
           ./gradlew build --stacktrace
 
@@ -61,11 +58,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          export TODO_COGNITO_USER_POOL_ID=123
-          export TODO_COGNITO_CLIENT_ID=123
-          export TODO_COGNITO_CLIENT_SECRET=123
           cd application
-          docker build --build-arg TODO_COGNITO_USER_POOL_ID=${TODO_COGNITO_USER_POOL_ID} --build-arg TODO_COGNITO_CLIENT_ID=${TODO_COGNITO_CLIENT_ID} --build-arg TODO_COGNITO_CLIENT_SECRET=${TODO_COGNITO_CLIENT_SECRET} -t todo-app .
+          docker build -t todo-app .
           docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
           docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com

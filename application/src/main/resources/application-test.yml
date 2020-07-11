@@ -4,7 +4,7 @@ cloud:
       auto: false
     region:
       auto: false
-      static: ${AWS_REGION}
+      static: eu-central-1
 
 spring:
   jpa:
@@ -15,14 +15,14 @@ spring:
       client:
         registration:
           cognito:
-            clientId: ${COGNITO_CLIENT_ID}
-            clientSecret: ${COGNITO_CLIENT_SECRET}
+            clientId: 123
+            clientSecret: 123
             scope: openid, email
             redirectUriTemplate: http://localhost:8080/login/oauth2/code/cognito
             clientName: spring-boot-backend
         provider:
           cognito:
-            issuerUri: https://cognito-idp.${AWS_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}
+            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/123
             usernameAttribute: username
   h2:
     console:
