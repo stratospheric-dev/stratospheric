@@ -109,11 +109,14 @@ Resources:
               awslogs-stream-prefix: !Ref 'ServiceName'
           Environment:
             - Name: COGNITO_USER_POOL_ID
-              Value: !Fn::ImportValue: 'UserPool::Id'
+              Value:
+                Fn::ImportValue: 'UserPool::Id'
             - Name: COGNITO_CLIENT_ID
-              Value: !Fn::ImportValue: 'UserPoolClient::Id'
+              Value:
+                Fn::ImportValue: 'UserPoolClient::Id'
             - Name: COGNITO_CLIENT_SECRET
-              Value: !Fn::ImportValue: 'UserPoolClient::Secret'
+              Value:
+                Fn::ImportValue: 'UserPoolClient::Secret'
             - Name: AWS_REGION
               Value: !Ref "AWS::Region"
 
