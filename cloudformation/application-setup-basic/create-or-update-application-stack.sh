@@ -11,11 +11,11 @@ stack_exists=$?
 if [ "$stack_exists" -eq 0 ]
 then
   echo "Application stack is already running. Updating it now..."
-  #./update-application-stack.sh $DOCKER_IMAGE_URL
+  ./update-application-stack.sh $DOCKER_IMAGE_URL
   echo "Successfully updated the application stack!"
 else
   echo "Application stack is not running. Creating it now..."
-  #./create-application-stack.sh $DOCKER_IMAGE_URL
+  ./create-application-stack.sh $DOCKER_IMAGE_URL
   echo "Successfully created the application stack!"
 fi
 
