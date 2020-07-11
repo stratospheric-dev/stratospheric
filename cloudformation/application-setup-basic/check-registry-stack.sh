@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 export AWS_PAGER=""
 
 # creating the registry stack if it's not running already

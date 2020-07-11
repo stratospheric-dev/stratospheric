@@ -31,9 +31,6 @@ Parameters:
   ServiceStackImageUrl:
     Type: String
     Description: URL to the Docker image
-  ServiceStackECSTaskExecutionRoleArn:
-    Type: String
-    Description: ARN of the role that is allowed to push and pull Docker images to / from the ECR registry.
 
 Resources:
 

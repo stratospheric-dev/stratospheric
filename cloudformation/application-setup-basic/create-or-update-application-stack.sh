@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 export AWS_PAGER=""
 
 DOCKER_IMAGE_URL=$1
@@ -18,5 +19,3 @@ else
   ./create-application-stack.sh $DOCKER_IMAGE_URL
   echo "Successfully created the application stack!"
 fi
-
-echo "Successfully deployed Docker image $DOCKER_IMAGE_URL"

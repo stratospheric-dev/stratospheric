@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+set -e
 export AWS_PAGER=""
 
 DOCKER_IMAGE_URL=$1

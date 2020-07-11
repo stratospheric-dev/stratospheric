@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+set -e
 export AWS_PAGER=""
 
 # create the parent stack with all child stacks
