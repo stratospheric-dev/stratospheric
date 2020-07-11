@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 export AWS_PAGER=""
 
 aws cloudformation update-stack \
