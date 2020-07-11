@@ -4,6 +4,10 @@ Description: Combines all stacks necessary to deploy an application.
 
 Parameters:
 
+  RegistryStackName:
+    Type: String
+    Description: The name of the ECR registry stack.
+
   # network stack parameters
   NetworkStackTemplateUrl:
     Type: String
@@ -52,6 +56,7 @@ Resources:
       TemplateURL: !Ref 'ServiceStackTemplateUrl'
       Parameters:
         NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
+        RegistryStackName: !Ref 'RegistryStackName'
         ServiceName: 'aws101-todo-app'
         HealthCheckPath: '/hello'
         HealthCheckIntervalSeconds: 90
@@ -61,4 +66,3 @@ Resources:
         ContainerMemory: 512
         Path: '*'
         DesiredCount: 2
-        ECSTaskExecutionRoleArn: !Ref ServiceStackECSTaskExecutionRoleArn

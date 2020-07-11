@@ -6,6 +6,9 @@ Parameters:
     Type: String
     Description: The name of the networking stack that
       these resources are put into.
+  RegistryStackName:
+    Type: String
+    Description: The name of the ECR registry stack name to get access to its outputs.
   ServiceName:
     Type: String
     Description: A human-readable name for the service.
@@ -42,9 +45,6 @@ Parameters:
     Type: Number
     Default: 2
     Description: How many copies of the service task to run.
-  ECSTaskExecutionRoleArn:
-    Type: String
-    Description: ARN of the IAM role to give to ECS tasks.
 
 Resources:
   TargetGroup:
@@ -93,7 +93,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn: !Ref ECSTaskExecutionRoleArn
+      ExecutionRoleArn:
+        Fn::ImportValue: !Join [ ':', [ !Ref 'RegistryStackName', 'ECSTaskExecutionRole' ] ]
       ContainerDefinitions:
         - Name: !Ref 'ServiceName'
           Cpu: !Ref 'ContainerCpu'

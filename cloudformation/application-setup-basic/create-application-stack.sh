@@ -2,9 +2,6 @@ export AWS_PAGER=""
 
 DOCKER_IMAGE_URL=$1
 
-# get ECS role from registry stack (registry stack must be up and running!)
-ECS_TASK_ROLE=$(aws cloudformation describe-stacks --stack-name aws101-registry --output text --query 'Stacks[0].Outputs[?OutputKey==`ECSTaskExecutionRole`].OutputValue | [0]')
-
 # upload the stack files
 aws s3 cp stacks/application/ s3://aws101.dev/stacks/application --recursive
 
@@ -20,7 +17,7 @@ aws cloudformation create-stack \
     ParameterKey=CognitoStackExternalUrl,ParameterValue=https://app.aws101.dev \
     ParameterKey=ServiceStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/service.yml \
     ParameterKey=ServiceStackImageUrl,ParameterValue=DOCKER_IMAGE_URL \
-    ParameterKey=ServiceStackECSTaskExecutionRoleArn,ParameterValue=$ECS_TASK_ROLE
+    ParameterKey=RegistryStackName,ParameterValue=aws101-container-registry
 
 # wait for stack to be created
 aws cloudformation wait stack-create-complete --stack-name aws101-application-parent
