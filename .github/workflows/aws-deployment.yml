@@ -74,4 +74,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cloudformation/application-setup-basic
-          deploy.sh ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
+          create-or-update-application-stack.sh ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
