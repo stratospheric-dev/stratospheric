@@ -28,9 +28,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          export TODO_COGNITO_USER_POOL_ID=$(aws cloudformation describe-stacks --region ${AWS_DEFAULT_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolId`].OutputValue')
-          export TODO_COGNITO_CLIENT_ID=$(aws cloudformation describe-stacks --region ${AWS_DEFAULT_REGION} --stack-name aws101-cognito-user-pool --output text --query 'Stacks[0].Outputs[?OutputKey==`UserPoolClientId`].OutputValue')
-          export TODO_COGNITO_CLIENT_SECRET=$(aws cognito-idp describe-user-pool-client --region ${AWS_DEFAULT_REGION} --user-pool-id ${TODO_COGNITO_USER_POOL_ID} --client-id ${TODO_COGNITO_CLIENT_ID} --output text --query 'UserPoolClient.ClientSecret')
+          export TODO_COGNITO_USER_POOL_ID=123
+          export TODO_COGNITO_CLIENT_ID=123
+          export TODO_COGNITO_CLIENT_SECRET=123
           cd application
           ./gradlew build --stacktrace
 
@@ -61,6 +61,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
+          export TODO_COGNITO_USER_POOL_ID=123
+          export TODO_COGNITO_CLIENT_ID=123
+          export TODO_COGNITO_CLIENT_SECRET=123
           cd application
           docker build --build-arg TODO_COGNITO_USER_POOL_ID=${TODO_COGNITO_USER_POOL_ID} --build-arg TODO_COGNITO_CLIENT_ID=${TODO_COGNITO_CLIENT_ID} --build-arg TODO_COGNITO_CLIENT_SECRET=${TODO_COGNITO_CLIENT_SECRET} -t todo-app .
           docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
