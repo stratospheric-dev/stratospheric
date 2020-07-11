@@ -3,7 +3,7 @@ set -e
 export AWS_PAGER=""
 
 # creating the registry stack if it's not running already
-./stack-exists.sh "aws101-container-registry"
+./stack-exists.sh "aws101-container-registry" || true
 stack_exists=$?
 if [ "$stack_exists" -eq 0 ]
 then

@@ -7,7 +7,7 @@ DOCKER_IMAGE_URL=$1
 echo "Deploying Docker image $DOCKER_IMAGE_URL ..."
 
 # creating or updating the application stack, depending on if it exists already
-./stack-exists.sh "aws101-application-parent"
+./stack-exists.sh "aws101-application-parent" || true
 stack_exists=$?
 if [ "$stack_exists" -eq 0 ]
 then
