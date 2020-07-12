@@ -40,7 +40,7 @@ Resources:
         RegistryStackName: !Ref 'RegistryStackName'
         ServiceName: 'aws101-todo-app'
         HealthCheckPath: '/hello'
-        HealthCheckIntervalSeconds: 90
+        HealthCheckIntervalSeconds: 180
         ImageUrl: !Ref 'ServiceStackImageUrl'
         ContainerPort: 8080
         ContainerCpu: 256
