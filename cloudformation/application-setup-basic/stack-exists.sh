@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Script to determine whether a CloudFormation stack is up and running or not.
+# Returns response code 0 if the stack exists and response code 1 if the stack does not exist.
+# Usage: ./stack-exists.sh <stack_name>
+
 set -e
 export AWS_PAGER=""
 
