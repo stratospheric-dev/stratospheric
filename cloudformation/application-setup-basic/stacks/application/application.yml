@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Combines all stacks necessary to deploy an application.
+
+Parameters:
+
+  RegistryStackName:
+    Type: String
+    Description: The name of the ECR registry stack.
+
+  # network stack parameters
+  NetworkStackTemplateUrl:
+    Type: String
+    Description: URL to the network stack template in an S3 bucket.
+
+  # Service stack parameters
+  ServiceStackTemplateUrl:
+    Type: String
+    Description: URL to the service stack template in an S3 bucket.
+  ServiceStackImageUrl:
+    Type: String
+    Description: URL to the Docker image
+  ServiceStackUserPoolClientSecret:
+    Type: String
+    Description: The client secret to access the Cognito UserPool.
+
+Resources:
+
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'NetworkStackTemplateUrl'
+
+  ServiceStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'ServiceStackTemplateUrl'
+      Parameters:
+        NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
+        RegistryStackName: !Ref 'RegistryStackName'
+        ServiceName: 'aws101-todo-app'
+        HealthCheckPath: '/hello'
+        HealthCheckIntervalSeconds: 180
+        ImageUrl: !Ref 'ServiceStackImageUrl'
+        ContainerPort: 8080
+        ContainerCpu: 256
+        ContainerMemory: 512
+        Path: '*'
+        DesiredCount: 2
+        UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'

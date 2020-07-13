@@ -2,10 +2,13 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploy a service on AWS Fargate, hosted in two public subnets and accessible via a public load balancer.
   Derived from a template at https://github.com/nathanpeck/aws-cloudformation-fargate.
 Parameters:
-  StackName:
+  NetworkStackName:
     Type: String
     Description: The name of the networking stack that
       these resources are put into.
+  RegistryStackName:
+    Type: String
+    Description: The name of the ECR registry stack name to get access to its outputs.
   ServiceName:
     Type: String
     Description: A human-readable name for the service.
@@ -42,6 +45,9 @@ Parameters:
     Type: Number
     Default: 2
     Description: How many copies of the service task to run.
+  UserPoolClientSecret:
+    Type: String
+    Description: The client secret to access the Cognito user pool.
 
 Resources:
   TargetGroup:
@@ -59,7 +65,7 @@ Resources:
       UnhealthyThresholdCount: 2
       VpcId:
         Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'VPCId']]
+          !Join [':', [!Ref 'NetworkStackName', 'VPCId']]
 
   LoadBalancerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -72,7 +78,7 @@ Resources:
           Values: [!Ref 'Path']
       ListenerArn:
         Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'PublicListener']]
+          !Join [':', [!Ref 'NetworkStackName', 'PublicListener']]
       Priority: 1
 
   LogGroup:
@@ -91,8 +97,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       ExecutionRoleArn:
-        Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'ECSTaskExecutionRole']]
+        Fn::ImportValue: !Join [ ':', [ !Ref 'RegistryStackName', 'ECSTaskExecutionRole' ] ]
       ContainerDefinitions:
         - Name: !Ref 'ServiceName'
           Cpu: !Ref 'ContainerCpu'
@@ -106,6 +111,18 @@ Resources:
               awslogs-group: !Ref 'ServiceName'
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: !Ref 'ServiceName'
+          Environment:
+            - Name: COGNITO_USER_POOL_ID
+              Value:
+                Fn::ImportValue: 'UserPool::Id'
+            - Name: COGNITO_CLIENT_ID
+              Value:
+                Fn::ImportValue: 'UserPoolClient::Id'
+            - Name: COGNITO_CLIENT_SECRET
+              Value:
+                !Ref 'UserPoolClientSecret'
+            - Name: AWS_REGION
+              Value: !Ref "AWS::Region"
 
   Service:
     Type: AWS::ECS::Service
@@ -114,7 +131,7 @@ Resources:
       ServiceName: !Ref 'ServiceName'
       Cluster:
         Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'ClusterName']]
+          !Join [':', [!Ref 'NetworkStackName', 'ClusterName']]
       LaunchType: FARGATE
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -125,12 +142,12 @@ Resources:
           AssignPublicIp: ENABLED
           SecurityGroups:
             - Fn::ImportValue:
-                !Join [':', [!Ref 'StackName', 'ECSSecurityGroup']]
+                !Join [':', [!Ref 'NetworkStackName', 'ECSSecurityGroup']]
           Subnets:
             - Fn::ImportValue:
-                !Join [':', [!Ref 'StackName', 'PublicSubnetOne']]
+                !Join [':', [!Ref 'NetworkStackName', 'PublicSubnetOne']]
             - Fn::ImportValue:
-                !Join [':', [!Ref 'StackName', 'PublicSubnetTwo']]
+                !Join [':', [!Ref 'NetworkStackName', 'PublicSubnetTwo']]
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
         - ContainerName: !Ref 'ServiceName'
