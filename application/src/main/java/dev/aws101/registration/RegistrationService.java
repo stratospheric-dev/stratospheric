@@ -15,8 +15,8 @@ public class RegistrationService {
   private final Set<String> validInvitationCodes;
 
   public RegistrationService(AWSCognitoIdentityProvider awsCognitoIdentityProvider,
-                             @Value("${COGNITO_USER_POOL_ID}") String userPoolId,
-                             @Value("${custom.invitationCodes}") Set<String> validInvitationCodes) {
+                             @Value("${COGNITO_USER_POOL_ID:empty}") String userPoolId,
+                             @Value("${custom.invitationCodes:none}") Set<String> validInvitationCodes) {
     this.awsCognitoIdentityProvider = awsCognitoIdentityProvider;
     this.userPooldId = userPoolId;
     this.validInvitationCodes = validInvitationCodes;

@@ -1,0 +1,24 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      auto: false
+      static: eu-central-1
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          mock:
+            provider: mock
+            clientId: AWS101
+            clientSecret: secret
+            scope: openid, email
+            authorizationGrantType: authorization_cpde, password
+            redirectUriTemplate: http://localhost:8080/login/oauth2/code/cognito
+            clientName: spring-boot-backend
+        provider:
+          mock:
+            usernameAttribute: username
