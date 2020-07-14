@@ -30,4 +30,7 @@
 * CloudTrail
 * basis for observability topics in future chapters
 
+=== Using a custom Domain
+* Route 53?
+
 
