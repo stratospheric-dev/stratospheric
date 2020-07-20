@@ -54,6 +54,7 @@ Resources:
         - "email"
         - "openid"
         - "profile"
+      PreventUserExistenceErrors: "ENABLED"
   UserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
