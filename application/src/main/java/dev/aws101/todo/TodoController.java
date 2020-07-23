@@ -1,6 +1,5 @@
 package dev.aws101.todo;
 
-import dev.aws101.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +15,15 @@ public class TodoController {
 
   private final TodoRepository todoRepository;
 
+  private final TodoService todoService;
+
   @Autowired
-  public TodoController(TodoRepository todoRepository) {
+  public TodoController(
+    TodoRepository todoRepository,
+    TodoService todoService
+  ) {
     this.todoRepository = todoRepository;
+    this.todoService = todoService;
   }
 
   @GetMapping("/add")
@@ -34,13 +39,15 @@ public class TodoController {
     BindingResult result,
     Model model
   ) {
+    System.out.println(result.getAllErrors().get(0).getDefaultMessage());
     if (result.hasErrors()) {
       model.addAttribute("message", "Your new todo couldn't be saved.");
+      model.addAttribute("todo", todo);
 
       return "todo/add";
     }
 
-    todoRepository.save(todo);
+    todoService.save(todo);
 
     model.addAttribute("message", "Your new todo has been be saved.");
 
@@ -69,11 +76,12 @@ public class TodoController {
   ) {
     if (result.hasErrors()) {
       model.addAttribute("message", "Your todo couldn't be saved.");
+      model.addAttribute("todo", todo);
 
       return "todo/update";
     }
 
-    todoRepository.save(todo);
+    todoService.save(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
 
