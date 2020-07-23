@@ -13,7 +13,7 @@ import java.util.List;
 public class Todo {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @NotEmpty
@@ -28,9 +28,8 @@ public class Todo {
 
   private Status status;
 
-  @NotEmpty
-  @ManyToOne
   @CreatedBy
+  @ManyToOne
   private Person owner;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,4 +1,6 @@
 spring:
+  datasource:
+    url: jdbc:h2:file:~/aws-101-dev;AUTO_SERVER=TRUE
   h2:
     console:
       enabled: true

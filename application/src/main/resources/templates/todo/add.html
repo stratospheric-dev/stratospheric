@@ -5,6 +5,35 @@
 <body>
 <div th:replace="/fragments/navBar :: header">
 </div>
+<section class="section">
+  <div class="container has-text-centered">
+    <h1 class="title text-center">Add todo</h1>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"/>
+        <form th:action="@{/todo}" th:object="${todo}" method="post">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" th:field="*{title}" class="form-control" id="title">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" th:field="*{description}" class="form-control" id="description">
+          </div>
+          <div class="form-group">
+            <label for="title">Priority</label>
+            <input type="number" th:field="*{priority}" class="form-control" id="priority">
+          </div>
+          <div class="form-group">
+            <label for="dueDate">Due date</label>
+            <input type="date" th:field="*{dueDate}" class="form-control" id="dueDate">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>
