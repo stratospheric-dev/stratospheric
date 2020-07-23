@@ -11,14 +11,16 @@ spring:
     oauth2:
       client:
         registration:
-          mock:
-            provider: mock
-            clientId: AWS101
-            clientSecret: secret
+          cognito:
+            clientId: ${COGNITO_CLIENT_ID}
+            clientSecret: ${COGNITO_CLIENT_SECRET}
             scope: openid, email
-            authorizationGrantType: authorization_code, password
             redirectUriTemplate: http://localhost:8080/login/oauth2/code/cognito
             clientName: spring-boot-backend
         provider:
-          mock:
+          cognito:
+            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
             usernameAttribute: username
+
+custom:
+  invitationCodes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database

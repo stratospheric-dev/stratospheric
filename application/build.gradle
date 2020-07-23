@@ -27,6 +27,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
+  compileOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -42,4 +43,15 @@ dependencyManagement {
 
 test {
 	useJUnitPlatform()
+}
+
+tasks.register("bootRunDev") {
+  group = "application"
+  description = "Runs the Spring Boot application with the dev profile"
+  doFirst {
+    tasks.bootRun.configure {
+      systemProperty("spring.profiles.active", "dev")
+    }
+  }
+  finalizedBy("bootRun")
 }

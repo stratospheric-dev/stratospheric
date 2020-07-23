@@ -1,6 +1,7 @@
 package dev.aws101.todo;
 
 import dev.aws101.person.Person;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class Todo {
 
   @NotEmpty
   @ManyToOne
+  @CreatedBy
   private Person owner;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
