@@ -199,6 +199,20 @@ Resources:
                   - 'logs:PutLogEvents'
                 Resource: '*'
 
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the RDS instance
+      VpcId: !Ref 'VPC'
+
+  DBSecurityGroupIngressFromECS:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from the ECS containers to the RDS instance
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref 'ECSSecurityGroup'
+
 Outputs:
   ClusterName:
     Description: The name of the ECS cluster
@@ -243,3 +257,8 @@ Outputs:
   StackName:
     Description: The name of this stack
     Value: !Ref 'AWS::StackName'
+  DBSecurityGroupId:
+    Description: ID of the security group that an RDS instance can be placed into.
+    Value: !Ref 'DBSecurityGroup'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'DBSecurityGroupId' ] ]
