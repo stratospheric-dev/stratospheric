@@ -18,8 +18,8 @@ aws cloudformation update-stack \
     ParameterKey=ServiceStackUserPoolClientSecret,ParameterValue=$USER_POOL_CLIENT_SECRET \
     ParameterKey=RegistryStackName,ParameterValue=aws101-container-registry \
     ParameterKey=DatabaseStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/database.yml \
-    ParameterKey=DatabaseStackDBUsername,ParameterValue=aws101-todo-app \
-    ParameterKey=DatabaseStackDBName,ParameterValue=aws101-todo-app 2> update_error
+    ParameterKey=DatabaseStackDBUsername,ParameterValue=aws101 \
+    ParameterKey=DatabaseStackDBName,ParameterValue=aws101 2> update_error
 
 # Sadly, the AWS CLI returns an error when no update is to be performed. But we want to
 # call it a success if the stack is up-to-date. So, we have to work around this by
