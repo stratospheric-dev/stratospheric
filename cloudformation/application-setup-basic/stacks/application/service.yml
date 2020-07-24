@@ -135,14 +135,14 @@ Resources:
                - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointPort']]
                - '/'
                - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'DBName']]
-           - Name: SPRING_DATASOURCE_USERNAME
-             Value: !Join
+            - Name: SPRING_DATASOURCE_USERNAME
+              Value: !Join
                - ''
                - - '{{resolve:secretsmanager:'
                  - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'Secret']]
                  - ':SecretString:username}}'
-           - Name: SPRING_DATASOURCE_PASSWORD
-             Value: !Join
+            - Name: SPRING_DATASOURCE_PASSWORD
+              Value: !Join
                - ''
                - - '{{resolve:secretsmanager:'
                  - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'Secret']]
