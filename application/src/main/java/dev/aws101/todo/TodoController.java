@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -28,6 +31,7 @@ public class TodoController {
 
   @GetMapping("/add")
   public String showAddView(Model model) {
+    model.addAttribute("todoAddPageActiveClass", "active");
     model.addAttribute("todo", new Todo());
 
     return "todo/add";
@@ -37,11 +41,12 @@ public class TodoController {
   public String add(
     @Valid Todo todo,
     BindingResult result,
-    Model model
+    Model model,
+    RedirectAttributes redirectAttributes
   ) {
-    System.out.println(result.getAllErrors().get(0).getDefaultMessage());
     if (result.hasErrors()) {
       model.addAttribute("message", "Your new todo couldn't be saved.");
+      model.addAttribute("messageType", "danger");
       model.addAttribute("todo", todo);
 
       return "todo/add";
@@ -49,7 +54,8 @@ public class TodoController {
 
     todoService.save(todo);
 
-    model.addAttribute("message", "Your new todo has been be saved.");
+    redirectAttributes.addFlashAttribute("message", "Your new todo has been be saved.");
+    redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/";
   }
@@ -61,12 +67,13 @@ public class TodoController {
   ) {
     Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
 
+    model.addAttribute("todoEditPageActiveClass", "active");
     model.addAttribute("todo", todo);
 
     return "todo/update";
   }
 
-  @PutMapping("/{id}")
+  @PostMapping("/update/{id}")
   public String update(
     @PathVariable("id") long id,
     @Valid Todo todo,
@@ -76,19 +83,27 @@ public class TodoController {
   ) {
     if (result.hasErrors()) {
       model.addAttribute("message", "Your todo couldn't be saved.");
+      model.addAttribute("messageType", "danger");
       model.addAttribute("todo", todo);
 
       return "todo/update";
     }
 
-    todoService.save(todo);
+    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    existingTodo.setTitle(todo.getTitle());
+    existingTodo.setDescription(todo.getDescription());
+    existingTodo.setPriority(todo.getPriority());
+    existingTodo.setDueDate(todo.getDueDate());
+
+    existingTodo = todoService.save(existingTodo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
+    redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/";
   }
 
-  @DeleteMapping("/{id}")
+  @GetMapping("/delete/{id}")
   public String delete(
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
@@ -97,6 +112,7 @@ public class TodoController {
     todoRepository.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
+    redirectAttributes.addFlashAttribute("messageType", "danger");
 
     return "redirect:/";
   }

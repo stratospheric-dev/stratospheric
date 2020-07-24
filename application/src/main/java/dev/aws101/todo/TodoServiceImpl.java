@@ -22,11 +22,15 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public Todo save(Todo todo) {
-    System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-    Person person = personRepository
-      .findByName(SecurityContextHolder.getContext().getAuthentication().getName())
-      .orElse(null);
-    todo.setOwner(person);
+    if (todo.getOwner() != null) {
+      Person person = personRepository
+        .findByName(SecurityContextHolder.getContext().getAuthentication().getName())
+        .orElse(null);
+      if (person == null) {
+        person = personRepository.findByName("Admin").orElse(null);
+      }
+      todo.setOwner(person);
+    }
 
     return todoRepository.save(todo);
   }

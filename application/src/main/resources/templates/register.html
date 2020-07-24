@@ -9,7 +9,7 @@
     <h1 class="title text-center">Register</h1>
     <div class="row">
       <div class="col-md-6 offset-md-3">
-        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"/>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
         <form th:action="@{/register}" th:object="${registration}" method="post">
           <div class="form-group">
             <label for="username">Username</label>

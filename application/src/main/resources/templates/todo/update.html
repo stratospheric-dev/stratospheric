@@ -10,8 +10,8 @@
     <h1 class="title text-center">Update todo</h1>
     <div class="row">
       <div class="col-md-6 offset-md-3">
-        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"/>
-        <form th:action="@{/todo}" th:object="${todo}" method="post">
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
+        <form th:action="@{/todo/update/{id}(id=${todo.id})}" th:object="${todo}" method="post">
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" th:field="*{title}" class="form-control" id="title">
@@ -22,7 +22,16 @@
           </div>
           <div class="form-group">
             <label for="title">Priority</label>
-            <input type="number" th:field="*{priority}" class="form-control" id="priority">
+            <div class="form-group">
+              <label for="title">Priority</label>
+              <select th:field="*{priority}"
+                      class="form-control"
+                      id="priority"
+                      placeholder="Please select a priority.">
+                <option th:each="priorityValue : ${T(dev.aws101.todo.Priority).values()}"
+                        th:value="${priorityValue}" th:text="${priorityValue.displayValue}"></option>
+              </select>
+            </div>
           </div>
           <div class="form-group">
             <label for="dueDate">Due date</label>

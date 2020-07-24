@@ -120,4 +120,17 @@ public class Todo {
   public void setCollaborators(List<Person> collaborators) {
     this.collaborators = collaborators;
   }
+
+  @Override
+  public String toString() {
+    return "Todo{" +
+      "id=" + id +
+      ", title='" + title + '\'' +
+      ", description='" + description + '\'' +
+      ", priority=" + priority +
+      ", dueDate=" + dueDate +
+      ", status=" + status +
+      ", owner=" + owner +
+      '}';
+  }
 }

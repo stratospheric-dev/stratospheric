@@ -22,7 +22,9 @@ public class RegistrationController {
 
   @GetMapping
   public String getRegisterView(Model model) {
+    model.addAttribute("registrationPageActiveClass", "active");
     model.addAttribute("registration", new Registration());
+
     return "register";
   }
 
@@ -49,5 +51,4 @@ public class RegistrationController {
 
     return "redirect:/register";
   }
-
 }

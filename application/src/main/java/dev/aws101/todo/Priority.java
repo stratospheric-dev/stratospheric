@@ -5,13 +5,13 @@ public enum Priority {
   DEFAULT(2),
   LOW(3);
 
-  private final int value;
+  private final int displayValue;
 
-  Priority(final int value) {
-    this.value = value;
+  private Priority(int displayValue) {
+    this.displayValue = displayValue;
   }
 
-  public int getValue() {
-    return value;
+  public int getDisplayValue() {
+    return displayValue;
   }
 }
