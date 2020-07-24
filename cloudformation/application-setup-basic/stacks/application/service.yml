@@ -87,6 +87,20 @@ Resources:
       ListenerArn:
         Fn::ImportValue:
           !Join [':', [!Ref 'NetworkStackName', 'PublicListener']]
+      Priority: 2
+
+  LoadBalancerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: 'forward'
+      Conditions:
+        - Field: path-pattern
+          Values: [!Ref 'Path']
+      ListenerArn:
+        Fn::ImportValue:
+          !Join [':', [!Ref 'NetworkStackName', 'PublicHttpsListener']]
       Priority: 1
 
   LogGroup:
