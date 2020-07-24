@@ -7,9 +7,6 @@ cloud:
       static: eu-central-1
 
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
   security:
     oauth2:
       client:

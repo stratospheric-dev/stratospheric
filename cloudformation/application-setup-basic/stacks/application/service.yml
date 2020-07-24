@@ -48,6 +48,9 @@ Parameters:
   UserPoolClientSecret:
     Type: String
     Description: The client secret to access the Cognito user pool.
+  DatabaseStackName:
+    Type: String
+    Description: The name of the database stack.
 
 Resources:
   TargetGroup:
@@ -123,6 +126,27 @@ Resources:
                 !Ref 'UserPoolClientSecret'
             - Name: AWS_REGION
               Value: !Ref "AWS::Region"
+            - Name: SPRING_DATASOURCE_URL
+              Value: !Join
+               - ''
+               - - 'jdbc:postgresql://'
+               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointAddress']]
+               - ':'
+               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointPort']]
+               - '/'
+               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'DBName']]
+           - Name: SPRING_DATASOURCE_USERNAME
+             Value: !Join
+               - ''
+               - - '{{resolve:secretsmanager:'
+                 - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'Secret']]
+                 - ':SecretString:username}}'
+           - Name: SPRING_DATASOURCE_PASSWORD
+             Value: !Join
+               - ''
+               - - '{{resolve:secretsmanager:'
+                 - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'Secret']]
+                 - ':SecretString:password}}'
 
   Service:
     Type: AWS::ECS::Service
