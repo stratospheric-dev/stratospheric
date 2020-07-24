@@ -130,11 +130,11 @@ Resources:
               Value: !Join
                - ''
                - - 'jdbc:postgresql://'
-               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointAddress']]
-               - ':'
-               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointPort']]
-               - '/'
-               - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'DBName']]
+                 - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointAddress']]
+                 - ':'
+                 - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'EndpointPort']]
+                 - '/'
+                 - Fn::ImportValue: !Join [':', [!Ref 'DatabaseStackName', 'DBName']]
             - Name: SPRING_DATASOURCE_USERNAME
               Value: !Join
                - ''
