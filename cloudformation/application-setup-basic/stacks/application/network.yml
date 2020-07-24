@@ -112,6 +112,31 @@ Resources:
       Port: 80
       Protocol: HTTP
 
+  PublicHttpsLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - PublicLoadBalancer
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
+          Type: 'forward'
+      LoadBalancerArn: !Ref 'PublicLoadBalancer'
+      Port: 443
+      Protocol: HTTPS
+
+#  PublicHttpsLoadBalancerListenerCertificate:
+#    Type: AWS::ElasticLoadBalancingV2::ListenerCertificate
+#    Properties:
+#      Certificates:
+#        - !Ref 'BaseCertificate'
+#      ListenerArn: !Ref 'PublicHttpsLoadBalancerListener'
+
+  BaseCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: '*.aws101.dev'
+      ValidationMethod: 'DNS'
+
   ECSCluster:
     Type: AWS::ECS::Cluster
 
