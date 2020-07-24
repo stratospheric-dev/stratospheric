@@ -20,8 +20,8 @@ aws cloudformation create-stack \
     ParameterKey=ServiceStackUserPoolClientSecret,ParameterValue=$USER_POOL_CLIENT_SECRET \
     ParameterKey=RegistryStackName,ParameterValue=aws101-container-registry \
     ParameterKey=DatabaseStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/database.yml \
-    ParameterKey=DatabaseStackDBUsername,ParameterValue=aws101-todo-app \
-    ParameterKey=DatabaseStackDBName,ParameterValue=aws101-todo-app
+    ParameterKey=DatabaseStackDBUsername,ParameterValue=aws101 \
+    ParameterKey=DatabaseStackDBName,ParameterValue=aws101
 
 # wait for stack to be created
 aws cloudformation wait stack-create-complete --stack-name aws101-application-parent
