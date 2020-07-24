@@ -24,12 +24,32 @@ Parameters:
     Type: String
     Description: The client secret to access the Cognito UserPool.
 
+  # Database stack parameters
+  DatabaseStackTemplateUrl:
+    Type: String
+    Description: URL to the database stack template in an S3 bucket.
+  DatabaseStackDBName:
+    Type: String
+    Description: The name of the database that is created within the PostgreSQL instance.
+  DatabaseStackDBUsername:
+    Type: String
+    Description: The master user name for the PostgreSQL instance.
+
 Resources:
 
   NetworkStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Ref 'NetworkStackTemplateUrl'
+
+  DatabaseStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'DatabaseStackTemplateUrl'
+      Parameters:
+        NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
+        DBName: !Ref 'DatabaseStackDBName'
+        DBUsername: !Ref 'DatabaseStackDBUsername'
 
   ServiceStack:
     Type: AWS::CloudFormation::Stack
@@ -48,3 +68,4 @@ Resources:
         Path: '*'
         DesiredCount: 2
         UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
+        DatabaseStackName: !GetAtt DatabaseStack.Outputs.StackName

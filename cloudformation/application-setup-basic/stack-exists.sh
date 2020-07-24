@@ -9,7 +9,7 @@ export AWS_PAGER=""
 stack_name=$1
 
 existing_stacks=$(aws cloudformation list-stacks \
-  --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+  --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE UPDATE_ROLLBACK_COMPLETE \
   --output text \
   --query "StackSummaries[].[StackName]")
 
