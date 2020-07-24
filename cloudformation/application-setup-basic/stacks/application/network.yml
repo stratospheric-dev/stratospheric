@@ -120,16 +120,11 @@ Resources:
       DefaultActions:
         - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
           Type: 'forward'
+      Certificates:
+        - CertificateArn: !Ref 'BaseCertificate'
       LoadBalancerArn: !Ref 'PublicLoadBalancer'
       Port: 443
       Protocol: HTTPS
-
-#  PublicHttpsLoadBalancerListenerCertificate:
-#    Type: AWS::ElasticLoadBalancingV2::ListenerCertificate
-#    Properties:
-#      Certificates:
-#        - !Ref 'BaseCertificate'
-#      ListenerArn: !Ref 'PublicHttpsLoadBalancerListener'
 
   BaseCertificate:
     Type: AWS::CertificateManager::Certificate
