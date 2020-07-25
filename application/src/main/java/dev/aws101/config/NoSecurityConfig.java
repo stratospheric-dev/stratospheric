@@ -6,24 +6,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@ConditionalOnProperty(value = "custom.security.enabled", havingValue = "true", matchIfMissing = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@ConditionalOnProperty(value = "custom.security.enabled", havingValue = "false")
+public class NoSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
       .csrf()
       .and()
-      .oauth2Login()
-      .and()
       .authorizeRequests(authorize ->
         authorize
-          .mvcMatchers("/", "/h2-console/**", "/hello", "/register", "/signin")
+          .mvcMatchers("/**")
           .permitAll()
-          .anyRequest()
-          .authenticated()
-      )
-      .logout()
-      .logoutSuccessUrl("/");
+      );
   }
 }

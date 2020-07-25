@@ -12,7 +12,7 @@ import java.util.List;
 public class Todo {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @NotEmpty
@@ -27,7 +27,6 @@ public class Todo {
 
   private Status status;
 
-  @NotEmpty
   @ManyToOne
   private Person owner;
 
@@ -120,5 +119,18 @@ public class Todo {
 
   public void setCollaborators(List<Person> collaborators) {
     this.collaborators = collaborators;
+  }
+
+  @Override
+  public String toString() {
+    return "Todo{" +
+      "id=" + id +
+      ", title='" + title + '\'' +
+      ", description='" + description + '\'' +
+      ", priority=" + priority +
+      ", dueDate=" + dueDate +
+      ", status=" + status +
+      ", owner=" + owner +
+      '}';
   }
 }

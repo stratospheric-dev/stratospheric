@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aws101
+    username: aws101
+    password: aws101
+  h2:
+    console:
+      enabled: true
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  resources:
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0
+
+custom:
+  security.enabled: false

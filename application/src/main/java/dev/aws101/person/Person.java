@@ -11,7 +11,7 @@ import java.util.List;
 public class Person {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @NotEmpty

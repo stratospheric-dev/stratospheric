@@ -9,22 +9,41 @@
 <section class="section">
   <div class="container has-text-centered">
     <div>
-      <h1 class="title" th:text="${message}"/>
-
+      <h1 class="title">
+        Welcome to the TODO application!
+      </h1>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
       <table class="table" th:if="${todos}">
         <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Title</th>
+          <th scope="col">&nbsp;</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="todo : ${todos}">
-          <td th:text="${todo.id}" scope="row"></td>
-          <td th:text="${todo.title}"></td>
+          <td scope="row">
+            <a th:href="@{/todo/edit/{id}(id=${todo.id})}">
+              <span th:text="${todo.id}" th:remove="tag">#</span>
+            </a>
+          </td>
+          <td>
+            <a th:href="@{/todo/edit/{id}(id=${todo.id})}">
+              <span th:text="${todo.title}" th:remove="tag">Title</span>
+            </a>
+          </td>
+          <td>
+            <a class="btn btn-secondary" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
+            <a class="btn btn-danger" th:href="@{/todo/delete/{id}(id=${todo.id})}">Delete</a>
+          </td>
         </tr>
         </tbody>
       </table>
+
+      <p>
+        <a class="btn btn-primary" th:href="@{/todo/add}">Add</a>
+      </p>
 
       <div sec:authorize="isAuthenticated()">
         <div class="box">
