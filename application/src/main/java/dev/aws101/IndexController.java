@@ -4,7 +4,6 @@ import dev.aws101.person.Person;
 import dev.aws101.person.PersonRepository;
 import dev.aws101.todo.Todo;
 import dev.aws101.todo.TodoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ public class IndexController {
 
   private final TodoRepository todoRepository;
 
-  @Autowired
   public IndexController(
     PersonRepository personRepository,
     TodoRepository todoRepository

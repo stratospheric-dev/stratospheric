@@ -24,3 +24,4 @@ spring:
 
 custom:
   invitationCodes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
+  security.enabled: true

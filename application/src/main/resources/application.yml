@@ -6,10 +6,6 @@ cloud:
       auto: false
       static: eu-central-1
 
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
-
 custom:
   invitationCodes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
+  security.enabled: true

@@ -45,13 +45,9 @@ test {
 	useJUnitPlatform()
 }
 
-tasks.register("bootRunDev") {
-  group = "application"
-  description = "Runs the Spring Boot application with the dev profile"
-  doFirst {
-    tasks.bootRun.configure {
-      systemProperty("spring.profiles.active", "dev")
-    }
-  }
-  finalizedBy("bootRun")
+bootRun {
+  jvmArgs = [
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
+    "-Dspring.profiles.active=dev",
+  ]
 }
