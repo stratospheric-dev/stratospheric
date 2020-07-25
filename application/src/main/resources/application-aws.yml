@@ -7,6 +7,8 @@ cloud:
       static: eu-central-1
 
 spring:
+  datasource:
+    url: jdbc:h2:file:~/aws-101-dev;AUTO_SERVER=TRUE
   security:
     oauth2:
       client:
