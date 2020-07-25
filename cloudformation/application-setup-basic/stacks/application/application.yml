@@ -60,6 +60,7 @@ Resources:
         RegistryStackName: !Ref 'RegistryStackName'
         ServiceName: 'aws101-todo-app'
         HealthCheckPath: '/health'
+        HealthCheckPort: 8080
         HealthCheckIntervalSeconds: 180
         ImageUrl: !Ref 'ServiceStackImageUrl'
         ContainerPort: 8080
