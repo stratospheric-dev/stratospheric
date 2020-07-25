@@ -1,15 +1,13 @@
 create table PERSON
 (
-	ID IDENTITY not null
-		primary key,
+	ID serial not null primary key,
 	EMAIL VARCHAR(255),
 	NAME VARCHAR(255)
 );
 
 create table TODO
 (
-	ID IDENTITY not null
-		primary key,
+	ID serial not null primary key,
 	DESCRIPTION VARCHAR(255),
 	DUE_DATE DATE,
 	PRIORITY INTEGER,
@@ -22,8 +20,7 @@ create table TODO
 
 create table NOTE
 (
-	ID IDENTITY not null
-		primary key,
+	ID serial not null primary key,
 	CONTENT VARCHAR(255),
 	TODO_ID BIGINT,
 	constraint FK_NOTE_TODO
@@ -44,8 +41,7 @@ create table PERSON_OWNED_TODOS
 
 create table REMINDER
 (
-	ID IDENTITY not null
-		primary key,
+	ID serial not null primary key,
 	DUE_DATE DATE,
 	TODO_ID BIGINT,
 	constraint FK_REMINDER_TODO
