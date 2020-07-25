@@ -59,7 +59,7 @@ Resources:
         NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
         RegistryStackName: !Ref 'RegistryStackName'
         ServiceName: 'aws101-todo-app'
-        HealthCheckPath: '/hello'
+        HealthCheckPath: '/health'
         HealthCheckIntervalSeconds: 180
         ImageUrl: !Ref 'ServiceStackImageUrl'
         ContainerPort: 8080
