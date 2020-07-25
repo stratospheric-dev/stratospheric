@@ -29,8 +29,21 @@ public class TodoController {
     this.todoService = todoService;
   }
 
+  @GetMapping("/show/{id}")
+  public String showView(
+    @PathVariable("id") long id,
+    Model model
+  ) {
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+
+    model.addAttribute("todoShowPageActiveClass", "active");
+    model.addAttribute("todo", todo);
+
+    return "todo/show";
+  }
+
   @GetMapping("/add")
-  public String showAddView(Model model) {
+  public String addView(Model model) {
     model.addAttribute("todoAddPageActiveClass", "active");
     model.addAttribute("todo", new Todo());
 
@@ -48,6 +61,7 @@ public class TodoController {
       model.addAttribute("message", "Your new todo couldn't be saved.");
       model.addAttribute("messageType", "danger");
       model.addAttribute("todo", todo);
+      model.addAttribute("errors", result.getFieldErrors());
 
       return "todo/add";
     }
@@ -61,7 +75,7 @@ public class TodoController {
   }
 
   @GetMapping("/edit/{id}")
-  public String showUpdateView(
+  public String editView(
     @PathVariable("id") long id,
     Model model
   ) {
@@ -70,7 +84,7 @@ public class TodoController {
     model.addAttribute("todoEditPageActiveClass", "active");
     model.addAttribute("todo", todo);
 
-    return "todo/update";
+    return "todo/edit";
   }
 
   @PostMapping("/update/{id}")
@@ -85,6 +99,7 @@ public class TodoController {
       model.addAttribute("message", "Your todo couldn't be saved.");
       model.addAttribute("messageType", "danger");
       model.addAttribute("todo", todo);
+      model.addAttribute("errors", result.getFieldErrors());
 
       return "todo/update";
     }
@@ -112,7 +127,7 @@ public class TodoController {
     todoRepository.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
-    redirectAttributes.addFlashAttribute("messageType", "danger");
+    redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/";
   }

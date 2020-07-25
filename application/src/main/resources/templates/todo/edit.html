@@ -3,14 +3,13 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/fragments/headTag :: head"></head>
 <body>
-<div th:replace="/fragments/navBar :: header">
-</div>
+<div th:replace="/fragments/navBar :: header"></div>
 <section class="section">
   <div class="container has-text-centered">
     <h1 class="title text-center">Update todo</h1>
     <div class="row">
       <div class="col-md-6 offset-md-3">
-        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
+        <div th:replace="fragments/messages :: messages"></div>
         <form th:action="@{/todo/update/{id}(id=${todo.id})}" th:object="${todo}" method="post">
           <div class="form-group">
             <label for="title">Title</label>
@@ -29,7 +28,8 @@
                       id="priority"
                       placeholder="Please select a priority.">
                 <option th:each="priorityValue : ${T(dev.aws101.todo.Priority).values()}"
-                        th:value="${priorityValue}" th:text="${priorityValue.displayValue}"></option>
+                        th:value="${priorityValue}"
+                        th:text="${priorityValue.displayValue}"></option>
               </select>
             </div>
           </div>
