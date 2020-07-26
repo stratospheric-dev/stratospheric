@@ -85,8 +85,6 @@ Resources:
         - !Ref PublicSubnetOne
         - !Ref PublicSubnetTwo
       SecurityGroups: [!Ref 'PublicLoadBalancerSecurityGroup']
-      LBCookieStickinessPolicy:
-        - CookieExpirationPeriod: 3600
 
   DummyTargetGroupPublic:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
