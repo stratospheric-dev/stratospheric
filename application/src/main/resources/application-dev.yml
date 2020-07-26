@@ -1,3 +1,11 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      auto: false
+      static: eu-central-1
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/aws101

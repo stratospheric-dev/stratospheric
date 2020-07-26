@@ -1,7 +1,7 @@
 cloud:
   aws:
     stack:
-      auto: false
+      auto: true
     region:
       auto: false
       static: eu-central-1
