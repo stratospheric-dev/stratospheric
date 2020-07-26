@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:if="${message}" th:class="${'alert alert-' + messageType}" role="alert" th:fragment="messages">
+  <span th:text="${message}" th:remove="tag">Message</span>
+  <ul th:if="${errors}">
+    <li th:each="error : ${errors}"
+        th:value="${error}"
+        th:text="${error.field + ' ' + error.defaultMessage}"></li>
+  </ul>
+</div>
+</body>
+</html>
