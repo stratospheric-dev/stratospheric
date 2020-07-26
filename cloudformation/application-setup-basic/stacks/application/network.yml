@@ -112,6 +112,26 @@ Resources:
       Port: 80
       Protocol: HTTP
 
+  PublicHttpsLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - PublicLoadBalancer
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
+          Type: 'forward'
+      Certificates:
+        - CertificateArn: !Ref 'BaseCertificate'
+      LoadBalancerArn: !Ref 'PublicLoadBalancer'
+      Port: 443
+      Protocol: HTTPS
+
+  BaseCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: '*.aws101.dev'
+      ValidationMethod: 'DNS'
+
   ECSCluster:
     Type: AWS::ECS::Cluster
 
@@ -256,6 +276,11 @@ Outputs:
     Value: !Ref PublicLoadBalancerListener
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicListener' ] ]
+  PublicHttpsListener:
+    Description: The ARN of the public HTTPS load balancer's Listener
+    Value: !Ref PublicHttpsLoadBalancerListener
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicHttpsListener' ] ]
   VPCId:
     Description: The ID of the VPC that this stack is deployed in
     Value: !Ref 'VPC'
