@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/headTag :: head"></head>
+<head th:replace="fragments/headTag :: head"></head>
 <body>
-<div th:replace="/fragments/navBar :: header"></div>
+<div th:replace="fragments/navBar :: header"></div>
 <section class="section">
   <div class="container has-text-centered">
     <h1 class="title text-center">Todo #<span th:remove="tag" th:text="${todo.id}"></span></h1>
