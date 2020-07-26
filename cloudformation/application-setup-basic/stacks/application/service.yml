@@ -71,6 +71,13 @@ Resources:
       Port: !Ref 'ContainerPort'
       Protocol: HTTP
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: 'stickiness.enabled'
+          Value: true
+        - Key: 'stickiness.type'
+          Value: 'lb_cookie'
+        - Key: 'stickiness.lb_cookie.duration_seconds'
+          Value: 3600
       VpcId:
         Fn::ImportValue:
           !Join [':', [!Ref 'NetworkStackName', 'VPCId']]
