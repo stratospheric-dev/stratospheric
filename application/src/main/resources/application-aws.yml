@@ -15,7 +15,6 @@ spring:
             clientId: ${COGNITO_CLIENT_ID}
             clientSecret: ${COGNITO_CLIENT_SECRET}
             scope: openid
-            redirectUriTemplate: https://app.aws101.dev/login/oauth2/code/cognito
             clientName: aws101-users-client
         provider:
           cognito:
