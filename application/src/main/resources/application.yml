@@ -12,9 +12,3 @@ server:
 custom:
   invitationCodes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
   security.enabled: true
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
