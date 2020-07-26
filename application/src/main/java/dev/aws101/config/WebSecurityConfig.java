@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .authorizeRequests(authorize ->
         authorize
-          .mvcMatchers("/", "/h2-console/**", "/health", "/register", "/signin")
+          .mvcMatchers("/", "/h2-console/**", "/health", "/register", "/signin", "/favicon.png")
           .permitAll()
           .anyRequest()
           .authenticated()
