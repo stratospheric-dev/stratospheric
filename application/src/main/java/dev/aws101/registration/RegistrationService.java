@@ -2,7 +2,6 @@ package dev.aws101.registration;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,6 @@ public class RegistrationService {
   }
 
   public UserType registerUser(Registration registration) {
-    // TODO: Catch some error scenarios, e.g. username is already taken see UsernameExistsException
-
     AdminCreateUserRequest registrationRequest = new AdminCreateUserRequest()
       .withUserPoolId(userPooldId)
       .withUsername(registration.getUsername())

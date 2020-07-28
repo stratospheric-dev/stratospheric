@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -30,16 +31,15 @@
           Register
         </a>
       </li>
-      <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
+      <li class="nav-item" sec:authorize="isAnonymous()">
         <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
           Sign in
         </a>
       </li>
-      <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
-        <a class="btn btn-danger" th:href="@{#}" onclick="$('#form').submit();">
-          Logout
-        </a>
-        <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+      <li class="nav-item" sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+          <input class="btn btn-danger" type="submit" value="Logout">
+        </form>
       </li>
     </ul>
   </div>
