@@ -135,13 +135,23 @@ Resources:
               Action: ['sts:AssumeRole']
       Path: /
       Policies:
-        - PolicyName: AmazonECSTaskRolePolicy
+        - PolicyName: AllowAccessToCognito
           PolicyDocument:
             Statement:
               - Effect: Allow
                 Action:
-                  - 'cognito:*'
+                  - 'cognito-idp:*'
+                  - 'cognito-identity:*'
                   - 's3:*'
+                # TODO: fine grained resources access
+                Resource: '*'
+        - PolicyName: AllowAccessToS3
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:*'
+                # TODO: fine grained resources access
                 Resource: '*'
 
   TaskDefinition:
