@@ -49,26 +49,19 @@
         <a class="btn btn-primary" th:href="@{/todo/add}">Add</a>
       </p>
 
-      <div sec:authorize="isAuthenticated()">
-        <div class="box">
-          Hello, <strong th:text="${#authentication.name}"></strong>!
+      <div class="container" sec:authorize="isAuthenticated()">
+        <div class="row">
+          <div class="col-12">
+            Hello, <strong th:text="${#authentication.name}"></strong>!
+          </div>
         </div>
-      </div>
-
-      <div sec:authorize="hasRole('USER')">Text visible to user.</div>
-      <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
-      <div sec:authorize="isAuthenticated()">
-        Text visible only to authenticated users.
-      </div>
-      <div sec:authorize="isAnonymous()">
-        <div class="box">
-          <a class="button login is-primary" th:href="@{/oauth2/authorization/cognito}">Log in with Amazon Cognito</a>
+        <div class="row">
+          <div class="col-12">
+            You're authenticated
+            <span sec:authorize="hasRole('USER')">as a normal user.</span>
+            <span sec:authorize="hasRole('ADMIN')">as an admin.</span>
+          </div>
         </div>
-      </div>
-      <div sec:authorize="isAuthenticated()">
-        <form th:action="@{/logout}" method="post">
-          <input type="submit" value="Logout"/>
-        </form>
       </div>
     </div>
   </div>
