@@ -142,7 +142,6 @@ Resources:
                 Action:
                   - 'cognito-idp:*'
                   - 'cognito-identity:*'
-                  - 's3:*'
                 # TODO: fine grained resources access
                 Resource: '*'
         - PolicyName: AllowAccessToS3
