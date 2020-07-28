@@ -124,6 +124,26 @@ Resources:
       LogGroupName: !Ref 'ServiceName'
       RetentionInDays: 1
 
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+              - Effect: Allow
+                Principal:
+                  Service: [ecs-tasks.amazonaws.com]
+                Action: ['sts:AssumeRole']
+        Path: /
+        Policies:
+          - PolicyName: AmazonECSTaskRolePolicy
+            PolicyDocument:
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - 'cognito:*'
+                    - 's3:*'
+                  Resource: '*'
+
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -135,6 +155,7 @@ Resources:
         - FARGATE
       ExecutionRoleArn:
         Fn::ImportValue: !Join [ ':', [ !Ref 'RegistryStackName', 'ECSTaskExecutionRole' ] ]
+      TaskRoleArn: !Ref 'ECSTaskRole'
       ContainerDefinitions:
         - Name: !Ref 'ServiceName'
           Cpu: !Ref 'ContainerCpu'
