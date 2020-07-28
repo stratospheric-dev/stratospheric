@@ -126,23 +126,23 @@ Resources:
 
   ECSTaskRole:
     Type: AWS::IAM::Role
-      Properties:
-        AssumeRolePolicyDocument:
-          Statement:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+            - Effect: Allow
+              Principal:
+                Service: [ecs-tasks.amazonaws.com]
+              Action: ['sts:AssumeRole']
+      Path: /
+      Policies:
+        - PolicyName: AmazonECSTaskRolePolicy
+          PolicyDocument:
+            Statement:
               - Effect: Allow
-                Principal:
-                  Service: [ecs-tasks.amazonaws.com]
-                Action: ['sts:AssumeRole']
-        Path: /
-        Policies:
-          - PolicyName: AmazonECSTaskRolePolicy
-            PolicyDocument:
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - 'cognito:*'
-                    - 's3:*'
-                  Resource: '*'
+                Action:
+                  - 'cognito:*'
+                  - 's3:*'
+                Resource: '*'
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
