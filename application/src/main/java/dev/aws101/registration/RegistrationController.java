@@ -5,6 +5,7 @@ import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
 import com.amazonaws.services.cognitoidp.model.UserType;
 import com.amazonaws.services.cognitoidp.model.UsernameExistsException;
 import dev.aws101.person.Person;
+import dev.aws101.person.PersonRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,8 +22,14 @@ public class RegistrationController {
 
   private final RegistrationService registrationService;
 
-  public RegistrationController(RegistrationService registrationService) {
+  private final PersonRepository personRepository;
+
+  public RegistrationController(
+    RegistrationService registrationService,
+    PersonRepository personRepository
+  ) {
     this.registrationService = registrationService;
+    this.personRepository = personRepository;
   }
 
   @GetMapping
@@ -53,14 +60,16 @@ public class RegistrationController {
     }
 
     try {
-      UserType userType = registrationService.registerUser(registration);
+      UserType user = registrationService.registerUser(registration);
       Person person = new Person();
-      person.setName(userType.getUsername());
-      for (AttributeType attributeType : userType.getAttributes()) {
-        if (attributeType.getName().equals("email")) {
-          person.setEmail(attributeType.getValue());
+      person.setName(user.getUsername());
+      for (AttributeType attribute : user.getAttributes()) {
+        if (attribute.getName().equals("email")) {
+          person.setEmail(attribute.getValue());
         }
       }
+      personRepository.save(person);
+
       redirectAttributes.addFlashAttribute("message", "You successfully registered for the Todo App. " +
         "Go check your E-Mail inbox for further instructions.");
       redirectAttributes.addFlashAttribute("messageType", "success");

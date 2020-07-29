@@ -54,6 +54,7 @@ public class RegistrationService {
       AttributeType emailAttributeType = new AttributeType();
       emailAttributeType.setName("email");
       emailAttributeType.setValue("admin@aws101.dev");
+      attributeTypeList.add(emailAttributeType);
       userType.setAttributes(attributeTypeList);
 
       createUserResult.setUser(userType);
