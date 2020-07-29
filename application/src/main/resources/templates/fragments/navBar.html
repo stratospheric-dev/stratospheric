@@ -26,7 +26,7 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="isAnonymous()">
         <a th:class="${'nav-link ' + registrationPageActiveClass}" th:href="@{/register}">
           Register
         </a>

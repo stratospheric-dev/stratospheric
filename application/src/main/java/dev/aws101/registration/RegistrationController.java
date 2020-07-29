@@ -75,8 +75,8 @@ public class RegistrationController {
       redirectAttributes.addFlashAttribute("messageType", "success");
     } catch (InvalidParameterException | UsernameExistsException awsCognitoIdentityProviderException) {
       model.addAttribute("registration", registration);
-      redirectAttributes.addFlashAttribute("message", awsCognitoIdentityProviderException.getMessage());
-      redirectAttributes.addFlashAttribute("messageType", "danger");
+      model.addAttribute("message", awsCognitoIdentityProviderException.getMessage());
+      model.addAttribute("messageType", "danger");
 
       return "register";
     }
