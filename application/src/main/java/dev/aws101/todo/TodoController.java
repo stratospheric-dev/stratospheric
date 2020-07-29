@@ -109,8 +109,7 @@ public class TodoController {
     existingTodo.setDescription(todo.getDescription());
     existingTodo.setPriority(todo.getPriority());
     existingTodo.setDueDate(todo.getDueDate());
-
-    existingTodo = todoService.save(existingTodo);
+    todoService.save(existingTodo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
