@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -39,7 +41,23 @@ public class RegistrationService {
       .withDesiredDeliveryMediums(DeliveryMediumType.EMAIL)
       .withForceAliasCreation(Boolean.FALSE);
 
-    AdminCreateUserResult createUserResult = awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+    AdminCreateUserResult createUserResult;
+    // Handle registration in local (i.e. non-AWS) development environment
+    if (awsCognitoIdentityProvider != null) {
+      createUserResult = awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+    } else {
+      createUserResult = new AdminCreateUserResult();
+
+      UserType userType = new UserType();
+      userType.setUsername("Admin");
+      List<AttributeType> attributeTypeList = new ArrayList<>();
+      AttributeType emailAttributeType = new AttributeType();
+      emailAttributeType.setName("email");
+      emailAttributeType.setValue("admin@aws101.dev");
+      userType.setAttributes(attributeTypeList);
+
+      createUserResult.setUser(userType);
+    }
 
     return createUserResult.getUser();
   }
