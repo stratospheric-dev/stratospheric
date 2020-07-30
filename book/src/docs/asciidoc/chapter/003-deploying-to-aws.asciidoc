@@ -32,5 +32,6 @@
 
 === Using a custom Domain
 * Route 53?
+* HTTPS
 
 
