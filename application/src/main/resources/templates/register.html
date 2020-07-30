@@ -28,20 +28,6 @@
             <small id="invitationCodeHelp" class="form-text text-muted">Enter the invitation code you recieved to
               register.</small>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" id="password" required
-                   aria-describedby="passwordHelp">
-              <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:class="invalid-feedback">
-              Password does not match password policy
-            </div>
-            <small id="passwordHelp" class="form-text text-muted">Minimum password length: 12 characters. Must contain
-              uppercase letters, lowercase letters, special characters, and numbers</small>
-          </div>
-          <div class="form-group">
-            <label for="repeatPassword">Repeat password</label>
-            <input type="password" class="form-control" id="repeatPassword" required>
-          </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>

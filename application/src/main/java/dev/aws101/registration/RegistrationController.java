@@ -50,7 +50,6 @@ public class RegistrationController {
       return "register";
     }
 
-    // TODO: Move this also to Bean Validation like Password
     if (!registrationService.isValidInvitationCode(registration.getInvitationCode())) {
       model.addAttribute("registration", registration);
       model.addAttribute("message", "Invalid invitation code. Please check it again or contact the person who invited you.");
@@ -70,8 +69,10 @@ public class RegistrationController {
       }
       personRepository.save(person);
 
-      redirectAttributes.addFlashAttribute("message", "You successfully registered for the Todo App. " +
-        "Go check your E-Mail inbox for further instructions.");
+      redirectAttributes.addFlashAttribute("message",
+        "You successfully registered for the Todo App. " +
+          "Please check your email inbox for further instructions."
+      );
       redirectAttributes.addFlashAttribute("messageType", "success");
     } catch (InvalidParameterException | UsernameExistsException awsCognitoIdentityProviderException) {
       model.addAttribute("registration", registration);

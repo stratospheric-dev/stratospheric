@@ -35,9 +35,8 @@ public class RegistrationService {
       .withUsername(registration.getUsername())
       .withUserAttributes(
         new AttributeType().withName("email").withValue(registration.getEmail()),
-        new AttributeType().withName("name").withValue(registration.getUsername()),
-        new AttributeType().withName("email_verified").withValue("true"))
-      .withTemporaryPassword(registration.getPassword())
+        new AttributeType().withName("name").withValue(registration.getUsername())
+      )
       .withDesiredDeliveryMediums(DeliveryMediumType.EMAIL)
       .withForceAliasCreation(Boolean.FALSE);
 
