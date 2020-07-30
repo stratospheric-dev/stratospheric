@@ -26,3 +26,4 @@ see https://reflectoring.io/aws-cloudformation-rds/
 * Actuator?
 
 === RDS Observability
+* Jump host
