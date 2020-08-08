@@ -2,36 +2,85 @@
 == Deploying the Application to AWS (DevOps?)
 
 === Deployment Options
+
 * goal: give an idea of the different deployment options with their pros and cons
 * Beanstalk
 * AWS Console
 * CloudFormation
 * AWS CDK
-* Terraform (?)
-* plain EC2
 * In the rest of the book, we're focussing on CloudFormation , because it provides the basis for the other technologies.
 
 === Introduction to AWS CloudFormation
 
-=== Recipe: Creating a Basic Virtual Private Cloud (VPC)
+==== Prerequisites
 
-=== Recipe: Publishing a Docker Image to Elastic Container Registry (ECR)
+===== Requisite Permissions
 
-=== Recipe: Deploying a Docker Image to Elastic Container Service (ECS)
+* complex
+* no simple setting, other than "AdministratorAccess" and "AmazonEC2FullAccess", that is
+
+===== Using the AWS CLI
+
+===== Working With AWS CloudFormation Templates
+
+===== Tying Everything Together: AWS CloudFormation API and Shell Scripts
+
+====== Alternative: AWS Cloud Development Kit
+
+==== Building Environments With AWS CloudFormation Stacks
+
+===== Creating, Updating, And Deleting Stacks
+
+===== Organizing Your Stacks and Files
+
+=== AWS CloudFormation Recipes
+
+==== Recipe: Creating a Basic Virtual Private Cloud (VPC)
+
+==== Recipe: Publishing a Docker Image to Elastic Container Registry (ECR)
+
+==== Recipe: Deploying a Docker Image to Elastic Container Service (ECS)
+
 * extend the basic stack to deploy the Docker Image into the VPC
 
-=== Bonus: Deployment Patterns
-* Green / Blue
-* Canary
-* more ... ?
+==== Recipe: Creating an AWS Cognito User Pool and Client
+
+* manual configuration
+* scripted configuration
+* useful CLI commands
+
+==== Recipe: Deploying an Application and Ancillary Services
+
+* database
+* load Balancer
+* health check endpoints
+* main application
+
+===== Recipe: Using Amazon's API Gateway
+
+==== Recipe: Using a Custom Domain With Route 53
+
+* DNS with Route 53
+* Using HTTPS
 
 === Observability
+
 * CloudWatch
 * CloudTrail
 * basis for observability topics in future chapters
 
-=== Using a custom Domain
-* Route 53?
-* HTTPS
+=== Keeping Your Costs in Check
 
+* Billing Console
+* Cost Explorer
+* usage thresholds
+* cost and usage reports
+* eligibility for AWS Free Tier
 
+=== Summary and Key Takeaways
+
+=== Bonus: Deployment Patterns
+
+* Green / Blue
+* Canary
+* more ... ?
