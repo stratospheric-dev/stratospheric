@@ -51,10 +51,15 @@
 
 ==== Recipe: Deploying an Application and Ancillary Services
 
-* database
-* load Balancer
-* health check endpoints
-* main application
+===== Setting up a PostgreSQL Database
+
+====== Setting up a Jump Host for Database Access
+
+===== Creating a Load Balancer
+
+===== Using Health check endpoints
+
+===== Deploying and Running the Main Application
 
 ===== Recipe: Using Amazon's API Gateway
 
@@ -62,6 +67,12 @@
 
 * DNS with Route 53
 * Using HTTPS
+
+=== Running and Testing the Application Locally During Development
+
+* with not AWS environment present
+* Spring annotations for mocking various AWS components
+* Spring annotations for selectively enabling and disabling features depending on the environment available
 
 === Observability
 
