@@ -1,5 +1,5 @@
 [[deploying]]
-== Deploying the Application to AWS (DevOps?)
+== Deploying the Application to AWS
 
 === Deployment Options
 
