@@ -8,7 +8,7 @@
 * AWS Console
 * CloudFormation
 * AWS CDK
-* In the remainder of the book we'll be focussing on CloudFormation , because it provides the basis for the other technologies.
+* In the remainder of the book we'll be focussing on AWS CloudFormation, because it provides the basis for the other technologies.
 
 === Introduction to AWS CloudFormation
 
