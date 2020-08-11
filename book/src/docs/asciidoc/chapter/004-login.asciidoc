@@ -5,7 +5,6 @@ Introduction chapter about this first feature.
 
 - We want to secure some parts of our application
 - We want that our users can register for a profile
--
 - Within the registration process the user is asked to upload a profile image for which we can create a thumbnail (e.g. 200x200px) using an event-based (S3ObjectCreated) AWS Lambda
 - Technically speaking: Protect Spring Web MVC endpoints with OAuth2 (JWT Token Authentication)
 
@@ -15,7 +14,7 @@ Introduction chapter about this first feature.
 - What are the different OAuth2 flows
 - What will we use for our application
 
-Idea: Marco Behler is currently working on an extensive OAuth2 guide, mabye he want's to contribute this part and reference his detailed guide
+Idea: Marco Behler is currently working on an extensive OAuth2 guide, maybe he wants to contribute this part and reference his detailed guide
 
 === Using AWS Cognito for User Management with Spring Security
 

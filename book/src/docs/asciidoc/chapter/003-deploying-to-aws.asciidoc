@@ -97,7 +97,7 @@
 * setting up and running a PostgreSQL Database
 * security and networking
 * database initialisation
-* setting up a jump Host for administrative database access from outside the application
+* setting up a jump host for administrative database access from outside the application
 
 ===== Recipe: Creating and Running a Load Balancer
 
@@ -116,14 +116,14 @@
 
 === Running and Testing the Application Locally During Development
 
-* with not AWS environment present
+* with no AWS environment present
 * Spring annotations for mocking various AWS components
 * Spring annotations for selectively enabling and disabling features depending on the environment available
 
 === Observability
 
-* CloudWatch
-* CloudTrail
+* AWS CloudWatch
+* AWS CloudTrail
 * basis for observability topics in future chapters
 
 === Keeping Your Costs in Check
