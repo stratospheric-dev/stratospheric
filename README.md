@@ -1,7 +1,5 @@
 # AWS Topics
 
-Verifying #22
-
 ## Idee
 
 * wir schreiben jeder in unserem eigenen Blog koordiniert ueber AWS Themen
