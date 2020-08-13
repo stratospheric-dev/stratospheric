@@ -2,8 +2,6 @@
 
 Make sure to use Java 8 and execute:
 
-Verifiying potential solution to #22
-
 ```shell script
 mvn
 ```
