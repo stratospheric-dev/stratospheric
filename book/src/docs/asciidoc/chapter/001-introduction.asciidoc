@@ -2,7 +2,6 @@
 == Introduction to XYZ
 
 Hello World!
-Test1
 
 
 ```java
