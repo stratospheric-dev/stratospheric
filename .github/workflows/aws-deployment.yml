@@ -1,9 +1,6 @@
 name: AWS Deployment
 
-on:
-  push:
-    paths-ignore:
-      - 'book/**'
+on: [push]
 
 jobs:
   build:
