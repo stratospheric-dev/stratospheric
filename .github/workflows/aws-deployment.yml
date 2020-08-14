@@ -1,5 +1,10 @@
 name: AWS Deployment
-on: [push]
+
+on:
+  push:
+    paths-ignore:
+      - 'book/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
