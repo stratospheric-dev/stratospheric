@@ -3,6 +3,7 @@ package dev.aws101.todo;
 import dev.aws101.person.Person;
 import dev.aws101.person.PersonRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,11 +24,17 @@ public class TodoServiceImpl implements TodoService {
   @Override
   public Todo save(Todo todo) {
     if (todo.getOwner() == null) {
+      final String username = SecurityContextHolder.getContext().getAuthentication().getName();
       Person person = personRepository
-        .findByName(SecurityContextHolder.getContext().getAuthentication().getName())
+        .findByName(username)
         .orElse(null);
       if (person == null) {
-        person = personRepository.findByName("Admin").orElse(null);
+
+        Person newUser = new Person();
+        newUser.setName(username);
+        newUser.setEmail(((DefaultOidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAttribute("email"));
+
+        person = personRepository.save(newUser);
       }
       todo.setOwner(person);
     }
