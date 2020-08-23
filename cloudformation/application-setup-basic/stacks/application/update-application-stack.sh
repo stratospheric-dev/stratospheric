@@ -13,6 +13,7 @@ aws cloudformation update-stack \
   --template-body file://application.yml \
   --parameters \
     ParameterKey=NetworkStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/network.yml \
+    ParameterKey=MessagingStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/messaging.yml \
     ParameterKey=ServiceStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/aws101.dev/stacks/application/service.yml \
     ParameterKey=ServiceStackImageUrl,ParameterValue=$DOCKER_IMAGE_URL \
     ParameterKey=ServiceStackUserPoolClientSecret,ParameterValue=$USER_POOL_CLIENT_SECRET \

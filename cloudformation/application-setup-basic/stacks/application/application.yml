@@ -8,6 +8,11 @@ Parameters:
     Type: String
     Description: The name of the ECR registry stack.
 
+  # Messaging stack parameters
+  MessagingStackTemplateUrl:
+    Type: String
+    Description: URL to the messaging stack template in an S3 bucket.
+
   # network stack parameters
   NetworkStackTemplateUrl:
     Type: String
@@ -41,6 +46,11 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Ref 'NetworkStackTemplateUrl'
+
+  MessagingStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'MessagingStackTemplateUrl'
 
   DatabaseStack:
     Type: AWS::CloudFormation::Stack
