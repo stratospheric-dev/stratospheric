@@ -23,16 +23,22 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
+  implementation 'com.amazonaws:aws-java-sdk-ses'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+  def testcontainersVersion = '1.14.3'
+  testCompile('org.testcontainers:localstack:' + testcontainersVersion)
+  testCompile('org.testcontainers:junit-jupiter:' + testcontainersVersion)
 }
 
 dependencyManagement {

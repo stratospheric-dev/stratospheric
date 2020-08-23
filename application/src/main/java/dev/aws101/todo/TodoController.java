@@ -17,7 +17,6 @@ import javax.validation.Valid;
 public class TodoController {
 
   private final TodoRepository todoRepository;
-
   private final TodoService todoService;
 
   @Autowired
@@ -126,6 +125,23 @@ public class TodoController {
     todoRepository.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
+    redirectAttributes.addFlashAttribute("messageType", "success");
+
+    return "redirect:/";
+  }
+
+  @GetMapping("/{todoId}/share/{collaboratorId}")
+  public String shareTodoWithCollaborator(
+    @PathVariable("todoId") long todoId,
+    @PathVariable("collaboratorId") long collaboratorId,
+    RedirectAttributes redirectAttributes
+  ) {
+
+    String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
+
+    redirectAttributes.addFlashAttribute("message",
+      String.format("You successfully shared your todo with the user %s. " +
+        "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/";

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -31,10 +32,12 @@ public class IndexController {
     Principal principal
   ) {
     model.addAttribute("indexPageActiveClass", "active");
+    model.addAttribute("collaborators", List.of());
 
     Person person = personRepository.findByName("Admin").orElse(null);
     if (principal != null) {
       person = personRepository.findByName(principal.getName()).orElse(null);
+      model.addAttribute("collaborators", personRepository.findByNameNot(principal.getName()));
     }
 
     Iterable<Todo> todoList = todoRepository.findAllByOwner(person);

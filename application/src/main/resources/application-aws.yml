@@ -24,5 +24,6 @@ spring:
             usernameAttribute: cognito:username
 
 custom:
-  invitationCodes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
-  security.enabled: true
+  invitation-codes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
+  security:
+    enabled: true
