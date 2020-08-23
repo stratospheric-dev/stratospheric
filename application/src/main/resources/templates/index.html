@@ -33,13 +33,33 @@
             </a>
           </td>
           <td>
-            <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
-            <button class="btn btn-danger"
-                    data-th-attr="data-href=${'/todo/delete/' + todo.id}"
-                    data-toggle="modal"
-                    data-target="#confirm-delete">
-              Delete
-            </button>
+            <div class="btn-group">
+              <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
+              <div class="dropdown">
+                <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Share with
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                  <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
+                    No collaborator available
+                  </span>
+
+                  <a th:each="collaborator : ${collaborators}" class="dropdown-item"
+                     th:text="${collaborator.name}"
+                     th:href="@{/todo/{todoId}/share/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}"></a>
+                </div>
+              </div>
+              <button class="btn btn-danger"
+                      type="button"
+                      data-th-attr="data-href=${'/todo/delete/' + todo.id}"
+                      data-toggle="modal"
+                      data-target="#confirm-delete">
+                Delete
+              </button>
+            </div>
           </td>
         </tr>
         </tbody>

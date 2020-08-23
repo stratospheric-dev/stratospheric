@@ -39,6 +39,7 @@ public class IndexController {
 
     Iterable<Todo> todoList = todoRepository.findAllByOwner(person);
     model.addAttribute("todos", todoList);
+    model.addAttribute("collaborators", personRepository.findByNameNot(principal.getName()));
 
     return "index";
   }
