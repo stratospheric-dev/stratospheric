@@ -27,7 +27,7 @@ public class TodoSharingListener {
     message.setTo(payload.getCollaboratorEmail());
     message.setSubject("A todo was shared with you");
     message.setText(String.format("Hi %s, \n \n" +
-        "someone shared at Todo from https://app.aws101.dev with you.\n \n" +
+        "someone shared a Todo from https://app.aws101.dev with you.\n \n" +
         "Information about the shared Todo item: \n \n" +
         "Title: %s \n" +
         "Description: %s \n" +
