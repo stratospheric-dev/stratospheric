@@ -22,3 +22,6 @@ spring:
         provider:
           mock:
             usernameAttribute: username
+
+custom:
+  sharing-queue: test-todo-sharing
