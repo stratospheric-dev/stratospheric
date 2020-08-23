@@ -23,4 +23,5 @@ spring:
       period: 0
 
 custom:
-  security.enabled: false
+  security:
+    enabled: false
