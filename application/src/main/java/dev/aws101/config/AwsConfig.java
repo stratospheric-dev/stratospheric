@@ -17,6 +17,7 @@ public class AwsConfig {
   public AWSCognitoIdentityProvider awsCognitoIdentityProvider(AWSCredentialsProvider awsCredentialsProvider) {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
+      .withRegion("eu-central-1")
       .build();
   }
 
