@@ -19,7 +19,7 @@ public class RegistrationService {
 
   @Autowired
   public RegistrationService(@Value("${COGNITO_USER_POOL_ID:empty}") String userPoolId,
-                             @Value("${custom.invitationCodes:none}") Set<String> validInvitationCodes) {
+                             @Value("${custom.invitation-codes:none}") Set<String> validInvitationCodes) {
     this.userPooldId = userPoolId;
     this.validInvitationCodes = validInvitationCodes;
   }
