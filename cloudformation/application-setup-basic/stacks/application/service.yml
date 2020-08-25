@@ -160,6 +160,14 @@ Resources:
                   - 'sqs:*'
                 # TODO: fine grained resources access
                 Resource: '*'
+        - PolicyName: AllowAccessToSES
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ses:*'
+                # TODO: fine grained resources access
+                Resource: '*'
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
