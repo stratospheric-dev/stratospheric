@@ -59,7 +59,7 @@ public class TodoServiceImpl implements TodoService {
     Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + todoId));
     Person collaborator = personRepository.findById(collaboratorId).orElseThrow(() -> new IllegalArgumentException("Invalid collaborator id:" + collaboratorId));
 
-    LOG.info("About to share todo with id " + todoId + "with collaborator " + collaboratorId);
+    LOG.info("About to share todo with id " + todoId + " with collaborator " + collaboratorId);
 
     TodoCollaborationRequest collaborationRequest = new TodoCollaborationRequest();
     collaborationRequest.setCollaboratorEmail(collaborator.getEmail());

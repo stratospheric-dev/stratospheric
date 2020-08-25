@@ -39,5 +39,7 @@ public class TodoSharingListener {
         "AWS101",
       payload.getCollaboratorName(), payload.getTodoTitle(), payload.getTodoDescription(), payload.getTodoPriority()));
     mailSender.send(message);
+
+    LOG.info("Successfully informed collaborator about shared todo");
   }
 }
