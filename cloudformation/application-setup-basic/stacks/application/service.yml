@@ -152,7 +152,7 @@ Resources:
                   - 's3:*'
                 # TODO: fine grained resources access
                 Resource: '*'
-       - PolicyName: AllowAccessToSQS
+        - PolicyName: AllowAccessToSQS
           PolicyDocument:
             Statement:
               - Effect: Allow
