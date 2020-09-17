@@ -9,6 +9,7 @@
 
 * Roter Faden: From 0 to 100: Get Your Software into AWS
 * Idealerweise arbeiten wir alle an derselben Beispielanwendung waehrend wir die Blog Posts schreiben
+
 * Zielgruppe: Java Entwickler mit Spring Boot Erfahrung
 
 ## Ideen fuer Themen
