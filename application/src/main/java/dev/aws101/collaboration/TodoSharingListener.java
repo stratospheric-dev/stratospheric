@@ -23,18 +23,18 @@ public class TodoSharingListener {
     LOG.info("Incoming todo sharing payload: " + payload);
 
     SimpleMailMessage message = new SimpleMailMessage();
-    message.setFrom("noreply@aws101.dev");
+    message.setFrom("noreply@stratospheric.dev");
     message.setTo(payload.getCollaboratorEmail());
     message.setSubject("A todo was shared with you");
     message.setText(String.format("Hi %s, \n \n" +
-        "someone shared a Todo from https://app.aws101.dev with you.\n \n" +
+        "someone shared a Todo from https://app.stratospheric.dev with you.\n \n" +
         "Information about the shared Todo item: \n \n" +
         "Title: %s \n" +
         "Description: %s \n" +
         "Priority: %s \n" +
         "\n" +
         // (Optional) TODO: Implement feature to accept confirmation
-        "You can accept the collaboration by clicking this link: https://app.aws101.dev/confirmCollaboration?token=123 \n \n" +
+        "You can accept the collaboration by clicking this link: https://app.stratospheric.dev/confirmCollaboration?token=123 \n \n" +
         "Kind regards, \n" +
         "AWS101",
       payload.getCollaboratorName(), payload.getTodoTitle(), payload.getTodoDescription(), payload.getTodoPriority()));

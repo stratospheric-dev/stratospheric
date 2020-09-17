@@ -129,7 +129,7 @@ Resources:
   BaseCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
-      DomainName: '*.aws101.dev'
+      DomainName: '*.stratospheric.dev'
       ValidationMethod: 'DNS'
 
   ECSCluster:

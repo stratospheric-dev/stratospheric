@@ -3,7 +3,7 @@ export AWS_PAGER=""
 
 AUTH_NAME=aws101-users
 EXTERNAL_URL=$(aws cloudformation describe-stacks --stack-name aws101-application-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue')
-APP_URL=https://app.aws101.dev
+APP_URL=https://app.stratospheric.dev
 
 aws cloudformation create-stack \
   --stack-name aws101-cognito-user-pool \

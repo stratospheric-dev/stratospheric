@@ -53,7 +53,7 @@ public class RegistrationService {
       List<AttributeType> attributeTypeList = new ArrayList<>();
       AttributeType emailAttributeType = new AttributeType();
       emailAttributeType.setName("email");
-      emailAttributeType.setValue("admin@aws101.dev");
+      emailAttributeType.setValue("admin@stratospheric.dev");
       attributeTypeList.add(emailAttributeType);
       userType.setAttributes(attributeTypeList);
 

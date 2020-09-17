@@ -7,7 +7,7 @@ aws cloudformation update-stack \
   --capabilities CAPABILITY_IAM \
   --parameters \
     ParameterKey=AuthName,ParameterValue=aws101-users \
-    ParameterKey=ExternalUrl,ParameterValue=https://app.aws101.dev 2> update_error
+    ParameterKey=ExternalUrl,ParameterValue=https://app.stratospheric.dev 2> update_error
 
 # Sadly, the AWS CLI returns an error when no update is to be performed. But we want to
 # call it a success if the stack is up-to-date. So, we have to work around this by
