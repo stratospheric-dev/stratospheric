@@ -61,7 +61,7 @@ Resources:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       UserPoolId: !Ref UserPool
-      Domain: "stratospheric"
+      Domain: "dev101"
 Outputs:
   UserPoolId:
     Value: !Ref UserPool
