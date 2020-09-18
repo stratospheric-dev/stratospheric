@@ -5,6 +5,10 @@
 target
 *.iml
 
+.serverless
+
+venv
+
 revision.json
 
 update_error
