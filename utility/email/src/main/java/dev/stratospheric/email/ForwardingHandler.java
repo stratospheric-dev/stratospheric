@@ -10,6 +10,13 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
+import org.apache.commons.mail.util.MimeMessageParser;
+
+import javax.mail.Address;
+import javax.mail.internet.MimeMessage;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
@@ -31,14 +38,52 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
     AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
     logger.log("Connection to S3 established");
 
-    // TODO: Read uploaded email and forward it correctly
+    try {
+      MimeMessageParser messageParser = new MimeMessageParser(new MimeMessage(null, s3Client.getObject(bucket, key).getObjectContent()));
+      messageParser = messageParser.parse();
 
-    sendEmail("Hello World!", "Hello", EMAIL_PHILIP);
+      String plainContent = messageParser.getPlainContent();
+      String htmlContent = messageParser.getHtmlContent();
+      String from = messageParser.getFrom();
+      String subject = "Forwarded Mail: " + messageParser.getSubject();
+
+      List<Address> receivers = messageParser.getTo();
+
+      Set<String> forwardingRecipients = new HashSet<>();
+
+      for (Address address : receivers) {
+        final String emailAddress = address.toString();
+        if (emailAddress.contains("info")) {
+          forwardingRecipients.add(EMAIL_BJOERN);
+          forwardingRecipients.add(EMAIL_PHILIP);
+          forwardingRecipients.add(EMAIL_TOM);
+        }
+
+        if (emailAddress.contains("bjoern")) {
+          forwardingRecipients.add(EMAIL_BJOERN);
+        }
+
+        if (emailAddress.contains("philip")) {
+          forwardingRecipients.add(EMAIL_PHILIP);
+        }
+
+        if (emailAddress.contains("tom")) {
+          forwardingRecipients.add(EMAIL_TOM);
+        }
+      }
+
+      for (String forwardingRecipient : forwardingRecipients) {
+        sendEmail(plainContent, htmlContent, subject, forwardingRecipient, from);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     return null;
   }
 
-  private void sendEmail(String content, String subject, String recipient) {
+  private void sendEmail(String plainContent, String htmlContent, String subject, String recipient, String from) {
     try {
       AmazonSimpleEmailService client =
         AmazonSimpleEmailServiceClientBuilder.standard()
@@ -50,12 +95,12 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
         .withMessage(new Message()
           .withBody(new Body()
             .withHtml(new Content()
-              .withCharset("UTF-8").withData(content))
+              .withCharset("UTF-8").withData(htmlContent))
             .withText(new Content()
-              .withCharset("UTF-8").withData(content)))
+              .withCharset("UTF-8").withData(plainContent)))
           .withSubject(new Content()
             .withCharset("UTF-8").withData(subject)))
-        .withSource("info@stratospheric.dev");
+        .withSource(from);
 
       client.sendEmail(request);
       logger.log("Email forwarded to " + recipient);
