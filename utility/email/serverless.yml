@@ -2,30 +2,34 @@ service: email-utilities
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: java11
   profile: default # has to match your local Stratospheric AWS profile
   region: eu-central-1
   timeout: 10
-  memorySize: 512
+  memorySize: 1024
   iamRoleStatements:
     - Effect: Allow
       Action:
         - s3:*
       Resource:
         - arn:aws:s3:::${self:custom.emailBucket}/*
-        - !Join ['', ['arn:aws:s3:::', !Ref ServerlessDeploymentBucket, '/*']]
+        - !Join [ '', [ 'arn:aws:s3:::', !Ref ServerlessDeploymentBucket, '/*' ] ]
     - Effect: Allow
       Action:
         - ses:SendRawEmail
+        - ses:SendEmail
       Resource:
         - arn:aws:ses:eu-west-1:221875718260:identity/*
 
 custom:
   emailBucket: stratospheric-emails
 
+package:
+  artifact: build/distributions/email-1.0-SNAPSHOT.zip
+
 functions:
   email-forwarding:
-    handler: forwarding.lambda_handler
+    handler: dev.stratospheric.email.ForwardingHandler
     events:
       - s3:
           bucket: ${self:custom.emailBucket}
@@ -33,27 +37,19 @@ functions:
           rules:
             - prefix: emails-received/
     environment:
-      Region: eu-central-1 # E-Mail receiving only works in eu-west-1, sending works everywhere
-      MailS3Bucket: ${self:custom.emailBucket}
-      MailS3Prefix: emails-received
-      MailSender: info@stratospheric.dev
-      MailRecipientBjoern: ${ssm:/email-bjoern}
-      MailRecipientTom: ${ssm:/email-tom}
-      MailRecipientPhilip: ${ssm:/email-philip}
+      EMAIL_BJOERN: ${ssm:/email-bjoern}
+      EMAIL_TOM: ${ssm:/email-tom}
+      EMAIL_PHILIP: ${ssm:/email-philip}
 
 resources:
   Resources:
-    EmailBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.emailBucket}
     EmailBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket: ${self:custom.emailBucket}
         PolicyDocument:
           Statement:
-            - Sid: Allow SES Access
+            - Sid: Allow SES to store received emails
               Action:
                 - s3:PutObject
               Effect: Allow
