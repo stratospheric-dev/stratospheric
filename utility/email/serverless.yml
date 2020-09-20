@@ -7,6 +7,7 @@ provider:
   region: eu-central-1
   timeout: 10
   memorySize: 1024
+  logRetentionInDays: 7
   iamRoleStatements:
     - Effect: Allow
       Action:
