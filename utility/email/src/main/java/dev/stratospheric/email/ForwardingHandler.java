@@ -45,7 +45,7 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
       String plainContent = messageParser.getPlainContent();
       String htmlContent = messageParser.getHtmlContent();
       String from = messageParser.getFrom();
-      String subject = "Forwarded Mail: " + messageParser.getSubject();
+      String subject = "Forwarded (Stratospheric) Mail: " + messageParser.getSubject();
 
       List<Address> receivers = messageParser.getTo();
 
