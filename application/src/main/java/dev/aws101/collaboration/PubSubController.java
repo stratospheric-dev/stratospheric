@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("${custom.updates-topic}")
-public class SNSEndpointController {
+public class PubSubController {
 
   @NotificationSubscriptionMapping
   public void confirmUnsubscribeMessage(NotificationStatus notificationStatus) {
