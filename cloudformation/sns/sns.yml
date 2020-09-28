@@ -5,7 +5,7 @@ Resources:
   TodoUpdates:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: "TodoUpdates"
+      TopicName: "stratospheric-todo-updates"
 
 Outputs:
   TodoUpdatesARN:

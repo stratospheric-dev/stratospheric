@@ -6,6 +6,7 @@ import dev.aws101.person.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -18,6 +19,8 @@ public class TodoServiceImpl implements TodoService {
   private final PersonRepository personRepository;
   private final QueueMessagingTemplate queueMessagingTemplate;
   private final String todoSharingQueueName;
+  private final NotificationMessagingTemplate notificationMessagingTemplate;
+  private final String todoTodoUpdatesTopic;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoServiceImpl.class.getName());
 
@@ -25,11 +28,15 @@ public class TodoServiceImpl implements TodoService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName) {
+    @Value("${custom.sharing-queue}") String todoSharingQueueName,
+    NotificationMessagingTemplate notificationMessagingTemplate,
+    @Value("${custom.updates-topic}") String todoTodoUpdatesTopic) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
+    this.notificationMessagingTemplate = notificationMessagingTemplate;
+    this.todoTodoUpdatesTopic = todoTodoUpdatesTopic;
   }
 
   @Override
@@ -55,7 +62,6 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public String shareWithCollaborator(long todoId, long collaboratorId) {
-
     Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + todoId));
     Person collaborator = personRepository.findById(collaboratorId).orElseThrow(() -> new IllegalArgumentException("Invalid collaborator id:" + collaboratorId));
 
@@ -74,5 +80,12 @@ public class TodoServiceImpl implements TodoService {
     queueMessagingTemplate.convertAndSend(todoSharingQueueName, collaborationRequest);
 
     return collaborator.getName();
+  }
+
+  @Override
+  public String confirmCollaboration(long todoId, long collaboratorId) {
+    notificationMessagingTemplate.sendNotification(todoTodoUpdatesTopic, "message", "subject");
+
+    return "Collaboration confirmed.";
   }
 }

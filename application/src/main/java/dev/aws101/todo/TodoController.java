@@ -136,7 +136,22 @@ public class TodoController {
     @PathVariable("collaboratorId") long collaboratorId,
     RedirectAttributes redirectAttributes
   ) {
+    String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
 
+    redirectAttributes.addFlashAttribute("message",
+      String.format("You successfully shared your todo with the user %s. " +
+        "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
+    redirectAttributes.addFlashAttribute("messageType", "success");
+
+    return "redirect:/";
+  }
+
+  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}")
+  public String confirmCollaboration(
+    @PathVariable("todoId") long todoId,
+    @PathVariable("collaboratorId") long collaboratorId,
+    RedirectAttributes redirectAttributes
+  ) {
     String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
 
     redirectAttributes.addFlashAttribute("message",

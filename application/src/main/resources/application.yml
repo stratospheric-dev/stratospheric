@@ -14,3 +14,4 @@ custom:
   security:
     enabled: true
   sharing-queue: aws101-todo-sharing
+  updates-topic: stratospheric-todo-updates

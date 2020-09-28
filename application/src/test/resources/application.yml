@@ -25,3 +25,4 @@ spring:
 
 custom:
   sharing-queue: test-todo-sharing
+  updates-topic: test-todo-updates
