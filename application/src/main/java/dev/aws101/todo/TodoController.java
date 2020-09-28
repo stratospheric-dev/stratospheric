@@ -19,6 +19,8 @@ public class TodoController {
   private final TodoRepository todoRepository;
   private final TodoService todoService;
 
+  private static final String INVALID_TODO_ID = "Invalid todo ID: ";
+
   @Autowired
   public TodoController(
     TodoRepository todoRepository,
@@ -33,7 +35,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
     model.addAttribute("todoShowPageActiveClass", "active");
     model.addAttribute("todo", todo);
@@ -78,7 +80,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
     model.addAttribute("todoEditPageActiveClass", "active");
     model.addAttribute("todo", todo);
@@ -103,7 +105,7 @@ public class TodoController {
       return "todo/update";
     }
 
-    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     existingTodo.setTitle(todo.getTitle());
     existingTodo.setDescription(todo.getDescription());
     existingTodo.setPriority(todo.getPriority());
@@ -121,7 +123,7 @@ public class TodoController {
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     todoRepository.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
@@ -146,13 +148,14 @@ public class TodoController {
     return "redirect:/";
   }
 
-  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}")
+  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
   public String confirmCollaboration(
     @PathVariable("todoId") long todoId,
     @PathVariable("collaboratorId") long collaboratorId,
+    @PathVariable("token") String token,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
+    String collaboratorName = todoService.confirmCollaboration(todoId, collaboratorId, token);
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +

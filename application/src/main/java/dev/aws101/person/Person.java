@@ -1,5 +1,6 @@
 package dev.aws101.person;
 
+import dev.aws101.collaboration.TodoCollaborationRequest;
 import dev.aws101.todo.Todo;
 
 import javax.persistence.*;
@@ -27,6 +28,10 @@ public class Person {
 
   @ManyToMany(mappedBy = "collaborators")
   private List<Todo> collaborativeTodos;
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "person_id")
+  private List<TodoCollaborationRequest> collaborationRequests;
 
   public Long getId() {
     return id;
@@ -66,5 +71,13 @@ public class Person {
 
   public void setCollaborativeTodos(List<Todo> collaborativeTodos) {
     this.collaborativeTodos = collaborativeTodos;
+  }
+
+  public List<TodoCollaborationRequest> getCollaborationRequests() {
+    return collaborationRequests;
+  }
+
+  public void setCollaborationRequests(List<TodoCollaborationRequest> collaborationRequests) {
+    this.collaborationRequests = collaborationRequests;
   }
 }

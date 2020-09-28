@@ -20,24 +20,35 @@ public class TodoSharingListener {
 
   @SqsListener(value = "${custom.sharing-queue}")
   public void listenToSharingMessages(TodoCollaborationRequest payload) {
-    LOG.info("Incoming todo sharing payload: " + payload);
+    LOG.info("Incoming todo sharing payload: {}", payload);
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom("noreply@stratospheric.dev");
-    message.setTo(payload.getCollaboratorEmail());
+    message.setTo(payload.getCollaborator().getEmail());
     message.setSubject("A todo was shared with you");
-    message.setText(String.format("Hi %s, \n \n" +
-        "someone shared a Todo from https://app.stratospheric.dev with you.\n \n" +
-        "Information about the shared Todo item: \n \n" +
-        "Title: %s \n" +
-        "Description: %s \n" +
-        "Priority: %s \n" +
-        "\n" +
-        // (Optional) TODO: Implement feature to accept confirmation
-        "You can accept the collaboration by clicking this link: https://app.stratospheric.dev/confirmCollaboration?token=123 \n \n" +
-        "Kind regards, \n" +
-        "AWS101",
-      payload.getCollaboratorName(), payload.getTodoTitle(), payload.getTodoDescription(), payload.getTodoPriority()));
+    message.setText(
+      String.format(
+        "Hi %s, \n\n" +
+          "someone shared a Todo from https://app.stratospheric.dev with you.\n\n" +
+          "Information about the shared Todo item: \n\n" +
+          "Title: %s \n" +
+          "Description: %s \n" +
+          "Priority: %s \n" +
+          "\n" +
+          "You can accept the collaboration by clicking this link: " +
+          "https://app.stratospheric.dev/todo/%s/confirmCollaboration/%s/%s " +
+          "\n\n" +
+          "Kind regards, \n" +
+          "AWS101",
+        payload.getCollaborator().getName(),
+        payload.getTodo().getTitle(),
+        payload.getTodo().getDescription(),
+        payload.getTodo().getPriority(),
+        payload.getTodo().getId(),
+        payload.getCollaborator().getId(),
+        payload.getToken()
+      )
+    );
     mailSender.send(message);
 
     LOG.info("Successfully informed collaborator about shared todo");
