@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(value = "custom.security.enabled", havingValue = "true", matchIfMissing = true)
 public class AwsConfig {
 
   @Bean
+  @ConditionalOnProperty(value = "custom.security.enabled", havingValue = "true", matchIfMissing = true)
   public AWSCognitoIdentityProvider awsCognitoIdentityProvider(AWSCredentialsProvider awsCredentialsProvider) {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)

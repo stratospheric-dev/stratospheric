@@ -22,7 +22,7 @@
         </thead>
         <tbody>
         <tr th:each="todo : ${todos}">
-          <td scope="row">
+          <td>
             <a th:href="@{/todo/show/{id}(id=${todo.id})}">
               <span th:text="${todo.id}" th:remove="tag">#</span>
             </a>

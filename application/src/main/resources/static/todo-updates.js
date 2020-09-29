@@ -20,3 +20,5 @@ function disconnect() {
 
   console.log("Disconnected from WebSocket endpoint.");
 }
+
+connect();
