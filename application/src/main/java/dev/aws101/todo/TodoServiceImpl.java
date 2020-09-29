@@ -110,6 +110,7 @@ public class TodoServiceImpl implements TodoService {
     if (todoCollaborationRequest.getToken().equals(token)) {
       String subject = "Collaboration confirmed.";
       notificationMessagingTemplate.sendNotification(todoTodoUpdatesTopic, todoCollaborationRequest.getId(), subject);
+      todoCollaborationRequestRepository.delete(todoCollaborationRequest);
 
       return subject;
     }
