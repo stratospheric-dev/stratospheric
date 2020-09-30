@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
 
@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+  implementation 'org.springframework.cloud:spring-cloud-aws-autoconfigure'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.webjars:webjars-locator-core'
