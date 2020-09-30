@@ -18,13 +18,14 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class TodoApplicationTests {
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
+  static LocalStackContainer localStack = new LocalStackContainer(LocalStackContainer.VERSION)
     .withServices(SQS)
     .withEnv("DEFAULT_REGION", "eu-central-1");
 
   @BeforeAll
   static void beforeAll() throws IOException, InterruptedException {
     localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", "test-todo-sharing");
+    localStack.execInContainer("awslocal", "sns", "create-topic", "--name", "test-todo-updates");
   }
 
   @Test
