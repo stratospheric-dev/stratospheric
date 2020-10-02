@@ -1,3 +1,1 @@
-TMPDIR=/private$TMPDIR SERVICES=sqs docker-compose up
-
-
+TMPDIR=/private$TMPDIR SERVICES=sqs,sns docker-compose up
