@@ -2,7 +2,7 @@
 export AWS_PAGER=""
 
 aws sns publish \
-  --topic-arn  \
+  --topic-arn \
   --subject "Test Subject" \
   --message "Test" \
   --endpoint-url http://localhost:4566 \
