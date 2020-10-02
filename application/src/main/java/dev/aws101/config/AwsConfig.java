@@ -6,7 +6,6 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderAsyncClientBuilder;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
-import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,7 +21,7 @@ public class AwsConfig {
   private String region;
 
   @Value("${custom.aws.local.endpoint}")
-  private String awsLocalEndpoint;
+  private String endpoint;
 
   @Value("${custom.updates-topic}")
   private String todoUpdatesTopic;
@@ -46,11 +45,11 @@ public class AwsConfig {
     return new NotificationMessagingTemplate(amazonSNS);
   }
 
-  @Bean
+  @Bean(name = "amazonSNS")
   public AmazonSNS amazonSNS(AWSCredentialsProvider awsCredentialsProvider) {
     AwsClientBuilder.EndpointConfiguration endpointConfiguration = null;
-    if (awsLocalEndpoint != null) {
-      endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(awsLocalEndpoint, region);
+    if (endpoint != null) {
+      endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(endpoint, region);
     }
 
     AmazonSNSClientBuilder amazonSNSClientBuilder = AmazonSNSClientBuilder.standard();
@@ -61,11 +60,6 @@ public class AwsConfig {
         .withRegion(region)
         .withCredentials(awsCredentialsProvider);
     }
-
-    AmazonSNS amazonSNS = amazonSNSClientBuilder.build();
-
-    CreateTopicResult createTopicResult = amazonSNS.createTopic(todoUpdatesTopic); // Returns existing topic if topic already exists
-    amazonSNS.subscribe(createTopicResult.getTopicArn(), "http", "http://localhost:8080");
 
     return amazonSNSClientBuilder.build();
   }
