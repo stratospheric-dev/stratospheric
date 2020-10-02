@@ -5,7 +5,7 @@ aws cloudformation create-stack \
   --endpoint-url http://localhost:4566 \
   --profile localstack \
   --stack-name stratospheric-sns-topic \
-  --template-body file://sns.yml
+  --template-body file://../sns.yml
 
 aws cloudformation wait stack-create-complete --stack-name stratospheric-sns-topic
 
