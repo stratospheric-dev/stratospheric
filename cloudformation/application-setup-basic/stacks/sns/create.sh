@@ -7,6 +7,11 @@ aws cloudformation create-stack \
 
 aws cloudformation wait stack-create-complete --stack-name stratospheric-sns-topic
 
-TODO_UPDATES_ARN=$(aws cloudformation describe-stacks --stack-name stratospheric-sns-topic --output text --query 'Stacks[0].Outputs[?OutputKey==`TodoUpdatesARN`].OutputValue')
+TODO_UPDATES_ARN=$(
+  aws cloudformation describe-stacks \
+    --stack-name stratospheric-sns-topic \
+    --output text \
+    --query 'Stacks[0].Outputs[?OutputKey==`TodoUpdatesARN`].OutputValue'
+)
 
-echo "AWS SNS ARN:                  " $TODO_UPDATES_ARN
+echo "AWS SNS topic ARN:                  " $TODO_UPDATES_ARN

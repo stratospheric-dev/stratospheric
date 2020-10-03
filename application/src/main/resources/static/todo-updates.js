@@ -9,6 +9,9 @@ function connect() {
 
     stompClient.subscribe('/topic/todoUpdates', function (message) {
       console.log(message);
+
+      $('#message').html(message.body);
+      $('#toast').toast('show');
     });
   });
 }
@@ -22,3 +25,7 @@ function disconnect() {
 }
 
 connect();
+
+$(document).ready(function () {
+  $('#toast').toast({delay: 5000});
+});

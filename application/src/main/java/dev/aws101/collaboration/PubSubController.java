@@ -8,6 +8,7 @@ import org.springframework.cloud.aws.messaging.endpoint.NotificationStatus;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationMessageMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationSubscriptionMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationUnsubscribeConfirmationMapping;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,12 @@ public class PubSubController {
   }
 
   @NotificationMessageMapping
+  @MessageMapping("/updateTodo")
   @SendTo("/topic/todoUpdates")
-  public String receiveNotification(@NotificationSubject String subject, @NotificationMessage String message) {
+  public String receiveNotification(
+    @NotificationSubject String subject,
+    @NotificationMessage String message
+  ) {
     LOG.info("Todo update received. Subject {}: {}", subject, message);
 
     return message;

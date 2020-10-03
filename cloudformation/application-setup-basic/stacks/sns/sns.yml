@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates an SNS tpic
+Description: Creates an SNS topic
 
 Resources:
   TodoUpdates:
