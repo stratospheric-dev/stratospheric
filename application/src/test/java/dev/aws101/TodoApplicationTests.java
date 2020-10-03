@@ -10,6 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SNS;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @SpringBootTest
@@ -19,7 +20,7 @@ class TodoApplicationTests {
 
   @Container
   static LocalStackContainer localStack = new LocalStackContainer(LocalStackContainer.VERSION)
-    .withServices(SQS)
+    .withServices(SQS, SNS)
     .withEnv("DEFAULT_REGION", "eu-central-1");
 
   @BeforeAll
