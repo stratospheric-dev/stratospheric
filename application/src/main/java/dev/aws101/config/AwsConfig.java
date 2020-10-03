@@ -6,6 +6,7 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderAsyncClientBuilder;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
+import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,6 +23,12 @@ public class AwsConfig {
 
   @Value("${custom.aws.local.endpoint:#{null}}")
   private String endpoint;
+
+  @Value("${custom.updates-topic}")
+  private String todoUpdatesTopic;
+
+  @Value("${custom.external-url}")
+  private String externalURL;
 
   @Bean
   @ConditionalOnProperty(value = "custom.security.enabled", havingValue = "true", matchIfMissing = true)
@@ -58,6 +65,17 @@ public class AwsConfig {
         .withCredentials(awsCredentialsProvider);
     }
 
-    return amazonSNSClientBuilder.build();
+    AmazonSNS amazonSNS = amazonSNSClientBuilder.build();
+
+    if (externalURL != null) {
+      CreateTopicResult createTopicResult = amazonSNS.createTopic(todoUpdatesTopic); // Returns existing topic if topic already exists
+      amazonSNS.subscribe(
+        createTopicResult.getTopicArn(),
+        externalURL.startsWith("https") ? "https" : "http",
+        externalURL + "/" + todoUpdatesTopic
+      );
+    }
+
+    return amazonSNS;
   }
 }
