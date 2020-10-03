@@ -23,8 +23,5 @@ spring:
       period: 0
 
 custom:
-  aws:
-    local:
-      endpoint: http://localhost:4566
   security:
     enabled: false

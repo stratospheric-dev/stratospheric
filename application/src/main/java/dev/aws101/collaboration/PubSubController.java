@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("${custom.updates-topic}")
@@ -32,6 +33,7 @@ public class PubSubController {
   @NotificationMessageMapping
   @MessageMapping("/updateTodo")
   @SendTo("/topic/todoUpdates")
+  @ResponseBody
   public String receiveNotification(
     @NotificationSubject String subject,
     @NotificationMessage String message

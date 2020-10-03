@@ -20,11 +20,8 @@ public class AwsConfig {
   @Value("${cloud.aws.region.static}")
   private String region;
 
-  @Value("${custom.aws.local.endpoint}")
+  @Value("${custom.aws.local.endpoint:#{null}}")
   private String endpoint;
-
-  @Value("${custom.updates-topic}")
-  private String todoUpdatesTopic;
 
   @Bean
   @ConditionalOnProperty(value = "custom.security.enabled", havingValue = "true", matchIfMissing = true)

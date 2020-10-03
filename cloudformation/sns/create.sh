@@ -3,8 +3,6 @@ export AWS_PAGER=""
 
 EXTERNAL_URL=$(
   aws cloudformation describe-stacks \
-    --endpoint-url http://localhost:4566 \
-    --profile localstack \
     --stack-name aws101-application-network \
     --output text \
     --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue'
