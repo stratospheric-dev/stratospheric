@@ -15,3 +15,4 @@ custom:
     enabled: true
   sharing-queue: aws101-todo-sharing
   updates-topic: stratospheric-todo-updates
+  websocket-url: https://app.stratospheric.dev/websocket

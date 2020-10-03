@@ -42,7 +42,7 @@ public class AwsConfig {
     return new NotificationMessagingTemplate(amazonSNS);
   }
 
-  @Bean(name = "amazonSNS")
+  @Bean
   public AmazonSNS amazonSNS(AWSCredentialsProvider awsCredentialsProvider) {
     AwsClientBuilder.EndpointConfiguration endpointConfiguration = null;
     if (endpoint != null) {

@@ -7,4 +7,6 @@ public interface TodoService {
   String shareWithCollaborator(long todoId, long collaboratorId);
 
   String confirmCollaboration(long todoId, long collaboratorId, String token);
+
+  String testConfirmCollaboration();
 }

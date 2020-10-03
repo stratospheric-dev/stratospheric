@@ -25,7 +25,7 @@ public class TodoServiceImpl implements TodoService {
   private final QueueMessagingTemplate queueMessagingTemplate;
   private final String todoSharingQueueName;
   private final NotificationMessagingTemplate notificationMessagingTemplate;
-  private final String todoTodoUpdatesTopic;
+  private final String todoUpdatesTopic;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoServiceImpl.class.getName());
 
@@ -39,14 +39,14 @@ public class TodoServiceImpl implements TodoService {
     TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
     @Value("${custom.sharing-queue}") String todoSharingQueueName,
     NotificationMessagingTemplate notificationMessagingTemplate,
-    @Value("${custom.updates-topic}") String todoTodoUpdatesTopic) {
+    @Value("${custom.updates-topic}") String todoUpdatesTopic) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
     this.notificationMessagingTemplate = notificationMessagingTemplate;
-    this.todoTodoUpdatesTopic = todoTodoUpdatesTopic;
+    this.todoUpdatesTopic = todoUpdatesTopic;
   }
 
   @Override
@@ -112,9 +112,10 @@ public class TodoServiceImpl implements TodoService {
       String message = "User "
         + todoCollaborationRequest.getCollaborator().getName()
         + " has accepted your collaboration request for todo #"
-        + todoCollaborationRequest.getTodo().getId();
+        + todoCollaborationRequest.getTodo().getId()
+        + ".";
       notificationMessagingTemplate.sendNotification(
-        todoTodoUpdatesTopic,
+        todoUpdatesTopic,
         message,
         subject
       );
@@ -125,5 +126,21 @@ public class TodoServiceImpl implements TodoService {
     }
 
     return "Collaboration request invalid.";
+  }
+
+  @Override
+  public String testConfirmCollaboration() {
+    String subject = "Collaboration confirmed.";
+    String message = "User nobody has accepted your collaboration request for todo #1.";
+
+    LOG.info("Message sent to AWS SNS: {} {}", subject, message);
+
+    notificationMessagingTemplate.sendNotification(
+      todoUpdatesTopic,
+      message,
+      subject
+    );
+
+    return subject;
   }
 }

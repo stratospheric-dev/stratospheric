@@ -25,3 +25,4 @@ spring:
 custom:
   security:
     enabled: false
+  websocket-url: ws://localhost:8080/websocket

@@ -1,6 +1,5 @@
 package dev.aws101.todo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +20,6 @@ public class TodoController {
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
 
-  @Autowired
   public TodoController(
     TodoRepository todoRepository,
     TodoService todoService
