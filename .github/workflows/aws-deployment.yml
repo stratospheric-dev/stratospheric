@@ -33,12 +33,12 @@ jobs:
           cd application
           ./gradlew build --stacktrace
 
-      - name: Publish Unit Test Results
+      - name: Publish unit test results
         uses: EnricoMi/publish-unit-test-result-action@v1.2
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          check_name: Unit Test Results
+          check_name: Unit test results
           files: test-results/**/*.xml
           report_individual_runs: true
 
