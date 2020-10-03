@@ -39,7 +39,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           check_name: Unit test results
-          files: test-results/**/*.xml
+          files: tests/**/*.xml
           report_individual_runs: true
 
       - name: "Zip build reports"
