@@ -22,7 +22,7 @@ TODO_UPDATES_ARN=$(
 aws sns subscribe \
   --endpoint-url http://localhost:4566 \
   --profile localstack \
-  --topic-arn $TOPIC_ARN \
+  --topic-arn $TODO_UPDATES_ARN \
   --protocol http \
   --endpoint $EXTERNAL_URL/stratospheric-todo-updates
 
