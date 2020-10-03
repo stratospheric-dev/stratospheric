@@ -41,7 +41,6 @@ jobs:
           check_name: Unit Test Results
           files: test-results/**/*.xml
           report_individual_runs: true
-          deduplicate_classes_by_file_name: false
 
       - name: "Zip build reports"
         if: failure()
