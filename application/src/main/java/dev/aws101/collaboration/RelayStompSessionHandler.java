@@ -1,5 +1,6 @@
 package dev.aws101.collaboration;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -13,7 +14,7 @@ import java.lang.reflect.Type;
 @Component
 public class RelayStompSessionHandler extends StompSessionHandlerAdapter {
 
-  private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(RelayStompSessionHandler.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(RelayStompSessionHandler.class.getName());
 
   @Override
   public void afterConnected(StompSession session, @Nullable StompHeaders connectedHeaders) {
