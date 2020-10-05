@@ -11,20 +11,12 @@ import org.springframework.cloud.aws.messaging.endpoint.NotificationStatus;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationMessageMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationSubscriptionMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationUnsubscribeConfirmationMapping;
-import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-import org.springframework.web.socket.sockjs.client.SockJsClient;
-import org.springframework.web.socket.sockjs.client.Transport;
-import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -37,11 +29,14 @@ public class PubSubController {
 
   private final PersonRepository personRepository;
 
+  private final WebSocketStompClient webSocketStompClient;
+
   @Value("${custom.websocket-url}")
   private String webSocketURL;
 
-  public PubSubController(PersonRepository personRepository) {
+  public PubSubController(PersonRepository personRepository, WebSocketStompClient webSocketStompClient) {
     this.personRepository = personRepository;
+    this.webSocketStompClient = webSocketStompClient;
   }
 
   @NotificationSubscriptionMapping
@@ -68,12 +63,6 @@ public class PubSubController {
     }
 
     if (person != null && person.getEmail().equals(subject)) {
-      List<Transport> transports = new ArrayList<>();
-      transports.add(new WebSocketTransport(new StandardWebSocketClient()));
-      WebSocketClient transport = new SockJsClient(transports);
-      WebSocketStompClient webSocketStompClient = new WebSocketStompClient(transport);
-      webSocketStompClient.setMessageConverter(new StringMessageConverter());
-
       try {
         StompSession stompSession = webSocketStompClient.connect(webSocketURL, new RelayStompSessionHandler()).get();
         stompSession.send(UPDATE_TODO_URL, message);
