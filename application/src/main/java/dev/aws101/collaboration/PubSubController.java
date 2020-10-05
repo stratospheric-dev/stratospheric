@@ -11,7 +11,7 @@ import org.springframework.cloud.aws.messaging.endpoint.NotificationStatus;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationMessageMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationSubscriptionMapping;
 import org.springframework.cloud.aws.messaging.endpoint.annotation.NotificationUnsubscribeConfirmationMapping;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +72,7 @@ public class PubSubController {
       transports.add(new WebSocketTransport(new StandardWebSocketClient()));
       WebSocketClient transport = new SockJsClient(transports);
       WebSocketStompClient webSocketStompClient = new WebSocketStompClient(transport);
-      webSocketStompClient.setMessageConverter(new MappingJackson2MessageConverter());
+      webSocketStompClient.setMessageConverter(new StringMessageConverter());
 
       try {
         StompSession stompSession = webSocketStompClient.connect(webSocketURL, new RelayStompSessionHandler()).get();
