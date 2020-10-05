@@ -16,7 +16,7 @@ public class WebSocketController {
   @SendTo("/topic/todoUpdates")
   @ResponseBody
   public String receiveNotification(String subject, String message) {
-    LOG.info("Todo update received. Subject {}: {}", subject, message);
+    LOG.info("Relayed todo update. Subject '{}': {}", subject, message);
 
     return message;
   }

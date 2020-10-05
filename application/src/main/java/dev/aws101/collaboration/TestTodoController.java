@@ -1,6 +1,6 @@
 package dev.aws101.collaboration;
 
-import dev.aws101.todo.TodoService;
+import dev.aws101.todo.TodoTestCollaborationService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Profile("dev")
 public class TestTodoController {
 
-  private final TodoService todoService;
+  private final TodoTestCollaborationService todoTestCollaborationService;
 
   public TestTodoController(
-    TodoService todoService
+    TodoTestCollaborationService todoTestCollaborationService
   ) {
-    this.todoService = todoService;
+    this.todoTestCollaborationService = todoTestCollaborationService;
   }
 
   @GetMapping("/confirmCollaboration")
   @ResponseBody
   public String confirmCollaboration() {
-    String subject = todoService.testConfirmCollaboration();
+    String subject = todoTestCollaborationService.testConfirmCollaboration();
 
     return "Done: " + subject;
   }

@@ -20,9 +20,9 @@ public class RelayStompSessionHandler extends StompSessionHandlerAdapter {
   public void afterConnected(StompSession session, @Nullable StompHeaders connectedHeaders) {
     LOG.info("New session established: {}", session.getSessionId());
 
-    session.subscribe("/topic/messages", this);
-    LOG.info("Subscribed to /topic/messages");
-    LOG.info("Message sent to websocket server");
+    session.subscribe("/topic/todoUpdates", this);
+
+    LOG.info("Subscribed to /topic/todoUpdates");
   }
 
   @Override

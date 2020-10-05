@@ -17,15 +17,17 @@ public class TodoController {
 
   private final TodoRepository todoRepository;
   private final TodoService todoService;
+  private final TodoCollaborationService todoCollaborationService;
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
 
   public TodoController(
     TodoRepository todoRepository,
-    TodoService todoService
-  ) {
+    TodoService todoService,
+    TodoCollaborationService todoCollaborationService) {
     this.todoRepository = todoRepository;
     this.todoService = todoService;
+    this.todoCollaborationService = todoCollaborationService;
   }
 
   @GetMapping("/show/{id}")
@@ -136,7 +138,7 @@ public class TodoController {
     @PathVariable("collaboratorId") long collaboratorId,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
+    String collaboratorName = todoCollaborationService.shareWithCollaborator(todoId, collaboratorId);
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +
@@ -153,7 +155,7 @@ public class TodoController {
     @PathVariable("token") String token,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoService.confirmCollaboration(todoId, collaboratorId, token);
+    String collaboratorName = todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +
