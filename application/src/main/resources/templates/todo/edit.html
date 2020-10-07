@@ -28,7 +28,7 @@
                       class="form-control"
                       id="priority"
                       placeholder="Please select a priority.">
-                <option th:each="priorityValue : ${T(dev.aws101.todo.Priority).values()}"
+                <option th:each="priorityValue : ${T(dev.stratospheric.todo.Priority).values()}"
                         th:value="${priorityValue}"
                         th:text="${priorityValue.displayValue}"></option>
               </select>
