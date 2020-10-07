@@ -6,6 +6,7 @@ import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 import static dev.aws101.TodoApplicationTests.localStack;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SNS;
@@ -15,6 +16,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 public class AwsTestConfig {
 
   @Bean
+  @Primary
   public AmazonSQSAsync amazonSQS() {
     return AmazonSQSAsyncClientBuilder.standard()
       .withCredentials(localStack.getDefaultCredentialsProvider())
@@ -23,6 +25,7 @@ public class AwsTestConfig {
   }
 
   @Bean
+  @Primary
   public AmazonSNS amazonSNS() {
     return AmazonSNSClientBuilder
       .standard()

@@ -42,7 +42,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-  def testcontainersVersion = '1.14.3'
+  def testcontainersVersion = '1.15.0-rc2'
   testCompile('org.testcontainers:localstack:' + testcontainersVersion)
   testCompile('org.testcontainers:junit-jupiter:' + testcontainersVersion)
 }

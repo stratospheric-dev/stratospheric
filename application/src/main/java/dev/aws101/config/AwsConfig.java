@@ -50,6 +50,11 @@ public class AwsConfig {
   }
 
   @Bean
+  @ConditionalOnProperty(
+    value = "custom.local-sns-enabled",
+    havingValue = "false",
+    matchIfMissing = true
+  )
   public AmazonSNS amazonSNS(AWSCredentialsProvider awsCredentialsProvider) {
     AwsClientBuilder.EndpointConfiguration endpointConfiguration = null;
     if (endpoint != null) {
