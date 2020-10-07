@@ -1,6 +1,5 @@
 package dev.aws101.todo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,14 +17,17 @@ public class TodoController {
 
   private final TodoRepository todoRepository;
   private final TodoService todoService;
+  private final TodoCollaborationService todoCollaborationService;
 
-  @Autowired
+  private static final String INVALID_TODO_ID = "Invalid todo ID: ";
+
   public TodoController(
     TodoRepository todoRepository,
-    TodoService todoService
-  ) {
+    TodoService todoService,
+    TodoCollaborationService todoCollaborationService) {
     this.todoRepository = todoRepository;
     this.todoService = todoService;
+    this.todoCollaborationService = todoCollaborationService;
   }
 
   @GetMapping("/show/{id}")
@@ -33,7 +35,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
     model.addAttribute("todoShowPageActiveClass", "active");
     model.addAttribute("todo", todo);
@@ -78,7 +80,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
     model.addAttribute("todoEditPageActiveClass", "active");
     model.addAttribute("todo", todo);
@@ -103,7 +105,7 @@ public class TodoController {
       return "todo/update";
     }
 
-    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     existingTodo.setTitle(todo.getTitle());
     existingTodo.setDescription(todo.getDescription());
     existingTodo.setPriority(todo.getPriority());
@@ -121,7 +123,7 @@ public class TodoController {
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + id));
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     todoRepository.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
@@ -136,8 +138,24 @@ public class TodoController {
     @PathVariable("collaboratorId") long collaboratorId,
     RedirectAttributes redirectAttributes
   ) {
+    String collaboratorName = todoCollaborationService.shareWithCollaborator(todoId, collaboratorId);
 
-    String collaboratorName = todoService.shareWithCollaborator(todoId, collaboratorId);
+    redirectAttributes.addFlashAttribute("message",
+      String.format("You successfully shared your todo with the user %s. " +
+        "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
+    redirectAttributes.addFlashAttribute("messageType", "success");
+
+    return "redirect:/";
+  }
+
+  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
+  public String confirmCollaboration(
+    @PathVariable("todoId") long todoId,
+    @PathVariable("collaboratorId") long collaboratorId,
+    @PathVariable("token") String token,
+    RedirectAttributes redirectAttributes
+  ) {
+    String collaboratorName = todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +

@@ -1,0 +1,4 @@
+custom:
+  aws:
+    local:
+      endpoint: http://localhost:4566

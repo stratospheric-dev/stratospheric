@@ -17,7 +17,6 @@ public class RegistrationService {
   private final String userPooldId;
   private final Set<String> validInvitationCodes;
 
-  @Autowired
   public RegistrationService(@Value("${COGNITO_USER_POOL_ID:empty}") String userPoolId,
                              @Value("${custom.invitation-codes:none}") Set<String> validInvitationCodes) {
     this.userPooldId = userPoolId;

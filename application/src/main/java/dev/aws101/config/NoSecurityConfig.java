@@ -13,6 +13,10 @@ public class NoSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
       .csrf()
+      .ignoringAntMatchers(
+        "/stratospheric-todo-updates/**",
+        "/websocket/**"
+      )
       .and()
       .authorizeRequests(authorize ->
         authorize

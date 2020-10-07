@@ -1,11 +1,12 @@
 package dev.aws101.todo;
 
-import dev.aws101.collaboration.TodoCollaborationRequest;
+import dev.aws101.collaboration.TodoCollaborationRequestRepository;
 import dev.aws101.person.Person;
 import dev.aws101.person.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -16,20 +17,32 @@ public class TodoServiceImpl implements TodoService {
 
   private final TodoRepository todoRepository;
   private final PersonRepository personRepository;
+  private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
   private final QueueMessagingTemplate queueMessagingTemplate;
   private final String todoSharingQueueName;
+  private final NotificationMessagingTemplate notificationMessagingTemplate;
+  private final String todoUpdatesTopic;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoServiceImpl.class.getName());
+
+  private static final String INVALID_TODO_ID = "Invalid todo ID: ";
+  private static final String INVALID_PERSON_ID = "Invalid person ID: ";
+  private static final String INVALID_TODO_OR_COLLABORATOR = "Invalid todo or collaborator.";
 
   public TodoServiceImpl(
     TodoRepository todoRepository,
     PersonRepository personRepository,
-    QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName) {
+    TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
+    @Value("${custom.sharing-queue}") String todoSharingQueueName,
+    NotificationMessagingTemplate notificationMessagingTemplate,
+    @Value("${custom.updates-topic}") String todoUpdatesTopic) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
+    this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
+    this.notificationMessagingTemplate = notificationMessagingTemplate;
+    this.todoUpdatesTopic = todoUpdatesTopic;
   }
 
   @Override
@@ -51,28 +64,5 @@ public class TodoServiceImpl implements TodoService {
     }
 
     return todoRepository.save(todo);
-  }
-
-  @Override
-  public String shareWithCollaborator(long todoId, long collaboratorId) {
-
-    Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + todoId));
-    Person collaborator = personRepository.findById(collaboratorId).orElseThrow(() -> new IllegalArgumentException("Invalid collaborator id:" + collaboratorId));
-
-    LOG.info("About to share todo with id " + todoId + " with collaborator " + collaboratorId);
-
-    TodoCollaborationRequest collaborationRequest = new TodoCollaborationRequest();
-    collaborationRequest.setCollaboratorEmail(collaborator.getEmail());
-    collaborationRequest.setCollaboratorName(collaborator.getName());
-    collaborationRequest.setCollaboratorId(collaboratorId);
-
-    collaborationRequest.setTodoTitle(todo.getTitle());
-    collaborationRequest.setTodoDescription(todo.getDescription());
-    collaborationRequest.setTodoId(todoId);
-    collaborationRequest.setTodoPriority(todo.getPriority());
-
-    queueMessagingTemplate.convertAndSend(todoSharingQueueName, collaborationRequest);
-
-    return collaborator.getName();
   }
 }

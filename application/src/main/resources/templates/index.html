@@ -7,80 +7,79 @@
 <div th:replace="fragments/navBar :: header"></div>
 <section class="section">
   <div class="container has-text-centered">
-    <div>
-      <h1 class="title">
-        Welcome to the Todo Application!
-      </h1>
-      <div th:replace="fragments/messages :: messages"></div>
-      <table class="table" th:if="${todos}">
-        <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="todo : ${todos}">
-          <td scope="row">
-            <a th:href="@{/todo/show/{id}(id=${todo.id})}">
-              <span th:text="${todo.id}" th:remove="tag">#</span>
-            </a>
-          </td>
-          <td>
-            <a th:href="@{/todo/show/{id}(id=${todo.id})}">
-              <span th:text="${todo.title}" th:remove="tag">Title</span>
-            </a>
-          </td>
-          <td>
-            <div class="btn-group">
-              <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
-              <div class="dropdown">
-                <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Share with
-                </a>
+    <div th:replace="fragments/toast :: toast"></div>
+    <h1 class="title">
+      Welcome to the Todo Application!
+    </h1>
+    <div th:replace="fragments/messages :: messages"></div>
+    <table class="table" th:if="${todos}">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="todo : ${todos}">
+        <td>
+          <a th:href="@{/todo/show/{id}(id=${todo.id})}">
+            <span th:text="${todo.id}" th:remove="tag">#</span>
+          </a>
+        </td>
+        <td>
+          <a th:href="@{/todo/show/{id}(id=${todo.id})}">
+            <span th:text="${todo.title}" th:remove="tag">Title</span>
+          </a>
+        </td>
+        <td>
+          <div class="btn-group">
+            <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
+            <div class="dropdown">
+              <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Share with
+              </a>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
-                  <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
-                    No collaborator available
-                  </span>
+                <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
+                  No collaborator available
+                </span>
 
-                  <a th:each="collaborator : ${collaborators}" class="dropdown-item"
-                     th:text="${collaborator.name}"
-                     th:href="@{/todo/{todoId}/share/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}"></a>
-                </div>
+                <a th:each="collaborator : ${collaborators}" class="dropdown-item"
+                   th:text="${collaborator.name}"
+                   th:href="@{/todo/{todoId}/share/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}"></a>
               </div>
-              <button class="btn btn-danger"
-                      type="button"
-                      data-th-attr="data-href=${'/todo/delete/' + todo.id}"
-                      data-toggle="modal"
-                      data-target="#confirm-delete">
-                Delete
-              </button>
             </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-      <p>
-        <a class="btn btn-primary" th:href="@{/todo/add}">Add</a>
-      </p>
-
-      <div class="container" sec:authorize="isAuthenticated()">
-        <div class="row">
-          <div class="col-12">
-            Hello, <strong th:text="${#authentication.name}"></strong>!
+            <button class="btn btn-danger"
+                    type="button"
+                    data-th-attr="data-href=${'/todo/delete/' + todo.id}"
+                    data-toggle="modal"
+                    data-target="#confirm-delete">
+              Delete
+            </button>
           </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <a class="btn btn-primary" th:href="@{/todo/add}">Add</a>
+    </p>
+
+    <div class="container" sec:authorize="isAuthenticated()">
+      <div class="row">
+        <div class="col-12">
+          Hello, <strong th:text="${#authentication.name}"></strong>!
         </div>
-        <div class="row">
-          <div class="col-12">
-            You're authenticated
-            <span sec:authorize="hasRole('USER')">as a normal user.</span>
-            <span sec:authorize="hasRole('ADMIN')">as an admin.</span>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          You're authenticated
+          <span sec:authorize="hasRole('USER')">as a normal user.</span>
+          <span sec:authorize="hasRole('ADMIN')">as an admin.</span>
         </div>
       </div>
     </div>

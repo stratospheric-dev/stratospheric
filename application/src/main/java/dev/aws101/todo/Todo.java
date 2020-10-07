@@ -1,5 +1,6 @@
 package dev.aws101.todo;
 
+import dev.aws101.collaboration.TodoCollaborationRequest;
 import dev.aws101.person.Person;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,6 +38,10 @@ public class Todo {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
   private List<Note> notes;
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "todo_id")
+  private List<TodoCollaborationRequest> collaborationRequests;
 
   @ManyToMany
   private List<Person> collaborators;
@@ -111,6 +116,14 @@ public class Todo {
 
   public void setNotes(List<Note> notes) {
     this.notes = notes;
+  }
+
+  public List<TodoCollaborationRequest> getCollaborationRequests() {
+    return collaborationRequests;
+  }
+
+  public void setCollaborationRequests(List<TodoCollaborationRequest> collaborationRequests) {
+    this.collaborationRequests = collaborationRequests;
   }
 
   public List<Person> getCollaborators() {
