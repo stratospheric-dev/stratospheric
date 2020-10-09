@@ -173,7 +173,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - 'sqs:*'
+                  - 'sns:*'
                 # TODO: fine grained resources access
                 Resource: '*'
 
