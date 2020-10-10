@@ -1,6 +1,5 @@
-# Stratospheric - From Zero to Production with Spring Boot and AWS
-
-All you need to know to get a Spring Boot application into produciton with AWS.
+# Stratospheric
+## From Zero to Production with Spring Boot and AWS
 
 [![Stratospheric](https://stratospheric.dev/assets/images/book-mockup-500.png)](https://stratospheric.dev)
 
