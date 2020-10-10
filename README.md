@@ -1,5 +1,4 @@
-# Stratospheric
-## From Zero to Production with Spring Boot and AWS
+## Stratospheric - From Zero to Production with Spring Boot and AWS
 
 [![Stratospheric](https://stratospheric.dev/assets/images/book-mockup-500.png)](https://stratospheric.dev)
 
