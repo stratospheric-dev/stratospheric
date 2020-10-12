@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and deploy Todo App
+    name: Build chapter 3 app
     steps:
 
       - name: Checkout code
