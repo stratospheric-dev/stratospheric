@@ -1,4 +1,4 @@
-name: Demo Application for the AWS Open Source Blog
+name: Demo Application
 
 on: [push]
 
