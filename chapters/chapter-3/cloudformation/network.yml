@@ -7,7 +7,7 @@ Resources:
     Properties:
       CidrBlock: '10.0.0.0/16'
 
-  PublicSubnetOne:
+  PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone:
@@ -32,10 +32,10 @@ Resources:
     Properties:
       VpcId: !Ref 'VPC'
 
-  PublicSubnetOneRouteTableAssociation:
+  PublicSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PublicSubnetOne
+      SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
   PublicRoute:
@@ -138,11 +138,11 @@ Outputs:
     Value: !Ref 'VPC'
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'VPCId' ] ]
-  PublicSubnetOne:
+  PublicSubnet:
     Description: Public subnet one
-    Value: !Ref 'PublicSubnetOne'
+    Value: !Ref 'PublicSubnet'
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicSubnetOne' ] ]
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'PublicSubnet' ] ]
   ECSSecurityGroup:
     Description: A security group used to allow ECS containers to receive traffic
     Value: !Ref 'ECSSecurityGroup'
