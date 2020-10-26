@@ -7,3 +7,6 @@ cloud:
       auto: false
     stack:
       auto: false # Automatic stack detection
+
+custom:
+  bucket-name: stratospheric-demo-bucket # TODO: outsource to SSM

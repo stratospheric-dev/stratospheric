@@ -17,8 +17,8 @@ ext {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
