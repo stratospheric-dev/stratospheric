@@ -10,3 +10,4 @@ cloud:
 
 custom:
   bucket-name: stratospheric-demo-bucket # TODO: outsource to SSM
+  sqs-queue-name: stratospheric-demo-queue

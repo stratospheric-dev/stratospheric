@@ -7,7 +7,9 @@ Title: Getting started with Spring Boot on AWS
 
 ## Blog Post
 
-
+```
+aws s3api put-object --bucket image-uploads-java-thumbnail-example --key uploads/myPicture.png --body myPicture.png --profile serverless-admin
+```
 
 ## Conclusion
 

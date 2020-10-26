@@ -1,8 +1,35 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Infrastructure for the demo application.
 Resources:
-  S3Bucket:
+  FileBucket:
     Type: AWS::S3::Bucket
+    DependsOn:
+     - FileSyncQueuePolicy
     Properties:
       AccessControl: PublicRead
       BucketName: stratospheric-demo-bucket
+      NotificationConfiguration:
+        QueueConfigurations:
+          - Event: s3:ObjectCreated:*
+            Queue: !GetAtt FileSyncQueue.Arn
+  FileSyncQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: statospheric-demo-queue
+  FileSyncQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref FileSyncQueue
+      PolicyDocument:
+        Statement:
+          - Sid: Allow S3 access to queue
+            Effect: Allow
+            Action:
+              - SQS:SendMessage
+            Resource: !GetAtt FileSyncQueue.Arn
+            Principal:
+              AWS: '*'
+            Condition:
+              ArnLike:
+                aws:SourceArn: arn:aws:s3:::stratospheric-demo-bucket

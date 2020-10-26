@@ -23,8 +23,6 @@ public class Application {
 
     @EventListener(classes = ApplicationReadyEvent.class)
     public void onApplicationReadyEvent(ApplicationReadyEvent event) {
-        System.out.println("I am ready!");
-
         for (Bucket availableBuckets : amazonS3Client.listBuckets()) {
             System.out.println(availableBuckets.getName());
         }
