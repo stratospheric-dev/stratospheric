@@ -8,8 +8,15 @@ Title: Getting started with Spring Boot on AWS
 ## Blog Post
 
 ```
-aws s3api put-object --bucket image-uploads-java-thumbnail-example --key uploads/myPicture.png --body myPicture.png --profile serverless-admin
+aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book.pdf --body stratospheric-book.pdf --profile stratospheric
+aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --profile stratospheric
+aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --profile stratospheric
 ```
+
+
+## S3 Event Notification Feature:
+
+> It is also possible to receive AWS generated event messages with the SQS message listeners. Because AWS messages does not contain the mime-type header, the Jackson message converter has to be configured with the strictContentTypeMatch property false to also parse message without the proper mime type.
 
 ## Conclusion
 

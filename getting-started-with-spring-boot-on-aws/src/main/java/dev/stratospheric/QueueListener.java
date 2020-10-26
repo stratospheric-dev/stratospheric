@@ -7,11 +7,7 @@ import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplat
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 public class QueueListener {
@@ -28,11 +24,8 @@ public class QueueListener {
     }
 
     @SqsListener(value = "${custom.sqs-queue-name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void onS3UploadEvent(@Payload S3EventNotification event, @Headers Map<String, String> headers) {
-
-        LOGGER.info(event.toJson());
-        LOGGER.info(headers.toString());
-
+    public void onS3UploadEvent(S3EventNotification event) {
+        LOGGER.info("Incoming S3EventNoticiation: " + event.toJson());
         // this.queueMessagingTemplate.convertAndSend("queueName", event);
         // this.notificationMessagingTemplate.convertAndSend("topicName", event);
     }
