@@ -15,7 +15,7 @@ Resources:
   FileSyncQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: statospheric-demo-queue
+      QueueName: stratospheric-demo-queue
   FileSyncQueuePolicy:
     Type: AWS::SQS::QueuePolicy
     Properties:
