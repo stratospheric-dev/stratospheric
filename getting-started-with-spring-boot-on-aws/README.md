@@ -7,6 +7,23 @@ Title: Getting started with Spring Boot on AWS
 
 ## Blog Post
 
+Create the required infrastructure for the application:
+
+```
+cloudformation/create.sh
+```
+
+Build the application and run it inside a Docker Container:
+
+```
+./gradlew assemble
+docker build -t statospheric-demo .
+docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
+
+
+
+```
+
 ```
 aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book.pdf --body stratospheric-book.pdf --profile stratospheric
 aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --profile stratospheric
