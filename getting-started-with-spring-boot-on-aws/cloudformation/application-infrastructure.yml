@@ -1,5 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Infrastructure for the demo application.
+Parameters:
+  BucketName:
+    Type: String
+    Description: The name of the S3 Bucket for viewing the files.
+    Default: stratospheric-demo-bucket
 Resources:
   FileBucket:
     Type: AWS::S3::Bucket
@@ -7,7 +12,7 @@ Resources:
      - FileSyncQueuePolicy
     Properties:
       AccessControl: PublicRead
-      BucketName: stratospheric-demo-bucket
+      BucketName: !Ref BucketName
       NotificationConfiguration:
         QueueConfigurations:
           - Event: s3:ObjectCreated:*
@@ -32,4 +37,7 @@ Resources:
               AWS: '*'
             Condition:
               ArnLike:
-                aws:SourceArn: arn:aws:s3:::stratospheric-demo-bucket
+                aws:SourceArn: !Join
+                  - ''
+                  - - 'arn:aws:s3:::'
+                    - !Ref BucketName
