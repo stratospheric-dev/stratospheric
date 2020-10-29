@@ -1,49 +1,52 @@
-# Demo Application for Blog Post on AWS
+# Demo Application for Getting Started with Spring Boot on AWS
 
-Title: Getting started with Spring Boot on AWS
+## How to run this application
 
-## Intro Section
-
-
-## Blog Post
-
-Create the required infrastructure for the application:
-
+1. Make sure you have the AWS CLI installed and configured your `default` credentials and AWS region e.g. `eu-central-1` 
+2. Ensure you have JDK 11 installed: `java -version`
+3. Create the required infrastructure for the application:
 ```
-cloudformation/create.sh
+cd cloudformation
+./create.sh your-unique-bucket-name
 ```
 
-Build the application and run it inside a Docker Container:
+Please note that for demonstration purposes the S3 Bucket and its content is publicly accessible. Remove it afterwards.
+
+4. Create at least the following two parameters using the AWS Parameter Store (inside SSM):
 
 ```
-./gradlew assemble
+/config/stratospheric-demo/custom.bucket-name -> your S3 bucket name
+/config/stratospheric-demo/custom.sqs-queue-name -> stratospheric-demo-queue
+```
+
+PS: They can be either `String` or `SecureString`
+
+5. Run the application:
+```
+./gradlew bootRun
+```
+6. Upload the demo images to your S3 bucket
+```
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book.pdf --body stratospheric-book.pdf --acl public-read
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --acl public-read
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --acl public-read
+```
+7. Visit http://localhost:8080/ to open the file viewer. In addition to this, you should see incoming log messages from the SQS listener.
+8. (Optional) Build and run the application inside a Docker Container
+```
 docker build -t statospheric-demo .
 docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
-
-
-
 ```
-
-```
-aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book.pdf --body stratospheric-book.pdf --profile stratospheric
-aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --profile stratospheric
-aws s3api put-object --bucket stratospheric-demo-bucket --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --profile stratospheric
-```
-
-
-## S3 Event Notification Feature:
-
-> It is also possible to receive AWS generated event messages with the SQS message listeners. Because AWS messages does not contain the mime-type header, the Jackson message converter has to be configured with the strictContentTypeMatch property false to also parse message without the proper mime type.
-
-## Conclusion
-
-- Spring Cloud AWS makes AWS a first-citizen cloud provider
-- Almost no effort to integrate the core AWS services
-- A great roadmap for the Spring Cloud AWS (version 3.0) project ahead (new core maintainers, thanks to Maciej and Eddú btw!)
 
 ## Further resources
 
-- link to Spring Cloud AWS
-- link to Maciej's Spring Academy YT: https://www.youtube.com/channel/UCslYinLbZnzzUdG0BMaiDKw
-- link to the GitHub repository of the app:
-- link to the GitHub repository of Spring Cloud AWS: https://github.com/spring-cloud/spring-cloud-aws
+- Stratospheric E-Book on [Leanpub](https://leanpub.com/stratospheric)
+- Spring Cloud AWS on [GitHub](https://github.com/spring-cloud/spring-cloud-aws)
+- Spring Cloud AWS [documentation](https://docs.spring.io/spring-cloud-aws/docs/current/reference/html/)
+- Maciej Walkowiak's [Spring Academy YouTube channel](https://www.youtube.com/channel/UCslYinLbZnzzUdG0BMaiDKw) with great content about Spring Cloud AWS
+
+## Authors
+
+- [Tom Hombergs](https://reflectoring.io/)
+- [Björn Wilsmann](https://bjoernkw.com/)
+- [Philip Riecks](https://rieckpil.de/)
