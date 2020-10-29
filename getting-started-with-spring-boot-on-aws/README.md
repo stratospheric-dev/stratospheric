@@ -1,6 +1,8 @@
-# Demo Application for Getting Started with Spring Boot on AWS
+# Getting Started with Spring Boot on AWS
 
-## How to run this application
+[![Demo](s3simpleFileViewer.png)](https://stratospheric.dev)
+
+## How to run the demo application
 
 1. Make sure you have the AWS CLI installed and configured your `default` credentials and AWS region e.g. `eu-central-1` 
 2. Ensure you have JDK 11 installed: `java -version`
@@ -19,7 +21,7 @@ Please note that for demonstration purposes the S3 Bucket and its content is pub
 /config/stratospheric-demo/custom.sqs-queue-name -> stratospheric-demo-queue
 ```
 
-PS: They can be either `String` or `SecureString`
+The parameter values can be either `String` or `SecureString`
 
 5. Run the application:
 ```
@@ -34,13 +36,15 @@ aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-c
 7. Visit http://localhost:8080/ to open the file viewer. In addition to this, you should see incoming log messages from the SQS listener.
 8. (Optional) Build and run the application inside a Docker Container
 ```
+./gradlew assemble
 docker build -t statospheric-demo .
 docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
 ```
 
 ## Further resources
 
-- Stratospheric E-Book on [Leanpub](https://leanpub.com/stratospheric)
+- More information about the [Stratospheric project](https://stratospheric.dev)
+- Get the E-Book Stratospheric on [Leanpub](https://leanpub.com/stratospheric)
 - Spring Cloud AWS on [GitHub](https://github.com/spring-cloud/spring-cloud-aws)
 - Spring Cloud AWS [documentation](https://docs.spring.io/spring-cloud-aws/docs/current/reference/html/)
 - Maciej Walkowiak's [Spring Academy YouTube channel](https://www.youtube.com/channel/UCslYinLbZnzzUdG0BMaiDKw) with great content about Spring Cloud AWS
