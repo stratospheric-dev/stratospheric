@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.stratospheric'
-version = '0.0.1-SNAPSHOT'
+version = 'final'
 sourceCompatibility = '11'
 
 repositories {
