@@ -1,6 +1,6 @@
 # Getting Started with Spring Boot on AWS
 
-[![Demo](s3simpleFileViewer.png)](https://stratospheric.dev)
+[![Demo](docs/s3simpleFileViewer.png)](https://stratospheric.dev)
 
 ## How to run the demo application
 
@@ -45,15 +45,15 @@ Please note that for demonstration purposes the S3 Bucket and its content is pub
 
 The parameter values can be either `String` or `SecureString`
 
-5. Run the application:
+5. Start the application on your local machine:
 ```
 ./gradlew bootRun
 ```
 6. Upload the demo images to your S3 bucket (make sure to replace `your-unique-bucket-name`)
 ```
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book.pdf --body stratospheric-book.pdf --acl public-read --profile stratospheric
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --acl public-read --profile stratospheric
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --acl public-read --profile stratospheric
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book.pdf --body docs/stratospheric-book.pdf --acl public-read --profile stratospheric
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover.jpg --body docs/stratospheric-book-cover.jpg --acl public-read --profile stratospheric
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover-mockup.jpg --body docs/stratospheric-book-cover-mockup.jpg --acl public-read --profile stratospheric
 ```
 7. Visit http://localhost:8080/ to open the file viewer. In addition to this, you should see incoming log messages from the SQS listener.
 8. (Optional) Build and run the application inside a Docker Container
