@@ -4,7 +4,29 @@
 
 ## How to run the demo application
 
-1. Make sure you have the AWS CLI installed and configured your `default` credentials and AWS region e.g. `eu-central-1` 
+1. Make sure you have the AWS CLI installed and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) a `stratospheric` profile with the correct credentials and AWS region e.g.:
+
+Content of `~/.aws/config`:
+```
+[default]
+region = eu-central-1
+
+[profile stratospheric]
+region = eu-central-1
+```
+
+Content of `~/.aws/credentials`:
+
+```
+[default]
+aws_access_key_id=DEFAULT_KEY
+aws_secret_access_key=DEFAULT_SECRET
+
+[stratospheric]
+aws_access_key_id=XYZ
+aws_secret_access_key=XYZ
+```
+
 2. Ensure you have JDK 11 installed: `java -version`
 3. Create the required infrastructure for the application:
 ```
@@ -27,11 +49,11 @@ The parameter values can be either `String` or `SecureString`
 ```
 ./gradlew bootRun
 ```
-6. Upload the demo images to your S3 bucket
+6. Upload the demo images to your S3 bucket (make sure to replace `your-unique-bucket-name`)
 ```
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book.pdf --body stratospheric-book.pdf --acl public-read
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --acl public-read
-aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --acl public-read
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book.pdf --body stratospheric-book.pdf --acl public-read --profile stratospheric
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover.jpg --body stratospheric-book-cover.jpg --acl public-read --profile stratospheric
+aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-cover-mockup.jpg --body stratospheric-book-cover-mockup.jpg --acl public-read --profile stratospheric
 ```
 7. Visit http://localhost:8080/ to open the file viewer. In addition to this, you should see incoming log messages from the SQS listener.
 8. (Optional) Build and run the application inside a Docker Container
