@@ -1,11 +1,14 @@
-name: Build the different application states for each chapter
+name: Build Chapter Versions
 
 on: [ push ]
 
 jobs:
   build:
+    strategy:
+      matrix:
+        chapter-numbers: [3, 4, 5]
     runs-on: ubuntu-latest
-    name: Build the application
+    name: Build the application for each chapter
     steps:
 
       - name: Checkout code
@@ -16,10 +19,7 @@ jobs:
         with:
           java-version: 11.0
 
-      - name: Build the application per chapter
+      - name: Build the application
         run: |
-          foreach chapterNumber (3 4 5)
-            cd chapters/chapter-$chapterNumber/application
-            ./gradlew build --stacktrace
-            cd ../../..
-          end
+          cd chapters/chapter-${{ matrix.chapter-numbers }}/application
+          ./gradlew build --stacktrace
