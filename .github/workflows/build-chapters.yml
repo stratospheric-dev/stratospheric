@@ -5,10 +5,11 @@ on: [ push ]
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         chapter-numbers: [3, 4, 5]
     runs-on: ubuntu-latest
-    name: Build the application for each chapter
+    name: Build the Application for Chapter ${{ matrix.chapter-numbers }}
     steps:
 
       - name: Checkout code
