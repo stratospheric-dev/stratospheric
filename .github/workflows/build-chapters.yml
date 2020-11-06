@@ -1,0 +1,25 @@
+name: Build the different application states for each chapter
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the application
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Build the application per chapter
+        run: |
+          foreach chapterNumber (3 4 5)
+            cd chapters/chapter-$chapterNumber/application
+            ./gradlew build --stacktrace
+            cd ../../..
+          end
