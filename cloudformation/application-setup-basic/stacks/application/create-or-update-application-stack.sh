@@ -11,11 +11,19 @@ USER_POOL_CLIENT_SECRET=$(aws cognito-idp describe-user-pool-client --user-pool-
 
 ../../stack-exists.sh "aws101-application-parent"
 stack_exists=$?
+
 if [ "$stack_exists" -eq 0 ]
 then
-  echo "Application stack is already running. Updating it now..."
-  ./update-application-stack.sh $DOCKER_IMAGE_URL $USER_POOL_CLIENT_SECRET || exit 1
-  echo "Successfully updated the application stack!"
+  ../../stack-update-in-progress.sh "aws101-application-parent"
+  update_in_progress=$?
+  if [ "$update_in_progress" -eq 0 ]
+  then
+    echo "Application stack is currently updating. Skipping the update"
+  else
+    echo "Application stack is already running. Updating it now..."
+    ./update-application-stack.sh $DOCKER_IMAGE_URL $USER_POOL_CLIENT_SECRET || exit 1
+    echo "Successfully updated the application stack!"
+  fi
 else
   echo "Application stack is not running. Creating it now..."
   ./create-application-stack.sh $DOCKER_IMAGE_URL $USER_POOL_CLIENT_SECRET || exit 1
