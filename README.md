@@ -4,7 +4,7 @@
 
 ## Useful links
 
-- Join the [mailing list](https://stratospheric.dev/assets/images/book-mockup-500.png) of this project for status updates
+- Join the [mailing list](https://stratospheric.dev/) for a 50% discount and the project status updates
 - [Get the book on Leanpub](https://leanpub.com/stratospheric/)
 
 ## Authors
