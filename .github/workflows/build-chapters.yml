@@ -28,11 +28,11 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/cdk" ]; then
-            npm install -g aws-cdk
+            npm install aws-cdk
             cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
             mvn package
-            cdk deploy
-            cdk destroy --force
+            node_modules/cdk/bin/cdk deploy
+            node_modules/cdk/bin/cdk destroy --force
           fi
 
       - name: Build the application
