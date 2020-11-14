@@ -42,9 +42,9 @@ The application then should be available under [http://localhost:8080](http://lo
 #### Database schema
 ![alt text][database-schema-diagram]
 
-[class-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20Class%20Diagram.png "class diagram"
-[entity-relationship-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20ER%20diagram.png "entity-relationship diagram"
-[database-schema-diagram]:https://github.com/aws101/aws101/raw/master/model/Todo%20App%20-%20ER%20diagram%20from%20database%20schema.png "database schema diagram"
+[class-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/main/Todo%20App%20-%20Class%20Diagram.png "class diagram"
+[entity-relationship-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/model/Todo%20App%20-%20ER%20diagram.png "entity-relationship diagram"
+[database-schema-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/model/Todo%20App%20-%20ER%20diagram%20from%20database%20schema.png "database schema diagram"
 
 ## Built with
 
