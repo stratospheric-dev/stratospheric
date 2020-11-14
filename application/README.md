@@ -11,11 +11,14 @@ The purpose of this todo application is to serve as an example for the various u
 
 ### Running the app in dev mode
 
-Run ```gradle bootRun``` from the command line.
+* Make sure you have Docker up- and running and Docker Compose installed
+* Start the required infrastructure with `./start-depenencies.sh`
+* Run `./gradlew bootRun` to start the application
+* Access http://localhost:8080 in your browser
 
 ## Running the tests
 
-Run ```gradle build``` from the command line.
+Run `./gradlew build` from the command line.
 
 ## Deployment
 
