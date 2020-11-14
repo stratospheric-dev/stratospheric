@@ -20,6 +20,21 @@ jobs:
         with:
           java-version: 11.0
 
+      - name: Build and destroy the infrastructure
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/cdk" ]; then
+            npm install -g aws-cdk
+            cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+            mvn package
+            cdk deploy
+            cdk destroy --force
+          fi
+
       - name: Build the application
         run: |
           cd chapters/chapter-${{ matrix.chapter-numbers }}/application
