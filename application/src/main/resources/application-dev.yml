@@ -17,10 +17,11 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
-  resources:
-    static-locations: file:src/main/resources/static/
-    cache:
-      period: 0
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+      cache:
+        period: 0
 
 custom:
   security:
