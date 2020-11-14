@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'org.springframework.boot' version '2.4.0'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
@@ -13,7 +13,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', 'Hoxton.SR6')
+	set('springCloudVersion', 'Hoxton.SR9')
+  set('testcontainersVersion', '1.15.0')
 }
 
 dependencies {
@@ -39,17 +40,15 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-  def testcontainersVersion = '1.15.0-rc2'
-  testCompile('org.testcontainers:localstack:' + testcontainersVersion)
-  testCompile('org.testcontainers:junit-jupiter:' + testcontainersVersion)
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.testcontainers:localstack'
+  testImplementation 'org.testcontainers:junit-jupiter'
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 	}
 }
 
