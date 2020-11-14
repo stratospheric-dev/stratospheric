@@ -1,4 +1,4 @@
-# Todo Application for AWS 101
+# Todo Application for Stratospheric
 
 The purpose of this todo application is to serve as an example for the various use cases covered by the book.
 
