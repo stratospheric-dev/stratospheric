@@ -8,9 +8,9 @@ cloud:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/aws101
-    username: aws101
-    password: aws101
+    url: jdbc:postgresql://localhost:5432/stratospheric
+    username: stratospheric
+    password: stratospheric
   h2:
     console:
       enabled: true

@@ -2,16 +2,14 @@ version: '3.3'
 
 services:
   postgres:
-    container_name: "aws101-postgres"
-    image: postgres
-    volumes:
-      - stratospheric-postgres-data:/var/lib/postgresql/data
+    container_name: "stratospheric-postgres"
+    image: postgres:11.5
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=aws101
-      - POSTGRES_PASSWORD=aws101
-      - POSTGRES_DB=aws101
+      - POSTGRES_USER=stratospheric
+      - POSTGRES_PASSWORD=stratospheric
+      - POSTGRES_DB=stratospheric
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
     image: localstack/localstack
@@ -32,6 +30,3 @@ services:
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-volumes:
-  stratospheric-postgres-data:
-    driver: local
