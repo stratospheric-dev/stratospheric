@@ -1,6 +1,10 @@
 ## Stratospheric - From Zero to Production with Spring Boot and AWS
 
-[![Stratospheric](https://stratospheric.dev/assets/images/book-mockup-500.png)](https://stratospheric.dev)
+<p align="center">
+  <a href="https://stratospheric.dev">
+    <img src="https://stratospheric.dev/assets/images/book-mockup-500.png" alt="Stratospheric Book Cover"/>
+  </a>
+</p>
 
 ## Useful links
 
