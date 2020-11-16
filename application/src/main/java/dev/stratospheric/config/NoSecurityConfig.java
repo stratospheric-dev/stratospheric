@@ -2,11 +2,12 @@ package dev.stratospheric.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@ConditionalOnProperty(value = "custom.security.enabled", havingValue = "false")
+@Profile("dev")
 public class NoSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override

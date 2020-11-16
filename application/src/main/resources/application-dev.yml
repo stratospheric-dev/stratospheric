@@ -24,7 +24,4 @@ spring:
         period: 0
 
 custom:
-  security:
-    enabled: false
   websocket-url: ws://localhost:8080/websocket
-  external-url: ${EXTERNAL_URL:#{null}}
