@@ -20,4 +20,15 @@ services:
       - SERVICES=sqs,sns
       - DEFAULT_REGION=eu-central-1
     volumes:
-      - ./init-local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+      - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+  keycloak:
+    image: jboss/keycloak:11.0.0
+    ports:
+      - 8888:8080
+    environment:
+      - KEYCLOAK_USER=keycloak
+      - KEYCLOAK_PASSWORD=keycloak
+      - DB_VENDOR=h2
+#      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
+#    volumes:
+#      - ./init/keycloak-dump.json:/tmp/keycloak-dump.json

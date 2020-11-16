@@ -11,6 +11,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/stratospheric
     username: stratospheric
     password: stratospheric
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            clientId: spring-boot-application
+            clientSecret: 5e9b500f-e673-49f7-8b25-5be56502fa6c
+            scope: openid
+        provider:
+          keycloak:
+            issuerUri: http://localhost:8888/auth/realms/stratospheric
   h2:
     console:
       enabled: true
