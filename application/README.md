@@ -12,7 +12,7 @@ The purpose of this todo application is to serve as an example for the various u
 ### Running the app in dev mode
 
 * Make sure you have Docker up- and running and Docker Compose installed
-* Start the required infrastructure with `./start-depenencies.sh`
+* Start the required infrastructure with `docker-compose up`
 * Run `./gradlew bootRun` to start the application
 * Access http://localhost:8080 in your browser
 
