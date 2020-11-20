@@ -2,7 +2,6 @@ version: '3.3'
 
 services:
   postgres:
-    container_name: stratospheric-postgres
     image: postgres:11.5
     ports:
       - 5432:5432
@@ -11,7 +10,6 @@ services:
       - POSTGRES_PASSWORD=stratospheric
       - POSTGRES_DB=stratospheric
   localstack:
-    container_name: stratospheric-aws-infrastructure
     image: localstack/localstack:0.12.2
     ports:
       - 4566:4566
