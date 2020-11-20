@@ -13,11 +13,10 @@ services:
   localstack:
     container_name: stratospheric-aws-infrastructure
     image: localstack/localstack:0.12.2
-    network_mode: bridge
     ports:
       - 4566:4566
     environment:
-      - SERVICES=sqs,sns
+      - SERVICES=sqs,sns,ses
       - DEFAULT_REGION=eu-central-1
     volumes:
       - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
@@ -29,6 +28,6 @@ services:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
       - DB_VENDOR=h2
-#      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
-#    volumes:
-#      - ./init/keycloak-dump.json:/tmp/keycloak-dump.json
+      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json
+    volumes:
+      - ./init/stratospheric-realm.json:/tmp/stratospheric-realm.json

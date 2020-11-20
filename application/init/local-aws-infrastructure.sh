@@ -1,4 +1,4 @@
 #!/bin/sh
 
-awslocal sns create-topic --name stratospheric-todo-sharing
-awslocal sqs create-queue --queue-name stratospheric-todo-updates
+awslocal sns create-topic --name stratospheric-todo-updates
+awslocal sqs create-queue --queue-name stratospheric-todo-sharing
