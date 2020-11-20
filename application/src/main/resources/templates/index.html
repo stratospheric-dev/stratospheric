@@ -68,21 +68,6 @@
     <p>
       <a class="btn btn-primary" th:href="@{/todo/add}">Add</a>
     </p>
-
-    <div class="container" sec:authorize="isAuthenticated()">
-      <div class="row">
-        <div class="col-12">
-          Hello, <strong th:text="${#authentication.name}"></strong>!
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          You're authenticated
-          <span sec:authorize="hasRole('USER')">as a normal user.</span>
-          <span sec:authorize="hasRole('ADMIN')">as an admin.</span>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 <div th:replace="fragments/modals :: confirmDeletionModal"></div>
