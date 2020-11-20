@@ -16,11 +16,10 @@ public class Person {
   private Long id;
 
   @NotEmpty
-  @Column(unique = true)
   private String name;
 
   @NotEmpty
-  @Email
+  @Column(unique = true)
   private String email;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

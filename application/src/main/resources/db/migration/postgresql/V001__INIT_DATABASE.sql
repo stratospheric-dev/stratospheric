@@ -1,7 +1,7 @@
 create table PERSON
 (
 	ID serial not null primary key,
-	EMAIL VARCHAR(255),
+	EMAIL VARCHAR(255) UNIQUE,
 	NAME VARCHAR(255)
 );
 
@@ -58,9 +58,20 @@ create table TODO_COLLABORATORS
 		foreign key (COLLABORATORS_ID) references PERSON (ID)
 );
 
-INSERT INTO PERSON (EMAIL, NAME) VALUES ('admin@aws101.dev', 'Admin');
+create table TODO_COLLABORATION_REQUEST
+(
+	ID serial not null primary key,
+	PERSON_ID BIGINT,
+	TODO_ID BIGINT,
+	constraint FK_TODO_COLLABORATION_REQUEST_PERSON
+		foreign key (PERSON_ID) references PERSON (ID),
+	constraint FK_TODO_COLLABORATION_REQUEST_TODO
+		foreign key (TODO_ID) references TODO (ID)
+);
 
-INSERT INTO TODO (TITLE, OWNER_ID) VALUES ('Setup infrastructure in AWS', 1);
-INSERT INTO TODO (TITLE, OWNER_ID) VALUES ('Secure application', 1);
-INSERT INTO TODO (TITLE, OWNER_ID) VALUES ('Write book', 1);
-INSERT INTO TODO (TITLE, OWNER_ID) VALUES ('Release it', 1);
+INSERT INTO PERSON (EMAIL, NAME) VALUES ('info@stratospheric.dev', 'Duke');
+
+INSERT INTO TODO (TITLE, DUE_DATE, STATUS, PRIORITY, OWNER_ID) VALUES ('Setup infrastructure in AWS', '2020-31-12', 'OPEN', 1, 1);
+INSERT INTO TODO (TITLE, DUE_DATE, STATUS, PRIORITY, OWNER_ID) VALUES ('Secure application', 'OPEN', '2020-31-12', 'OPEN', 1, 1);
+INSERT INTO TODO (TITLE, DUE_DATE, STATUS, PRIORITY, OWNER_ID) VALUES ('Write book', '2020-31-12', 'OPEN', 1, 1);
+INSERT INTO TODO (TITLE, DUE_DATE, STATUS, PRIORITY, OWNER_ID) VALUES ('Release it', '2020-31-12', 'OPEN', 1, 1);
