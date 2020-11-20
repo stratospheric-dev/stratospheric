@@ -1,14 +1,14 @@
 package dev.stratospheric;
 
-import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
-import dev.stratospheric.todo.Todo;
 import dev.stratospheric.todo.TodoRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,21 +27,18 @@ public class IndexController {
   }
 
   @GetMapping
+  @RequestMapping("/")
   public String getIndex(
     Model model,
-    Principal principal
+    @AuthenticationPrincipal OidcUser user
   ) {
     model.addAttribute("indexPageActiveClass", "active");
     model.addAttribute("collaborators", List.of());
 
-    Person person = personRepository.findByName("Admin").orElse(null);
-    if (principal != null) {
-      person = personRepository.findByName(principal.getName()).orElse(null);
-      model.addAttribute("collaborators", personRepository.findByNameNot(principal.getName()));
+    if (user != null) {
+      model.addAttribute("collaborators", personRepository.findByEmailNot(user.getEmail()));
+      model.addAttribute("todos", todoRepository.findAllByOwnerEmailOrderByIdAsc(user.getEmail()));
     }
-
-    Iterable<Todo> todoList = todoRepository.findAllByOwner(person);
-    model.addAttribute("todos", todoList);
 
     return "index";
   }
