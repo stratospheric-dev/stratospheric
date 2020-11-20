@@ -22,9 +22,7 @@ aws cloudformation create-stack \
     ParameterKey=RegistryStackName,ParameterValue=stratospheric-container-registry \
     ParameterKey=DatabaseStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/stratospheric.dev/stacks/application/database.yml \
     ParameterKey=DatabaseStackDBUsername,ParameterValue=stratospheric \
-    ParameterKey=DatabaseStackDBName,ParameterValue=stratospheric \
-    ParameterKey=TodoSharingQueueName,ParameterValue=stratospheric-todo-sharing \
-    ParameterKey=TodoUpdatesTopicName,ParameterValue=stratospheric-todo-updates
+    ParameterKey=DatabaseStackDBName,ParameterValue=stratospheric
 
 # wait for stack to be created
 aws cloudformation wait stack-create-complete --stack-name stratospheric-application-parent

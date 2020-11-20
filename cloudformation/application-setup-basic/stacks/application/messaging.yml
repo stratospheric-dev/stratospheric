@@ -1,17 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: A stack that creates messaging infrastructure
-Parameters:
-  TodoSharingQueueName:
-    Type: String
-    Description: The name of the queue to share todos
-  TodoUpdatesTopicName:
-    Type: String
-    Description: The name of the topic to share todos updates
 Resources:
   TodoSharingQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Ref TodoSharingQueueName
+      QueueName: stratospheric-todo-sharing
       MessageRetentionPeriod: 1209600 # 14 days maximum
       VisibilityTimeout: 300 # 5 minutes
       RedrivePolicy:
@@ -21,21 +14,21 @@ Resources:
   TodoSharingDeadLetterQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName:  !Join [ '-', [ !Ref 'TodoSharingQueueName', 'dead-letter-queue' ] ]
+      QueueName: stratospheric-todo-sharing-dead-letter-queue
       MessageRetentionPeriod: 1209600 # 14 days maximum
   TodoUpdates:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: !Ref TodoUpdatesTopicName
+      TopicName: stratospheric-todo-sharing-todo-updates
 
 Outputs:
   TodoSharingQueueArn:
-    Description: Arn of the TodoSharing Queue of the RDS endpoint.
+    Description: Arn of the TodoSharing Queue
     Value: !GetAtt 'TodoSharingQueue.Arn'
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'TodoSharingQueueArn' ] ]
   StackName:
     Description: The name of this stack
     Value: !Ref 'AWS::StackName'
-  TodoUpdatesARN:
+  TodoUpdatesArn:
     Value: !Ref TodoUpdates
