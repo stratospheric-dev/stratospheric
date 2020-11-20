@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates an SNS topic
+Description: Creates an SNS topic to sync todo collaboration confirmations
 
 Resources:
   TodoUpdates:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: "stratospheric-todo-updates"
+      TopicName: stratospheric-todo-updates
 
 Outputs:
   TodoUpdatesARN:

@@ -68,7 +68,7 @@ Resources:
       Parameters:
         NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
         RegistryStackName: !Ref 'RegistryStackName'
-        ServiceName: 'aws101-todo-app'
+        ServiceName: 'stratospheric-todo-app'
         HealthCheckPath: '/health'
         HealthCheckPort: 8080
         HealthCheckIntervalSeconds: 180

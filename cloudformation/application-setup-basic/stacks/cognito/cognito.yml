@@ -11,7 +11,7 @@ Parameters:
 Resources:
   # Creates a UserPool in Cognito for an app to authenticate against.
   UserPool:
-    Type: "AWS::Cognito::UserPool"
+    Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: !Sub ${AuthName}-user-pool
       AdminCreateUserConfig:
@@ -24,7 +24,7 @@ Resources:
         CaseSensitive: True
       MfaConfiguration: "OFF"
       EmailConfiguration:
-        EmailSendingAccount: "COGNITO_DEFAULT"
+        EmailSendingAccount: COGNITO_DEFAULT
       Policies:
         PasswordPolicy:
           MinimumLength: 12
@@ -39,7 +39,7 @@ Resources:
           Mutable: false
           Required: true
   UserPoolClient:
-    Type: "AWS::Cognito::UserPoolClient"
+    Type: AWS::Cognito::UserPoolClient
     Properties:
       ClientName: !Sub ${AuthName}-client
       GenerateSecret: true
@@ -48,26 +48,26 @@ Resources:
         - !Sub ${ExternalUrl}/login/oauth2/code/cognito
         - http://localhost:8080/login/oauth2/code/cognito
       SupportedIdentityProviders:
-        - "COGNITO"
+        - COGNITO
       AllowedOAuthFlowsUserPoolClient: True
       AllowedOAuthFlows:
-        - "code"
+        - code
       AllowedOAuthScopes:
-        - "email"
-        - "openid"
-        - "profile"
-      PreventUserExistenceErrors: "ENABLED"
+        - email
+        - openid
+        - profile
+      PreventUserExistenceErrors: ENABLED
   UserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       UserPoolId: !Ref UserPool
-      Domain: "dev101"
+      Domain: dev101
 Outputs:
   UserPoolId:
     Value: !Ref UserPool
     Export:
-      Name: "UserPool::Id"
+      Name: UserPool::Id
   UserPoolClientId:
     Value: !Ref UserPoolClient
     Export:
-      Name: "UserPoolClient::Id"
+      Name: UserPoolClient::Id

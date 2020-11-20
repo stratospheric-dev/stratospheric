@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export AWS_PAGER=""
 
-../../stack-exists.sh "aws101-cognito"
+../../stack-exists.sh "stratospheric-cognito"
 stack_exists=$?
 if [ "$stack_exists" -eq 0 ]
 then

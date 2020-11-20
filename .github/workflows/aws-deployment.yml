@@ -84,11 +84,11 @@ jobs:
         run: |
           cd application
           docker build -t todo-app .
-          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
-          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:latest
+          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/stratospheric:${GITHUB_RUN_NUMBER}
+          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/stratospheric:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws101:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/stratospheric:${GITHUB_RUN_NUMBER}
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/stratospheric:latest
 
       - name: Create or update application stack
         if: github.ref == 'refs/heads/main'
@@ -99,4 +99,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cloudformation/application-setup-basic/stacks/application
-          ./create-or-update-application-stack.sh ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/aws101:${GITHUB_RUN_NUMBER}
+          ./create-or-update-application-stack.sh ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/stratospheric:${GITHUB_RUN_NUMBER}

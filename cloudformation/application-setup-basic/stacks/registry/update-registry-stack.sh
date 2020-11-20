@@ -2,11 +2,11 @@
 export AWS_PAGER=""
 
 aws cloudformation update-stack \
-  --stack-name aws101-container-registry \
+  --stack-name stratospheric-container-registry \
   --template-body file://registry.yml \
   --capabilities CAPABILITY_IAM \
   --parameters \
-    ParameterKey=RegistryName,ParameterValue=aws101 2> update_error
+    ParameterKey=RegistryName,ParameterValue=stratospheric 2> update_error
 
 # Sadly, the AWS CLI returns an error when no update is to be performed. But we want to
 # call it a success if the stack is up-to-date. So, we have to work around this by
@@ -28,4 +28,4 @@ then
   exit 1
 fi
 
-aws cloudformation wait stack-update-complete --stack-name aws101-container-registry
+aws cloudformation wait stack-update-complete --stack-name stratospheric-container-registry

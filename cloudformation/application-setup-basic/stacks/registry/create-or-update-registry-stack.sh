@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export AWS_PAGER=""
 
-../../stack-exists.sh "aws101-container-registry"
+../../stack-exists.sh "stratospheric-container-registry"
 stack_exists=$?
 if [ "$stack_exists" -eq 0 ]
 then
