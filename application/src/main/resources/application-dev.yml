@@ -15,12 +15,12 @@ spring:
     oauth2:
       client:
         registration:
-          keycloak:
+          cognito:
             clientId: spring-boot-application
-            clientSecret: 5e9b500f-e673-49f7-8b25-5be56502fa6c
+            clientSecret: 92b265eb-012a-4294-a3ce-a4fe6ac6ed7b
             scope: openid
         provider:
-          keycloak:
+          cognito:
             issuerUri: http://localhost:8888/auth/realms/stratospheric
   h2:
     console:

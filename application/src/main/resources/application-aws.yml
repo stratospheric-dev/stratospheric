@@ -22,6 +22,3 @@ spring:
           cognito:
             issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
             usernameAttribute: cognito:username
-
-custom:
-  invitation-codes: DUKE, HELLO_WORLD, AWSDEV101 # TODO: outsource them -> e.g. env variable or database
