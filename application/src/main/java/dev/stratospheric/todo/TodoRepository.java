@@ -1,11 +1,15 @@
 package dev.stratospheric.todo;
 
 import dev.stratospheric.person.Person;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface TodoRepository extends CrudRepository<Todo, Long> {
+import java.util.List;
 
-  Iterable<Todo> findAllByOwner(Person person);
+public interface TodoRepository extends JpaRepository<Todo, Long> {
+
+  List<Todo> findAllByOwner(Person person);
+
+  List<Todo> findAllByOwnerEmail(String email);
+
+  List<Todo> findAllByOwnerEmailOrderByIdAsc(String email);
 }

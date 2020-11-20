@@ -15,3 +15,8 @@ custom:
   updates-topic: stratospheric-todo-updates
   websocket-url: ws://app.stratospheric.dev/websocket
   external-url: https://app.stratospheric.dev
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate

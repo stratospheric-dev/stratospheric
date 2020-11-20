@@ -4,7 +4,6 @@ import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.todo.Todo;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -22,14 +21,13 @@ public class Person {
   @Column(unique = true)
   private String email;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
   private List<Todo> ownedTodos;
 
   @ManyToMany(mappedBy = "collaborators")
   private List<Todo> collaborativeTodos;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "person_id")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "collaborator")
   private List<TodoCollaborationRequest> collaborationRequests;
 
   public Long getId() {

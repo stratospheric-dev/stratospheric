@@ -134,8 +134,8 @@ public class TodoController {
 
   @GetMapping("/{todoId}/share/{collaboratorId}")
   public String shareTodoWithCollaborator(
-    @PathVariable("todoId") long todoId,
-    @PathVariable("collaboratorId") long collaboratorId,
+    @PathVariable("todoId") Long todoId,
+    @PathVariable("collaboratorId") Long collaboratorId,
     RedirectAttributes redirectAttributes
   ) {
     String collaboratorName = todoCollaborationService.shareWithCollaborator(todoId, collaboratorId);
@@ -150,8 +150,8 @@ public class TodoController {
 
   @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
   public String confirmCollaboration(
-    @PathVariable("todoId") long todoId,
-    @PathVariable("collaboratorId") long collaboratorId,
+    @PathVariable("todoId") Long todoId,
+    @PathVariable("collaboratorId") Long collaboratorId,
     @PathVariable("token") String token,
     RedirectAttributes redirectAttributes
   ) {

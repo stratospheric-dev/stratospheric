@@ -15,6 +15,7 @@ public class TodoCollaborationRequest {
   private String token;
 
   @ManyToOne
+  @JoinColumn(name = "collaborator_id")
   private Person collaborator;
 
   @ManyToOne

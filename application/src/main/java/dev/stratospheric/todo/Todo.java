@@ -26,9 +26,11 @@ public class Todo {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate dueDate;
 
+  @Enumerated(EnumType.STRING)
   private Status status;
 
   @ManyToOne
+  @JoinColumn(name = "owner_id")
   private Person owner;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,6 +46,10 @@ public class Todo {
   private List<TodoCollaborationRequest> collaborationRequests;
 
   @ManyToMany
+  @JoinTable(name = "todo_collaboration",
+    joinColumns = @JoinColumn(name = "todo_id"),
+    inverseJoinColumns = @JoinColumn(name = "collaborator_id")
+  )
   private List<Person> collaborators;
 
   public Long getId() {

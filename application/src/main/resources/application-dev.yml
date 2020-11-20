@@ -17,7 +17,7 @@ spring:
         registration:
           cognito:
             clientId: spring-boot-application
-            clientSecret: 92b265eb-012a-4294-a3ce-a4fe6ac6ed7b
+            clientSecret: 27b07baf-53ba-42c6-b11f-6384769cada3
             scope: openid
         provider:
           cognito:

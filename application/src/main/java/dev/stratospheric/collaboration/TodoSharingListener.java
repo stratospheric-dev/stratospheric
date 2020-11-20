@@ -19,12 +19,12 @@ public class TodoSharingListener {
   }
 
   @SqsListener(value = "${custom.sharing-queue}")
-  public void listenToSharingMessages(TodoCollaborationRequest payload) {
+  public void listenToSharingMessages(TodoCollaborationNotification payload) {
     LOG.info("Incoming todo sharing payload: {}", payload);
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom("noreply@stratospheric.dev");
-    message.setTo(payload.getCollaborator().getEmail());
+    message.setTo(payload.getCollaboratorEmail());
     message.setSubject("A todo was shared with you");
     message.setText(
       String.format(
@@ -39,13 +39,13 @@ public class TodoSharingListener {
           "https://app.stratospheric.dev/todo/%s/confirmCollaboration/%s/%s " +
           "\n\n" +
           "Kind regards, \n" +
-          "AWS101",
-        payload.getCollaborator().getName(),
-        payload.getTodo().getTitle(),
-        payload.getTodo().getDescription(),
-        payload.getTodo().getPriority(),
-        payload.getTodo().getId(),
-        payload.getCollaborator().getId(),
+          "Stratospheric",
+        payload.getCollaboratorEmail(),
+        payload.getTodoTitle(),
+        payload.getTodoDescription(),
+        payload.getTodoPriority(),
+        payload.getTodoId(),
+        payload.getCollaboratorId(),
         payload.getToken()
       )
     );
