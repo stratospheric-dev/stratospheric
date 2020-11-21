@@ -22,10 +22,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authorize
           .mvcMatchers(
             "/",
-            "/h2-console/**",
             "/health",
             "/register",
-            "/signin",
+            "/webjars/**",
+            "/styles.css",
             "/rocket.svg"
           )
           .permitAll()

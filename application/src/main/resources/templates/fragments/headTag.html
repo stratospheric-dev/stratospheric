@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,10 +22,9 @@
           integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
           crossorigin="anonymous"></script>
 
-  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-
-  <script src="/todo-updates.js"></script>
+  <script src="/webjars/sockjs-client/sockjs.min.js" sec:authorize="isAuthenticated()"></script>
+  <script src="/webjars/stomp-websocket/stomp.min.js" sec:authorize="isAuthenticated()"></script>
+  <script src="/todo-updates.js" sec:authorize="isAuthenticated()"></script>
 </head>
 <body>
 </body>
