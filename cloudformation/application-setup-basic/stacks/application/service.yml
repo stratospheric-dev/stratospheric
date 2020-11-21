@@ -88,10 +88,6 @@ Resources:
       Actions:
         - TargetGroupArn: !Ref 'TargetGroup'
           Type: 'forward'
-          ForwardConfig:
-            TargetGroupStickinessConfig:
-              DurationSeconds: 3600
-              Enabled: true
       Conditions:
         - Field: path-pattern
           Values: [!Ref 'Path']
@@ -106,10 +102,6 @@ Resources:
       Actions:
         - TargetGroupArn: !Ref 'TargetGroup'
           Type: 'forward'
-          ForwardConfig:
-            TargetGroupStickinessConfig:
-              DurationSeconds: 3600
-              Enabled: true
       Conditions:
         - Field: path-pattern
           Values: [!Ref 'Path']

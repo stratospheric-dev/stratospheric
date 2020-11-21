@@ -60,23 +60,23 @@ Resources:
         NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
         DBName: !Ref 'DatabaseStackDBName'
         DBUsername: !Ref 'DatabaseStackDBUsername'
-#
-#  ServiceStack:
-#    Type: AWS::CloudFormation::Stack
-#    Properties:
-#      TemplateURL: !Ref 'ServiceStackTemplateUrl'
-#      Parameters:
-#        NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
-#        RegistryStackName: !Ref 'RegistryStackName'
-#        ServiceName: 'stratospheric-todo-app'
-#        HealthCheckPath: '/health'
-#        HealthCheckPort: 8080
-#        HealthCheckIntervalSeconds: 180
-#        ImageUrl: !Ref 'ServiceStackImageUrl'
-#        ContainerPort: 8080
-#        ContainerCpu: 256
-#        ContainerMemory: 512
-#        Path: '*'
-#        DesiredCount: 2
-#        UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
-#        DatabaseStackName: !GetAtt DatabaseStack.Outputs.StackName
+
+  ServiceStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref 'ServiceStackTemplateUrl'
+      Parameters:
+        NetworkStackName: !GetAtt NetworkStack.Outputs.StackName
+        RegistryStackName: !Ref 'RegistryStackName'
+        ServiceName: 'stratospheric-todo-app'
+        HealthCheckPath: '/health'
+        HealthCheckPort: 8080
+        HealthCheckIntervalSeconds: 180
+        ImageUrl: !Ref 'ServiceStackImageUrl'
+        ContainerPort: 8080
+        ContainerCpu: 256
+        ContainerMemory: 512
+        Path: '*'
+        DesiredCount: 2
+        UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
+        DatabaseStackName: !GetAtt DatabaseStack.Outputs.StackName
