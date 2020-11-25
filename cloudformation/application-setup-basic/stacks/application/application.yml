@@ -75,7 +75,7 @@ Resources:
         ImageUrl: !Ref 'ServiceStackImageUrl'
         ContainerPort: 8080
         ContainerCpu: 512
-        ContainerMemory: 512
+        ContainerMemory: 1024
         Path: '*'
         DesiredCount: 2
         UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
