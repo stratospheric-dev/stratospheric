@@ -5,6 +5,8 @@ cloud:
     region:
       auto: false
       static: eu-central-1
+    credentials:
+      use-default-aws-credentials-chain: true
 
 server:
   forward-headers-strategy: framework
