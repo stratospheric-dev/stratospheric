@@ -14,9 +14,6 @@ spring:
         provider:
           cognito:
             issuerUri: http://localhost:8888/auth/realms/stratospheric
-  h2:
-    console:
-      enabled: true
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
