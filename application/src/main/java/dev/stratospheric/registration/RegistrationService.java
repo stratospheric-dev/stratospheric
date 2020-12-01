@@ -48,12 +48,20 @@ public class RegistrationService {
       createUserResult = new AdminCreateUserResult();
 
       UserType userType = new UserType();
-      userType.setUsername("Admin");
+      userType.setUsername(registration.getUsername());
       List<AttributeType> attributeTypeList = new ArrayList<>();
-      AttributeType emailAttributeType = new AttributeType();
-      emailAttributeType.setName("email");
-      emailAttributeType.setValue("admin@stratospheric.dev");
-      attributeTypeList.add(emailAttributeType);
+      AttributeType emailAttribute = new AttributeType();
+      emailAttribute.setName("email");
+      emailAttribute.setValue(registration.getEmail());
+      attributeTypeList.add(emailAttribute);
+      AttributeType nameAttribute = new AttributeType();
+      nameAttribute.setName("name");
+      nameAttribute.setValue(registration.getUsername());
+      attributeTypeList.add(nameAttribute);
+      AttributeType emailVerifiedAttribute = new AttributeType();
+      emailVerifiedAttribute.setName("email_verified");
+      emailVerifiedAttribute.setValue("true");
+      attributeTypeList.add(emailVerifiedAttribute);
       userType.setAttributes(attributeTypeList);
 
       createUserResult.setUser(userType);

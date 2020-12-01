@@ -19,7 +19,7 @@ Resources:
   TodoUpdates:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: stratospheric-todo-sharing-todo-updates
+      TopicName: stratospheric-todo-updates
 
 Outputs:
   TodoSharingQueueArn:

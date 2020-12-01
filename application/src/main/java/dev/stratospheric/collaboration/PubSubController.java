@@ -57,7 +57,7 @@ public class PubSubController {
   ) {
     LOG.info("Todo update received. Subject '{}': {}", subject, message);
 
-    Person person = personRepository.findByName("Admin").orElse(null);
+    Person person = personRepository.findByName("Duke").orElse(null);
     if (principal != null) {
       person = personRepository.findByName(principal.getName()).orElse(null);
     }

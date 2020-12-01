@@ -11,7 +11,7 @@ aws sns subscribe \
   --profile localstack \
   --topic-arn $TODO_UPDATES_ARN \
   --protocol http \
-  --endpoint $EXTERNAL_URL/stratospheric-todo-updates
+  --notification-endpoint $EXTERNAL_URL/stratospheric-todo-updates
 
 echo "AWS SNS topic ARN:                  " $TODO_UPDATES_ARN
-echo "AWS SNS endpoint:                   " $EXTERNAL_URL "/stratospheric-todo-updates"
+echo "AWS SNS endpoint:                   " $EXTERNAL_URL/stratospheric-todo-updates

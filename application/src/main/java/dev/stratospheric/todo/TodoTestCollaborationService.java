@@ -24,7 +24,7 @@ public class TodoTestCollaborationService {
   }
 
   public String testConfirmCollaboration() {
-    String subject = "admin@stratospheric.dev";
+    String subject = "info@stratospheric.dev";
     String message = "User nobody has accepted your collaboration request for todo #1.";
 
     LOG.info("Message sent to AWS SNS: {} {}", subject, message);
