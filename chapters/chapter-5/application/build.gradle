@@ -14,6 +14,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', 'Hoxton.SR9')
+  set('testcontainersVersion', '1.15.0')
 }
 
 dependencies {
@@ -41,7 +42,8 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+  }
 }
 
 test {
