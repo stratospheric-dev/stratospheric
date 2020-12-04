@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: head"></head>
+<body>
+<div th:replace="fragments/navBar :: header"></div>
+<section class="section">
+  <div class="container has-text-centered">
+    <h1 class="title text-center">Register</h1>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
+        <form th:action="@{/register}" th:object="${registration}" method="post">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" th:field="*{username}" class="form-control" id="username">
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" th:field="*{email}" class="form-control" id="email" required
+                   aria-describedby="emailHelp">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="invitationCode">Invitation code</label>
+            <input type="text" th:field="*{invitationCode}" class="form-control" id="invitationCode" required
+                   aria-describedby="invitationCodeHelp">
+            <small id="invitationCodeHelp" class="form-text text-muted">Enter the invitation code you received to
+              register.</small>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
