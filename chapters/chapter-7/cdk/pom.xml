@@ -9,7 +9,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdk.version>1.66.0</cdk.version>
+    <cdk.version>1.77.0</cdk.version>
+    <junit.version>5.7.0</junit.version>
+    <java.version>11</java.version>
   </properties>
 
   <build>
@@ -60,11 +62,10 @@
       <version>0.0.3</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/junit/junit -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
