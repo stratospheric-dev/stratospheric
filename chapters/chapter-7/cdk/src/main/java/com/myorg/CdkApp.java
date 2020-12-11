@@ -1,6 +1,6 @@
 package com.myorg;
 
-import dev.stratospheric.cdk.SpringBootApplication;
+import dev.stratospheric.cdk.SpringBootApplicationStack;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
@@ -17,7 +17,7 @@ public class CdkApp {
     String region = (String) app.getNode().tryGetContext("region");
     Objects.requireNonNull(region, "context variable 'region' must not be null");
 
-    new SpringBootApplication(
+    new SpringBootApplicationStack(
       app,
       "SpringBootApplication",
       makeEnv(accountId, region),

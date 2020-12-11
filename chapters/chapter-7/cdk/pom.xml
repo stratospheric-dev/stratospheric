@@ -57,7 +57,7 @@
     <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.7</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/junit/junit -->
