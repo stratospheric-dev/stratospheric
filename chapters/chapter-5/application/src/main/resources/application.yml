@@ -13,8 +13,3 @@ server:
 
 custom:
   invitation-codes: DUKE, HELLO_WORLD, AWSDEV101
-
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: validate

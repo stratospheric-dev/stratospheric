@@ -1,14 +1,6 @@
 version: '3.3'
 
 services:
-  postgres:
-    image: postgres:11.5
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=stratospheric
-      - POSTGRES_PASSWORD=stratospheric
-      - POSTGRES_DB=stratospheric
   keycloak:
     image: jboss/keycloak:11.0.0
     ports:

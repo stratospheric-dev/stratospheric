@@ -1,11 +1,8 @@
 package dev.stratospheric.registration;
 
-import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
 import com.amazonaws.services.cognitoidp.model.UserType;
 import com.amazonaws.services.cognitoidp.model.UsernameExistsException;
-import dev.stratospheric.person.Person;
-import dev.stratospheric.person.PersonRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,14 +18,11 @@ import javax.validation.Valid;
 public class RegistrationController {
 
   private final RegistrationService registrationService;
-  private final PersonRepository personRepository;
 
   public RegistrationController(
-    RegistrationService registrationService,
-    PersonRepository personRepository
+    RegistrationService registrationService
   ) {
     this.registrationService = registrationService;
-    this.personRepository = personRepository;
   }
 
   @GetMapping
@@ -49,14 +43,6 @@ public class RegistrationController {
 
     try {
       UserType user = registrationService.registerUser(registration);
-      Person person = new Person();
-      person.setUsername(user.getUsername());
-      for (AttributeType attribute : user.getAttributes()) {
-        if (attribute.getName().equals("email")) {
-          person.setEmail(attribute.getValue());
-        }
-      }
-      personRepository.save(person);
 
       redirectAttributes.addFlashAttribute("message",
         "You successfully registered for the Todo App. " +
