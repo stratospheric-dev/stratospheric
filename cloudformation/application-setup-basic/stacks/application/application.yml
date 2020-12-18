@@ -74,8 +74,8 @@ Resources:
         HealthCheckIntervalSeconds: 180
         ImageUrl: !Ref 'ServiceStackImageUrl'
         ContainerPort: 8080
-        ContainerCpu: 512
-        ContainerMemory: 1024
+        ContainerCpu: 256
+        ContainerMemory: 512
         Path: '*'
         DesiredCount: 2
         UserPoolClientSecret: !Ref 'ServiceStackUserPoolClientSecret'
