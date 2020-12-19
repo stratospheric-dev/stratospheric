@@ -1,4 +1,4 @@
-# Stratospheric - Chapter 3: Getting Warm with AWS
+# Stratospheric - Chapter 1: Getting Warm with AWS
 
 The first version of the Todo app contains only a static page. We're using this app to demonstrate how to deploy a Spring Boot application to AWS.
 
