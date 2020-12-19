@@ -1,4 +1,4 @@
-# Stratospheric - Chapter 11: Building User Registration and Login with AWS Cognito
+# Stratospheric - Chapter 10: Building User Registration and Login with AWS Cognito
 
 ## Running the app
 
