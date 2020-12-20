@@ -1,15 +1,14 @@
 package com.myorg;
 
+import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.core.App;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CdkTest {
     private final static ObjectMapper JSON =
