@@ -35,5 +35,7 @@ jobs:
 
       - name: Build the application
         run: |
-          cd chapters/chapter-${{ matrix.chapter-numbers }}/application
-          ./gradlew build --stacktrace
+          if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/application" ]; then
+            cd chapters/chapter-${{ matrix.chapter-numbers }}/application
+            ./gradlew build --stacktrace
+          fi
