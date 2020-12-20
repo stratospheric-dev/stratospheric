@@ -31,8 +31,6 @@ jobs:
             cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
             npm install aws-cdk
             mvn package
-            npx cdk deploy
-            npx cdk destroy --force
           fi
 
       - name: Build the application
