@@ -128,30 +128,31 @@ Resources:
       CidrBlock: '10.0.101.0/24'
       MapPublicIpOnLaunch: false
 
-    PrivateSubnetTwo:
-      Type: AWS::EC2::Subnet
-      Properties:
-        AvailabilityZone:
-          Fn::Select:
-            - 1
-            - Fn::GetAZs: {Ref: 'AWS::Region'}
-        VpcId: !Ref 'VPC'
-        CidrBlock: '10.0.102.0/24'
-        MapPublicIpOnLaunch: false
+  PrivateSubnetTwo:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: {Ref: 'AWS::Region'}
+      VpcId: !Ref 'VPC'
+      CidrBlock: '10.0.102.0/24'
+      MapPublicIpOnLaunch: false
 
-    DBSecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      Properties:
-        GroupDescription: Access to the RDS instance
-        VpcId: !Ref 'VPC'
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the RDS instance
+      VpcId: !Ref 'VPC'
 
-    DBSecurityGroupIngressFromECS:
-      Type: AWS::EC2::SecurityGroupIngress
-      Properties:
-        Description: Ingress from the ECS containers to the RDS instance
-        GroupId: !Ref 'DBSecurityGroup'
-        IpProtocol: -1
-        SourceSecurityGroupId: !Ref 'ECSSecurityGroup'
+  DBSecurityGroupIngressFromECS:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from the ECS containers to the RDS instance
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref 'ECSSecurityGroup'
+
 Outputs:
   ClusterName:
     Description: The name of the ECS cluster
