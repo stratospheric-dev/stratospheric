@@ -1,28 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}"
-      th:with="activeMenuItem='dashboard'">
-<head>
-  <title>Dashboard</title>
-</head>
-<section class="section" layout:fragment="page-content">
+>
+<head th:replace="fragments/headTag :: head"></head>
+<body>
+<section class="section">
   <div class="container has-text-centered">
     <h1 class="title">
       Welcome to the Todo Application!
     </h1>
-    <div class="container" sec:authorize="isAnonymous()">
-      <p>Seems like you are not logged-in yet. Please login first to see your Todos.</p>
-      <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
-        Login
-      </a>
-    </div>
-
-    <div class="container" sec:authorize="isAuthenticated()">
-      <p>Welcome to the Application!</p>
-    </div>
   </div>
 </section>
+</body>
 </html>
