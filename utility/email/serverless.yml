@@ -3,7 +3,6 @@ service: email-utilities
 provider:
   name: aws
   runtime: java11
-  profile: default # has to match your local Stratospheric AWS profile
   region: eu-central-1
   timeout: 10
   memorySize: 1024

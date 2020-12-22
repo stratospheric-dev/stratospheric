@@ -1,0 +1,36 @@
+name: Email Forward Handler
+on:
+  push:
+    paths:
+      - 'utility/email/**'
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build and deploy AWS lambda
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Gradle cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build and deploy the function
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          sudo npm install -g serverless
+          cd utility/email
+          ./gradlew buildZip
+          serverless deploy
