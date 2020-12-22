@@ -1,5 +1,6 @@
 package dev.stratospheric.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,20 +15,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .oauth2Login()
       .and()
-      .authorizeRequests(authorize ->
-        authorize
-          .mvcMatchers(
-            "/",
-            "/health",
-            "/register",
-            "/webjars/**",
-            "/styles.css",
-            "/rocket.svg"
-          )
-          .permitAll()
-          .anyRequest()
-          .authenticated()
-      )
+      .authorizeRequests()
+      .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+      .mvcMatchers("/", "/health", "/register").permitAll()
+      .and()
       .logout()
       .logoutSuccessUrl("/");
   }
