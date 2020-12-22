@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragments/headTag :: head"></head>
-<body>
-<div th:replace="fragments/navBar :: header"></div>
-<section class="section">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='dashboard'">
+<head>
+  <title>Dashboard</title>
+</head>
+<section class="section" layout:fragment="page-content">
   <div class="container has-text-centered">
     <h1 class="title">
       Welcome to the Todo Application!
     </h1>
-    <div th:replace="fragments/messages :: messages"></div>
-
     <div class="container" sec:authorize="isAnonymous()">
       <p>Seems like you are not logged-in yet. Please login first to see your Todos.</p>
       <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
@@ -24,5 +25,4 @@
     </div>
   </div>
 </section>
-</body>
 </html>

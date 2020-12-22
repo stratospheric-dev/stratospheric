@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/headTag :: head"></head>
-<body>
-<div th:replace="fragments/navBar :: header"></div>
-<section class="section">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='register'">
+<head>
+  <title>Register</title>
+</head>
+<section class="section" layout:fragment="page-content">
   <div class="container has-text-centered">
     <h1 class="title text-center">Register</h1>
     <div class="row">

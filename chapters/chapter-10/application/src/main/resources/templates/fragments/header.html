@@ -2,9 +2,9 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-</head>
-<body>
+
+<!--/*@thymesVar id="activeMenuItem" type="java.lang.String"*/-->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
   <a class="navbar-brand" th:href="@{/}">Todo Application</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -13,9 +13,20 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          th:classappend="${activeMenuItem == 'dashboard'}? 'active' : ''"
+          th:href="@{/}">Dashboard</a>
+      </li>
+    </ul>
     <ul class="navbar-nav">
       <li class="nav-item" sec:authorize="isAnonymous()">
-        <a th:class="${'nav-link ' + registrationPageActiveClass}" th:href="@{/register}">
+        <a
+          class="nav-link"
+          th:classappend="${activeMenuItem == 'register'}? 'active' : ''"
+          th:href="@{/register}">
           Register
         </a>
       </li>
@@ -35,5 +46,4 @@
     </ul>
   </div>
 </nav>
-</body>
 </html>
