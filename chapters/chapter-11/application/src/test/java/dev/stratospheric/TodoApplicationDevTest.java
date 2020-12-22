@@ -19,6 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class TodoApplicationDevTest {
 
+  public static DockerComposeContainer<?> environment =
+    new DockerComposeContainer<>(new File("docker-compose.yml"))
+      .withExposedService("postgres_1", 5432, Wait.forListeningPort());
+
+  static {
+    environment.start();
+  }
+
   @Autowired
   private ApplicationContext applicationContext;
 
