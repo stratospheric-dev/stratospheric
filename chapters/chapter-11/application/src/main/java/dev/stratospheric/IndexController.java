@@ -12,12 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
   @GetMapping
-  public String getIndex(Model model, @AuthenticationPrincipal OidcUser user) {
-    if (user != null) {
-      model.addAttribute("claims", user.getIdToken().getClaims());
-      model.addAttribute("email", user.getEmail());
-    }
-
+  public String getIndex() {
     return "index";
   }
 }
