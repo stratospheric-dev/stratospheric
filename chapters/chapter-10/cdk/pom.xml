@@ -4,16 +4,16 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dev.stratospheric</groupId>
-  <artifactId>cdk</artifactId>
+  <artifactId>cdk-chapter-10</artifactId>
   <version>0.1</version>
-  <description>CDK App for Chapter 5</description>
+  <description>CDK App for Chapter 10</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cdk.version>1.76.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <java.version>11</java.version>
-    <cdk-constructs.version>0.0.1</cdk-constructs.version>
+    <cdk-constructs.version>0.0.7</cdk-constructs.version>
   </properties>
 
   <build>
