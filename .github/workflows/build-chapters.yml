@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter-numbers: [1, 8, 10]
+        chapter-numbers: [1, 8, 10, 11]
     runs-on: ubuntu-latest
     name: Build the Application for Chapter ${{ matrix.chapter-numbers }}
     steps:
