@@ -11,7 +11,6 @@ public class Registration {
   @Email
   private String email;
 
-  @NotBlank
   @ValidInvitationCode
   private String invitationCode;
 

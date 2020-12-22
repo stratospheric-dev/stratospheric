@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Set;
 
-public class InvitationCodeValidator implements ConstraintValidator<ValidInvitationCode, Registration> {
+public class InvitationCodeValidator implements ConstraintValidator<ValidInvitationCode, String> {
 
   private final Set<String> validInvitationCodes;
 
@@ -20,7 +20,12 @@ public class InvitationCodeValidator implements ConstraintValidator<ValidInvitat
   }
 
   @Override
-  public boolean isValid(Registration value, ConstraintValidatorContext context) {
-    return validInvitationCodes.contains(value.getInvitationCode());
+  public boolean isValid(String value, ConstraintValidatorContext context) {
+
+    if (value == null || value.isEmpty()) {
+      return false;
+    }
+
+    return validInvitationCodes.contains(value);
   }
 }
