@@ -1,6 +1,9 @@
 name: Build Chapter Versions
 
-on: [ push ]
+on:
+  push:
+    paths:
+      - 'chapters/**'
 
 jobs:
   build:

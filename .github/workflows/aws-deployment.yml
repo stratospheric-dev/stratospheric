@@ -1,6 +1,10 @@
 name: AWS Deployment
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'application/**'
+      - 'cloudformation/**'
 
 jobs:
   build:
@@ -33,7 +37,7 @@ jobs:
           cd application
           ./gradlew build --stacktrace
 
-      - name: "Zip build reports"
+      - name: Zip build reports
         if: failure()
         run: zip -r reports.zip **/build/reports
 
@@ -47,7 +51,7 @@ jobs:
           report_individual_runs: true
           deduplicate_classes_by_file_name: false
 
-      - name: "Upload build reports"
+      - name: Upload build reports
         uses: actions/upload-artifact@v1
         if: failure()
         with:

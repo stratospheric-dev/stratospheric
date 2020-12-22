@@ -1,6 +1,9 @@
 name: Demo Application
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'getting-started-with-spring-boot-on-aws/**'
 
 jobs:
   build:
