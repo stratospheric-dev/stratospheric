@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Profile;
 public class AwsConfig {
 
   @Bean
-  public AWSCognitoIdentityProvider awsCognitoIdentityProvider(@Value("${cloud.aws.region.static}") String region,
-                                                               AWSCredentialsProvider awsCredentialsProvider) {
+  public AWSCognitoIdentityProvider awsCognitoIdentityProvider(
+    @Value("${cloud.aws.region.static}") String region,
+    AWSCredentialsProvider awsCredentialsProvider) {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
       .withRegion(region)

@@ -48,7 +48,7 @@ public class RegistrationController {
       );
       redirectAttributes.addFlashAttribute("messageType", "success");
 
-      return "redirect:/register";
+      return "redirect:/";
     } catch (AWSCognitoIdentityProviderException exception) {
 
       model.addAttribute("registration", registration);

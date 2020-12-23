@@ -13,15 +13,24 @@
     <h1 class="title">
       Welcome to the Todo Application!
     </h1>
-    <div class="container" sec:authorize="isAnonymous()">
+    <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + messageType}" role="alert"></div>
+    <div sec:authorize="isAnonymous()">
       <p>Seems like you are not logged-in yet. Please login first to see your Todos.</p>
       <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
         Login
       </a>
     </div>
 
-    <div class="container" sec:authorize="isAuthenticated()">
-      <p>Welcome to the Application!</p>
+    <div sec:authorize="isAuthenticated()">
+      <p>Welcome to the protected area!</p>
+      <p>Your email: [[${email}]]</p>
+      <p>Your claims:</p>
+      <ul>
+        <li
+          th:each="claim : ${claims}"
+          th:text="${claim.key} + ': ' + ${claim.value}">
+        </li>
+      </ul>
     </div>
   </div>
 </section>
