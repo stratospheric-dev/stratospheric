@@ -12,4 +12,4 @@ server:
   forward-headers-strategy: framework
 
 custom:
-  invitation-codes: DUKE, HELLO_WORLD, AWSDEV101
+  invitation-codes: DUKE, STRATOSPHERIC

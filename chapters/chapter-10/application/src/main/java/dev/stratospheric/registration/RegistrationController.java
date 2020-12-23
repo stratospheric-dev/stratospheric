@@ -1,5 +1,6 @@
 package dev.stratospheric.registration;
 
+import com.amazonaws.services.cognitoidp.model.AWSCognitoIdentityProviderException;
 import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
 import com.amazonaws.services.cognitoidp.model.UserType;
 import com.amazonaws.services.cognitoidp.model.UsernameExistsException;
@@ -39,21 +40,22 @@ public class RegistrationController {
     }
 
     try {
-      UserType user = registrationService.registerUser(registration);
+      registrationService.registerUser(registration);
 
       redirectAttributes.addFlashAttribute("message",
         "You successfully registered for the Todo App. " +
           "Please check your email inbox for further instructions."
       );
       redirectAttributes.addFlashAttribute("messageType", "success");
-    } catch (InvalidParameterException | UsernameExistsException awsCognitoIdentityProviderException) {
+
+      return "redirect:/";
+    } catch (AWSCognitoIdentityProviderException exception) {
+
       model.addAttribute("registration", registration);
-      model.addAttribute("message", awsCognitoIdentityProviderException.getMessage());
+      model.addAttribute("message", exception.getMessage());
       model.addAttribute("messageType", "danger");
 
       return "register";
     }
-
-    return "redirect:/register";
   }
 }

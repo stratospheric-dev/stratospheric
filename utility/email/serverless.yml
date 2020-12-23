@@ -25,7 +25,7 @@ custom:
   emailBucket: stratospheric-emails
 
 package:
-  artifact: build/distributions/email-1.0-SNAPSHOT.zip
+  artifact: build/distributions/email-1.0.0.zip
 
 functions:
   email-forwarding:

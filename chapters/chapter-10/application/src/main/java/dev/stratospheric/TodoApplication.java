@@ -6,9 +6,7 @@ import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAu
 
 @SpringBootApplication(exclude = ContextInstanceDataAutoConfiguration.class)
 public class TodoApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(TodoApplication.class, args);
 	}
-
 }
