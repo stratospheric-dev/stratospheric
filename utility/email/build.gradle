@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-  implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.775')
+  implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.925')
   implementation 'com.amazonaws:aws-java-sdk-s3'
   implementation 'com.amazonaws:aws-java-sdk-ses'
   implementation 'org.apache.commons:commons-email:1.5'
