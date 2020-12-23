@@ -40,21 +40,22 @@ public class RegistrationController {
     }
 
     try {
-      UserType user = registrationService.registerUser(registration);
+      registrationService.registerUser(registration);
 
       redirectAttributes.addFlashAttribute("message",
         "You successfully registered for the Todo App. " +
           "Please check your email inbox for further instructions."
       );
       redirectAttributes.addFlashAttribute("messageType", "success");
+
+      return "redirect:/register";
     } catch (AWSCognitoIdentityProviderException exception) {
+
       model.addAttribute("registration", registration);
       model.addAttribute("message", exception.getMessage());
       model.addAttribute("messageType", "danger");
 
       return "register";
     }
-
-    return "redirect:/register";
   }
 }
