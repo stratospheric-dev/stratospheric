@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            clientId: ${COGNITO_CLIENT_ID}
+            clientSecret: ${COGNITO_CLIENT_SECRET}
+            scope: openid
+            clientName: stratospheric-users-client
+        provider:
+          cognito:
+            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
+            usernameAttribute: cognito:username
