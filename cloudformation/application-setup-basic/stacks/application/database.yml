@@ -14,8 +14,8 @@ Parameters:
   DBUsername:
     Type: String
     Description: The master user name for the PostgreSQL instance.
-Resources:
 
+Resources:
   Secret:
     Type: "AWS::SecretsManager::Secret"
     Properties:
