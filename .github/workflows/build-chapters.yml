@@ -32,8 +32,10 @@ jobs:
         run: |
           if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/cdk" ]; then
             cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
-            npm install aws-cdk
+            sudo npm install aws-cdk
             mvn package
+            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION}
+            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --force
           fi
 
       - name: Build the application
