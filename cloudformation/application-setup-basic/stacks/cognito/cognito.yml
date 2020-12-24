@@ -22,6 +22,10 @@ Resources:
         - email
       UsernameConfiguration:
         CaseSensitive: True
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
       MfaConfiguration: "OFF"
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
