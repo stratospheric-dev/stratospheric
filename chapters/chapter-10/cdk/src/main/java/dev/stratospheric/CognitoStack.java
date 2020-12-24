@@ -56,5 +56,4 @@ public class CognitoStack extends Stack {
       .build()));
 
   }
-
 }
