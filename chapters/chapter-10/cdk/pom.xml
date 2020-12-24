@@ -33,7 +33,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <mainClass>dev.stratospheric.Chapter5App</mainClass>
+          <mainClass>dev.stratospheric.Chapter10App</mainClass>
         </configuration>
       </plugin>
     </plugins>
@@ -59,6 +59,12 @@
     </dependency>
 
     <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cognito</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
       <version>${cdk-constructs.version}</version>
@@ -74,12 +80,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.18.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
