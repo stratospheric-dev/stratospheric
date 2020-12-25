@@ -23,8 +23,9 @@ aws cloudformation create-stack \
   --template-body file://service.yml \
   --parameters \
       ParameterKey=NetworkStackName,ParameterValue=stratospheric-basic-network \
-      ParameterKey=ServiceName,ParameterValue=stratospheric-todo-app \
-      ParameterKey=ServiceStackImageUrl,ParameterValue=$DOCKER_IMAGE_URL \
+      ParameterKey=ServiceName,ParameterValue=todo-app-v1 \
+      ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/todo-app-v1:latest \
+      ParameterKey=ContainerPort,ParameterValue=8080
       ParameterKey=DatabaseStackTemplateUrl,ParameterValue=https://s3.amazonaws.com/stratospheric.dev/stacks/application/database.yml \
       ParameterKey=DatabaseStackDBUsername,ParameterValue=stratospheric \
       ParameterKey=DatabaseStackDBName,ParameterValue=stratospheric
