@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/register",
             "/webjars/**",
             "/styles.css",
-            "/rocket.svg"
+            "/favicon.svg"
           )
           .permitAll()
           .anyRequest()

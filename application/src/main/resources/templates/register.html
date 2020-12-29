@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/headTag :: head"></head>
-<body>
-<div th:replace="fragments/navBar :: header"></div>
-<section class="section">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='register'">
+<head>
+  <title>Register</title>
+</head>
+<section class="section" layout:fragment="page-content">
   <div class="container has-text-centered">
     <h1 class="title text-center">Register</h1>
     <div class="row">
@@ -13,20 +16,33 @@
         <form th:action="@{/register}" th:object="${registration}" method="post">
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" th:field="*{username}" class="form-control" id="username">
+            <input type="text" th:field="*{username}" class="form-control" id="username" required>
           </div>
           <div class="form-group">
             <label for="email">Email address</label>
             <input type="email" th:field="*{email}" class="form-control" id="email" required
                    aria-describedby="emailHelp">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small id="emailHelp" class="form-text text-muted">
+              We'll never share your email with anyone else.
+            </small>
           </div>
           <div class="form-group">
             <label for="invitationCode">Invitation code</label>
-            <input type="text" th:field="*{invitationCode}" class="form-control" id="invitationCode" required
-                   aria-describedby="invitationCodeHelp">
-            <small id="invitationCodeHelp" class="form-text text-muted">Enter the invitation code you recieved to
-              register.</small>
+            <input
+              th:field="*{invitationCode}"
+              th:classappend="${#fields.hasErrors('invitationCode')}? 'is-invalid'"
+              type="text"
+              class="form-control"
+              id="invitationCode"
+              aria-describedby="invitationCodeHelp"
+              required>
+            <div th:if="${#fields.hasErrors('invitationCode')}"
+                 th:text="${#strings.listJoin(#fields.errors('invitationCode'), ', ')}"
+                 class="invalid-feedback">
+            </div>
+            <small id="invitationCodeHelp" class="form-text text-muted">
+              Enter the invitation code you received to register.
+            </small>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -34,5 +50,4 @@
     </div>
   </div>
 </section>
-</body>
 </html>
