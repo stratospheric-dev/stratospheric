@@ -6,9 +6,8 @@ spring:
           cognito:
             clientId: ${COGNITO_CLIENT_ID}
             clientSecret: ${COGNITO_CLIENT_SECRET}
-            scope: openid
+            scope: openid, profile, email
             clientName: stratospheric-users-client
         provider:
           cognito:
             issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
-            usernameAttribute: cognito:username

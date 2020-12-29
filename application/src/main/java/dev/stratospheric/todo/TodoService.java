@@ -29,7 +29,7 @@ public class TodoService {
 
       if (person == null) {
         Person newUser = new Person();
-        newUser.setName(user.getPreferredUsername());
+        newUser.setName(user.getName());
         newUser.setEmail(email);
 
         person = personRepository.save(newUser);

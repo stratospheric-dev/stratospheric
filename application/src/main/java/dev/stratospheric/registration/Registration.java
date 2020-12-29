@@ -1,22 +1,17 @@
 package dev.stratospheric.registration;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotBlank;
 
 public class Registration {
 
-  @NotEmpty
+  @NotBlank
   private String username;
 
   @Email
   private String email;
 
-  @Pattern(message = "Password does not match password policy.",
-    regexp = "(?=.{12,})(?=.*?[^\\w\\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*")
-  private String password;
-
-  @NotEmpty
+  @ValidInvitationCode
   private String invitationCode;
 
   public String getUsername() {
@@ -35,14 +30,6 @@ public class Registration {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
   public String getInvitationCode() {
     return invitationCode;
   }
@@ -56,7 +43,6 @@ public class Registration {
     return "Registration{" +
       "username='" + username + '\'' +
       ", email='" + email + '\'' +
-      ", password='" + password + '\'' +
       ", invitationCode='" + invitationCode + '\'' +
       '}';
   }
