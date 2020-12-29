@@ -4,6 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
+
+<!--/*@thymesVar id="headline" type="java.lang.String"*/-->
+
 <head>
   <meta charset="UTF-8">
   <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">Todo Application</title>
@@ -31,14 +34,14 @@
 
   <div th:replace="fragments/toast :: toast"></div>
 
-  <div th:replace="fragments/messages :: messages"></div>
-
-  <div layout:fragment="page-content"></div>
+  <div class="container has-text-centered">
+    <h1 th:text="${headline}" class="title text-center"></h1>
+    <div th:replace="fragments/messages :: messages"></div>
+    <div layout:fragment="page-content"></div>
+  </div>
 
   <div th:replace="fragments/modals :: confirmDeletionModal"></div>
-
   <div th:replace="fragments/footer :: footer"></div>
-</div>
 </div>
 </body>
 </html>

@@ -31,13 +31,9 @@ public class TodoController {
   }
 
   @GetMapping("/show/{id}")
-  public String showView(
-    @PathVariable("id") long id,
-    Model model
-  ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+  public String showView(@PathVariable("id") long id, Model model) {
 
-    model.addAttribute("todoShowPageActiveClass", "active");
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     model.addAttribute("todo", todo);
 
     return "todo/show";
@@ -45,26 +41,22 @@ public class TodoController {
 
   @GetMapping("/add")
   public String addView(Model model) {
-    model.addAttribute("todoAddPageActiveClass", "active");
     model.addAttribute("todo", new Todo());
-
-    return "todo/add";
+    model.addAttribute("editMode", EditMode.CREATE);
+    return "todo/edit";
   }
 
   @PostMapping
   public String add(
     @Valid Todo todo,
-    BindingResult result,
+    BindingResult bindingResult,
     Model model,
     RedirectAttributes redirectAttributes
   ) {
-    if (result.hasErrors()) {
-      model.addAttribute("message", "Your new todo couldn't be saved.");
-      model.addAttribute("messageType", "danger");
+    if (bindingResult.hasErrors()) {
       model.addAttribute("todo", todo);
-      model.addAttribute("errors", result.getFieldErrors());
-
-      return "todo/add";
+      model.addAttribute("editMode", EditMode.CREATE);
+      return "todo/edit";
     }
 
     todoService.save(todo);
@@ -72,7 +64,7 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("message", "Your new todo has been be saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
-    return "redirect:/";
+    return "redirect:/dashboard";
   }
 
   @GetMapping("/edit/{id}")
@@ -82,8 +74,8 @@ public class TodoController {
   ) {
     Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
-    model.addAttribute("todoEditPageActiveClass", "active");
     model.addAttribute("todo", todo);
+    model.addAttribute("editMode", EditMode.UPDATE);
 
     return "todo/edit";
   }
@@ -97,12 +89,9 @@ public class TodoController {
     RedirectAttributes redirectAttributes
   ) {
     if (result.hasErrors()) {
-      model.addAttribute("message", "Your todo couldn't be saved.");
-      model.addAttribute("messageType", "danger");
       model.addAttribute("todo", todo);
-      model.addAttribute("errors", result.getFieldErrors());
-
-      return "todo/update";
+      model.addAttribute("editMode", EditMode.UPDATE);
+      return "todo/edit";
     }
 
     Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
@@ -115,7 +104,7 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
-    return "redirect:/";
+    return "redirect:/dashboard";
   }
 
   @GetMapping("/delete/{id}")
@@ -129,7 +118,7 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
-    return "redirect:/";
+    return "redirect:/dashboard";
   }
 
   @GetMapping("/{todoId}/share/{collaboratorId}")
@@ -145,7 +134,7 @@ public class TodoController {
         "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
     redirectAttributes.addFlashAttribute("messageType", "success");
 
-    return "redirect:/";
+    return "redirect:/dashboard";
   }
 
   @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
@@ -162,6 +151,6 @@ public class TodoController {
         "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
     redirectAttributes.addFlashAttribute("messageType", "success");
 
-    return "redirect:/";
+    return "redirect:/dashboard";
   }
 }

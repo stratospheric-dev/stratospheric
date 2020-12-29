@@ -5,7 +5,7 @@ import dev.stratospheric.person.Person;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,13 +16,17 @@ public class Todo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotEmpty
+  @NotBlank
+  @Size(max = 30)
   private String title;
 
+  @Size(max = 100)
   private String description;
 
   private Priority priority;
 
+  @NotNull
+  @Future
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate dueDate;
 
