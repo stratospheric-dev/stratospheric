@@ -64,6 +64,7 @@ public class PubSubController {
 
     if (person != null && person.getEmail().equals(subject)) {
       try {
+        // TODO: Make sharing Todo updates via WebSockets work in a load-balanced environment (see https://github.com/stratospheric-dev/stratospheric/issues/42)
         StompSession stompSession = webSocketStompClient.connect(webSocketURL, new RelayStompSessionHandler()).get();
         stompSession.send(UPDATE_TODO_URL, message);
       } catch (InterruptedException e) {

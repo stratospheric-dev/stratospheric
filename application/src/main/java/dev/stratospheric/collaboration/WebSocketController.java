@@ -12,6 +12,7 @@ public class WebSocketController {
 
   private static final Logger LOG = LoggerFactory.getLogger(WebSocketController.class.getName());
 
+  // TODO: Make sharing Todo updates via WebSockets work in a load-balanced environment (see https://github.com/stratospheric-dev/stratospheric/issues/42)
   @MessageMapping("/updateTodo")
   @SendTo("/topic/todoUpdates")
   @ResponseBody
