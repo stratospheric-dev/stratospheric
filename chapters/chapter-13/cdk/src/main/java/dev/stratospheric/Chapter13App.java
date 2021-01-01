@@ -3,8 +3,6 @@ package dev.stratospheric;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Chapter13App {
@@ -17,12 +15,11 @@ public class Chapter13App {
     String region = (String) app.getNode().tryGetContext("region");
     Objects.requireNonNull(region, "context variable 'region' must not be null");
 
-    new MQStack(app,
-      "IdentityProvider",
+    new ActiveMQStack(app,
+      "ActiveMQ",
       makeEnv(accountId, region),
-      Map.of(
-        "spring-boot-application",
-        List.of("http://localhost:8080/login/oauth2/code/cognito", "https://app.stratospheric.dev/login/oauth2/code/cognito")));
+      "stratospheric"
+    );
 
     app.synth();
   }
