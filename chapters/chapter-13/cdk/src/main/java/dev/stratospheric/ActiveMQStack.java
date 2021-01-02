@@ -2,7 +2,6 @@ package dev.stratospheric;
 
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.amazonmq.CfnBrokerProps;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 import software.amazon.awscdk.services.secretsmanager.SecretStringGenerator;
@@ -44,24 +43,32 @@ public class ActiveMQStack extends Stack {
     List<User> userList = new ArrayList<>();
     userList.add(new User(
       username,
-      password
+      "test"
     ));
 
+
     String name = "stratospheric-message-broker";
-    CfnBroker cfnBroker = new CfnBroker(
-      this,
-      name,
-      CfnBrokerProps
+    CfnBroker cfnBroker = CfnBroker.Builder
+      .create(
+        this,
+        name
+      )
+      .brokerName(name)
+      .hostInstanceType("mq.t2.micro")
+      .engineType("ACTIVEMQ")
+      .engineVersion("5.15.14")
+      .authenticationStrategy("SIMPLE")
+      .users(userList)
+      .publiclyAccessible(true)
+      .autoMinorVersionUpgrade(true)
+      .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
+      .build();
+
+    new CfnOutput(this,
+      "ActiveMQEndpoint",
+      CfnOutputProps
         .builder()
-        .brokerName(name)
-        .hostInstanceType("mq.t2.micro")
-        .engineType("ACTIVEMQ")
-        .engineVersion("5.15.14")
-        .authenticationStrategy("SIMPLE")
-        .users(userList)
-        .publiclyAccessible(true)
-        .autoMinorVersionUpgrade(true)
-        .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
+        .value(cfnBroker.getAttrAmqpEndpoints().get(0))
         .build()
     );
 
