@@ -5,8 +5,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import org.springframework.context.annotation.Bean;
@@ -29,14 +27,6 @@ public class LocalAwsConfig {
   @Bean
   public AmazonSQSAsync amazonSQS() {
     return AmazonSQSAsyncClientBuilder.standard()
-      .withCredentials(DUMMY_CREDENTIALS)
-      .withEndpointConfiguration(LOCAL_ENDPOINT)
-      .build();
-  }
-
-  @Bean
-  public AmazonSNS amazonSNS() {
-    return AmazonSNSClientBuilder.standard()
       .withCredentials(DUMMY_CREDENTIALS)
       .withEndpointConfiguration(LOCAL_ENDPOINT)
       .build();

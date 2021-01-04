@@ -160,14 +160,6 @@ Resources:
                   - 'ses:*'
                 # TODO: fine grained resources access
                 Resource: '*'
-        - PolicyName: AllowAccessToSNS
-          PolicyDocument:
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'sns:*'
-                # TODO: fine grained resources access
-                Resource: '*'
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition

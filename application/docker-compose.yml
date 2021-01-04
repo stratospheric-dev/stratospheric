@@ -14,7 +14,7 @@ services:
     ports:
       - 4566:4566
     environment:
-      - SERVICES=sqs,sns,ses
+      - SERVICES=sqs,ses
       - DEFAULT_REGION=eu-central-1
     volumes:
       - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh

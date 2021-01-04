@@ -16,10 +16,6 @@ Resources:
     Properties:
       QueueName: stratospheric-todo-sharing-dead-letter-queue
       MessageRetentionPeriod: 1209600 # 14 days maximum
-  TodoUpdates:
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: stratospheric-todo-updates
 
 Outputs:
   TodoSharingQueueArn:

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-awslocal sns create-topic --name stratospheric-todo-updates
-
 awslocal sqs create-queue --queue-name stratospheric-todo-sharing
 
 awslocal ses verify-email-identity --email-address noreply@stratospheric.dev
