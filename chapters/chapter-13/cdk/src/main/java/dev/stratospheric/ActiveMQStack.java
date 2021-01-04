@@ -69,26 +69,12 @@ public class ActiveMQStack extends Stack {
         .value(cfnBroker.getAttrAmqpEndpoints().get(0))
         .build()
     );
-    new CfnOutput(this,
-      "ActiveMQEndpoint2",
-      CfnOutputProps
-        .builder()
-        .value(cfnBroker.getAttrAmqpEndpoints().get(1))
-        .build()
-    );
 
     new CfnOutput(this,
       "ActiveMQStompEndpoint1",
       CfnOutputProps
         .builder()
         .value(cfnBroker.getAttrStompEndpoints().get(0))
-        .build()
-    );
-    new CfnOutput(this,
-      "ActiveMQStompEndpoint2",
-      CfnOutputProps
-        .builder()
-        .value(cfnBroker.getAttrStompEndpoints().get(1))
         .build()
     );
 
