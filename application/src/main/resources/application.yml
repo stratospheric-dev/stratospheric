@@ -13,9 +13,6 @@ server:
 
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
-  sharing-queue: stratospheric-todo-sharing
-  updates-topic: stratospheric-todo-updates
-  websocket-url: ws://app.stratospheric.dev/websocket
   external-url: https://app.stratospheric.dev
 
 spring:

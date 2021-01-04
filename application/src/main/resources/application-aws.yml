@@ -11,3 +11,7 @@ spring:
         provider:
           cognito:
             issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
+  activemq:
+    broker-url: ${AMAZON_MQ_ACTIVE_MQ_BROKER_URL}
+    user: ${AMAZON_MQ_ACTIVE_MQ_USER}
+    password: ${AMAZON_MQ_ACTIVE_MQ_PASSWORD}

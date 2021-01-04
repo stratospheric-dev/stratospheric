@@ -1,15 +1,15 @@
 package dev.stratospheric.todo;
 
-import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.collaboration.TodoCollaborationNotification;
+import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.collaboration.TodoCollaborationRequestRepository;
 import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,10 +24,7 @@ public class TodoCollaborationService {
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
   private final QueueMessagingTemplate queueMessagingTemplate;
-  private final NotificationMessagingTemplate notificationMessagingTemplate;
-
   private final String todoSharingQueueName;
-  private final String todoUpdatesTopic;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
 
@@ -39,16 +36,12 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName,
-    NotificationMessagingTemplate notificationMessagingTemplate,
-    @Value("${custom.updates-topic}") String todoUpdatesTopic) {
+    @Value("${custom.sharing-queue}") String todoSharingQueueName) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
-    this.notificationMessagingTemplate = notificationMessagingTemplate;
-    this.todoUpdatesTopic = todoUpdatesTopic;
   }
 
   public String shareWithCollaborator(Long todoId, Long collaboratorId) {
@@ -71,6 +64,7 @@ public class TodoCollaborationService {
     return collaborator.getName();
   }
 
+  @SendTo("/topic/todoUpdates")
   public String confirmCollaboration(Long todoId, Long collaboratorId, String token) {
     Todo todo = todoRepository
       .findById(todoId)
@@ -89,15 +83,10 @@ public class TodoCollaborationService {
         + " has accepted your collaboration request for todo #"
         + todoCollaborationRequest.getTodo().getId()
         + ".";
-      notificationMessagingTemplate.sendNotification(
-        todoUpdatesTopic,
-        message,
-        subject
-      );
 
       todoCollaborationRequestRepository.delete(todoCollaborationRequest);
 
-      return subject;
+      return subject + " " + message;
     }
 
     return "Collaboration request invalid.";
