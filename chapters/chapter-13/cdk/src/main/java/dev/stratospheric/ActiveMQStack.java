@@ -1,11 +1,11 @@
 package dev.stratospheric;
 
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.secretsmanager.ISecret;
-import software.amazon.awscdk.services.secretsmanager.Secret;
-import software.amazon.awscdk.services.secretsmanager.SecretStringGenerator;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,24 +26,22 @@ public class ActiveMQStack extends Stack {
         .build()
     );
 
-    ISecret secret = Secret.Builder.create(this, "activeMQSecret")
-      .secretName("ActiveMQSecret")
-      .description("Credentials for the ActiveMQ instance")
-      .generateSecretString(
-        SecretStringGenerator
-          .builder()
-          .secretStringTemplate(String.format("{\"username\": \"%s\"}", username))
-          .generateStringKey("password")
-          .passwordLength(32)
-          .build()
-      )
-      .build();
-    String password = secret.secretValueFromJson("password").toString();
+    PasswordGenerator passwordGenerator = new PasswordGenerator();
+    CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+    CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+    lowerCaseRule.setNumberOfCharacters(5);
+    CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+    CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+    upperCaseRule.setNumberOfCharacters(5);
+    CharacterData digitChars = EnglishCharacterData.Digit;
+    CharacterRule digitRule = new CharacterRule(digitChars);
+    digitRule.setNumberOfCharacters(5);
+    String password = passwordGenerator.generatePassword(32, lowerCaseRule, upperCaseRule, digitRule);
 
     List<User> userList = new ArrayList<>();
     userList.add(new User(
       username,
-      "test"
+      password
     ));
 
 
@@ -65,18 +63,32 @@ public class ActiveMQStack extends Stack {
       .build();
 
     new CfnOutput(this,
-      "ActiveMQEndpoint",
+      "ActiveMQEndpoint1",
       CfnOutputProps
         .builder()
         .value(cfnBroker.getAttrAmqpEndpoints().get(0))
         .build()
     );
+    new CfnOutput(this,
+      "ActiveMQEndpoint2",
+      CfnOutputProps
+        .builder()
+        .value(cfnBroker.getAttrAmqpEndpoints().get(1))
+        .build()
+    );
 
     new CfnOutput(this,
-      "ActiveMQStompEndpoint",
+      "ActiveMQStompEndpoint1",
       CfnOutputProps
         .builder()
         .value(cfnBroker.getAttrStompEndpoints().get(0))
+        .build()
+    );
+    new CfnOutput(this,
+      "ActiveMQStompEndpoint2",
+      CfnOutputProps
+        .builder()
+        .value(cfnBroker.getAttrStompEndpoints().get(1))
         .build()
     );
 
