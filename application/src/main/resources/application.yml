@@ -13,6 +13,7 @@ server:
 
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
+  sharing-queue: stratospheric-todo-sharing
   external-url: https://app.stratospheric.dev
 
 spring:
