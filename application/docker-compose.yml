@@ -9,6 +9,12 @@ services:
       - POSTGRES_USER=stratospheric
       - POSTGRES_PASSWORD=stratospheric
       - POSTGRES_DB=stratospheric
+  activemq:
+    image: bjoernkw/activemq-docker-image
+    ports:
+      - 5672:5672
+      - 61613:61613
+      - 61616:61616
   localstack:
     image: localstack/localstack:0.12.2
     ports:
