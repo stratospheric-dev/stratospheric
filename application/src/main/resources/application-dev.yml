@@ -22,7 +22,3 @@ spring:
       static-locations: file:src/main/resources/static/
       cache:
         period: 0
-  activemq:
-    broker-url: tcp://localhost:61616
-    user: stratospheric
-    password: stratospheric
