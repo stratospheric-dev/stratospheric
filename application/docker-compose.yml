@@ -14,6 +14,7 @@ services:
     ports:
       - 5672:5672
       - 61613:61613
+      - 61614:61614
       - 61616:61616
   localstack:
     image: localstack/localstack:0.12.2
