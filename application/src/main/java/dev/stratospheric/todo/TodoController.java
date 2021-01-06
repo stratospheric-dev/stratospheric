@@ -144,10 +144,9 @@ public class TodoController {
     @PathVariable("token") String token,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
+    todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
 
-    redirectAttributes.addFlashAttribute("message",
-      String.format("You've now confirmed that you'd like to collaborate with the user %s on this todo. ", collaboratorName));
+    redirectAttributes.addFlashAttribute("message", "You've confirmed that you'd like to collaborate on this todo.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/dashboard";

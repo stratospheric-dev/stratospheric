@@ -23,8 +23,8 @@ public class TestTodoController {
   @GetMapping("/confirmCollaboration")
   @ResponseBody
   public String confirmCollaboration() {
-    String subject = todoTestCollaborationService.testConfirmCollaboration();
+    String message = todoTestCollaborationService.testConfirmCollaboration();
 
-    return "Done: " + subject;
+    return "Done: " + message;
   }
 }

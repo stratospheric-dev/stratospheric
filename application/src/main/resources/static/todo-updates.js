@@ -1,6 +1,6 @@
 let stompClient = null;
 
-function connect() {
+function connectToWebSocketEndpoint(email) {
   const socket = new SockJS('/websocket');
 
   stompClient = Stomp.over(socket);
@@ -13,18 +13,25 @@ function connect() {
       $('#message').html(message.body);
       $('#toast').toast('show');
     });
+
+    if (email) {
+      stompClient.subscribe('/topic/todoUpdates/' + email, function (message) {
+        console.log(message);
+
+        $('#message').html(message.body);
+        $('#toast').toast('show');
+      });
+    }
   });
 }
 
-function disconnect() {
+function disconnectFromWebSocketEndpoint() {
   if (stompClient !== null) {
     stompClient.disconnect();
   }
 
   console.log("Disconnected from WebSocket endpoint.");
 }
-
-connect();
 
 $(document).ready(function () {
   $('#toast').toast({delay: 5000});

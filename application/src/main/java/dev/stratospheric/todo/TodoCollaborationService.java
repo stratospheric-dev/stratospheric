@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +26,8 @@ public class TodoCollaborationService {
   private final QueueMessagingTemplate queueMessagingTemplate;
   private final String todoSharingQueueName;
 
+  private final SimpMessagingTemplate simpMessagingTemplate;
+
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
@@ -36,12 +38,14 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName) {
+    @Value("${custom.sharing-queue}") String todoSharingQueueName,
+    SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
+    this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
   public String shareWithCollaborator(Long todoId, Long collaboratorId) {
@@ -64,7 +68,6 @@ public class TodoCollaborationService {
     return collaborator.getName();
   }
 
-  @SendTo("/topic/todoUpdates")
   public String confirmCollaboration(Long todoId, Long collaboratorId, String token) {
     Todo todo = todoRepository
       .findById(todoId)
@@ -77,16 +80,20 @@ public class TodoCollaborationService {
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_OR_COLLABORATOR));
 
     if (todoCollaborationRequest.getToken().equals(token)) {
+      String name = collaborator.getName();
       String subject = "Collaboration confirmed.";
       String message = "User "
-        + todoCollaborationRequest.getCollaborator().getName()
+        + name
         + " has accepted your collaboration request for todo #"
         + todoCollaborationRequest.getTodo().getId()
         + ".";
+      String collaboratorEmail = collaborator.getEmail();
+
+      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
 
       todoCollaborationRequestRepository.delete(todoCollaborationRequest);
 
-      return subject + " " + message;
+      return message;
     }
 
     return "Collaboration request invalid.";
