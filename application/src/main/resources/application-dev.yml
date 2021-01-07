@@ -22,6 +22,6 @@ spring:
       static-locations: file:src/main/resources/static/
       cache:
         period: 0
-
 custom:
-  websocket-url: ws://localhost:8080/websocket
+  web-socket-relay-host: localhost
+  web-socket-relay-port: 61613

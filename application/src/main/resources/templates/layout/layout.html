@@ -42,6 +42,10 @@
 
   <div th:replace="fragments/modals :: confirmDeletionModal"></div>
   <div th:replace="fragments/footer :: footer"></div>
+
+  <script sec:authorize="isAuthenticated()">
+    connectToWebSocketEndpoint('[[${#authentication.principal.attributes.email}]]');
+  </script>
 </div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package dev.stratospheric;
 
-import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import org.springframework.cloud.aws.messaging.config.QueueMessageHandlerFactory;
 import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
@@ -18,11 +17,6 @@ public class MessagingConfig {
     @Bean
     public QueueMessagingTemplate queueMessagingTemplate(AmazonSQSAsync amazonSQSAsync) {
         return new QueueMessagingTemplate(amazonSQSAsync);
-    }
-
-    @Bean
-    public NotificationMessagingTemplate notificationMessagingTemplate(AmazonSNS amazonSNS) {
-        return new NotificationMessagingTemplate(amazonSNS);
     }
 
     @Bean

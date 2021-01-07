@@ -131,7 +131,7 @@ public class TodoController {
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +
-        "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
+        "Once the user accepts the invite you'll see them as a collaborator on your todo.", collaboratorName));
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/dashboard";
@@ -144,11 +144,9 @@ public class TodoController {
     @PathVariable("token") String token,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
+    todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
 
-    redirectAttributes.addFlashAttribute("message",
-      String.format("You successfully shared your todo with the user %s. " +
-        "Once the user accepts the invite, you'll see him/her as an collaborator on your todo.", collaboratorName));
+    redirectAttributes.addFlashAttribute("message", "You've confirmed that you'd like to collaborate on this todo.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/dashboard";

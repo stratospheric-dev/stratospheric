@@ -9,12 +9,19 @@ services:
       - POSTGRES_USER=stratospheric
       - POSTGRES_PASSWORD=stratospheric
       - POSTGRES_DB=stratospheric
+  activemq:
+    image: bjoernkw/activemq-docker-image
+    ports:
+      - 5672:5672
+      - 61613:61613
+      - 61614:61614
+      - 61616:61616
   localstack:
     image: localstack/localstack:0.12.2
     ports:
       - 4566:4566
     environment:
-      - SERVICES=sqs,sns,ses
+      - SERVICES=sqs,ses
       - DEFAULT_REGION=eu-central-1
     volumes:
       - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh

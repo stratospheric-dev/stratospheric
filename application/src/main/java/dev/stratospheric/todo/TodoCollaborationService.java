@@ -1,15 +1,15 @@
 package dev.stratospheric.todo;
 
-import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.collaboration.TodoCollaborationNotification;
+import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.collaboration.TodoCollaborationRequestRepository;
 import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,10 +24,9 @@ public class TodoCollaborationService {
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
   private final QueueMessagingTemplate queueMessagingTemplate;
-  private final NotificationMessagingTemplate notificationMessagingTemplate;
-
   private final String todoSharingQueueName;
-  private final String todoUpdatesTopic;
+
+  private final SimpMessagingTemplate simpMessagingTemplate;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
 
@@ -40,15 +39,13 @@ public class TodoCollaborationService {
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
     @Value("${custom.sharing-queue}") String todoSharingQueueName,
-    NotificationMessagingTemplate notificationMessagingTemplate,
-    @Value("${custom.updates-topic}") String todoUpdatesTopic) {
+    SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
-    this.notificationMessagingTemplate = notificationMessagingTemplate;
-    this.todoUpdatesTopic = todoUpdatesTopic;
+    this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
   public String shareWithCollaborator(Long todoId, Long collaboratorId) {
@@ -83,21 +80,20 @@ public class TodoCollaborationService {
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_OR_COLLABORATOR));
 
     if (todoCollaborationRequest.getToken().equals(token)) {
+      String name = collaborator.getName();
       String subject = "Collaboration confirmed.";
       String message = "User "
-        + todoCollaborationRequest.getCollaborator().getName()
+        + name
         + " has accepted your collaboration request for todo #"
         + todoCollaborationRequest.getTodo().getId()
         + ".";
-      notificationMessagingTemplate.sendNotification(
-        todoUpdatesTopic,
-        message,
-        subject
-      );
+      String collaboratorEmail = collaborator.getEmail();
+
+      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
 
       todoCollaborationRequestRepository.delete(todoCollaborationRequest);
 
-      return subject;
+      return message;
     }
 
     return "Collaboration request invalid.";
