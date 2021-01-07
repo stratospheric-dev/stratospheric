@@ -8,7 +8,7 @@ aws cloudformation update-stack \
   --parameters \
     ParameterKey=ApplicationName,ParameterValue=stratospheric-users \
     ParameterKey=ApplicationUrl,ParameterValue=https://app.stratospheric.dev \
-    ParameterKey=LoginPageDomainPrefix,ParameterValue=stratospheric
+    ParameterKey=LoginPageDomainPrefix,ParameterValue=dev101
 
 # Sadly, the AWS CLI returns an error when no update is to be performed. But we want to
 # call it a success if the stack is up-to-date. So, we have to work around this by
