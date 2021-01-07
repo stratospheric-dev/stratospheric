@@ -6,8 +6,9 @@ aws cloudformation update-stack \
   --template-body file://cognito.yml \
   --capabilities CAPABILITY_IAM \
   --parameters \
-    ParameterKey=AuthName,ParameterValue=stratospheric-users \
-    ParameterKey=ExternalUrl,ParameterValue=https://app.stratospheric.dev 2> update_error
+    ParameterKey=ApplicationName,ParameterValue=stratospheric-users \
+    ParameterKey=ApplicationUrl,ParameterValue=https://app.stratospheric.dev \
+    ParameterKey=LoginPageDomainPrefix,ParameterValue=stratospheric
 
 # Sadly, the AWS CLI returns an error when no update is to be performed. But we want to
 # call it a success if the stack is up-to-date. So, we have to work around this by

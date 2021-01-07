@@ -10,4 +10,4 @@ spring:
             clientName: stratospheric-users-client
         provider:
           cognito:
-            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
+            issuerUri: ${COGNITO_PROVIDER_URL}

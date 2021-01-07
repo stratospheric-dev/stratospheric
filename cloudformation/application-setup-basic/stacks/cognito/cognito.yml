@@ -1,19 +1,22 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploys a Cognito stack.
 Parameters:
-  AuthName:
+  ApplicationName:
     Type: String
-    Description: Unique AuthName for Cognito resources
-  ExternalUrl:
+    Description: The name of the application, used as a prefix for Cognito resources
+  ApplicationUrl:
     Type: String
     Description: The external URL of the application
+  LoginPageDomainPrefix:
+    Type: String
+    Description: The prefix for the domain of the Cognito hosted login page
 
 Resources:
   # Creates a UserPool in Cognito for an app to authenticate against.
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: !Sub ${AuthName}-user-pool
+      UserPoolName: !Sub ${ApplicationName}-user-pool
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: True
       AutoVerifiedAttributes:
@@ -45,12 +48,15 @@ Resources:
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
-      ClientName: !Sub ${AuthName}-client
+      ClientName: !Sub ${ApplicationName}-client
       GenerateSecret: true
       UserPoolId: !Ref UserPool
       CallbackURLs:
-        - !Sub ${ExternalUrl}/login/oauth2/code/cognito
+        - !Sub ${ApplicationUrl}/login/oauth2/code/cognito
         - http://localhost:8080/login/oauth2/code/cognito
+      LogoutURLs:
+        - !Sub ${ApplicationUrl}
+        - http://localhost:8080
       SupportedIdentityProviders:
         - COGNITO
       AllowedOAuthFlowsUserPoolClient: True
@@ -65,12 +71,20 @@ Resources:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       UserPoolId: !Ref UserPool
-      Domain: dev101
+      Domain: !Ref LoginPageDomainPrefix
 Outputs:
   UserPoolId:
     Value: !Ref UserPool
     Export:
       Name: UserPool::Id
+  UserPoolProviderUrl:
+    Value: !GetAtt UserPool.ProviderURL
+    Export:
+      Name: UserPool::ProviderURL
+  UserPoolLogoutUrl:
+    Value: !Sub 'https://${LoginPageDomainPrefix}.auth.${AWS::Region}.amazoncognito.com/logout'
+    Export:
+      Name: UserPool::LogoutURL
   UserPoolClientId:
     Value: !Ref UserPoolClient
     Export:

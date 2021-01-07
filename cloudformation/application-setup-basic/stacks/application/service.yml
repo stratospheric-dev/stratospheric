@@ -198,6 +198,12 @@ Resources:
             - Name: COGNITO_USER_POOL_ID
               Value:
                 Fn::ImportValue: 'UserPool::Id'
+            - Name: COGNITO_PROVIDER_URL
+              Value:
+                Fn::ImportValue: 'UserPool::ProviderURL'
+            - Name: COGNITO_LOGOUT_URL
+              Value:
+                Fn::ImportValue: 'UserPool::LogoutURL'
             - Name: COGNITO_CLIENT_ID
               Value:
                 Fn::ImportValue: 'UserPoolClient::Id'

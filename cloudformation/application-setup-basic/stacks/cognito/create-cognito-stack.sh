@@ -7,7 +7,8 @@ aws cloudformation create-stack \
   --template-body file://cognito.yml \
   --capabilities CAPABILITY_IAM \
   --parameters \
-    ParameterKey=AuthName,ParameterValue=stratospheric-users \
-    ParameterKey=ExternalUrl,ParameterValue=https://app.stratospheric.dev \
+    ParameterKey=ApplicationName,ParameterValue=stratospheric-users \
+    ParameterKey=ApplicationUrl,ParameterValue=https://app.stratospheric.dev \
+    ParameterKey=LoginPageDomainPrefix,ParameterValue=stratospheric
 
 aws cloudformation wait stack-create-complete --stack-name stratospheric-cognito
