@@ -6,20 +6,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final ClientRegistrationRepository clientRegistrationRepository;
+  private final LogoutSuccessHandler logoutSuccessHandler;
 
-  public WebSecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
-    this.clientRegistrationRepository = clientRegistrationRepository;
-  }
-
-  private OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler() {
-    OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-    successHandler.setPostLogoutRedirectUri("{baseUrl}");
-    return successHandler;
+  public WebSecurityConfig(LogoutSuccessHandler logoutSuccessHandler) {
+    this.logoutSuccessHandler = logoutSuccessHandler;
   }
 
   @Override
@@ -38,6 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .mvcMatchers("/", "/health", "/register").permitAll()
       .and()
       .logout()
-      .logoutSuccessHandler(oidcLogoutSuccessHandler());
+      .logoutSuccessHandler(logoutSuccessHandler);
   }
 }

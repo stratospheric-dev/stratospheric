@@ -10,7 +10,7 @@ spring:
             clientName: stratospheric-users-client
         provider:
           cognito:
-            issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
+            issuerUri: ${COGNITO_PROVIDER_URL}
 custom:
   web-socket-relay-host: ${AMAZON_MQ_ACTIVE_MQ_WEBSOCKET_RELAY_HOST}
   web-socket-relay-port: ${AMAZON_MQ_ACTIVE_MQ_WEBSOCKET_RELAY_PORT}
