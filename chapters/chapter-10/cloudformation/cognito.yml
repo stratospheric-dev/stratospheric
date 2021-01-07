@@ -54,8 +54,8 @@ Resources:
         - !Sub ${ApplicationUrl}/login/oauth2/code/cognito
         - http://localhost:8080/login/oauth2/code/cognito
       LogoutURLs:
-        - !Sub ${ApplicationUrl}/logout
-        - http://localhost:8080/logout
+        - !Sub ${ApplicationUrl}
+        - http://localhost:8080
       SupportedIdentityProviders:
         - COGNITO
       AllowedOAuthFlowsUserPoolClient: True
@@ -84,3 +84,7 @@ Outputs:
     Value: !Ref UserPoolClient
     Export:
       Name: UserPoolClient::Id
+  UserPoolDomain:
+    Value: !Sub 'https://${LoginPageDomainPrefix}.auth.${AWS::Region}.amazoncognito.com'
+    Export:
+      Name: UserPool::Domain
