@@ -13,11 +13,11 @@ import java.nio.charset.StandardCharsets;
 
 public class CognitoOidcLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-  private final String userPoolDomain;
+  private final String logoutUrl;
   private final String clientId;
 
-  public CognitoOidcLogoutSuccessHandler(String userPoolDomain, String clientId) {
-    this.userPoolDomain = userPoolDomain;
+  public CognitoOidcLogoutSuccessHandler(String logoutUrl, String clientId) {
+    this.logoutUrl = logoutUrl;
     this.clientId = clientId;
   }
 
@@ -33,7 +33,7 @@ public class CognitoOidcLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
       .build();
 
     return UriComponentsBuilder
-      .fromUri(URI.create(userPoolDomain + "/logout"))
+      .fromUri(URI.create(logoutUrl))
       .queryParam("client_id", clientId)
       .queryParam("logout_uri", baseUrl)
       .encode(StandardCharsets.UTF_8)

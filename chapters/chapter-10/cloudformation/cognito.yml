@@ -80,11 +80,12 @@ Outputs:
     Value: !GetAtt UserPool.ProviderURL
     Export:
       Name: UserPool::ProviderURL
+  UserPoolLogoutUrl:
+    Value: !Sub 'https://${LoginPageDomainPrefix}.auth.${AWS::Region}.amazoncognito.com/logout'
+    Export:
+      Name: UserPool::LogoutURL
   UserPoolClientId:
     Value: !Ref UserPoolClient
     Export:
       Name: UserPoolClient::Id
-  UserPoolDomain:
-    Value: !Sub 'https://${LoginPageDomainPrefix}.auth.${AWS::Region}.amazoncognito.com'
-    Export:
-      Name: UserPool::Domain
+

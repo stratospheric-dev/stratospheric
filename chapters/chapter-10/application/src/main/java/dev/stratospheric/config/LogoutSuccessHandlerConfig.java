@@ -15,8 +15,8 @@ public class LogoutSuccessHandlerConfig {
   @Profile("aws")
   public LogoutSuccessHandler cognitoOidcLogoutSuccessHandler(
     @Value("${COGNITO_CLIENT_ID}") String clientId,
-    @Value("${COGNITO_USER_POOL_DOMAIN}") String userPoolDomain) {
-    return new CognitoOidcLogoutSuccessHandler(userPoolDomain, clientId);
+    @Value("${COGNITO_USER_POOL_LOGOUT_URL}") String userPoolLogoutUrl) {
+    return new CognitoOidcLogoutSuccessHandler(userPoolLogoutUrl, clientId);
   }
 
   @Bean
