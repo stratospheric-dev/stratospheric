@@ -11,6 +11,3 @@ spring:
         provider:
           cognito:
             issuerUri: ${COGNITO_PROVIDER_URL}
-custom:
-  web-socket-relay-host: ${AMAZON_MQ_ACTIVE_MQ_WEBSOCKET_RELAY_HOST}
-  web-socket-relay-port: ${AMAZON_MQ_ACTIVE_MQ_WEBSOCKET_RELAY_PORT}
