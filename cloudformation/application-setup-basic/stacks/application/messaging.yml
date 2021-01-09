@@ -26,5 +26,3 @@ Outputs:
   StackName:
     Description: The name of this stack
     Value: !Ref 'AWS::StackName'
-  TodoUpdatesArn:
-    Value: !Ref TodoUpdates
