@@ -1,0 +1,16 @@
+{
+  "name": "stratospheric-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "network:deploy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericNetworkApp\" -c environmentName=${ENVIRONMENT_NAME} -c accountId=221875718260 -c region=ap-southeast-2 --require-approval never",
+    "network:destroy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericNetworkApp\" -c environmentName=${ENVIRONMENT_NAME} -c accountId=221875718260 -c region=ap-southeast-2 --require-approval never",
+    "repository:deploy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericDockerRepositoryApp\" -c dockerRepositoryName=stratospheric-repository -c accountId=221875718260 -c region=ap-southeast-2 --require-approval never",
+    "repository:destroy": "cdk destroy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericDockerRepositoryApp\" -c dockerRepositoryName=stratospheric-repository -c accountId=221875718260 -c region=ap-southeast-2 --require-approval never",
+    "cognito:deploy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericCognitoApp\" -c accountId=221875718260 -c region=ap-southeast-2 -c authName=stratospheric-users -c externalUrl=https://app.stratospheric.dev --require-approval never",
+    "cognito:destroy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.cdk.StratosphericCognitoApp\" -c accountId=221875718260 -c region=ap-southeast-2 -c authName=stratospheric-users -c externalUrl=https://app.stratospheric.dev --require-approval never"
+  },
+  "devDependencies": {
+    "aws-cdk": "1.79.0"
+  }
+}
