@@ -15,17 +15,14 @@ import javax.validation.Valid;
 @RequestMapping("/todo")
 public class TodoController {
 
-  private final TodoRepository todoRepository;
   private final TodoService todoService;
   private final TodoCollaborationService todoCollaborationService;
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
 
   public TodoController(
-    TodoRepository todoRepository,
     TodoService todoService,
     TodoCollaborationService todoCollaborationService) {
-    this.todoRepository = todoRepository;
     this.todoService = todoService;
     this.todoCollaborationService = todoCollaborationService;
   }
@@ -33,7 +30,7 @@ public class TodoController {
   @GetMapping("/show/{id}")
   public String showView(@PathVariable("id") long id, Model model) {
 
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     model.addAttribute("todo", todo);
 
     return "todo/show";
@@ -72,7 +69,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
 
     model.addAttribute("todo", todo);
     model.addAttribute("editMode", EditMode.UPDATE);
@@ -94,7 +91,7 @@ public class TodoController {
       return "todo/edit";
     }
 
-    Todo existingTodo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    Todo existingTodo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
     existingTodo.setTitle(todo.getTitle());
     existingTodo.setDescription(todo.getDescription());
     existingTodo.setPriority(todo.getPriority());
@@ -112,8 +109,8 @@ public class TodoController {
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
   ) {
-    Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
-    todoRepository.delete(todo);
+    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    todoService.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
     redirectAttributes.addFlashAttribute("messageType", "success");
