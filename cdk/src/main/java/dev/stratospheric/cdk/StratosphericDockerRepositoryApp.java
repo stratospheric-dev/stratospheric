@@ -9,39 +9,42 @@ import java.util.Objects;
 
 public class StratosphericDockerRepositoryApp {
 
-    public static void main(final String[] args) {
-        App app = new App();
+  public static void main(final String[] args) {
+    App app = new App();
 
-        String accountId = (String) app.getNode().tryGetContext("accountId");
-        Objects.requireNonNull(accountId, "context variable 'accountId' must not be null");
+    String accountId = (String) app.getNode().tryGetContext("accountId");
+    Objects.requireNonNull(accountId, "context variable 'accountId' must not be null");
 
-        String region = (String) app.getNode().tryGetContext("region");
-        Objects.requireNonNull(region, "context variable 'region' must not be null");
+    String region = (String) app.getNode().tryGetContext("region");
+    Objects.requireNonNull(region, "context variable 'region' must not be null");
 
-        String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-        Objects.requireNonNull(region, "context variable 'dockerRepositoryName' must not be null");
+    String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
+    Objects.requireNonNull(region, "context variable 'dockerRepositoryName' must not be null");
 
-        Environment awsEnvironment = makeEnv(accountId, region);
+    String applicationName = (String) app.getNode().tryGetContext("applicationName");
+    Objects.requireNonNull(region, "context variable 'applicationName' must not be null");
 
-        Stack dockerRepositoryStack = new Stack(app, "DockerRepositoryStack", StackProps.builder()
-                .stackName("docker-repository-stack")
-                .env(awsEnvironment)
-                .build());
+    Environment awsEnvironment = makeEnv(accountId, region);
 
-        DockerRepository dockerRepository = new DockerRepository(
-                dockerRepositoryStack,
-                "DockerRepository",
-                awsEnvironment,
-                new DockerRepository.DockerRepositoryInputParameters(dockerRepositoryName, accountId));
+    Stack dockerRepositoryStack = new Stack(app, "DockerRepositoryStack", StackProps.builder()
+      .stackName(applicationName + "-DockerRepository")
+      .env(awsEnvironment)
+      .build());
 
-        app.synth();
-    }
+    DockerRepository dockerRepository = new DockerRepository(
+      dockerRepositoryStack,
+      "DockerRepository",
+      awsEnvironment,
+      new DockerRepository.DockerRepositoryInputParameters(dockerRepositoryName, accountId));
 
-    static Environment makeEnv(String account, String region) {
-        return Environment.builder()
-                .account(account)
-                .region(region)
-                .build();
-    }
+    app.synth();
+  }
+
+  static Environment makeEnv(String account, String region) {
+    return Environment.builder()
+      .account(account)
+      .region(region)
+      .build();
+  }
 
 }
