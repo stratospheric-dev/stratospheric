@@ -11,3 +11,7 @@ spring:
         provider:
           cognito:
             issuerUri: ${COGNITO_PROVIDER_URL}
+
+custom:
+  sharing-queue: ${TODO_SHARING_QUEUE_NAME}
+  updates-topic: ${TODO_UPDATES_TOPIC_NAME}
