@@ -1,4 +1,4 @@
-name: Create environment
+name: 02 - Manually create a network environment
 
 on:
   workflow_dispatch:

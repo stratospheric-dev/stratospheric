@@ -1,4 +1,4 @@
-name: Bootstrap CDK Environment
+name: 01 - Manually Bootstrap the CDK Environment
 
 on:
   workflow_dispatch
