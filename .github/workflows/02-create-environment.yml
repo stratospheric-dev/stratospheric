@@ -1,4 +1,6 @@
-name: 02 - Manually create a network environment
+# This workflow creates all environment-specific resources that are shared across applications.
+# This needs to run before creating an application-specific environment.
+name: 02 - Manually create a shared environment
 
 on:
   workflow_dispatch:
@@ -21,6 +23,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0
+
+      - name: NPM install
+        run: cd cdk && npm install
 
       - name: Deploy network stack
         env:
