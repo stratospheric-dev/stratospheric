@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Build and deploy Todo App via CDK
+    name: Bootstrap CDK
     steps:
 
       - name: Checkout code
@@ -16,6 +16,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0
+
+      - name: NPM install
+        run: npm install
 
       - name: Deploy CDK bootstrap stack
         env:
