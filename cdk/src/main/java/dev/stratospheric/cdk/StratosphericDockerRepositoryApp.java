@@ -18,11 +18,8 @@ public class StratosphericDockerRepositoryApp {
     String region = (String) app.getNode().tryGetContext("region");
     Objects.requireNonNull(region, "context variable 'region' must not be null");
 
-    String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    Objects.requireNonNull(region, "context variable 'dockerRepositoryName' must not be null");
-
     String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    Objects.requireNonNull(region, "context variable 'applicationName' must not be null");
+    Objects.requireNonNull(applicationName, "context variable 'applicationName' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -35,7 +32,7 @@ public class StratosphericDockerRepositoryApp {
       dockerRepositoryStack,
       "DockerRepository",
       awsEnvironment,
-      new DockerRepository.DockerRepositoryInputParameters(dockerRepositoryName, accountId));
+      new DockerRepository.DockerRepositoryInputParameters(applicationName, accountId));
 
     app.synth();
   }
