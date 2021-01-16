@@ -1,9 +1,8 @@
 package dev.stratospheric.cdk;
 
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.secretsmanager.ISecret;
+import software.amazon.awscdk.services.secretsmanager.Secret;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,31 +43,62 @@ public class StratosphericServiceApp {
       environmentName
     );
 
-    // This stack is just a container for the parameters below, because they need a Stack as a scope.
-    Stack parametersStack = new Stack(app, "Parameters", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Parameters"))
+    Stack serviceStack = new Stack(app, "ServiceStack", StackProps.builder()
+      .stackName(environmentName + "-Service")
       .env(awsEnvironment)
       .build());
 
     Service service = new Service(
-      app,
+      serviceStack,
       "Service",
       awsEnvironment,
       applicationEnvironment,
       new Service.ServiceInputParameters(
         new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
         emptyList(),
-        environmentVariables(springProfile)),
-      Network.getOutputParametersFromParameterStore(app, applicationEnvironment.getEnvironmentName()));
+        environmentVariables(
+          serviceStack,
+          applicationEnvironment,
+          springProfile)),
+      Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
     app.synth();
   }
 
   static Map<String, String> environmentVariables(
-    String springProfile) {
+    Construct scope,
+    ApplicationEnvironment applicationEnvironment,
+    String springProfile
+  ) {
 
     Map<String, String> vars = new HashMap<>();
+
+    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
+      PostgresDatabase.getOutputParametersFromParameterStore(scope, applicationEnvironment);
+    String databaseSecretArn = databaseOutputParameters.getDatabaseSecretArn();
+    ISecret databaseSecret = Secret.fromSecretCompleteArn(scope, "databaseSecret", databaseSecretArn);
+
+    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
+      StratosphericCognitoStack.getOutputParametersFromParameterStore(scope, applicationEnvironment);
+
+    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
+      StratosphericMessagingStack.getOutputParametersFromParameterStore(scope, applicationEnvironment);
+
     vars.put("SPRING_PROFILES_ACTIVE", springProfile);
+    vars.put("SPRING_DATASOURCE_URL",
+      String.format("jdbc:postgresql://%s:%s/%s",
+        databaseOutputParameters.getEndpointAddress(),
+        databaseOutputParameters.getEndpointPort(),
+        databaseOutputParameters.getDbName()));
+    vars.put("SPRING_DATASOURCE_USERNAME",
+      databaseSecret.secretValueFromJson("username").toString());
+    vars.put("SPRING_DATASOURCE_PASSWORD",
+      databaseSecret.secretValueFromJson("password").toString());
+    vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.getUserPoolClientId());
+    vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.getUserPoolClientSecret());
+    vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
+    vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
+    vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
 
     return vars;
   }

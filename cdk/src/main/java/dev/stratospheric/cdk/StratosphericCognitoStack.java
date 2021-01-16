@@ -2,11 +2,15 @@ package dev.stratospheric.cdk;
 
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.customresources.*;
 import software.amazon.awscdk.services.cognito.*;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
+
+import static software.amazon.awscdk.customresources.AwsCustomResourcePolicy.ANY_RESOURCE;
 
 class StratosphericCognitoStack extends Stack {
 
@@ -15,6 +19,7 @@ class StratosphericCognitoStack extends Stack {
   private final UserPool userPool;
   private final UserPoolClient userPoolClient;
   private final UserPoolDomain userPoolDomain;
+  private String userPoolClientSecret;
 
   public StratosphericCognitoStack(
     final Construct scope,
@@ -65,15 +70,16 @@ class StratosphericCognitoStack extends Stack {
         .build())
       .build();
 
-    createOutputParameters();
+    createOutputParameters(awsEnvironment);
 
     applicationEnvironment.tag(this);
   }
 
   private static final String PARAMETER_USER_POOL_ID = "userPoolId";
   private static final String PARAMETER_USER_POOL_CLIENT_ID = "userPoolClientId";
+  private static final String PARAMETER_USER_POOL_CLIENT_SECRET = "userPoolClientSecret";
 
-  private void createOutputParameters() {
+  private void createOutputParameters(Environment awsEnvironment) {
 
     StringParameter userPoolId = StringParameter.Builder.create(this, "userPoolId")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_ID))
@@ -85,6 +91,37 @@ class StratosphericCognitoStack extends Stack {
       .stringValue(this.userPoolClient.getUserPoolClientId())
       .build();
 
+    // CloudFormation does not expose the UserPoolClient secret, so we can't access it directly with
+    // CDK. As a workaround, we create a custom resource that calls the AWS API to get the secret, and
+    // then store it in the parameter store like the other parameters.
+    // Source: https://github.com/aws/aws-cdk/issues/7225
+
+    AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
+      .resourceType("Custom::DescribeCognitoUserPoolClient")
+      .onCreate(AwsSdkCall.builder()
+        .region(awsEnvironment.getRegion())
+        .service("CognitoIdentityServiceProvider")
+        .action("describeUserPoolClient")
+        .parameters(Map.of(
+          "UserPoolId", this.userPool.getUserPoolId(),
+          "ClientId", this.userPoolClient.getUserPoolClientId()
+        ))
+        .physicalResourceId(PhysicalResourceId.of(this.userPoolClient.getUserPoolClientId()))
+        .build())
+      .policy(AwsCustomResourcePolicy.fromSdkCalls(
+        SdkCallsPolicyOptions.builder()
+          .resources(ANY_RESOURCE)
+          .build()
+      ))
+      .build();
+
+    this.userPoolClientSecret = describeUserPoolResource.getResponseField("UserPoolClient.ClientSecret");
+    StringParameter userPoolClientSecret = StringParameter.Builder.create(this, "userPoolClientSecret")
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
+      .stringValue(this.userPoolClientSecret)
+      .build();
+
+
   }
 
   @NotNull
@@ -95,15 +132,15 @@ class StratosphericCognitoStack extends Stack {
   public CognitoOutputParameters getOutputParameters() {
     return new CognitoOutputParameters(
       this.userPool.getUserPoolId(),
-      this.userPoolClient.getUserPoolClientId()
-    );
+      this.userPoolClient.getUserPoolClientId(),
+      userPoolClientSecret);
   }
 
   public static CognitoOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return new CognitoOutputParameters(
       getParameterUserPoolId(scope, applicationEnvironment),
-      getParameterUserPoolClientId(scope, applicationEnvironment)
-    );
+      getParameterUserPoolClientId(scope, applicationEnvironment),
+      getParameterUserPoolClientSecret(scope, applicationEnvironment));
   }
 
   private static String getParameterUserPoolId(Construct scope, ApplicationEnvironment applicationEnvironment) {
@@ -113,6 +150,11 @@ class StratosphericCognitoStack extends Stack {
 
   private static String getParameterUserPoolClientId(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return StringParameter.fromStringParameterName(scope, PARAMETER_USER_POOL_CLIENT_ID, createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_ID))
+      .getStringValue();
+  }
+
+  private static String getParameterUserPoolClientSecret(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_USER_POOL_CLIENT_SECRET, createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
       .getStringValue();
   }
 
@@ -129,10 +171,12 @@ class StratosphericCognitoStack extends Stack {
   public static class CognitoOutputParameters {
     private final String userPoolId;
     private final String userPoolClientId;
+    private final String userPoolClientSecret;
 
-    public CognitoOutputParameters(String userPoolId, String userPoolClientId) {
+    public CognitoOutputParameters(String userPoolId, String userPoolClientId, String userPoolClientSecret) {
       this.userPoolId = userPoolId;
       this.userPoolClientId = userPoolClientId;
+      this.userPoolClientSecret = userPoolClientSecret;
     }
 
     public String getUserPoolId() {
@@ -141,6 +185,10 @@ class StratosphericCognitoStack extends Stack {
 
     public String getUserPoolClientId() {
       return userPoolClientId;
+    }
+
+    public String getUserPoolClientSecret() {
+      return userPoolClientSecret;
     }
   }
 

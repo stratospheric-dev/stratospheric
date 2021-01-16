@@ -21,6 +21,9 @@ public class StratosphericNetworkApp {
     String region = (String) app.getNode().tryGetContext("region");
     requireNonNull(region, "context variable 'region' must not be null");
 
+    String sslCertificateArn = (String) app.getNode().tryGetContext("sslCertificateArn");
+    requireNonNull(region, "context variable 'sslCertificateArn' must not be null");
+
     Environment awsEnvironment = makeEnv(accountId, region);
 
     Stack networkStack = new Stack(app, "NetworkStack", StackProps.builder()
@@ -33,7 +36,7 @@ public class StratosphericNetworkApp {
       "Network",
       awsEnvironment,
       environmentName,
-      new Network.NetworkInputParameters());
+      new Network.NetworkInputParameters(sslCertificateArn));
 
     app.synth();
   }

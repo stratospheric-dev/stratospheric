@@ -12,3 +12,7 @@ spring:
           cognito:
             issuerUri: https://cognito-idp.eu-central-1.amazonaws.com/${COGNITO_USER_POOL_ID}
             usernameAttribute: cognito:username
+
+        custom:
+          sharing-queue: ${TODO_SHARING_QUEUE_NAME}
+          updates-topic: ${TODO_UPDATES_TOPIC_NAME}

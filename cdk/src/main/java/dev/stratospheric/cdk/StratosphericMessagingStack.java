@@ -51,13 +51,19 @@ class StratosphericMessagingStack extends Stack {
     applicationEnvironment.tag(this);
   }
 
-  private static final String PARAMETER_TODO_SHARING_QUEUE_URL = "todoSharingQueueUrl";
+  private static final String PARAMETER_TODO_SHARING_QUEUE_NAME = "todoSharingQueueName";
+  private static final String PARAMETER_TODO_UPDATES_TOPIC_NAME = "todoUpdatesTopicName";
 
   private void createOutputParameters() {
 
-    StringParameter todoSharingQueueArn = StringParameter.Builder.create(this, "todoSharingQueueUrl")
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_TODO_SHARING_QUEUE_URL))
-      .stringValue(this.todoSharingQueue.getQueueArn())
+    StringParameter todoSharingQueueName = StringParameter.Builder.create(this, "todoSharingQueueName")
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_TODO_SHARING_QUEUE_NAME))
+      .stringValue(this.todoSharingQueue.getQueueName())
+      .build();
+
+    StringParameter todoUpdatesTopicName = StringParameter.Builder.create(this, "todoUpdatesTopicName")
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_TODO_UPDATES_TOPIC_NAME))
+      .stringValue(this.todoUpdatesTopic.getTopicName())
       .build();
 
   }
@@ -67,26 +73,38 @@ class StratosphericMessagingStack extends Stack {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Messaging-" + parameterName;
   }
 
-  public static String getTodoSharingQueueUrl(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.fromStringParameterName(scope, PARAMETER_TODO_SHARING_QUEUE_URL, createParameterName(applicationEnvironment, PARAMETER_TODO_SHARING_QUEUE_URL))
+  public static String getTodoSharingQueueName(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_TODO_SHARING_QUEUE_NAME, createParameterName(applicationEnvironment, PARAMETER_TODO_SHARING_QUEUE_NAME))
+      .getStringValue();
+  }
+
+  public static String getTodoUpdatesTopicName(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_TODO_UPDATES_TOPIC_NAME, createParameterName(applicationEnvironment, PARAMETER_TODO_UPDATES_TOPIC_NAME))
       .getStringValue();
   }
 
   public static MessagingOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return new MessagingOutputParameters(
-      getTodoSharingQueueUrl(scope, applicationEnvironment)
+      getTodoSharingQueueName(scope, applicationEnvironment),
+      getTodoUpdatesTopicName(scope, applicationEnvironment)
     );
   }
 
   public static class MessagingOutputParameters {
-    private final String todoSharingQueueUrl;
+    private final String todoSharingQueueName;
+    private final String todoUpdatesTopicName;
 
-    public MessagingOutputParameters(String todoSharingQueueUrl) {
-      this.todoSharingQueueUrl = todoSharingQueueUrl;
+    public MessagingOutputParameters(String todoSharingQueueName, String todoUpdatesTopicName) {
+      this.todoSharingQueueName = todoSharingQueueName;
+      this.todoUpdatesTopicName = todoUpdatesTopicName;
     }
 
-    public String getTodoSharingQueueUrl() {
-      return todoSharingQueueUrl;
+    public String getTodoSharingQueueName() {
+      return todoSharingQueueName;
+    }
+
+    public String getTodoUpdatesTopicName() {
+      return todoUpdatesTopicName;
     }
   }
 
