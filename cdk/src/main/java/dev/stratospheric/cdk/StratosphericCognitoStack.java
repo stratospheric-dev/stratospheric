@@ -72,7 +72,8 @@ class StratosphericCognitoStack extends Stack {
 
     createOutputParameters(awsEnvironment);
 
-    applicationEnvironment.tag(this);
+    // commented out because the GitHub Actions user currently doesn't have this permission
+//    applicationEnvironment.tag(this);
   }
 
   private static final String PARAMETER_USER_POOL_ID = "userPoolId";
