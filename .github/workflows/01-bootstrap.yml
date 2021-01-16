@@ -18,7 +18,7 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: npm install
+        run: cd cdk && npm install
 
       - name: Deploy CDK bootstrap stack
         env:
