@@ -1,0 +1,32 @@
+name: Create environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environmentName:
+        description: 'The name of the environment to create.'
+        required: true
+        default: 'staging'
+jobs:
+  deploy-network-stack:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy the network stack
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Deploy network stack
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd cdk
+          npm run network:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
