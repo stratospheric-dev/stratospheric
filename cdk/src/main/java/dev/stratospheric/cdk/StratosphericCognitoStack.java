@@ -89,7 +89,7 @@ class StratosphericCognitoStack extends Stack {
 
   @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
-    return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Sqs-" + parameterName;
+    return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Cognito-" + parameterName;
   }
 
   public CognitoOutputParameters getOutputParameters() {

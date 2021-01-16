@@ -37,9 +37,6 @@ public class StratosphericServiceApp {
     String region = (String) app.getNode().tryGetContext("region");
     requireNonNull(region, "context variable 'region' must not be null");
 
-    String commitSha = (String) app.getNode().tryGetContext("commitSha");
-    requireNonNull(commitSha, "context variable 'commitSha' must not be null");
-
     Environment awsEnvironment = makeEnv(accountId, region);
 
     ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(

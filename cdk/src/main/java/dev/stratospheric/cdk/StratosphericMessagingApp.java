@@ -2,12 +2,10 @@ package dev.stratospheric.cdk;
 
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
 
 import static java.util.Objects.requireNonNull;
 
-public class StratosphericDatabaseApp {
+public class StratosphericMessagingApp {
 
   public static void main(final String[] args) {
     App app = new App();
@@ -31,17 +29,7 @@ public class StratosphericDatabaseApp {
       environmentName
     );
 
-    Stack databaseStack = new Stack(app, "DatabaseStack", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Database"))
-      .env(awsEnvironment)
-      .build());
-
-    PostgresDatabase database = new PostgresDatabase(
-      databaseStack,
-      "Database",
-      awsEnvironment,
-      applicationEnvironment,
-      new PostgresDatabase.DatabaseInputParameters());
+    new StratosphericMessagingStack(app, "messaging", awsEnvironment, applicationEnvironment);
 
     app.synth();
   }
