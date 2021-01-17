@@ -4,11 +4,11 @@ import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
-import static software.amazon.awscdk.core.Token.asList;
 
 public class StratosphericServiceApp {
 
@@ -72,7 +72,7 @@ public class StratosphericServiceApp {
       applicationEnvironment,
       new Service.ServiceInputParameters(
         new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
-        asList(databaseOutputParameters.getDatabaseSecurityGroupId()),
+        Collections.singletonList(databaseOutputParameters.getDatabaseSecurityGroupId()),
         environmentVariables(
           serviceStack,
           databaseOutputParameters,
