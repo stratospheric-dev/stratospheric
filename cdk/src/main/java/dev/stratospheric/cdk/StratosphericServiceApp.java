@@ -15,6 +15,7 @@ public class StratosphericServiceApp {
   public static void main(final String[] args) {
     App app = new App();
 
+
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
     requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
 

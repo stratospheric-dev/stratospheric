@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - 'application/**'
+      - 'cdk/**/*ServiceApp*'
+      - 'cdk/pom.xml'
 jobs:
   build:
     runs-on: ubuntu-latest
