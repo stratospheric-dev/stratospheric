@@ -86,4 +86,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cdk
-          npm run service:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c applicationName=todo-app
+          npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app
