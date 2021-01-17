@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - 'application/**'
-      - 'cdk/**'
 jobs:
   build:
     runs-on: ubuntu-latest

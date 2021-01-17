@@ -30,7 +30,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cdk
-          npm run messaging:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c applicationName=todo-app
+          npm run messaging:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-database-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cdk
-          npm run database:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c applicationName=todo-app
+          npm run database:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-cognito-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -80,4 +80,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cdk
-          npm run cognito:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c applicationName=todo-app
+          npm run cognito:deploy -- -c environmentName=staging -c applicationName=todo-app
