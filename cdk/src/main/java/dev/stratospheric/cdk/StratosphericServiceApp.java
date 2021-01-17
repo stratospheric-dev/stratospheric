@@ -7,8 +7,8 @@ import software.amazon.awscdk.services.secretsmanager.Secret;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
+import static software.amazon.awscdk.core.Token.asList;
 
 public class StratosphericServiceApp {
 
@@ -48,6 +48,16 @@ public class StratosphericServiceApp {
       .env(awsEnvironment)
       .build());
 
+    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
+      PostgresDatabase.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+
+
+    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
+      StratosphericCognitoStack.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+
+    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
+      StratosphericMessagingStack.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+
     Service service = new Service(
       serviceStack,
       "Service",
@@ -55,10 +65,12 @@ public class StratosphericServiceApp {
       applicationEnvironment,
       new Service.ServiceInputParameters(
         new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
-        emptyList(),
+        asList(databaseOutputParameters.getDatabaseSecurityGroupId()),
         environmentVariables(
           serviceStack,
-          applicationEnvironment,
+          databaseOutputParameters,
+          cognitoOutputParameters,
+          messagingOutputParameters,
           springProfile)),
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
@@ -67,22 +79,18 @@ public class StratosphericServiceApp {
 
   static Map<String, String> environmentVariables(
     Construct scope,
-    ApplicationEnvironment applicationEnvironment,
+    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
+    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters,
+    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters,
     String springProfile
   ) {
 
     Map<String, String> vars = new HashMap<>();
 
-    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
-      PostgresDatabase.getOutputParametersFromParameterStore(scope, applicationEnvironment);
+
     String databaseSecretArn = databaseOutputParameters.getDatabaseSecretArn();
     ISecret databaseSecret = Secret.fromSecretCompleteArn(scope, "databaseSecret", databaseSecretArn);
 
-    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
-      StratosphericCognitoStack.getOutputParametersFromParameterStore(scope, applicationEnvironment);
-
-    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
-      StratosphericMessagingStack.getOutputParametersFromParameterStore(scope, applicationEnvironment);
 
     vars.put("SPRING_PROFILES_ACTIVE", springProfile);
     vars.put("SPRING_DATASOURCE_URL",
