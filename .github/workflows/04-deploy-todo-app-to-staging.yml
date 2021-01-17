@@ -1,5 +1,5 @@
 # This workflow deploys the Todo-App into the staging environment.
-name: 04 - Deploy Todo-App to staging
+name: 04 - Continuously deploy Todo-App to staging
 
 on:
   push:
