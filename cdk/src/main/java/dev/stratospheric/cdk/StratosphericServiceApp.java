@@ -7,7 +7,7 @@ import software.amazon.awscdk.services.secretsmanager.Secret;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
+import static dev.stratospheric.cdk.Validations.requireNonEmpty;
 import static software.amazon.awscdk.core.Token.asList;
 
 public class StratosphericServiceApp {
@@ -16,25 +16,25 @@ public class StratosphericServiceApp {
     App app = new App();
 
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    requireNonNull(environmentName, "context variable 'environmentName' must not be null");
+    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
 
     String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    requireNonNull(applicationName, "context variable 'applicationName' must not be null");
+    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    requireNonNull(accountId, "context variable 'accountId' must not be null");
+    requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String springProfile = (String) app.getNode().tryGetContext("springProfile");
-    requireNonNull(springProfile, "context variable 'springProfile' must not be null");
+    requireNonEmpty(springProfile, "context variable 'springProfile' must not be null");
 
     String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    requireNonNull(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
+    requireNonEmpty(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
 
     String dockerImageTag = (String) app.getNode().tryGetContext("dockerImageTag");
-    requireNonNull(dockerImageTag, "context variable 'dockerImageTag' must not be null");
+    requireNonEmpty(dockerImageTag, "context variable 'dockerImageTag' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    requireNonNull(region, "context variable 'region' must not be null");
+    requireNonEmpty(region, "context variable 'region' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
