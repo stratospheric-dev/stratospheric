@@ -44,20 +44,26 @@ public class StratosphericServiceApp {
       environmentName
     );
 
+    // This stack is just a container for the parameters below, because they need a Stack as a scope.
+    Stack parametersStack = new Stack(app, "ServiceParameters", StackProps.builder()
+      .stackName(applicationEnvironment.prefix("-ServiceParameters"))
+      .env(awsEnvironment)
+      .build());
+
     Stack serviceStack = new Stack(app, "ServiceStack", StackProps.builder()
       .stackName(environmentName + "-Service")
       .env(awsEnvironment)
       .build());
 
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
-      PostgresDatabase.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+      PostgresDatabase.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
 
     StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
-      StratosphericCognitoStack.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+      StratosphericCognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
     StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
-      StratosphericMessagingStack.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment);
+      StratosphericMessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
     Service service = new Service(
       serviceStack,
