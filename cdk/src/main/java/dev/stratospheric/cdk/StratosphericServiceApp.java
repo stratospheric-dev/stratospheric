@@ -118,7 +118,7 @@ public class StratosphericServiceApp {
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
     vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
-    vars.put("WEB_SOCKET_RELAY_HOST", activeMqOutputParameters.getAmqpEndpoint());
+    vars.put("WEB_SOCKET_RELAY_HOST", activeMqOutputParameters.getStompEndpoint());
 
     return vars;
   }
