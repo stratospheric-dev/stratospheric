@@ -46,7 +46,7 @@ public class StratosphericServiceApp {
 
     // This stack is just a container for the parameters below, because they need a Stack as a scope.
     Stack parametersStack = new Stack(app, "ServiceParameters", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("-ServiceParameters"))
+      .stackName(applicationEnvironment.prefix("Service-Parameters"))
       .env(awsEnvironment)
       .build());
 
