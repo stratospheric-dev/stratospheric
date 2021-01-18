@@ -45,8 +45,9 @@ public class StratosphericServiceApp {
     );
 
     // This stack is just a container for the parameters below, because they need a Stack as a scope.
-    // We're trying to make this parameters stack unique with each deployment, because updating an existing stack
-    // will fail because the parameters are in use by an old service stack.
+    // We're making this parameters stack unique with each deployment by adding a timestamp, because updating an existing
+    // parameters stack will fail because the parameters may be used by an old service stack.
+    // This means that each update will generate a new parameters stack that needs to be cleaned up manually!
     long timestamp = System.currentTimeMillis();
     Stack parametersStack = new Stack(app, "ServiceParameters-" + timestamp, StackProps.builder()
       .stackName(applicationEnvironment.prefix("Service-Parameters-" + timestamp))
@@ -120,6 +121,7 @@ public class StratosphericServiceApp {
     vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.getUserPoolClientSecret());
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
+    vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
     vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
     vars.put("WEB_SOCKET_RELAY_HOST", activeMqOutputParameters.getStompEndpoint());
