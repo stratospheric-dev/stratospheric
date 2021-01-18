@@ -51,7 +51,7 @@ public class StratosphericServiceApp {
       .build());
 
     Stack serviceStack = new Stack(app, "ServiceStack", StackProps.builder()
-      .stackName(environmentName + "-Service")
+      .stackName(applicationEnvironment.prefix("Service"))
       .env(awsEnvironment)
       .build());
 
