@@ -45,8 +45,11 @@ public class StratosphericServiceApp {
     );
 
     // This stack is just a container for the parameters below, because they need a Stack as a scope.
-    Stack parametersStack = new Stack(app, "ServiceParameters", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Service-Parameters"))
+    // We're trying to make this parameters stack unique with each deployment, because updating an existing stack
+    // will fail because the parameters are in use by an old service stack.
+    long timestamp = System.currentTimeMillis();
+    Stack parametersStack = new Stack(app, "ServiceParameters-" + timestamp, StackProps.builder()
+      .stackName(applicationEnvironment.prefix("Service-Parameters-" + timestamp))
       .env(awsEnvironment)
       .build());
 
