@@ -95,7 +95,7 @@ class StratosphericCognitoStack extends Stack {
       .build();
 
     StringParameter logoutUrl = StringParameter.Builder.create(this, "logoutUrl")
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_ID))
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_LOGOUT_URL))
       .stringValue(this.logoutUrl)
       .build();
 
