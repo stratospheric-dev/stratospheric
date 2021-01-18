@@ -5,6 +5,7 @@ import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
+import static dev.stratospheric.cdk.Validations.requireNonEmpty;
 import static java.util.Objects.requireNonNull;
 
 public class StratosphericNetworkApp {
@@ -13,16 +14,16 @@ public class StratosphericNetworkApp {
     App app = new App();
 
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    requireNonNull(environmentName, "context variable 'environmentName' must not be null");
+    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    requireNonNull(accountId, "context variable 'accountId' must not be null");
+    requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    requireNonNull(region, "context variable 'region' must not be null");
+    requireNonEmpty(region, "context variable 'region' must not be null");
 
     String sslCertificateArn = (String) app.getNode().tryGetContext("sslCertificateArn");
-    requireNonNull(region, "context variable 'sslCertificateArn' must not be null");
+    requireNonEmpty(region, "context variable 'sslCertificateArn' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 

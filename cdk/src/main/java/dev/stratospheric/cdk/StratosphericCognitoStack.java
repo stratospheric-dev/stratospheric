@@ -81,6 +81,7 @@ class StratosphericCognitoStack extends Stack {
   private static final String PARAMETER_USER_POOL_CLIENT_ID = "userPoolClientId";
   private static final String PARAMETER_USER_POOL_CLIENT_SECRET = "userPoolClientSecret";
   private static final String PARAMETER_USER_POOL_LOGOUT_URL = "userPoolLogoutUrl";
+  private static final String PARAMETER_USER_POOL_PROVIDER_URL = "userPoolProviderUrl";
 
   private void createOutputParameters(Environment awsEnvironment) {
 
@@ -97,6 +98,11 @@ class StratosphericCognitoStack extends Stack {
     StringParameter logoutUrl = StringParameter.Builder.create(this, "logoutUrl")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_LOGOUT_URL))
       .stringValue(this.logoutUrl)
+      .build();
+
+    StringParameter providerUrl = StringParameter.Builder.create(this, "providerUrl")
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_PROVIDER_URL))
+      .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();
 
 
@@ -143,7 +149,8 @@ class StratosphericCognitoStack extends Stack {
       this.userPool.getUserPoolId(),
       this.userPoolClient.getUserPoolClientId(),
       userPoolClientSecret,
-      this.logoutUrl);
+      this.logoutUrl,
+      this.userPool.getUserPoolProviderUrl());
   }
 
   public static CognitoOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
@@ -151,7 +158,8 @@ class StratosphericCognitoStack extends Stack {
       getParameterUserPoolId(scope, applicationEnvironment),
       getParameterUserPoolClientId(scope, applicationEnvironment),
       getParameterUserPoolClientSecret(scope, applicationEnvironment),
-      getParameterLogoutUrl(scope, applicationEnvironment));
+      getParameterLogoutUrl(scope, applicationEnvironment),
+      getParameterUserPoolProviderUrl(scope, applicationEnvironment));
   }
 
   private static String getParameterUserPoolId(Construct scope, ApplicationEnvironment applicationEnvironment) {
@@ -161,6 +169,11 @@ class StratosphericCognitoStack extends Stack {
 
   private static String getParameterLogoutUrl(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return StringParameter.fromStringParameterName(scope, PARAMETER_USER_POOL_LOGOUT_URL, createParameterName(applicationEnvironment, PARAMETER_USER_POOL_LOGOUT_URL))
+      .getStringValue();
+  }
+
+  private static String getParameterUserPoolProviderUrl(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_USER_POOL_PROVIDER_URL, createParameterName(applicationEnvironment, PARAMETER_USER_POOL_PROVIDER_URL))
       .getStringValue();
   }
 
@@ -191,12 +204,19 @@ class StratosphericCognitoStack extends Stack {
     private final String userPoolClientId;
     private final String userPoolClientSecret;
     private final String logoutUrl;
+    private final String providerUrl;
 
-    public CognitoOutputParameters(String userPoolId, String userPoolClientId, String userPoolClientSecret, String logoutUrl) {
+    public CognitoOutputParameters(
+      String userPoolId,
+      String userPoolClientId,
+      String userPoolClientSecret,
+      String logoutUrl,
+      String providerUrl) {
       this.userPoolId = userPoolId;
       this.userPoolClientId = userPoolClientId;
       this.userPoolClientSecret = userPoolClientSecret;
       this.logoutUrl = logoutUrl;
+      this.providerUrl = providerUrl;
     }
 
     public String getUserPoolId() {
@@ -213,6 +233,10 @@ class StratosphericCognitoStack extends Stack {
 
     public String getLogoutUrl() {
       return logoutUrl;
+    }
+
+    public String getProviderUrl() {
+      return providerUrl;
     }
   }
 
