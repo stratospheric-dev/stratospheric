@@ -58,12 +58,14 @@ public class StratosphericServiceApp {
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
       PostgresDatabase.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-
     StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
       StratosphericCognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
     StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
       StratosphericMessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+
+    StratosphericActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
+      StratosphericActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
     Service service = new Service(
       serviceStack,
@@ -78,6 +80,7 @@ public class StratosphericServiceApp {
           databaseOutputParameters,
           cognitoOutputParameters,
           messagingOutputParameters,
+          activeMqOutputParameters,
           springProfile)),
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
@@ -89,6 +92,7 @@ public class StratosphericServiceApp {
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
     StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters,
     StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters,
+    StratosphericActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
     String springProfile
   ) {
 
@@ -114,6 +118,7 @@ public class StratosphericServiceApp {
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
     vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
+    vars.put("WEB_SOCKET_RELAY_HOST", activeMqOutputParameters.getAmqpEndpoint());
 
     return vars;
   }

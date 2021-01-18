@@ -12,6 +12,7 @@
     <cdk.version>1.79.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <java.version>11</java.version>
+    <passay.version>1.6.0</passay.version>
   </properties>
 
   <build>
@@ -64,6 +65,18 @@
       <groupId>software.amazon.awscdk</groupId>
       <artifactId>secretsmanager</artifactId>
       <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>amazonmq</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.passay</groupId>
+      <artifactId>passay</artifactId>
+      <version>${passay.version}</version>
     </dependency>
 
     <dependency>
