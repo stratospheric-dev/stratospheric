@@ -4,7 +4,11 @@ name: 05 - Continuously update the Todo-App environment in staging
 on:
   push:
     paths:
-      - 'cdk/**'
+      - 'cdk/**/*ActiveMq*'
+      - 'cdk/**/*Cognito*'
+      - 'cdk/**/*Database*'
+      - 'cdk/**/*Messaging*'
+      - 'cdk/pom.xml'
 jobs:
   deploy-messaging-stack:
     if: github.ref == 'refs/heads/main'

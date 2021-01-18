@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - 'application/**'
-      - 'cdk/**/*ServiceApp*'
+      - 'cdk/**/*Service*'
       - 'cdk/pom.xml'
 jobs:
   build:
