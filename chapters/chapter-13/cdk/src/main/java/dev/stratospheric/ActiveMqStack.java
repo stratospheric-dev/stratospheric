@@ -1,5 +1,6 @@
 package dev.stratospheric;
 
+import dev.stratospheric.cdk.ApplicationEnvironment;
 import org.jetbrains.annotations.NotNull;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;

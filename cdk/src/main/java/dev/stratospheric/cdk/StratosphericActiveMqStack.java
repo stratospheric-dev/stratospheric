@@ -1,3 +1,4 @@
+// TODO: Rename package to avoid concealed imports from CDK Constructs dependency
 package dev.stratospheric.cdk;
 
 import org.jetbrains.annotations.NotNull;

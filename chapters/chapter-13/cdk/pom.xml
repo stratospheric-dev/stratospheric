@@ -60,8 +60,20 @@
 
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
+      <artifactId>secretsmanager</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
       <artifactId>amazonmq</artifactId>
       <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.stratospheric</groupId>
+      <artifactId>cdk-constructs</artifactId>
+      <version>0.0.10</version>
     </dependency>
 
     <dependency>
