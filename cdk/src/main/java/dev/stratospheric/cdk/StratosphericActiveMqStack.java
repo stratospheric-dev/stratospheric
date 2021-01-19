@@ -1,4 +1,3 @@
-// TODO: Rename package to avoid shadowing of classes from CDK Constructs dependency under the same package name
 package dev.stratospheric.cdk;
 
 import org.jetbrains.annotations.NotNull;
