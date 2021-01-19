@@ -85,7 +85,11 @@ public class StratosphericServiceApp {
           cognitoOutputParameters,
           messagingOutputParameters,
           activeMqOutputParameters,
-          springProfile)),
+          springProfile))
+        .withHealthyThresholdCount(2)
+        // 15 * 16 seconds = 4 minutes (must be long enough to cover the application startup, which is rather slow with low-end computing instances
+        .withHealthCheckIntervalSeconds(15)
+        .withUnhealthyThresholdCount(16),
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
     app.synth();
