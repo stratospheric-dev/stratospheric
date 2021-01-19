@@ -86,10 +86,7 @@ public class StratosphericServiceApp {
           messagingOutputParameters,
           activeMqOutputParameters,
           springProfile))
-        .withHealthyThresholdCount(2)
-        // 15 * 16 seconds = 4 minutes (must be long enough to cover the application startup, which is rather slow with low-end computing instances
-        .withHealthCheckIntervalSeconds(15)
-        .withUnhealthyThresholdCount(16),
+        .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
     app.synth();
