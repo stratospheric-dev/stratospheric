@@ -3,6 +3,7 @@ package dev.stratospheric.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -23,32 +24,69 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config
-      .enableStompBrokerRelay("/topic")
-      .setRelayHost(this.websocketEndpoint.host)
-      .setRelayPort(this.websocketEndpoint.port);
-    config.setApplicationDestinationPrefixes("/websocketEndpoints");
+    if (this.websocketEndpoint != null) {
+      StompBrokerRelayRegistration stompBrokerRelayRegistration = config
+        .enableStompBrokerRelay("/topic");
+
+      if (this.websocketEndpoint.host != null && this.websocketEndpoint.port != null) {
+        stompBrokerRelayRegistration
+          .setRelayHost(this.websocketEndpoint.host)
+          .setRelayPort(this.websocketEndpoint.port);
+      }
+      if (this.websocketEndpoint.failoverURI != null) {
+        stompBrokerRelayRegistration
+          .setRelayHost(this.websocketEndpoint.failoverURI);
+      }
+
+      config.setApplicationDestinationPrefixes("/websocketEndpoints");
+    }
   }
 
   private static class Endpoint {
     final String host;
-    final int port;
+    final Integer port;
+    final String failoverURI;
 
     public Endpoint(String host, int port) {
       this.host = host;
       this.port = port;
+      this.failoverURI = null;
+    }
+
+    public Endpoint(String failoverURI) {
+      this.host = null;
+      this.port = null;
+      this.failoverURI = failoverURI;
     }
 
     static Endpoint fromEndpointString(String endpoint) {
-      Pattern pattern = Pattern.compile("^(.*):([0-9]+$)");
-      Matcher matcher = pattern.matcher(endpoint);
-      if (!matcher.matches()) {
-        throw new IllegalStateException(String.format("Invalid endpoint string (must consist of hostname and port): %s", endpoint));
-      }
-      String host = matcher.group(1);
-      String port = matcher.group(2);
+      String host;
+      String port;
+      String failoverURI;
 
-      return new Endpoint(host, Integer.parseInt(port));
+      Pattern hostAndPortPattern = Pattern.compile("^(.*):([0-9]+$)");
+      Matcher hostAndPortMatcher = hostAndPortPattern.matcher(endpoint);
+
+      if (hostAndPortMatcher.matches()) {
+        host = hostAndPortMatcher.group(1);
+        port = hostAndPortMatcher.group(2);
+
+        return new Endpoint(host, Integer.parseInt(port));
+      }
+
+      Pattern failoverURIPattern = Pattern.compile("^(failover:\\(.*\\))");
+      Matcher failoverURIMatcher = failoverURIPattern.matcher(endpoint);
+      if (failoverURIMatcher.matches()) {
+        failoverURI = failoverURIMatcher.group(0);
+
+        return new Endpoint(failoverURI);
+      }
+
+      if (!(hostAndPortMatcher.matches() || failoverURIMatcher.matches())) {
+        throw new IllegalStateException(String.format("Invalid endpoint string (must either consist of hostname and port or a failover URI): %s", endpoint));
+      }
+
+      return null;
     }
   }
 
