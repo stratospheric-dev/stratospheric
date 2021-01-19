@@ -26,7 +26,7 @@ public class TodoCollaborationService {
   private final QueueMessagingTemplate queueMessagingTemplate;
   private final String todoSharingQueueName;
 
-//  private final SimpMessagingTemplate simpMessagingTemplate;
+  private final SimpMessagingTemplate simpMessagingTemplate;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
 
@@ -38,14 +38,14 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName){
-//    SimpMessagingTemplate simpMessagingTemplate) {
+    @Value("${custom.sharing-queue}") String todoSharingQueueName,
+    SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
     this.queueMessagingTemplate = queueMessagingTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
-//    this.simpMessagingTemplate = simpMessagingTemplate;
+    this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
   public String shareWithCollaborator(Long todoId, Long collaboratorId) {
@@ -89,7 +89,7 @@ public class TodoCollaborationService {
         + ".";
       String collaboratorEmail = collaborator.getEmail();
 
-//      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
+      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
 
       todoCollaborationRequestRepository.delete(todoCollaborationRequest);
 

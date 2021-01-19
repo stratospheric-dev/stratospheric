@@ -23,5 +23,4 @@ spring:
       cache:
         period: 0
 custom:
-  web-socket-relay-host: localhost
-  web-socket-relay-port: 61613
+  web-socket-relay-endpoint: localhost:61613
