@@ -147,12 +147,12 @@ public class ActiveMQStack extends Stack {
   }
 
   private static String getFailoverString(String url1, String url2) {
-    if (url1 != null && url2 != null {
-      return "failover:(" + url1 + "," + url2)";
+    if (url1 != null && url2 != null) {
+      return "failover:(" + url1 + "," + url2 + ")";
     }
 
     if (url1 != null) {
-      return url1
+      return url1;
     }
 
     return url2;
