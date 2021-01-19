@@ -3,23 +3,38 @@ package dev.stratospheric;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
+import static dev.stratospheric.cdk.Validations.requireNonEmpty;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Objects;
 
 public class Chapter13App {
   public static void main(final String[] args) {
     App app = new App();
 
+    String environmentName = (String) app.getNode().tryGetContext("environmentName");
+    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
+
+    String applicationName = (String) app.getNode().tryGetContext("applicationName");
+    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
+
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    Objects.requireNonNull(accountId, "context variable 'accountId' must not be null");
+    requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    Objects.requireNonNull(region, "context variable 'region' must not be null");
+    requireNonEmpty(region, "context variable 'region' must not be null");
 
-    new ActiveMQStack(app,
-      "ActiveMQ",
-      makeEnv(accountId, region),
-      "stratospheric"
+    String username = (String) app.getNode().tryGetContext("username");
+    requireNonEmpty(username, "context variable 'username' must not be null");
+
+    Environment awsEnvironment = makeEnv(accountId, region);
+
+    ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(
+      applicationName,
+      environmentName
     );
+
+    new StratosphericActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
 
     app.synth();
   }

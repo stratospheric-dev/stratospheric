@@ -43,13 +43,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       Pattern pattern = Pattern.compile("^(.*):([0-9]+$)");
       Matcher matcher = pattern.matcher(endpoint);
       if (!matcher.matches()) {
-        throw new IllegalStateException(String.format("invalid endpoint string (must consist of hostname and port): %s", endpoint));
+        throw new IllegalStateException(String.format("Invalid endpoint string (must consist of hostname and port): %s", endpoint));
       }
       String host = matcher.group(1);
       String port = matcher.group(2);
-      return new Endpoint(host, Integer.valueOf(port));
-    }
 
+      return new Endpoint(host, Integer.parseInt(port));
+    }
   }
 
   @Override

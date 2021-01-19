@@ -1,6 +1,6 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraintsNotNull;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.customresources.*;
 import software.amazon.awscdk.services.cognito.*;

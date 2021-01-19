@@ -1,6 +1,6 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraints.NotNull;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -85,8 +85,8 @@ public class StratosphericActiveMqStack extends Stack {
     return new ActiveMqOutputParameters(
       this.username,
       this.password,
-      this.broker.getAttrAmqpEndpoints().get(0),
-      this.broker.getAttrStompEndpoints().get(0)
+      getFailoverString(this.broker.getAttrAmqpEndpoints().get(0), this.broker.getAttrAmqpEndpoints().get(1)),
+      getFailoverString(this.broker.getAttrStompEndpoints().get(0), this.broker.getAttrStompEndpoints().get(1))
     );
   }
 
@@ -131,18 +131,34 @@ public class StratosphericActiveMqStack extends Stack {
 
     StringParameter amqpEndpoint = StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
-      .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
+      .stringValue(
+        getFailoverString(Fn.select(0, this.broker.getAttrAmqpEndpoints()), Fn.select(1, this.broker.getAttrAmqpEndpoints()))
+      )
       .build();
 
     StringParameter stompEndpoint = StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
-      .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
+      .stringValue(
+        getFailoverString(Fn.select(0, this.broker.getAttrStompEndpoints()), Fn.select(1, this.broker.getAttrStompEndpoints()))
+      )
       .build();
   }
 
   @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-ActiveMq-" + parameterName;
+  }
+
+  private static String getFailoverString(String url1, String url2) {
+    if (url1 != null && url2 != null {
+      return "failover:(" + url1 + "," + url2)";
+    }
+
+    if (url1 != null) {
+      return url1
+    }
+
+    return url2;
   }
 
   public static class ActiveMqOutputParameters {
