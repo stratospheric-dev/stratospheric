@@ -1,22 +1,25 @@
 package dev.stratospheric;
 
+import javax.validation.constraints.NotNull;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
+import software.amazon.awscdk.services.ssm.StringParameter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveMQStack extends Stack {
+public class ActiveMqStack extends Stack {
 
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
   private final String username;
   private final String password;
 
-  public ActiveMQStack(
+  public ActiveMqStack(
     final Construct scope,
     final String id,
     final Environment awsEnvironment,
