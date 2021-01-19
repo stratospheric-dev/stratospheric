@@ -1,6 +1,6 @@
 package dev.stratospheric.cdk;
 
-import javax.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.sns.ITopic;
 import software.amazon.awscdk.services.sns.Topic;
