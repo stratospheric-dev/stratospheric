@@ -1,12 +1,8 @@
 package dev.stratospheric;
 
+import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
-
-import static dev.stratospheric.cdk.Validations.requireNonEmpty;
-import static java.util.Objects.requireNonNull;
-
-import java.util.Objects;
 
 public class Chapter13App {
   public static void main(final String[] args) {
@@ -34,7 +30,7 @@ public class Chapter13App {
       environmentName
     );
 
-    new StratosphericActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
+    new ActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
 
     app.synth();
   }
@@ -44,5 +40,11 @@ public class Chapter13App {
       .account(account)
       .region(region)
       .build();
+  }
+
+  static void requireNonEmpty(String string, String message) {
+    if (string == null || string.isBlank()) {
+      throw new IllegalArgumentException(message);
+    }
   }
 }
