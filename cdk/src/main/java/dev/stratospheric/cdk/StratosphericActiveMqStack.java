@@ -130,16 +130,12 @@ public class StratosphericActiveMqStack extends Stack {
 
     StringParameter amqpEndpoint = StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
-      .stringValue(
-        getFailoverString(Fn.select(0, this.broker.getAttrAmqpEndpoints()), Fn.select(1, this.broker.getAttrAmqpEndpoints()))
-      )
+      .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()), Fn.select(1, this.broker.getAttrAmqpEndpoints()))
       .build();
 
     StringParameter stompEndpoint = StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
-      .stringValue(
-        getFailoverString(Fn.select(0, this.broker.getAttrStompEndpoints()), Fn.select(1, this.broker.getAttrStompEndpoints()))
-      )
+      .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints())))
       .build();
   }
 
