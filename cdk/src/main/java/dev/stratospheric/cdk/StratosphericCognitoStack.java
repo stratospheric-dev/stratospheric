@@ -1,6 +1,5 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.customresources.*;
 import software.amazon.awscdk.services.cognito.*;
@@ -139,7 +138,6 @@ class StratosphericCognitoStack extends Stack {
 
   }
 
-  @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Cognito-" + parameterName;
   }

@@ -1,7 +1,6 @@
 package dev.stratospheric;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import org.jetbrains.annotations.NotNull;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -145,7 +144,6 @@ public class ActiveMqStack extends Stack {
       .build();
   }
 
-  @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-ActiveMq-" + parameterName;
   }
