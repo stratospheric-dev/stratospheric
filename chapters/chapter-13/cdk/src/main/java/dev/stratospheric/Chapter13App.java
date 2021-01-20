@@ -8,29 +8,20 @@ public class Chapter13App {
   public static void main(final String[] args) {
     App app = new App();
 
-    String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
-
-    String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
-
     String accountId = (String) app.getNode().tryGetContext("accountId");
     requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
     requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String username = (String) app.getNode().tryGetContext("username");
-    requireNonEmpty(username, "context variable 'username' must not be null");
-
     Environment awsEnvironment = makeEnv(accountId, region);
 
     ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(
-      applicationName,
-      environmentName
+      "stratospheric",
+      "dev"
     );
 
-    new ActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
+    new ActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, "stratospheric");
 
     app.synth();
   }
