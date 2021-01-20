@@ -113,6 +113,7 @@ public class StratosphericServiceApp {
             .resources(singletonList("*"))
             .actions(singletonList("ses:*"))
             .build()))
+        .withStickySessionsEnabled(true)
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
 
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
