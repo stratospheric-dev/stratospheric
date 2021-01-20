@@ -84,8 +84,8 @@ public class StratosphericActiveMqStack extends Stack {
     return new ActiveMqOutputParameters(
       this.username,
       this.password,
-      getFailoverString(this.broker.getAttrAmqpEndpoints().get(0), this.broker.getAttrAmqpEndpoints().get(1)),
-      getFailoverString(this.broker.getAttrStompEndpoints().get(0), this.broker.getAttrStompEndpoints().get(1))
+      this.broker.getAttrAmqpEndpoints().get(0),
+      this.broker.getAttrStompEndpoints().get(0)
     );
   }
 
@@ -118,22 +118,22 @@ public class StratosphericActiveMqStack extends Stack {
 
   private void createOutputParameters() {
 
-    StringParameter activeMqUsername = StringParameter.Builder.create(this, PARAMETER_USERNAME)
+    StringParameter.Builder.create(this, PARAMETER_USERNAME)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
       .stringValue(username)
       .build();
 
-    StringParameter activeMqPassword = StringParameter.Builder.create(this, PARAMETER_PASSWORD)
+    StringParameter.Builder.create(this, PARAMETER_PASSWORD)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
       .stringValue(password)
       .build();
 
-    StringParameter amqpEndpoint = StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
+    StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
-    StringParameter stompEndpoint = StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
+    StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
