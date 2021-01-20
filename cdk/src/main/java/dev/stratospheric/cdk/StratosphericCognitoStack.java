@@ -38,7 +38,7 @@ class StratosphericCognitoStack extends Stack {
       .userPoolName(inputParameters.applicationName + "-user-pool")
       .accountRecovery(AccountRecovery.EMAIL_ONLY)
       .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
-      .signInAliases(SignInAliases.builder().email(true).build())
+      .signInAliases(SignInAliases.builder().username(true).email(true).build())
       .signInCaseSensitive(true)
       .standardAttributes(StandardAttributes.builder()
         .email(StandardAttribute.builder().required(true).mutable(false).build())
