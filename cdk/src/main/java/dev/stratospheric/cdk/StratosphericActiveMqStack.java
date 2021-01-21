@@ -138,7 +138,7 @@ public class StratosphericActiveMqStack extends Stack {
 
   private void createOutputParameters() {
 
-    StringParameter.Builder.create(this, "securityGroupId")
+    StringParameter.Builder.create(this, PARAMETER_SECURITY_GROUP_ID)
       .parameterName(createParameterName(this.applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
       .stringValue(this.activeMqSecurityGroup.getAttrGroupId())
       .build();
