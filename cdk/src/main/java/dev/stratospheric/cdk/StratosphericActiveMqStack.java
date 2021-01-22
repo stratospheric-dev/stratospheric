@@ -6,18 +6,15 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.ec2.CfnSecurityGroup;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class StratosphericActiveMqStack extends Stack {
 
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
-  private final CfnSecurityGroup activeMqSecurityGroup;
   private final String username;
   private final String password;
 
@@ -43,12 +40,6 @@ public class StratosphericActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    activeMqSecurityGroup = CfnSecurityGroup.Builder.create(this, "aMqSecurityGroup")
-      .vpcId(networkOutputParameters.getVpcId())
-      .groupDescription("Security Group for the Active MQ instance")
-      .groupName(applicationEnvironment.prefix("activeMqSecurityGroup"))
-      .build();
-
     List<User> userList = new ArrayList<>();
     userList.add(new User(
       username,
@@ -66,7 +57,6 @@ public class StratosphericActiveMqStack extends Stack {
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
       .deploymentMode("SINGLE_INSTANCE")
-      .securityGroups(Collections.singletonList(activeMqSecurityGroup.getAttrGroupId()))
       .build();
 
     createOutputParameters();
@@ -99,7 +89,6 @@ public class StratosphericActiveMqStack extends Stack {
 
   public ActiveMqOutputParameters getOutputParameters() {
     return new ActiveMqOutputParameters(
-      this.activeMqSecurityGroup.getAttrGroupId(),
       this.username,
       this.password,
       this.broker.getAttrAmqpEndpoints().get(0),
@@ -109,7 +98,6 @@ public class StratosphericActiveMqStack extends Stack {
 
   public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return new ActiveMqOutputParameters(
-      getParameterSecurityGroup(scope, applicationEnvironment),
       getParameterUsername(scope, applicationEnvironment),
       getParameterPassword(scope, applicationEnvironment),
       getParameterAmqpEndpoint(scope, applicationEnvironment),
@@ -138,10 +126,6 @@ public class StratosphericActiveMqStack extends Stack {
 
   private void createOutputParameters() {
 
-    StringParameter.Builder.create(this, PARAMETER_SECURITY_GROUP_ID)
-      .parameterName(createParameterName(this.applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
-      .stringValue(this.activeMqSecurityGroup.getAttrGroupId())
-      .build();
     StringParameter.Builder.create(this, PARAMETER_USERNAME)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
       .stringValue(username)
@@ -180,28 +164,21 @@ public class StratosphericActiveMqStack extends Stack {
   }
 
   public static class ActiveMqOutputParameters {
-    private final String activeMqSecurityGroup;
     private final String activeMqUsername;
     private final String activeMqPassword;
     private final String amqpEndpoint;
     private final String stompEndpoint;
 
     public ActiveMqOutputParameters(
-      String activeMqSecurityGroup,
       String activeMqUsername,
       String activeMqPassword,
       String amqpEndpoint,
       String stompEndpoint
     ) {
-      this.activeMqSecurityGroup = activeMqSecurityGroup;
       this.activeMqUsername = activeMqUsername;
       this.activeMqPassword = activeMqPassword;
       this.amqpEndpoint = amqpEndpoint;
       this.stompEndpoint = stompEndpoint;
-    }
-
-    public String getActiveMqSecurityGroup() {
-      return activeMqSecurityGroup;
     }
 
     public String getAmqpEndpoint() {
