@@ -43,7 +43,7 @@ public class StratosphericActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    activeMqSecurityGroup = CfnSecurityGroup.Builder.create(this, "activeMqSecurityGroup")
+    activeMqSecurityGroup = CfnSecurityGroup.Builder.create(this, "aMqSecurityGroup")
       .vpcId(networkOutputParameters.getVpcId())
       .groupDescription("Security Group for the Active MQ instance")
       .groupName(applicationEnvironment.prefix("activeMqSecurityGroup"))
