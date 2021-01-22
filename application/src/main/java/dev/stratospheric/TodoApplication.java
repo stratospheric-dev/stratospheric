@@ -8,7 +8,6 @@ import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAu
 public class TodoApplication {
 
 	public static void main(String[] args) {
-    System.out.println("Manually triggering app update.");
 	  SpringApplication.run(TodoApplication.class, args);
 	}
 
