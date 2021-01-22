@@ -38,8 +38,6 @@ public class StratosphericActiveMqStack extends Stack {
     this.username = username;
     this.password = generatePassword();
 
-    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
-
     List<User> userList = new ArrayList<>();
     userList.add(new User(
       username,
@@ -60,11 +58,6 @@ public class StratosphericActiveMqStack extends Stack {
       .build();
 
     createOutputParameters();
-  }
-
-  private static String getParameterSecurityGroup(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.fromStringParameterName(scope, PARAMETER_SECURITY_GROUP_ID, createParameterName(applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
-      .getStringValue();
   }
 
   private static String getParameterUsername(Construct scope, ApplicationEnvironment applicationEnvironment) {
@@ -118,7 +111,6 @@ public class StratosphericActiveMqStack extends Stack {
     return passwordGenerator.generatePassword(32, lowerCaseRule, upperCaseRule, digitRule);
   }
 
-  private static final String PARAMETER_SECURITY_GROUP_ID = "activeMqSecurityGroup";
   private static final String PARAMETER_USERNAME = "activeMqUsername";
   private static final String PARAMETER_PASSWORD = "activeMqPassword";
   private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
