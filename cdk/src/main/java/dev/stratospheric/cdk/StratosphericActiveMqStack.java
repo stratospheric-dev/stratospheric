@@ -48,7 +48,7 @@ public class StratosphericActiveMqStack extends Stack {
 
     this.broker = CfnBroker.Builder
       .create(this, "broker")
-      .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
+      .brokerName(applicationEnvironment.prefix("stratospheric-amq-message-broker"))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
