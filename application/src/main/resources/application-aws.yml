@@ -1,9 +1,3 @@
-cloud:
-  aws:
-    stack:
-      auto: true
-    region:
-      auto: true
 spring:
   security:
     oauth2:

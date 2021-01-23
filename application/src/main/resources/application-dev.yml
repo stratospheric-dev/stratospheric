@@ -1,12 +1,3 @@
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      auto: false
-      static: eu-central-1
-    credentials:
-      use-default-aws-credentials-chain: true
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/stratospheric
