@@ -11,14 +11,14 @@ import software.amazon.awscdk.services.ssm.StringParameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StratosphericActiveMqStack extends Stack {
+public class ActiveMqStack extends Stack {
 
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
   private final String username;
   private final String password;
 
-  public StratosphericActiveMqStack(
+  public ActiveMqStack(
     final Construct scope,
     final String id,
     final Environment awsEnvironment,

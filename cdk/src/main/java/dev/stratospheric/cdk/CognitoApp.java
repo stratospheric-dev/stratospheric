@@ -6,7 +6,7 @@ import software.amazon.awscdk.core.Environment;
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
 import static java.util.Objects.requireNonNull;
 
-public class StratosphericCognitoApp {
+public class CognitoApp {
 
   public static void main(final String[] args) {
     App app = new App();
@@ -36,7 +36,7 @@ public class StratosphericCognitoApp {
       environmentName
     );
 
-    new StratosphericCognitoStack(app, "cognito", awsEnvironment, applicationEnvironment, new StratosphericCognitoStack.CognitoInputParameters(
+    new CognitoStack(app, "cognito", awsEnvironment, applicationEnvironment, new CognitoStack.CognitoInputParameters(
       applicationName,
       applicationUrl,
       loginPageDomainPrefix));

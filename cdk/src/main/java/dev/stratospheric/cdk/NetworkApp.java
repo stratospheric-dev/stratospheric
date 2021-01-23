@@ -8,7 +8,7 @@ import software.amazon.awscdk.core.StackProps;
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
 import static java.util.Objects.requireNonNull;
 
-public class StratosphericNetworkApp {
+public class NetworkApp {
 
   public static void main(final String[] args) {
     App app = new App();

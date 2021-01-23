@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static software.amazon.awscdk.customresources.AwsCustomResourcePolicy.ANY_RESOURCE;
 
-class StratosphericCognitoStack extends Stack {
+class CognitoStack extends Stack {
 
   private final ApplicationEnvironment applicationEnvironment;
 
@@ -21,7 +21,7 @@ class StratosphericCognitoStack extends Stack {
   private String userPoolClientSecret;
   private final String logoutUrl;
 
-  public StratosphericCognitoStack(
+  public CognitoStack(
     final Construct scope,
     final String id,
     final Environment awsEnvironment,

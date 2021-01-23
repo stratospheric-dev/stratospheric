@@ -8,14 +8,14 @@ import software.amazon.awscdk.services.sqs.IQueue;
 import software.amazon.awscdk.services.sqs.Queue;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
-class StratosphericMessagingStack extends Stack {
+class MessagingStack extends Stack {
 
   private final ApplicationEnvironment applicationEnvironment;
   private final IQueue todoSharingQueue;
   private final IQueue todoSharingDlq;
   private final ITopic todoUpdatesTopic;
 
-  public StratosphericMessagingStack(
+  public MessagingStack(
     final Construct scope,
     final String id,
     final Environment awsEnvironment,

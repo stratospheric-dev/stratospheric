@@ -12,7 +12,7 @@ import java.util.*;
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
 import static java.util.Collections.singletonList;
 
-public class StratosphericServiceApp {
+public class ServiceApp {
 
   public static void main(final String[] args) {
     App app = new App();
@@ -64,14 +64,14 @@ public class StratosphericServiceApp {
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
       PostgresDatabase.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters =
-      StratosphericCognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+    CognitoStack.CognitoOutputParameters cognitoOutputParameters =
+      CognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters =
-      StratosphericMessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+    MessagingStack.MessagingOutputParameters messagingOutputParameters =
+      MessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    StratosphericActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
-      StratosphericActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
+      ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
     Service service = new Service(
       serviceStack,
@@ -124,9 +124,9 @@ public class StratosphericServiceApp {
   static Map<String, String> environmentVariables(
     Construct scope,
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
-    StratosphericCognitoStack.CognitoOutputParameters cognitoOutputParameters,
-    StratosphericMessagingStack.MessagingOutputParameters messagingOutputParameters,
-    StratosphericActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
+    CognitoStack.CognitoOutputParameters cognitoOutputParameters,
+    MessagingStack.MessagingOutputParameters messagingOutputParameters,
+    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
     String springProfile
   ) {
 

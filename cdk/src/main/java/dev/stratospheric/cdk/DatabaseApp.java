@@ -2,10 +2,13 @@ package dev.stratospheric.cdk;
 
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
 
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
+import static java.util.Objects.requireNonNull;
 
-public class StratosphericActiveMqApp {
+public class DatabaseApp {
 
   public static void main(final String[] args) {
     App app = new App();
@@ -22,9 +25,6 @@ public class StratosphericActiveMqApp {
     String region = (String) app.getNode().tryGetContext("region");
     requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String username = (String) app.getNode().tryGetContext("username");
-    requireNonEmpty(username, "context variable 'username' must not be null");
-
     Environment awsEnvironment = makeEnv(accountId, region);
 
     ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(
@@ -32,7 +32,17 @@ public class StratosphericActiveMqApp {
       environmentName
     );
 
-    new StratosphericActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
+    Stack databaseStack = new Stack(app, "DatabaseStack", StackProps.builder()
+      .stackName(applicationEnvironment.prefix("Database"))
+      .env(awsEnvironment)
+      .build());
+
+    PostgresDatabase database = new PostgresDatabase(
+      databaseStack,
+      "Database",
+      awsEnvironment,
+      applicationEnvironment,
+      new PostgresDatabase.DatabaseInputParameters());
 
     app.synth();
   }

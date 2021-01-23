@@ -7,7 +7,7 @@ import software.amazon.awscdk.core.StackProps;
 
 import java.util.Objects;
 
-public class StratosphericDockerRepositoryApp {
+public class DockerRepositoryApp {
 
   public static void main(final String[] args) {
     App app = new App();
