@@ -40,7 +40,7 @@ jobs:
           ./gradlew build --stacktrace
 
       - name: Zip build reports
-        if: failure()
+        if: always()
         run: zip -r reports.zip **/build/reports
 
       - name: Publish Unit Test Results
