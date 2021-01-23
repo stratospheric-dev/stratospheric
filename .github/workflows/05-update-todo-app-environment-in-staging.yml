@@ -9,6 +9,7 @@ on:
       - 'cdk/**/*Database*'
       - 'cdk/**/*Messaging*'
       - 'cdk/pom.xml'
+  workflow_dispatch:
 jobs:
   deploy-messaging-stack:
     if: github.ref == 'refs/heads/main'

@@ -7,6 +7,7 @@ on:
       - 'application/**'
       - 'cdk/**/*Service*'
       - 'cdk/pom.xml'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -88,3 +89,17 @@ jobs:
         run: |
           cd cdk
           npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app
+
+      # Each Service stack updates creates a new parameter stack that CloudFormation does not clean up for us.
+      # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.
+      - name: Clean up old parameter stacks
+        if: github.ref == 'refs/heads/main'
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd cdk
+          aws cloudformation describe-stacks --region eu-central-1 --query "Stacks[].StackName" --output text --profile stratospheric | sed -e "s/\s\+/\n/g" | grep -e "staging-todo-app-Service-Parameters" | sort -r | tail -n+2 > stacks_to_be_deleted.txt
+          for stack in $(cat stacks_to_be_deleted.txt); do aws cloudformation delete-stack --stack-name $stack --region eu-central-1;  done
