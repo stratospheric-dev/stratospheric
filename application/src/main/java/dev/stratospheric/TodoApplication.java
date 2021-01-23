@@ -8,7 +8,6 @@ import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAu
 public class TodoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TodoApplication.class, args);
+	  SpringApplication.run(TodoApplication.class, args);
 	}
-
 }

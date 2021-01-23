@@ -1,6 +1,5 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.customresources.*;
 import software.amazon.awscdk.services.cognito.*;
@@ -36,29 +35,37 @@ class StratosphericCognitoStack extends Stack {
     this.logoutUrl = String.format("https://%s.auth.%s.amazoncognito.com/logout", inputParameters.loginPageDomainPrefix, awsEnvironment.getRegion());
 
     this.userPool = UserPool.Builder.create(this, "userPool")
-      .userPoolName(inputParameters.authName + "-user-pool")
+      .userPoolName(inputParameters.applicationName + "-user-pool")
       .accountRecovery(AccountRecovery.EMAIL_ONLY)
+      .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
+      .signInAliases(SignInAliases.builder().username(true).email(true).build())
+      .signInCaseSensitive(true)
+      .standardAttributes(StandardAttributes.builder()
+        .email(StandardAttribute.builder().required(true).mutable(false).build())
+        .build())
+      .mfa(Mfa.OFF)
       .passwordPolicy(PasswordPolicy.builder()
         .requireLowercase(true)
         .requireDigits(true)
         .requireSymbols(true)
         .requireUppercase(true)
+        .minLength(12)
         .tempPasswordValidity(Duration.days(7))
         .build())
       .build();
 
     this.userPoolClient = UserPoolClient.Builder.create(this, "userPoolClient")
-      .userPoolClientName(inputParameters.authName + "-client")
+      .userPoolClientName(inputParameters.applicationName + "-client")
       .generateSecret(true)
       .userPool(this.userPool)
       .oAuth(OAuthSettings.builder()
         .callbackUrls(Arrays.asList(
-          String.format("%s/login/oauth2/code/cognito", inputParameters.externalUrl),
+          String.format("%s/login/oauth2/code/cognito", inputParameters.applicationUrl),
           "http://localhost:8080/login/oauth2/code/cognito"
         ))
+        .logoutUrls(Arrays.asList(inputParameters.applicationUrl, "http://localhost:8080"))
         .flows(OAuthFlows.builder()
           .authorizationCodeGrant(true)
-          .implicitCodeGrant(true)
           .build())
         .scopes(Arrays.asList(OAuthScope.EMAIL, OAuthScope.OPENID, OAuthScope.PROFILE))
         .build())
@@ -68,7 +75,7 @@ class StratosphericCognitoStack extends Stack {
     this.userPoolDomain = UserPoolDomain.Builder.create(this, "userPoolDomain")
       .userPool(this.userPool)
       .cognitoDomain(CognitoDomainOptions.builder()
-        .domainPrefix("dev101")
+        .domainPrefix(inputParameters.loginPageDomainPrefix)
         .build())
       .build();
 
@@ -139,7 +146,6 @@ class StratosphericCognitoStack extends Stack {
 
   }
 
-  @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Cognito-" + parameterName;
   }
@@ -188,13 +194,13 @@ class StratosphericCognitoStack extends Stack {
   }
 
   public static class CognitoInputParameters {
-    private final String authName;
-    private final String externalUrl;
+    private final String applicationName;
+    private final String applicationUrl;
     private final String loginPageDomainPrefix;
 
-    public CognitoInputParameters(String authName, String externalUrl, String loginPageDomainPrefix) {
-      this.authName = authName;
-      this.externalUrl = externalUrl;
+    public CognitoInputParameters(String applicationName, String applicationUrl, String loginPageDomainPrefix) {
+      this.applicationName = applicationName;
+      this.applicationUrl = applicationUrl;
       this.loginPageDomainPrefix = loginPageDomainPrefix;
     }
   }

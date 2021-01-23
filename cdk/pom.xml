@@ -82,7 +82,7 @@
     <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
-      <version>0.0.10</version>
+      <version>0.0.12</version>
     </dependency>
 
     <dependency>

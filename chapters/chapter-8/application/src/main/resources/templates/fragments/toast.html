@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:remove="tag" th:fragment="toast">
+  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="mr-auto">Collaboration confirmed.</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div id="message" class="toast-body">
+      Message
+    </div>
+  </div>
+</div>
+</body>
+</html>

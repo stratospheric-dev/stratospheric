@@ -4,7 +4,6 @@ import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
-import static java.util.Objects.requireNonNull;
 
 public class StratosphericActiveMqApp {
 

@@ -23,14 +23,11 @@ public class StratosphericCognitoApp {
     String region = (String) app.getNode().tryGetContext("region");
     requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String authName = (String) app.getNode().tryGetContext("authName");
-    requireNonEmpty(authName, "context variable 'authName' must not be null");
-
-    String externalUrl = (String) app.getNode().tryGetContext("externalUrl");
-    requireNonEmpty(externalUrl, "context variable 'externalUrl' must not be null");
+    String applicationUrl = (String) app.getNode().tryGetContext("applicationUrl");
+    requireNonEmpty(applicationUrl, "context variable 'applicationUrl' must not be null");
 
     String loginPageDomainPrefix = (String) app.getNode().tryGetContext("loginPageDomainPrefix");
-    requireNonEmpty(externalUrl, "context variable 'loginPageDomainPrefix' must not be null");
+    requireNonEmpty(loginPageDomainPrefix, "context variable 'loginPageDomainPrefix' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -40,8 +37,8 @@ public class StratosphericCognitoApp {
     );
 
     new StratosphericCognitoStack(app, "cognito", awsEnvironment, applicationEnvironment, new StratosphericCognitoStack.CognitoInputParameters(
-      authName,
-      externalUrl,
+      applicationName,
+      applicationUrl,
       loginPageDomainPrefix));
 
     app.synth();

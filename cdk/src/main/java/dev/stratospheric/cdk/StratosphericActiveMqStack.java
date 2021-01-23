@@ -1,6 +1,5 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -47,15 +46,15 @@ public class StratosphericActiveMqStack extends Stack {
 
     this.broker = CfnBroker.Builder
       .create(this, "broker")
-      .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
+      .brokerName(applicationEnvironment.prefix("stratospheric-amq-message-broker"))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
       .authenticationStrategy("SIMPLE")
       .users(userList)
-      .publiclyAccessible(true)
+      .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
-      .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
+      .deploymentMode("SINGLE_INSTANCE")
       .build();
 
     createOutputParameters();
@@ -119,30 +118,41 @@ public class StratosphericActiveMqStack extends Stack {
 
   private void createOutputParameters() {
 
-    StringParameter activeMqUsername = StringParameter.Builder.create(this, PARAMETER_USERNAME)
+    StringParameter.Builder.create(this, PARAMETER_USERNAME)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
       .stringValue(username)
       .build();
 
-    StringParameter activeMqPassword = StringParameter.Builder.create(this, PARAMETER_PASSWORD)
+    StringParameter.Builder.create(this, PARAMETER_PASSWORD)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
       .stringValue(password)
       .build();
 
-    StringParameter amqpEndpoint = StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
+    StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
-    StringParameter stompEndpoint = StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
+    StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
   }
 
-  @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-ActiveMq-" + parameterName;
+  }
+
+  private static String getFailoverString(String url1, String url2) {
+    if (url1 != null && url2 != null) {
+      return "failover:(" + url1 + "," + url2 + ")";
+    }
+
+    if (url1 != null) {
+      return url1;
+    }
+
+    return url2;
   }
 
   public static class ActiveMqOutputParameters {
@@ -151,7 +161,12 @@ public class StratosphericActiveMqStack extends Stack {
     private final String amqpEndpoint;
     private final String stompEndpoint;
 
-    public ActiveMqOutputParameters(String activeMqUsername, String activeMqPassword, String amqpEndpoint, String stompEndpoint) {
+    public ActiveMqOutputParameters(
+      String activeMqUsername,
+      String activeMqPassword,
+      String amqpEndpoint,
+      String stompEndpoint
+    ) {
       this.activeMqUsername = activeMqUsername;
       this.activeMqPassword = activeMqPassword;
       this.amqpEndpoint = amqpEndpoint;

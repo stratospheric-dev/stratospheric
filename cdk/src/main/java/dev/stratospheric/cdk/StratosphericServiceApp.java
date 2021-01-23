@@ -1,14 +1,16 @@
 package dev.stratospheric.cdk;
 
+import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.iam.Effect;
+import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static dev.stratospheric.cdk.Validations.requireNonEmpty;
+import static java.util.Collections.singletonList;
 
 public class StratosphericServiceApp {
 
@@ -86,7 +88,34 @@ public class StratosphericServiceApp {
           messagingOutputParameters,
           activeMqOutputParameters,
           springProfile))
+        .withTaskRolePolicyStatements(List.of(
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(Arrays.asList(
+              "sqs:DeleteMessage",
+              "sqs:GetQueueUrl",
+              "sqs:ListDeadLetterSourceQueues",
+              "sqs:ListQueues",
+              "sqs:ListQueueTags",
+              "sqs:ReceiveMessage",
+              "sqs:SendMessage",
+              "sqs:ChangeMessageVisibility",
+              "sqs:GetQueueAttributes"))
+            .build(),
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(singletonList("cognito-idp:*"))
+            .build(),
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(singletonList("ses:*"))
+            .build()))
+        .withStickySessionsEnabled(true)
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
+
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
     app.synth();

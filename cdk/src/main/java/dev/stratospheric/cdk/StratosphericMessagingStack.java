@@ -1,6 +1,5 @@
 package dev.stratospheric.cdk;
 
-import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.sns.ITopic;
 import software.amazon.awscdk.services.sns.Topic;
@@ -68,7 +67,6 @@ class StratosphericMessagingStack extends Stack {
 
   }
 
-  @NotNull
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-Messaging-" + parameterName;
   }
