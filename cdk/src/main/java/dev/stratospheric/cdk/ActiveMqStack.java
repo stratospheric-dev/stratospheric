@@ -48,6 +48,9 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
+    System.out.println("------- 1");
+    System.out.println(networkOutputParameters.getVpcId());
+
     CfnSecurityGroup securityGroup = CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
       .vpcId(networkOutputParameters.getVpcId())
       .groupDescription("Security Group for the message broker instance")
