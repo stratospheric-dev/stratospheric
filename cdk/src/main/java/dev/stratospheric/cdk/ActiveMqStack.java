@@ -6,6 +6,7 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
+import software.amazon.awscdk.services.ec2.CfnSecurityGroup;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
@@ -47,10 +48,17 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
+    CfnSecurityGroup securityGroup = CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
+      .vpcId(networkOutputParameters.getVpcId())
+      .groupDescription("Security Group for the message broker instance")
+      .groupName(applicationEnvironment.prefix("amqSecurityGroup"))
+      .build();
+
     this.broker = CfnBroker.Builder
       .create(this, "broker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .subnetIds(Collections.singletonList(networkOutputParameters.getVpcId()))
+      // .subnetIds()
+      .securityGroups(Collections.singletonList(securityGroup.getAttrGroupId()))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
