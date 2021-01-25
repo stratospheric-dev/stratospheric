@@ -9,6 +9,7 @@ import software.amazon.awscdk.services.amazonmq.CfnBroker;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActiveMqStack extends Stack {
@@ -44,9 +45,12 @@ public class ActiveMqStack extends Stack {
       password
     ));
 
+    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
+
     this.broker = CfnBroker.Builder
       .create(this, "broker")
       .brokerName(applicationEnvironment.prefix("stratospheric-amq-message-broker"))
+      .subnetIds(Collections.singletonList(networkOutputParameters.getVpcId()))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
