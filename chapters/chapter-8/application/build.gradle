@@ -32,6 +32,8 @@ dependencies {
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    // explicitly define the Java SDK version
+    // mavenBom "com.amazonaws:aws-java-sdk-bom:1.11.942"
   }
 }
 
