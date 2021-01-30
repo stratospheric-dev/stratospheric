@@ -5,7 +5,6 @@ import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Objects.requireNonNull;
 
 public class MessagingApp {
 

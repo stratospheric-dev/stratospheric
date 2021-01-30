@@ -1,4 +1,4 @@
-package dev.stratospheric;
+package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.core.App;

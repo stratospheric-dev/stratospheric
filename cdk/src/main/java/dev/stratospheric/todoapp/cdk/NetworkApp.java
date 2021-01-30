@@ -7,7 +7,6 @@ import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Objects.requireNonNull;
 
 public class NetworkApp {
 

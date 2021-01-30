@@ -1,4 +1,4 @@
-package com.myorg;
+package dev.stratospheric.todoapp.cdk;
 
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Stack;

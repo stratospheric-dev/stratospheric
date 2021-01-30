@@ -1,4 +1,4 @@
-package dev.stratospheric;
+package dev.stratospheric.todoapp.cdk;
 
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.cognito.*;

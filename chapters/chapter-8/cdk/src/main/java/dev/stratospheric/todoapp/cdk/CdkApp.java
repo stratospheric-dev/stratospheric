@@ -1,13 +1,13 @@
-package dev.stratospheric;
+package dev.stratospheric.todoapp.cdk;
 
+import dev.stratospheric.cdk.SpringBootApplicationStack;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class Chapter10App {
+public class CdkApp {
+
   public static void main(final String[] args) {
     App app = new App();
 
@@ -17,12 +17,11 @@ public class Chapter10App {
     String region = (String) app.getNode().tryGetContext("region");
     Objects.requireNonNull(region, "context variable 'region' must not be null");
 
-    new CognitoStack(app,
-      "IdentityProvider",
+    new SpringBootApplicationStack(
+      app,
+      "SpringBootApplication",
       makeEnv(accountId, region),
-      Map.of(
-        "spring-boot-application",
-        List.of("http://localhost:8080/login/oauth2/code/cognito", "https://app.stratospheric.dev/login/oauth2/code/cognito")));
+      "docker.io/stratospheric/todo-app-v1:latest");
 
     app.synth();
   }
