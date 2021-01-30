@@ -1,10 +1,7 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.DockerRepository;
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.*;
 
 import java.util.Objects;
 
@@ -34,6 +31,11 @@ public class DockerRepositoryApp {
       "DockerRepository",
       awsEnvironment,
       new DockerRepository.DockerRepositoryInputParameters(applicationName, accountId));
+
+    CfnOutput.Builder.create(dockerRepository, "OUTPUT")
+      .exportName("PUTPUTPUTPUT")
+      .value("PUT")
+      .build();
 
     app.synth();
   }

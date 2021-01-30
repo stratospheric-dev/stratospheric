@@ -2,19 +2,19 @@ package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
-import dev.stratospheric.cdk.PostgresDatabase;
+import dev.stratospheric.cdk.Network.NetworkOutputParameters;
 import dev.stratospheric.cdk.Service;
+import dev.stratospheric.cdk.Service.DockerImageSource;
+import dev.stratospheric.cdk.Service.ServiceInputParameters;
+import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.*;
-import software.amazon.awscdk.services.iam.Effect;
-import software.amazon.awscdk.services.iam.PolicyStatement;
-import software.amazon.awscdk.services.secretsmanager.ISecret;
-import software.amazon.awscdk.services.secretsmanager.Secret;
+import software.amazon.awscdk.core.StackProps;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
@@ -34,11 +34,8 @@ public class ServiceApp {
     String springProfile = (String) app.getNode().tryGetContext("springProfile");
     requireNonEmpty(springProfile, "context variable 'springProfile' must not be null");
 
-    String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    requireNonEmpty(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
-
-    String dockerImageTag = (String) app.getNode().tryGetContext("dockerImageTag");
-    requireNonEmpty(dockerImageTag, "context variable 'dockerImageTag' must not be null");
+    String dockerImageUrl = (String) app.getNode().tryGetContext("dockerImageUrl");
+    requireNonEmpty(dockerImageUrl, "context variable 'dockerImageUrl' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
     requireNonEmpty(region, "context variable 'region' must not be null");
@@ -50,116 +47,30 @@ public class ServiceApp {
       environmentName
     );
 
-    // This stack is just a container for the parameters below, because they need a Stack as a scope.
-    // We're making this parameters stack unique with each deployment by adding a timestamp, because updating an existing
-    // parameters stack will fail because the parameters may be used by an old service stack.
-    // This means that each update will generate a new parameters stack that needs to be cleaned up manually!
-    long timestamp = System.currentTimeMillis();
-    Stack parametersStack = new Stack(app, "ServiceParameters-" + timestamp, StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Service-Parameters-" + timestamp))
-      .env(awsEnvironment)
-      .build());
-
     Stack serviceStack = new Stack(app, "ServiceStack", StackProps.builder()
       .stackName(applicationEnvironment.prefix("Service"))
       .env(awsEnvironment)
       .build());
 
-    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
-      PostgresDatabase.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
-    CognitoStack.CognitoOutputParameters cognitoOutputParameters =
-      CognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
-    MessagingStack.MessagingOutputParameters messagingOutputParameters =
-      MessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
-    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
-      ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+    DockerImageSource dockerImageSource = new DockerImageSource(dockerImageUrl);
+    NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName());
+    ServiceInputParameters serviceInputParameters = new ServiceInputParameters(dockerImageSource, environmentVariables(springProfile))
+      .withHealthCheckIntervalSeconds(30);
 
     Service service = new Service(
       serviceStack,
       "Service",
       awsEnvironment,
       applicationEnvironment,
-      new Service.ServiceInputParameters(
-        new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
-        Collections.singletonList(databaseOutputParameters.getDatabaseSecurityGroupId()),
-        environmentVariables(
-          serviceStack,
-          databaseOutputParameters,
-          cognitoOutputParameters,
-          messagingOutputParameters,
-          activeMqOutputParameters,
-          springProfile))
-        .withTaskRolePolicyStatements(List.of(
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(Arrays.asList(
-              "sqs:DeleteMessage",
-              "sqs:GetQueueUrl",
-              "sqs:ListDeadLetterSourceQueues",
-              "sqs:ListQueues",
-              "sqs:ListQueueTags",
-              "sqs:ReceiveMessage",
-              "sqs:SendMessage",
-              "sqs:ChangeMessageVisibility",
-              "sqs:GetQueueAttributes"))
-            .build(),
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("cognito-idp:*"))
-            .build(),
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("ses:*"))
-            .build()))
-        .withStickySessionsEnabled(true)
-        .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
-
-      Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
+      serviceInputParameters,
+      networkOutputParameters);
 
     app.synth();
   }
 
-  static Map<String, String> environmentVariables(
-    Construct scope,
-    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
-    CognitoStack.CognitoOutputParameters cognitoOutputParameters,
-    MessagingStack.MessagingOutputParameters messagingOutputParameters,
-    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
-    String springProfile
-  ) {
-
+  static Map<String, String> environmentVariables(String springProfile) {
     Map<String, String> vars = new HashMap<>();
-
-
-    String databaseSecretArn = databaseOutputParameters.getDatabaseSecretArn();
-    ISecret databaseSecret = Secret.fromSecretCompleteArn(scope, "databaseSecret", databaseSecretArn);
-
-
     vars.put("SPRING_PROFILES_ACTIVE", springProfile);
-    vars.put("SPRING_DATASOURCE_URL",
-      String.format("jdbc:postgresql://%s:%s/%s",
-        databaseOutputParameters.getEndpointAddress(),
-        databaseOutputParameters.getEndpointPort(),
-        databaseOutputParameters.getDbName()));
-    vars.put("SPRING_DATASOURCE_USERNAME",
-      databaseSecret.secretValueFromJson("username").toString());
-    vars.put("SPRING_DATASOURCE_PASSWORD",
-      databaseSecret.secretValueFromJson("password").toString());
-    vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.getUserPoolClientId());
-    vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.getUserPoolClientSecret());
-    vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
-    vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
-    vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
-    vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
-    vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
-    vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
-
     return vars;
   }
 

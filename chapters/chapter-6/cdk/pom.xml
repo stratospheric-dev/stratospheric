@@ -26,14 +26,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <configuration>
-          <mainClass>com.myorg.CdkApp</mainClass>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -59,7 +51,7 @@
     <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
-      <version>0.0.7</version>
+      <version>0.0.14</version>
     </dependency>
 
     <dependency>
