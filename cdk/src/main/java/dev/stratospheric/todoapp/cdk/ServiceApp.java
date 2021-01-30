@@ -77,7 +77,7 @@ public class ServiceApp {
     ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
       ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    Service service = new Service(
+    new Service(
       serviceStack,
       "Service",
       awsEnvironment,
@@ -169,5 +169,4 @@ public class ServiceApp {
       .region(region)
       .build();
   }
-
 }
