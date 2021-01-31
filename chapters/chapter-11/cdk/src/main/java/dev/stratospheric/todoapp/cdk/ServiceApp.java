@@ -6,15 +6,12 @@ import dev.stratospheric.cdk.PostgresDatabase;
 import dev.stratospheric.cdk.Service;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.*;
-import software.amazon.awscdk.services.iam.Effect;
-import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 
 import java.util.*;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
