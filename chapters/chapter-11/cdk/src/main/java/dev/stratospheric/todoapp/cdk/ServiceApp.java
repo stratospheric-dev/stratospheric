@@ -63,9 +63,6 @@ public class ServiceApp {
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
       PostgresDatabase.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    CognitoStack.CognitoOutputParameters cognitoOutputParameters =
-      CognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
     new Service(
       serviceStack,
       "Service",
@@ -77,14 +74,7 @@ public class ServiceApp {
         environmentVariables(
           serviceStack,
           databaseOutputParameters,
-          cognitoOutputParameters,
           springProfile))
-        .withTaskRolePolicyStatements(List.of(
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("cognito-idp:*"))
-            .build()))
         .withStickySessionsEnabled(true)
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
 
@@ -96,7 +86,6 @@ public class ServiceApp {
   static Map<String, String> environmentVariables(
     Construct scope,
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
-    CognitoStack.CognitoOutputParameters cognitoOutputParameters,
     String springProfile
   ) {
     Map<String, String> vars = new HashMap<>();
@@ -114,11 +103,6 @@ public class ServiceApp {
       databaseSecret.secretValueFromJson("username").toString());
     vars.put("SPRING_DATASOURCE_PASSWORD",
       databaseSecret.secretValueFromJson("password").toString());
-    vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.getUserPoolClientId());
-    vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.getUserPoolClientSecret());
-    vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
-    vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
-    vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
 
     return vars;
   }
