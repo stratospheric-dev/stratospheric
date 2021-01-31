@@ -9,7 +9,7 @@
     "repository:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" -c applicationName=todo-app-chapter-6 -c accountId=221875718260 -c region=eu-central-1 --require-approval never",
     "repository:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" -c applicationName=todo-app-chapter-6 -c accountId=221875718260 -c region=eu-central-1 --require-approval never",
     "service:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-6 -c springProfile=aws -c dockerImageUrl=docker.io/stratospheric/todo-app-v1:latest -c environmentName=chapter-6 --require-approval never",
-    "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app=chapter-6 -c springProfile=aws -c dockerImageUrl=docker.io/stratospheric/todo-app-v1:latest -c environmentName=chapter-6 --require-approval never"
+    "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-6 -c springProfile=aws -c dockerImageUrl=docker.io/stratospheric/todo-app-v1:latest -c environmentName=chapter-6 --require-approval never"
   },
   "devDependencies": {
     "aws-cdk": "1.79.0"
