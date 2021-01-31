@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.stratospheric</groupId>
+  <groupId>dev.stratospheric.todoapp</groupId>
   <artifactId>cdk-chapter-10</artifactId>
   <version>0.1</version>
   <description>CDK App for Chapter 10</description>
@@ -13,7 +13,7 @@
     <cdk.version>1.79.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <java.version>11</java.version>
-    <cdk-constructs.version>0.0.11</cdk-constructs.version>
+    <cdk-constructs.version>0.0.14</cdk-constructs.version>
   </properties>
 
   <build>

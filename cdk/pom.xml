@@ -13,6 +13,7 @@
     <junit.version>5.7.0</junit.version>
     <java.version>11</java.version>
     <passay.version>1.6.0</passay.version>
+    <cdk-constructs.version>0.0.14</cdk-constructs.version>
   </properties>
 
   <build>
@@ -82,7 +83,7 @@
     <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
-      <version>0.0.12</version>
+      <version>${cdk-constructs.version}</version>
     </dependency>
 
     <dependency>

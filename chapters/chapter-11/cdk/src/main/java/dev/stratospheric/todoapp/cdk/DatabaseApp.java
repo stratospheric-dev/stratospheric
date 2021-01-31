@@ -7,12 +7,14 @@ import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
-import dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
+import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 
 public class DatabaseApp {
 
   public static void main(final String[] args) {
     App app = new App();
+
+    NetworkApp networkApp = new NetworkApp();
 
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
     requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
@@ -54,5 +56,4 @@ public class DatabaseApp {
       .region(region)
       .build();
   }
-
 }
