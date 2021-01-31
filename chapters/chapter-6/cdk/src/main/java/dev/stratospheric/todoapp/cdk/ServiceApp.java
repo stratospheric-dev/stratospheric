@@ -2,25 +2,19 @@ package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
-import dev.stratospheric.cdk.Network.NetworkOutputParameters;
 import dev.stratospheric.cdk.Service;
-import dev.stratospheric.cdk.Service.DockerImageSource;
-import dev.stratospheric.cdk.Service.ServiceInputParameters;
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
+import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
   public static void main(final String[] args) {
     App app = new App();
-
 
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
     requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
@@ -80,5 +74,4 @@ public class ServiceApp {
       .region(region)
       .build();
   }
-
 }

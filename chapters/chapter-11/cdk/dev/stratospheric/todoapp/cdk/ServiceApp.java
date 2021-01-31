@@ -49,10 +49,6 @@ public class ServiceApp {
       environmentName
     );
 
-    // This stack is just a container for the parameters below, because they need a Stack as a scope.
-    // We're making this parameters stack unique with each deployment by adding a timestamp, because updating an existing
-    // parameters stack will fail because the parameters may be used by an old service stack.
-    // This means that each update will generate a new parameters stack that needs to be cleaned up manually!
     long timestamp = System.currentTimeMillis();
     Stack parametersStack = new Stack(app, "ServiceParameters-" + timestamp, StackProps.builder()
       .stackName(applicationEnvironment.prefix("Service-Parameters-" + timestamp))
@@ -70,12 +66,6 @@ public class ServiceApp {
     CognitoStack.CognitoOutputParameters cognitoOutputParameters =
       CognitoStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    MessagingStack.MessagingOutputParameters messagingOutputParameters =
-      MessagingStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
-    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
-      ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
-
     new Service(
       serviceStack,
       "Service",
@@ -88,33 +78,12 @@ public class ServiceApp {
           serviceStack,
           databaseOutputParameters,
           cognitoOutputParameters,
-          messagingOutputParameters,
-          activeMqOutputParameters,
           springProfile))
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
             .resources(singletonList("*"))
-            .actions(Arrays.asList(
-              "sqs:DeleteMessage",
-              "sqs:GetQueueUrl",
-              "sqs:ListDeadLetterSourceQueues",
-              "sqs:ListQueues",
-              "sqs:ListQueueTags",
-              "sqs:ReceiveMessage",
-              "sqs:SendMessage",
-              "sqs:ChangeMessageVisibility",
-              "sqs:GetQueueAttributes"))
-            .build(),
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
             .actions(singletonList("cognito-idp:*"))
-            .build(),
-          PolicyStatement.Builder.create()
-            .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("ses:*"))
             .build()))
         .withStickySessionsEnabled(true)
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
@@ -128,8 +97,6 @@ public class ServiceApp {
     Construct scope,
     PostgresDatabase.DatabaseOutputParameters databaseOutputParameters,
     CognitoStack.CognitoOutputParameters cognitoOutputParameters,
-    MessagingStack.MessagingOutputParameters messagingOutputParameters,
-    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
     String springProfile
   ) {
     Map<String, String> vars = new HashMap<>();
@@ -152,9 +119,6 @@ public class ServiceApp {
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.getUserPoolId());
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
-    vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
-    vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
-    vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
 
     return vars;
   }
