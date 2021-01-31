@@ -1,4 +1,4 @@
-package dev.stratospheric.todoapp.cdk;
+package com.myorg;
 
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.core.App;
