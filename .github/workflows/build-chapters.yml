@@ -34,8 +34,8 @@ jobs:
             cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
             sudo npm install -g aws-cdk
             mvn package
-            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --require-approval never
-            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --force --require-approval never
+            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --all --require-approval never
+            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --all --force --require-approval never
           fi
 
       - name: Build the application
