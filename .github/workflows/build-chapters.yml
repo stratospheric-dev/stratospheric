@@ -70,8 +70,6 @@ jobs:
             sudo npm install -g aws-cdk
             mvn package
             npm run network:deploy
-            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --require-approval never
-            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --force --require-approval never
             npm run network:destroy
           fi
       - name: Build the application
