@@ -44,4 +44,3 @@ jobs:
             cd chapters/chapter-${{ matrix.chapter-numbers }}/application
             ./gradlew build --stacktrace
           fi
-
