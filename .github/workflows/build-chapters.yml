@@ -10,9 +10,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter-numbers: [1, 8, 10, 11, 13]
+        chapter-numbers: [ 1, 8, 10, 13 ]
     runs-on: ubuntu-latest
-    name: Build the Application for Chapter ${{ matrix.chapter-numbers }}
+    name: Build the application for chapter ${{ matrix.chapter-numbers }}
     steps:
 
       - name: Checkout code
@@ -42,5 +42,41 @@ jobs:
         run: |
           if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/application" ]; then
             cd chapters/chapter-${{ matrix.chapter-numbers }}/application
+            ./gradlew build --stacktrace
+          fi
+
+  build-chapter-11:
+    runs-on: ubuntu-latest
+    name: Build the application for chapter 11
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Build and destroy the infrastructure
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          if [ -d "chapters/chapter-11/cdk" ]; then
+            cd chapters/chapter-11/cdk
+            sudo npm install -g aws-cdk
+            mvn package
+            npm run network:deploy
+            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --require-approval never
+            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --force --require-approval never
+            npm run network:destroy
+          fi
+      - name: Build the application
+        run: |
+          if [ -d "chapters/chapter-11/application" ]; then
+            cd chapters/chapter-11/application
             ./gradlew build --stacktrace
           fi
