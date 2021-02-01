@@ -68,8 +68,9 @@ jobs:
           if [ -d "chapters/chapter-11/cdk" ]; then
             cd chapters/chapter-11/cdk
             sudo npm install -g aws-cdk
-            mvn package
             npm run network:deploy
+            npm run database:deploy
+            npm run database:destroy
             npm run network:destroy
           fi
       - name: Build the application

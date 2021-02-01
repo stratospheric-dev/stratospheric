@@ -10,6 +10,7 @@ import software.amazon.awscdk.core.StackProps;
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 
 public class DatabaseApp {
+
   public static void main(final String[] args) {
     App app = new App();
 
