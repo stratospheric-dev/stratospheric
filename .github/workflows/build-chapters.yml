@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter-numbers: [ 1, 8, 10, 13 ]
+        chapter-numbers: [ 1, 8, 13 ]
     runs-on: ubuntu-latest
     name: Build the application for chapter ${{ matrix.chapter-numbers }}
     steps:
@@ -42,6 +42,40 @@ jobs:
         run: |
           if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/application" ]; then
             cd chapters/chapter-${{ matrix.chapter-numbers }}/application
+            ./gradlew build --stacktrace
+          fi
+
+  build-chapter-10:
+    runs-on: ubuntu-latest
+    name: Build the application for chapter 10
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Build and destroy the infrastructure
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          if [ -d "chapters/chapter-10/cdk" ]; then
+            cd chapters/chapter-10/cdk
+            npm install
+            npm run cognito:deploy
+            npm run cognito:destroy
+          fi
+
+      - name: Build the application
+        run: |
+          if [ -d "chapters/chapter-10/application" ]; then
+            cd chapters/chapter-10/application
             ./gradlew build --stacktrace
           fi
 

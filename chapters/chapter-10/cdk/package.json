@@ -1,0 +1,12 @@
+{
+  "name": "stratospheric-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "cognito:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter10 -c applicationUrl=https://app.stratospheric.dev -c loginPageDomainPrefix=stratospheric-chapter10 --require-approval never",
+    "cognito:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter10 -c applicationUrl=https://app.stratospheric.dev -c loginPageDomainPrefix=stratospheric-chapter10 --force --require-approval never"
+  },
+  "devDependencies": {
+    "aws-cdk": "1.79.0"
+  }
+}

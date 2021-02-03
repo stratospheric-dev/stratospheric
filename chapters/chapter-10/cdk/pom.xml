@@ -33,7 +33,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <mainClass>dev.stratospheric.todoapp.cdk.Chapter10App</mainClass>
+          <mainClass>dev.stratospheric.todoapp.cdk.CognitoApp</mainClass>
         </configuration>
       </plugin>
     </plugins>

@@ -4,8 +4,9 @@ import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 
-public class StratosphericCognitoApp {
+import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 
+public class CognitoApp {
   public static void main(final String[] args) {
     App app = new App();
 
@@ -34,7 +35,7 @@ public class StratosphericCognitoApp {
       environmentName
     );
 
-    new StratosphericCognitoStack(app, "cognito", awsEnvironment, applicationEnvironment, new StratosphericCognitoStack.CognitoInputParameters(
+    new CognitoStack(app, "cognito", awsEnvironment, applicationEnvironment, new CognitoStack.CognitoInputParameters(
       applicationName,
       applicationUrl,
       loginPageDomainPrefix));
@@ -47,11 +48,5 @@ public class StratosphericCognitoApp {
       .account(account)
       .region(region)
       .build();
-  }
-
-  static void requireNonEmpty(String string, String message) {
-    if (string == null || string.isBlank()) {
-      throw new IllegalArgumentException(message);
-    }
   }
 }
