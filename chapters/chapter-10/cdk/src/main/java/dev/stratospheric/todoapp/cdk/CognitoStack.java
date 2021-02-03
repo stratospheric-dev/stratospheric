@@ -117,7 +117,6 @@ public class CognitoStack extends Stack {
       .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();
 
-
     // CloudFormation does not expose the UserPoolClient secret, so we can't access it directly with
     // CDK. As a workaround, we create a custom resource that calls the AWS API to get the secret, and
     // then store it in the parameter store like the other parameters.
@@ -143,12 +142,11 @@ public class CognitoStack extends Stack {
       .build();
 
     this.userPoolClientSecret = describeUserPoolResource.getResponseField("UserPoolClient.ClientSecret");
+
     StringParameter userPoolClientSecret = StringParameter.Builder.create(this, "userPoolClientSecret")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
       .stringValue(this.userPoolClientSecret)
       .build();
-
-
   }
 
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
@@ -250,6 +248,5 @@ public class CognitoStack extends Stack {
       return providerUrl;
     }
   }
-
 }
 
