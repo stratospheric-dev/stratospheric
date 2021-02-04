@@ -37,6 +37,7 @@ class CognitoStack extends Stack {
 
     this.userPool = UserPool.Builder.create(this, "userPool")
       .userPoolName(inputParameters.applicationName + "-user-pool")
+      .selfSignUpEnabled(false)
       .accountRecovery(AccountRecovery.EMAIL_ONLY)
       .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
       .signInAliases(SignInAliases.builder().username(true).email(true).build())

@@ -36,19 +36,17 @@ public class CognitoStack extends Stack {
 
     this.applicationEnvironment = applicationEnvironment;
 
-    this.logoutUrl = String.format("https://%s.auth.%s.amazoncognito.com/logout",
-      inputParameters.loginPageDomainPrefix, awsEnvironment.getRegion());
-
     this.userPool = UserPool.Builder.create(this, "userPool")
       .userPoolName(inputParameters.applicationName + "-user-pool")
-      .accountRecovery(AccountRecovery.EMAIL_ONLY)
-      .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
-      .signInAliases(SignInAliases.builder().username(true).email(true).build())
-      .signInCaseSensitive(true)
+      .selfSignUpEnabled(false)
       .standardAttributes(StandardAttributes.builder()
         .email(StandardAttribute.builder().required(true).mutable(false).build())
         .build())
+      .signInAliases(SignInAliases.builder().username(true).email(true).build())
+      .signInCaseSensitive(true)
+      .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
       .mfa(Mfa.OFF)
+      .accountRecovery(AccountRecovery.EMAIL_ONLY)
       .passwordPolicy(PasswordPolicy.builder()
         .requireLowercase(true)
         .requireDigits(true)
@@ -83,6 +81,9 @@ public class CognitoStack extends Stack {
         .domainPrefix(inputParameters.loginPageDomainPrefix)
         .build())
       .build();
+
+    this.logoutUrl = String.format("https://%s.auth.%s.amazoncognito.com/logout",
+      inputParameters.loginPageDomainPrefix, awsEnvironment.getRegion());
 
     createOutputParameters(awsEnvironment);
 
