@@ -50,20 +50,20 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
-      .vpcId(networkOutputParameters.getVpcId())
-      .groupDescription("Security Group for the message broker instance")
-      .groupName(applicationEnvironment.prefix("amqSecurityGroup"))
-      .build();
-
     this.broker = CfnBroker.Builder
-      .create(this, "broker")
+      .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .securityGroups(Collections.singletonList("amqSecurityGroup"))
+      .subnetIds(networkOutputParameters.getIsolatedSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
       .authenticationStrategy("SIMPLE")
+      .encryptionOptions(
+        CfnBroker.EncryptionOptionsProperty
+          .builder()
+          .useAwsOwnedKey(true)
+          .build()
+      )
       .users(userList)
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
