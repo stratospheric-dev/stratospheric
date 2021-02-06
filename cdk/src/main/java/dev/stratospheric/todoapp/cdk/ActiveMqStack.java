@@ -64,6 +64,7 @@ public class ActiveMqStack extends Stack {
       )
       .users(userList)
       .publiclyAccessible(false)
+      .autoMinorVersionUpgrade(true)
       .deploymentMode("SINGLE_INSTANCE")
       .build();
 
