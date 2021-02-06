@@ -8,11 +8,9 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.ec2.CfnSecurityGroup;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ActiveMqStack extends Stack {
@@ -53,7 +51,7 @@ public class ActiveMqStack extends Stack {
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
+      .subnetIds(networkOutputParameters.getIsolatedSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
@@ -67,7 +65,7 @@ public class ActiveMqStack extends Stack {
       .users(userList)
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
-      .deploymentMode("SINGLE_INSTANCE")
+      .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
       .build();
 
     createOutputParameters();
