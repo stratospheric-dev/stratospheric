@@ -48,9 +48,6 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    System.out.println(networkOutputParameters.getIsolatedSubnets());
-    System.out.println("####### 1");
-
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
@@ -67,8 +64,7 @@ public class ActiveMqStack extends Stack {
       )
       .users(userList)
       .publiclyAccessible(false)
-      .autoMinorVersionUpgrade(true)
-      .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
+      .deploymentMode("SINGLE_INSTANCE")
       .build();
 
     createOutputParameters();
