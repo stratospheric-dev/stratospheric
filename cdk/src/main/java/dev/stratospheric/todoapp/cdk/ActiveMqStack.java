@@ -50,6 +50,10 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
+    System.out.println(networkOutputParameters.getIsolatedSubnets());
+    System.out.println(networkOutputParameters.getVpcId());
+    System.out.println("######## 1");
+
     CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
       .vpcId(networkOutputParameters.getVpcId())
       .groupDescription("Security Group for the message broker instance")
@@ -156,18 +160,6 @@ public class ActiveMqStack extends Stack {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-ActiveMq-" + parameterName;
   }
 
-  private static String getFailoverString(String url1, String url2) {
-    if (url1 != null && url2 != null) {
-      return "failover:(" + url1 + "," + url2 + ")";
-    }
-
-    if (url1 != null) {
-      return url1;
-    }
-
-    return url2;
-  }
-
   public static class ActiveMqOutputParameters {
     private final String activeMqUsername;
     private final String activeMqPassword;
@@ -203,7 +195,7 @@ public class ActiveMqStack extends Stack {
     }
   }
 
-  private static class User {
+  static class User {
 
     String username;
 
