@@ -8,9 +8,11 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
+import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActiveMqStack extends Stack {
@@ -48,9 +50,32 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
+    String securityGroupName = "amqSecurityGroup";
+    SecurityGroup amqSecurityGroup = new SecurityGroup(
+      this,
+      securityGroupName,
+      SecurityGroupProps
+        .builder()
+        .securityGroupName(securityGroupName)
+        .vpc(
+          Vpc.fromVpcAttributes(
+            scope,
+            networkOutputParameters.getVpcId(),
+            VpcAttributes
+              .builder()
+              .vpcId(networkOutputParameters.getVpcId())
+              .availabilityZones(networkOutputParameters.getAvailabilityZones())
+              .build()
+          )
+        )
+        .allowAllOutbound(true)
+        .build()
+    );
+
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
+      .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
       .subnetIds(networkOutputParameters.getIsolatedSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
