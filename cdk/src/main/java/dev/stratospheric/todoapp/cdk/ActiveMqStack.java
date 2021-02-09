@@ -50,33 +50,10 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    String securityGroupName = "amqSecurityGroup";
-    SecurityGroup amqSecurityGroup = new SecurityGroup(
-      this,
-      securityGroupName,
-      SecurityGroupProps
-        .builder()
-        .securityGroupName(securityGroupName)
-        .vpc(
-          Vpc.fromVpcAttributes(
-            scope,
-            networkOutputParameters.getVpcId(),
-            VpcAttributes
-              .builder()
-              .vpcId(networkOutputParameters.getVpcId())
-              .availabilityZones(networkOutputParameters.getAvailabilityZones())
-              .build()
-          )
-        )
-        .allowAllOutbound(true)
-        .build()
-    );
-
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
-      .subnetIds(networkOutputParameters.getIsolatedSubnets())
+      .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
