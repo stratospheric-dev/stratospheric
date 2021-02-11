@@ -13,7 +13,7 @@
     <cdk.version>1.79.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <java.version>11</java.version>
-    <cdk-constructs.version>0.0.14</cdk-constructs.version>
+    <cdk-constructs.version>0.0.17</cdk-constructs.version>
   </properties>
 
   <build>
@@ -38,17 +38,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <name>bintray</name>
-      <url>https://jcenter.bintray.com</url>
-    </repository>
-  </repositories>
 
   <dependencies>
     <!-- AWS Cloud Development Kit -->
