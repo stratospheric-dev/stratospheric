@@ -2,7 +2,7 @@ create table PERSON
 (
 	ID BIGSERIAL not null primary key,
 	EMAIL VARCHAR(255) UNIQUE,
-	NAME VARCHAR(255)
+	NAME VARCHAR(255) UNIQUE
 );
 
 create table TODO
