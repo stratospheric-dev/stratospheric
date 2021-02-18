@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public interface TodoCollaborationRequestRepository extends CrudRepository<TodoCollaborationRequest, Long> {
 
   Optional<TodoCollaborationRequest> findByTodoAndCollaborator(Todo todo, Person person);
+  Optional<TodoCollaborationRequest> findByTodoIdAndCollaboratorId(Long todoId, Long collaboratorId);
 }

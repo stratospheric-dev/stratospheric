@@ -34,10 +34,11 @@ public class TodoCollaborationService {
   private static final String INVALID_TODO_OR_COLLABORATOR = "Invalid todo or collaborator.";
 
   public TodoCollaborationService(
+    @Value("${custom.sharing-queue}") String todoSharingQueueName,
     TodoRepository todoRepository,
     PersonRepository personRepository,
-    TodoCollaborationRequestRepository todoCollaborationRequestRepository, QueueMessagingTemplate queueMessagingTemplate,
-    @Value("${custom.sharing-queue}") String todoSharingQueueName,
+    TodoCollaborationRequestRepository todoCollaborationRequestRepository,
+    QueueMessagingTemplate queueMessagingTemplate,
     SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
@@ -48,8 +49,19 @@ public class TodoCollaborationService {
   }
 
   public String shareWithCollaborator(Long todoId, Long collaboratorId) {
-    Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("Invalid todo id:" + todoId));
-    Person collaborator = personRepository.findById(collaboratorId).orElseThrow(() -> new IllegalArgumentException("Invalid collaborator id:" + collaboratorId));
+
+    Todo todo = todoRepository
+      .findById(todoId)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+
+    Person collaborator = personRepository
+      .findById(collaboratorId)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
+
+    if(todoCollaborationRequestRepository.findByTodoAndCollaborator(todo, collaborator).isPresent()) {
+      LOG.info("Collaboration request for todo {} with collaborator {} already exists", todoId, collaboratorId);
+      return collaborator.getName();
+    }
 
     LOG.info("About to share todo with id {} with collaborator {}", todoId, collaboratorId);
 
@@ -71,9 +83,11 @@ public class TodoCollaborationService {
     Todo todo = todoRepository
       .findById(todoId)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+
     Person collaborator = personRepository
       .findById(collaboratorId)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
+
     TodoCollaborationRequest todoCollaborationRequest = todoCollaborationRequestRepository
       .findByTodoAndCollaborator(todo, collaborator)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_OR_COLLABORATOR));
