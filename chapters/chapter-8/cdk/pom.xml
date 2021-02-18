@@ -11,9 +11,9 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdk.version>1.79.0</cdk.version>
+    <cdk.version>1.88.0</cdk.version>
     <junit.version>5.7.0</junit.version>
-    <cdk-constructs.version>0.0.17</cdk-constructs.version>
+    <cdk-constructs.version>0.0.18</cdk-constructs.version>
   </properties>
 
   <build>
