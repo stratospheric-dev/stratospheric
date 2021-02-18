@@ -93,7 +93,7 @@ public class TodoCollaborationService {
         + ".";
       String collaboratorEmail = collaborationRequest.getCollaborator().getEmail();
 
-      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
+      // simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
 
       todoCollaborationRequestRepository.delete(collaborationRequest);
 
