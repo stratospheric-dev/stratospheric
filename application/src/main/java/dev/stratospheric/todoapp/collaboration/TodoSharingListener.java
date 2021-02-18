@@ -36,7 +36,7 @@ public class TodoSharingListener {
           "Priority: %s \n" +
           "\n" +
           "You can accept the collaboration by clicking this link: " +
-          "https://app.stratospheric.dev/todo/%s/confirmCollaboration/%s/%s " +
+          "https://app.stratospheric.dev/todo/%s/collaborations/%s/confirm?token=%s " +
           "\n\n" +
           "Kind regards, \n" +
           "Stratospheric",

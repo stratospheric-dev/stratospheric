@@ -1,9 +1,7 @@
 package dev.stratospheric.todoapp.collaboration;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -16,7 +14,7 @@ public class TodoCollaborationController {
     this.todoCollaborationService = todoCollaborationService;
   }
 
-  @GetMapping("/{todoId}/share/{collaboratorId}")
+  @PostMapping("/{todoId}/collaborations/{collaboratorId}")
   public String shareTodoWithCollaborator(
     @PathVariable("todoId") Long todoId,
     @PathVariable("collaboratorId") Long collaboratorId,
@@ -26,17 +24,17 @@ public class TodoCollaborationController {
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +
-        "Once the user accepts the invite you'll see them as a collaborator on your todo.", collaboratorName));
+        "Once the user accepts the invite, you'll see them as a collaborator on your todo.", collaboratorName));
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/dashboard";
   }
 
-  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
+  @GetMapping("/{todoId}/collaborations/{collaboratorId}/confirm")
   public String confirmCollaboration(
     @PathVariable("todoId") Long todoId,
     @PathVariable("collaboratorId") Long collaboratorId,
-    @PathVariable("token") String token,
+    @RequestParam("token") String token,
     RedirectAttributes redirectAttributes
   ) {
     todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);

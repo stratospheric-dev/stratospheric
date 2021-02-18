@@ -56,9 +56,16 @@
                 <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
                   No collaborator available
                 </span>
-              <a th:each="collaborator : ${collaborators}" class="dropdown-item"
-                 th:text="${collaborator.name}"
-                 th:href="@{/todo/{todoId}/share/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}"></a>
+                <form th:method="POST"
+                      th:each="collaborator : ${collaborators}"
+                      th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">
+                  <button
+                    th:text="${collaborator.name}"
+                    type="submit"
+                    name="submit"
+                    class="dropdown-item">
+                  </button>
+                </form>
             </div>
           </div>
           <a class="btn btn-info" role="button" href="#">
