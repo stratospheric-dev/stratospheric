@@ -28,7 +28,6 @@ public class DashboardController {
 
   @GetMapping
   public String getDashboard(Model model, @AuthenticationPrincipal OidcUser user) {
-    model.addAttribute("indexPageActiveClass", "active");
     model.addAttribute("collaborators", List.of());
 
     if (user != null) {
