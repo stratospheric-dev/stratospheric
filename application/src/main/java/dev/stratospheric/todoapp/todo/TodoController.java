@@ -1,5 +1,6 @@
 package dev.stratospheric.todoapp.todo;
 
+import dev.stratospheric.todoapp.collaboration.TodoCollaborationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -113,37 +114,6 @@ public class TodoController {
     todoService.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
-    redirectAttributes.addFlashAttribute("messageType", "success");
-
-    return "redirect:/dashboard";
-  }
-
-  @GetMapping("/{todoId}/share/{collaboratorId}")
-  public String shareTodoWithCollaborator(
-    @PathVariable("todoId") Long todoId,
-    @PathVariable("collaboratorId") Long collaboratorId,
-    RedirectAttributes redirectAttributes
-  ) {
-    String collaboratorName = todoCollaborationService.shareWithCollaborator(todoId, collaboratorId);
-
-    redirectAttributes.addFlashAttribute("message",
-      String.format("You successfully shared your todo with the user %s. " +
-        "Once the user accepts the invite you'll see them as a collaborator on your todo.", collaboratorName));
-    redirectAttributes.addFlashAttribute("messageType", "success");
-
-    return "redirect:/dashboard";
-  }
-
-  @GetMapping("/{todoId}/confirmCollaboration/{collaboratorId}/{token}")
-  public String confirmCollaboration(
-    @PathVariable("todoId") Long todoId,
-    @PathVariable("collaboratorId") Long collaboratorId,
-    @PathVariable("token") String token,
-    RedirectAttributes redirectAttributes
-  ) {
-    todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token);
-
-    redirectAttributes.addFlashAttribute("message", "You've confirmed that you'd like to collaborate on this todo.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     return "redirect:/dashboard";

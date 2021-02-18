@@ -1,4 +1,4 @@
-package dev.stratospheric.todoapp.todo;
+package dev.stratospheric.todoapp.collaboration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

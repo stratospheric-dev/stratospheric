@@ -1,10 +1,9 @@
-package dev.stratospheric.todoapp.todo;
+package dev.stratospheric.todoapp.collaboration;
 
-import dev.stratospheric.todoapp.collaboration.TodoCollaborationNotification;
-import dev.stratospheric.todoapp.collaboration.TodoCollaborationRequest;
-import dev.stratospheric.todoapp.collaboration.TodoCollaborationRequestRepository;
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
+import dev.stratospheric.todoapp.todo.Todo;
+import dev.stratospheric.todoapp.todo.TodoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
