@@ -31,7 +31,6 @@ public class TodoCollaborationService {
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
   private static final String INVALID_PERSON_ID = "Invalid person ID: ";
-  private static final String INVALID_TODO_OR_COLLABORATOR = "Invalid todo or collaborator.";
 
   public TodoCollaborationService(
     @Value("${custom.sharing-queue}") String todoSharingQueueName,
@@ -58,7 +57,7 @@ public class TodoCollaborationService {
       .findById(collaboratorId)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
 
-    if(todoCollaborationRequestRepository.findByTodoAndCollaborator(todo, collaborator).isPresent()) {
+    if (todoCollaborationRequestRepository.findByTodoAndCollaborator(todo, collaborator) != null) {
       LOG.info("Collaboration request for todo {} with collaborator {} already exists", todoId, collaboratorId);
       return collaborator.getName();
     }
@@ -79,36 +78,28 @@ public class TodoCollaborationService {
     return collaborator.getName();
   }
 
-  public String confirmCollaboration(Long todoId, Long collaboratorId, String token) {
-    Todo todo = todoRepository
-      .findById(todoId)
-      .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+  public boolean confirmCollaboration(Long todoId, Long collaboratorId, String token) {
 
-    Person collaborator = personRepository
-      .findById(collaboratorId)
-      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
+    TodoCollaborationRequest collaborationRequest = todoCollaborationRequestRepository
+      .findByTodoIdAndCollaboratorId(todoId, collaboratorId);
 
-    TodoCollaborationRequest todoCollaborationRequest = todoCollaborationRequestRepository
-      .findByTodoAndCollaborator(todo, collaborator)
-      .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_OR_COLLABORATOR));
-
-    if (todoCollaborationRequest.getToken().equals(token)) {
-      String name = collaborator.getName();
+    if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
+      String name = collaborationRequest.getCollaborator().getName();
       String subject = "Collaboration confirmed.";
       String message = "User "
         + name
         + " has accepted your collaboration request for todo #"
-        + todoCollaborationRequest.getTodo().getId()
+        + collaborationRequest.getTodo().getId()
         + ".";
-      String collaboratorEmail = collaborator.getEmail();
+      String collaboratorEmail = collaborationRequest.getCollaborator().getEmail();
 
       simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
 
-      todoCollaborationRequestRepository.delete(todoCollaborationRequest);
+      todoCollaborationRequestRepository.delete(collaborationRequest);
 
-      return message;
+      return true;
     }
 
-    return "Collaboration request invalid.";
+    return false;
   }
 }
