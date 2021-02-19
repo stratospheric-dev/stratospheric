@@ -33,9 +33,10 @@
           <a th:href="@{/todo/show/{id}(id=${todo.id})}">
             [[${todo.title}]]
           </a>
+          <span th:if="${todo.isCollaboration}"> (shared)</span>
         </td>
-        <td class="text-center" th:text="${todo.collaborators.size()}"></td>
-        <td class="text-center" th:text="${todo.collaborationRequests.size()}"></td>
+        <td class="text-center" th:text="${todo.amountOfCollaborators}"></td>
+        <td class="text-center" th:text="${todo.amountOfCollaborationRequests}"></td>
         <td>
           [[${todo.dueDate}]]
           <i class="far fa-bell"></i>
@@ -56,16 +57,16 @@
                 <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
                   No collaborator available
                 </span>
-                <form th:method="POST"
-                      th:each="collaborator : ${collaborators}"
-                      th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">
-                  <button
-                    th:text="${collaborator.name}"
-                    type="submit"
-                    name="submit"
-                    class="dropdown-item">
-                  </button>
-                </form>
+              <form th:method="POST"
+                    th:each="collaborator : ${collaborators}"
+                    th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">
+                <button
+                  th:text="${collaborator.name}"
+                  type="submit"
+                  name="submit"
+                  class="dropdown-item">
+                </button>
+              </form>
             </div>
           </div>
           <a class="btn btn-info" role="button" href="#">

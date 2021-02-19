@@ -1,7 +1,5 @@
-package dev.stratospheric.todoapp;
+package dev.stratospheric.todoapp.dashboard;
 
-import dev.stratospheric.todoapp.person.PersonRepository;
-import dev.stratospheric.todoapp.todo.TodoRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -15,24 +13,20 @@ import java.util.List;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-  private final PersonRepository personRepository;
-  private final TodoRepository todoRepository;
+  private final DashboardService dashboardService;
 
-  public DashboardController(
-    PersonRepository personRepository,
-    TodoRepository todoRepository
-  ) {
-    this.personRepository = personRepository;
-    this.todoRepository = todoRepository;
+  public DashboardController(DashboardService dashboardService) {
+    this.dashboardService = dashboardService;
   }
+
 
   @GetMapping
   public String getDashboard(Model model, @AuthenticationPrincipal OidcUser user) {
     model.addAttribute("collaborators", List.of());
 
     if (user != null) {
-      model.addAttribute("collaborators", personRepository.findByEmailNot(user.getEmail()));
-      model.addAttribute("todos", todoRepository.findAllByOwnerEmailOrderByIdAsc(user.getEmail()));
+      model.addAttribute("collaborators", dashboardService.getAvailableCollaborators(user.getEmail()));
+      model.addAttribute("todos", dashboardService.getAllOwnedAndSharedTodos(user.getEmail()));
     }
 
     return "dashboard";

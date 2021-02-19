@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
   List<Todo> findAllByOwnerEmailOrderByIdAsc(String email);
+
+  List<Todo> findAllByCollaboratorsEmailOrderByIdAsc(String email);
 }

@@ -1,6 +1,5 @@
 package dev.stratospheric.todoapp.todo;
 
-import dev.stratospheric.todoapp.collaboration.TodoCollaborationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,15 +16,12 @@ import javax.validation.Valid;
 public class TodoController {
 
   private final TodoService todoService;
-  private final TodoCollaborationService todoCollaborationService;
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
 
   public TodoController(
-    TodoService todoService,
-    TodoCollaborationService todoCollaborationService) {
+    TodoService todoService) {
     this.todoService = todoService;
-    this.todoCollaborationService = todoCollaborationService;
   }
 
   @GetMapping("/show/{id}")
