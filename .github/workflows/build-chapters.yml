@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         chapter-numbers: [ 1, 8, 13 ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build the application for chapter ${{ matrix.chapter-numbers }}
     steps:
 
@@ -46,7 +46,7 @@ jobs:
           fi
 
   build-chapter-10:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build the application for chapter 10
     steps:
 
@@ -80,7 +80,7 @@ jobs:
           fi
 
   build-chapter-11:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build the application for chapter 11
     steps:
 
@@ -116,7 +116,7 @@ jobs:
           fi
 
   build-chapter-12:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build the application for chapter 12
     steps:
 

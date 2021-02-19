@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build and deploy Todo App
     steps:
 
