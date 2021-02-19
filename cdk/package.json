@@ -16,8 +16,8 @@
     "messaging:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.MessagingApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app --force --require-approval never",
     "activeMq:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ActiveMqApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c username=activemqUser --require-approval never",
     "activeMq:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ActiveMqApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c username=activemqUser --force --require-approval never",
-    "service:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c springProfile=aws -c dockerRepositoryName=todo-app -c dockerImageTag=latest --require-approval never --all",
-    "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c springProfile=aws -c dockerRepositoryName=todo-app -c dockerImageTag=latest --force --require-approval never --all"
+    "service:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c springProfile=aws -c dockerRepositoryName=todo-app --require-approval never --all",
+    "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c springProfile=aws -c dockerRepositoryName=todo-app --force --require-approval never --all"
   },
   "devDependencies": {
     "aws-cdk": "1.88.0"
