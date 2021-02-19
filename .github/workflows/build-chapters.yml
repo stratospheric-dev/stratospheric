@@ -65,19 +65,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          if [ -d "chapters/chapter-10/cdk" ]; then
-            cd chapters/chapter-10/cdk
-            npm install
-            npm run cognito:deploy
-            npm run cognito:destroy
-          fi
+          cd chapters/chapter-10/cdk
+          npm install
+          npm run cognito:deploy
+          npm run cognito:destroy
 
       - name: Build the application
         run: |
-          if [ -d "chapters/chapter-10/application" ]; then
-            cd chapters/chapter-10/application
-            ./gradlew build --stacktrace
-          fi
+          cd chapters/chapter-10/application
+          ./gradlew build --stacktrace
 
   build-chapter-11:
     runs-on: ubuntu-20.04
@@ -99,21 +95,17 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          if [ -d "chapters/chapter-11/cdk" ]; then
-            cd chapters/chapter-11/cdk
-            npm install
-            npm run network:deploy
-            npm run database:deploy
-            npm run database:destroy
-            npm run network:destroy
-          fi
+          cd chapters/chapter-11/cdk
+          npm install
+          npm run network:deploy
+          npm run database:deploy
+          npm run database:destroy
+          npm run network:destroy
 
       - name: Build the application
         run: |
-          if [ -d "chapters/chapter-11/application" ]; then
-            cd chapters/chapter-11/application
-            ./gradlew build --stacktrace
-          fi
+          cd chapters/chapter-11/application
+          ./gradlew build --stacktrace
 
   build-chapter-12:
     runs-on: ubuntu-20.04
