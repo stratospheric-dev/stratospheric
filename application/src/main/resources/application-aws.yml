@@ -14,5 +14,4 @@ spring:
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
-  updates-topic: ${TODO_UPDATES_TOPIC_NAME}
   web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}

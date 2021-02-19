@@ -153,7 +153,6 @@ public class ServiceApp {
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
-    vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
     vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
 
     return vars;
