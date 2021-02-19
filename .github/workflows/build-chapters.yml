@@ -101,7 +101,7 @@ jobs:
         run: |
           if [ -d "chapters/chapter-11/cdk" ]; then
             cd chapters/chapter-11/cdk
-            sudo npm install -g aws-cdk
+            npm install
             npm run network:deploy
             npm run database:deploy
             npm run database:destroy
