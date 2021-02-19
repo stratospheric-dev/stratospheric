@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            clientId: ${COGNITO_CLIENT_ID}
+            clientSecret: ${COGNITO_CLIENT_SECRET}
+            scope: openid, profile, email
+            clientName: stratospheric-client
+        provider:
+          cognito:
+            issuerUri: ${COGNITO_PROVIDER_URL}
