@@ -84,6 +84,19 @@ public class TodoCollaborationService {
       .findByTodoIdAndCollaboratorId(todoId, collaboratorId);
 
     if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
+
+      Todo todo = todoRepository
+        .findById(todoId)
+        .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+
+      Person collaborator = personRepository
+        .findById(collaboratorId)
+        .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
+
+      todo.addCollaborator(collaborator);
+
+      todoCollaborationRequestRepository.delete(collaborationRequest);
+
       String name = collaborationRequest.getCollaborator().getName();
       String subject = "Collaboration confirmed.";
       String message = "User "
@@ -94,8 +107,6 @@ public class TodoCollaborationService {
       String collaboratorEmail = collaborationRequest.getCollaborator().getEmail();
 
       // simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
-
-      todoCollaborationRequestRepository.delete(collaborationRequest);
 
       return true;
     }
