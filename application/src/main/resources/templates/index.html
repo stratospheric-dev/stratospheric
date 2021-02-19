@@ -11,11 +11,33 @@
 <section class="section" layout:fragment="page-content">
   <div class="container">
     <p>TODO: Add content about the book (e.g. picture, content, testimonials)</p>
+
     <div sec:authorize="isAnonymous()">
       <p>Seems like you are not logged-in yet. Please login first to see your Todos.</p>
       <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
         Login
       </a>
+    </div >
+
+    <div sec:authorize="isAuthenticated()" class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-tachometer-alt"></i> Your Dashboard</h5>
+            <p class="card-text">Navigate to your personalized Dashboard for an overview of all your Todos.</p>
+            <a th:href="@{/dashboard}" class="btn btn-primary">Go to your Dashboard</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-lightbulb"></i> Keep Your Life Organised</h5>
+            <p class="card-text">Got something important to do or to remember? Make sure to create a Todo for it.</p>
+            <a th:href="@{/todo/add}" class="btn btn-primary">Create a new Todo</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
