@@ -14,7 +14,7 @@
     <cdk.version>1.91.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <passay.version>1.6.0</passay.version>
-    <cdk-constructs.version>0.0.19-SNAPSHOT</cdk-constructs.version>
+    <cdk-constructs.version>0.0.18</cdk-constructs.version>
   </properties>
 
   <build>
