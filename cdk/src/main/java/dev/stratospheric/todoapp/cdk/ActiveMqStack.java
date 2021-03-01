@@ -62,26 +62,13 @@ public class ActiveMqStack extends Stack {
       .securityGroupName("AmazonMQSecurityGroup")
       .vpc(vpc)
       .build();
-    CfnSecurityGroupIngress.Builder.create(this, "amqSecurityGroupIngres")
-      .groupId(amqSecurityGroup.getSecurityGroupId())
-      .ipProtocol("tcp")
-      .cidrIp("10.0.0.0/16")
-      .fromPort(61613)
-      .toPort(61613)
-      .build();
-    CfnSecurityGroupIngress.Builder.create(this, "amqSecurityGroupIngres")
-      .groupId(amqSecurityGroup.getSecurityGroupId())
-      .ipProtocol("tcp")
-      .cidrIp("10.0.0.0/16")
-      .fromPort(61614)
-      .toPort(616134)
-      .build();
+    amqSecurityGroup.addIngressRule(Peer.ipv4("10.0.0.0/16"), Port.tcp(61614));
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
       .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
-      .subnetIds(networkOutputParameters.getPublicSubnets())
+      .subnetIds(Collections.singletonList(networkOutputParameters.getPublicSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
