@@ -71,8 +71,6 @@ public class TodoCollaborationService {
     collaboration.setTodo(todo);
     todo.getCollaborationRequests().add(collaboration);
 
-    todoRepository.save(todo);
-
     queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
