@@ -20,6 +20,6 @@
     "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c springProfile=aws -c dockerRepositoryName=todo-app --force --require-approval never --all"
   },
   "devDependencies": {
-    "aws-cdk": "1.91.0"
+    "aws-cdk": "1.88.0"
   }
 }
