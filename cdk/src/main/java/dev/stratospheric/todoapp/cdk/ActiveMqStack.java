@@ -1,15 +1,18 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
+import dev.stratospheric.cdk.Network;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
+import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActiveMqStack extends Stack {
@@ -45,9 +48,40 @@ public class ActiveMqStack extends Stack {
       password
     ));
 
+    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
+
+    IVpc vpc = Vpc.fromLookup(this,
+      "NetworkStack/Network/vpc",
+      VpcLookupOptions.builder()
+      .vpcId(networkOutputParameters.getVpcId())
+      .build()
+    );
+
+    SecurityGroup amqSecurityGroup = SecurityGroup.Builder
+      .create(this, "amqSecurityGroup")
+      .securityGroupName("AmazonMQSecurityGroup")
+      .vpc(vpc)
+      .build();
+    CfnSecurityGroupIngress.Builder.create(this, "amqSecurityGroupIngres")
+      .groupId(amqSecurityGroup.getSecurityGroupId())
+      .ipProtocol("tcp")
+      .cidrIp("10.0.0.0/16")
+      .fromPort(61613)
+      .toPort(61613)
+      .build();
+    CfnSecurityGroupIngress.Builder.create(this, "amqSecurityGroupIngres")
+      .groupId(amqSecurityGroup.getSecurityGroupId())
+      .ipProtocol("tcp")
+      .cidrIp("10.0.0.0/16")
+      .fromPort(61614)
+      .toPort(616134)
+      .build();
+
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
+      .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
+      .subnetIds(networkOutputParameters.getPublicSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
