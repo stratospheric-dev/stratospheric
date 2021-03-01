@@ -1,18 +1,15 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import dev.stratospheric.cdk.Network;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ActiveMqStack extends Stack {
@@ -48,12 +45,9 @@ public class ActiveMqStack extends Stack {
       password
     ));
 
-    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
-
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")

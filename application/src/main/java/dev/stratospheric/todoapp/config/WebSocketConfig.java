@@ -3,6 +3,7 @@ package dev.stratospheric.todoapp.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -18,12 +19,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   public WebSocketConfig(
     @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint) {
-    this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
+    this.websocketEndpoint = Endpoint.fromEndpointString("stomp+ssl://b-7b7a820f-0531-4b7b-8eba-e3cd37beafce-1.mq.eu-central-1.amazonaws.com:61614");
   }
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    /* Disabled until we can connect to MQ logs messages about failing connections are increasing
     if (this.websocketEndpoint != null) {
       StompBrokerRelayRegistration stompBrokerRelayRegistration = config
         .enableStompBrokerRelay("/topic");
@@ -40,10 +40,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
       config.setApplicationDestinationPrefixes("/websocketEndpoints");
     }
-    */
-
-    config.setApplicationDestinationPrefixes("/websocketEndpoints");
-    config.enableSimpleBroker("/topic");
   }
 
   private static class Endpoint {

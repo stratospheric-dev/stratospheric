@@ -11,13 +11,13 @@ public class DockerRepositoryApp {
     App app = new App();
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    Objects.requireNonNull(accountId, "context variable 'accountId' must not be null");
+    Validations.requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    Objects.requireNonNull(region, "context variable 'region' must not be null");
+    Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
     String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    Objects.requireNonNull(applicationName, "context variable 'applicationName' must not be null");
+    Validations.requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
