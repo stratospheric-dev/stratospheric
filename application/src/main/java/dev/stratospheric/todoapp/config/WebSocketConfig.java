@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   public WebSocketConfig(
     @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint) {
-    this.websocketEndpoint = Endpoint.fromEndpointString("stomp+ssl://b-7b7a820f-0531-4b7b-8eba-e3cd37beafce-1.mq.eu-central-1.amazonaws.com:61614");
+    this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
   }
 
   @Override
