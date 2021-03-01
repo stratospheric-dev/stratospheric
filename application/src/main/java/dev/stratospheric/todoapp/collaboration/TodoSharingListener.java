@@ -2,6 +2,7 @@ package dev.stratospheric.todoapp.collaboration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,7 +19,7 @@ public class TodoSharingListener {
     this.mailSender = mailSender;
   }
 
-  @SqsListener(value = "${custom.sharing-queue}")
+  @SqsListener(value = "${custom.sharing-queue}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
   public void listenToSharingMessages(TodoCollaborationNotification payload) {
     LOG.info("Incoming todo sharing payload: {}", payload);
 
