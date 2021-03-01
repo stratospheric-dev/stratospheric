@@ -53,8 +53,8 @@ public class ActiveMqStack extends Stack {
     IVpc vpc = Vpc.fromLookup(this,
       "NetworkStack/Network/vpc",
       VpcLookupOptions.builder()
-      .vpcId(networkOutputParameters.getVpcId())
-      .build()
+        .vpcName("NetworkStack/Network/vpc")
+        .build()
     );
 
     SecurityGroup amqSecurityGroup = SecurityGroup.Builder
