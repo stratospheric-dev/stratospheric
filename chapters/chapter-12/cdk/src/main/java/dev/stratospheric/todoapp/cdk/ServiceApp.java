@@ -4,15 +4,17 @@ import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
 import dev.stratospheric.cdk.Service;
+import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.iam.Effect;
+import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
+import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
@@ -82,7 +84,28 @@ public class ServiceApp {
           messagingOutputParameters,
           springProfile))
         .withStickySessionsEnabled(true)
-        .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
+        .withHealthCheckIntervalSeconds(30)
+        .withTaskRolePolicyStatements(List.of(
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(singletonList("cognito-idp:*"))
+            .build(),
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(Arrays.asList(
+              "sqs:DeleteMessage",
+              "sqs:GetQueueUrl",
+              "sqs:ListDeadLetterSourceQueues",
+              "sqs:ListQueues",
+              "sqs:ListQueueTags",
+              "sqs:ReceiveMessage",
+              "sqs:SendMessage",
+              "sqs:ChangeMessageVisibility",
+              "sqs:GetQueueAttributes"))
+            .build()
+        )), // needs to be long enough to allow for slow start up with low-end computing instances
 
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 

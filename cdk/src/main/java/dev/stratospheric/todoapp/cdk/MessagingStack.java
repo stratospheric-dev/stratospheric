@@ -25,13 +25,13 @@ class MessagingStack extends Stack {
     this.applicationEnvironment = applicationEnvironment;
 
     this.todoSharingDlq = Queue.Builder.create(this, "todoSharingDlq")
-      .queueName(applicationEnvironment.prefix("stratospheric-todo-sharing-dead-letter-queue"))
+      .queueName(applicationEnvironment.prefix("todo-sharing-dead-letter-queue"))
       .retentionPeriod(Duration.days(14))
       .build();
 
     this.todoSharingQueue = Queue.Builder.create(this, "todoSharingQueue")
-      .queueName(applicationEnvironment.prefix("stratospheric-todo-sharing"))
-      .visibilityTimeout(Duration.minutes(5))
+      .queueName(applicationEnvironment.prefix("todo-sharing-queue"))
+      .visibilityTimeout(Duration.seconds(30))
       .retentionPeriod(Duration.days(14))
       .deadLetterQueue(DeadLetterQueue.builder()
         .queue(todoSharingDlq)
