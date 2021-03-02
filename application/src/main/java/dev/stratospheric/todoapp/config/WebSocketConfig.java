@@ -30,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
       if (this.websocketEndpoint.host != null && this.websocketEndpoint.port != null) {
         stompBrokerRelayRegistration
-          .setRelayHost(this.websocketEndpoint.host)
+          .setRelayHost(this.websocketEndpoint.host.replace("stomp+ssl://", ""))
           .setRelayPort(this.websocketEndpoint.port);
       }
       if (this.websocketEndpoint.failoverURI != null) {
