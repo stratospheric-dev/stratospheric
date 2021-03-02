@@ -63,6 +63,7 @@ public class ActiveMqStack extends Stack {
       .vpc(vpc)
       .build();
     amqSecurityGroup.addIngressRule(Peer.ipv4("10.0.0.0/16"), Port.tcp(61614));
+    amqSecurityGroup.addEgressRule(Peer.ipv4("10.0.0.0/16"), Port.tcp(61614));
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
