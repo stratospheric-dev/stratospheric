@@ -15,5 +15,3 @@ spring:
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
   web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}
-  active-mq-username: ${ACTIVE_MQ_USERNAME}
-  active-mq-password: ${ACTIVE_MQ_PASSWORD}

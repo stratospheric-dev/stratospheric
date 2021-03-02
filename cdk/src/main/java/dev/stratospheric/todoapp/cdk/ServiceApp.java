@@ -153,8 +153,6 @@ public class ServiceApp {
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
     vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
-    vars.put("ACTIVE_MQ_USERNAME", activeMqOutputParameters.getActiveMqUsername());
-    vars.put("ACTIVE_MQ_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
 
     return vars;
   }
