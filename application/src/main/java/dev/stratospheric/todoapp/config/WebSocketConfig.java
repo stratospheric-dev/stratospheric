@@ -17,10 +17,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final Endpoint websocketEndpoint;
 
-  public WebSocketConfig(
-    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint) {
+  private final String activeMqUsername;
 
+  private final String activeMqPassword;
+
+  public WebSocketConfig(
+    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint,
+    @Value("${custom.active-mq-username:#{null}}") String activeMqUsername,
+    @Value("${custom.active-mq-password:#{null}}") String activeMqPassword) {
     this.websocketEndpoint = Endpoint.fromEndpointString("b-d5cafd9a-9bde-415e-9930-68b1f5c53fb8-1.mq.eu-central-1.amazonaws.com:61614");
+    this.activeMqUsername = activeMqUsername;
+    this.activeMqPassword = activeMqPassword;
   }
 
   @Override
@@ -37,6 +44,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       if (this.websocketEndpoint.failoverURI != null) {
         stompBrokerRelayRegistration
           .setRelayHost(this.websocketEndpoint.failoverURI);
+      }
+
+      if (this.activeMqUsername != null && this.activeMqPassword != null) {
+        stompBrokerRelayRegistration.setClientLogin(this.activeMqUsername);
+        stompBrokerRelayRegistration.setClientPasscode(this.activeMqPassword);
+        stompBrokerRelayRegistration.setSystemLogin(this.activeMqUsername);
+        stompBrokerRelayRegistration.setSystemPasscode(this.activeMqPassword);
       }
 
       config.setApplicationDestinationPrefixes("/websocketEndpoints");
