@@ -19,6 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   public WebSocketConfig(
     @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint) {
+
     this.websocketEndpoint = Endpoint.fromEndpointString("b-d5cafd9a-9bde-415e-9930-68b1f5c53fb8-1.mq.eu-central-1.amazonaws.com:61614");
   }
 
