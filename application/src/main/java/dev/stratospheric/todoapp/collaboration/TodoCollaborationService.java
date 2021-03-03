@@ -47,10 +47,10 @@ public class TodoCollaborationService {
     this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
-  public String shareWithCollaborator(Long todoId, Long collaboratorId) {
+  public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository
-      .findById(todoId)
+      .findByIdAndOwnerEmail(todoId, todoOwnerEmail)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
 
     Person collaborator = personRepository
