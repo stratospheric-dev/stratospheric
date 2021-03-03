@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!--/*@thymesVar id="activeMenuItem" type="java.lang.String"*/-->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+  <a class="navbar-brand" th:href="@{/}">Todo Application</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          th:classappend="${activeMenuItem == 'dashboard'}? 'active' : ''"
+          th:href="@{/dashboard}">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          th:classappend="${activeMenuItem == 'add-todo'}? 'active' : ''"
+          th:href="@{/todo/add}">New Todo</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item" sec:authorize="isAnonymous()">
+        <a
+          class="nav-link"
+          th:classappend="${activeMenuItem == 'register'}? 'active' : ''"
+          th:href="@{/register}">
+          Register
+        </a>
+      </li>
+      <li class="nav-item" sec:authorize="isAnonymous()">
+        <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
+          Login
+        </a>
+      </li>
+      <li class="nav-item" sec:authorize="isAuthenticated()">
+        <a class="nav-link disabled" href="#">Howdy, [[${#authentication.principal.attributes.name}]]!</a>
+      </li>
+      <li class="nav-item" sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+          <input class="btn btn-danger" type="submit" value="Logout">
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>
+</html>

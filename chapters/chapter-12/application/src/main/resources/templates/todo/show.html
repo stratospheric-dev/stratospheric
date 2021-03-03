@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='', headline='Todo #' + ${todo.id}">
+<head>
+  <title>View Todo</title>
+</head>
+<section class="section" layout:fragment="page-content">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><span th:remove="tag" th:text="${todo.title}"></span></h5>
+          <p class="card-text">
+            <span th:text="${todo.description}"></span><br><br>
+            <strong>Priority</strong>: <span th:text="${todo.priority?.displayValue}"></span><br>
+            <strong>Due date</strong>: <span th:text="${todo.dueDate}"></span>
+          </p>
+          <a class="btn btn-secondary" th:href="@{/dashboard}">Back</a>
+          <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
+          <button class="btn btn-danger"
+                  data-th-attr="data-href=${'/todo/delete/' + todo.id}"
+                  data-toggle="modal"
+                  data-target="#confirm-delete">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</html>

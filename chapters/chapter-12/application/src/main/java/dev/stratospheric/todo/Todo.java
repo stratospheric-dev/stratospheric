@@ -5,8 +5,12 @@ import dev.stratospheric.person.Person;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,13 +20,17 @@ public class Todo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotEmpty
+  @NotBlank
+  @Size(max = 30)
   private String title;
 
+  @Size(max = 100)
   private String description;
 
   private Priority priority;
 
+  @NotNull
+  @Future
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate dueDate;
 
@@ -35,22 +43,22 @@ public class Todo {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<Reminder> reminders;
+  private List<Reminder> reminders = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<Note> notes;
+  private List<Note> notes = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<TodoCollaborationRequest> collaborationRequests;
+  private List<TodoCollaborationRequest> collaborationRequests = new ArrayList<>();
 
   @ManyToMany
   @JoinTable(name = "todo_collaboration",
     joinColumns = @JoinColumn(name = "todo_id"),
     inverseJoinColumns = @JoinColumn(name = "collaborator_id")
   )
-  private List<Person> collaborators;
+  private List<Person> collaborators = new ArrayList<>();
 
   public Long getId() {
     return id;

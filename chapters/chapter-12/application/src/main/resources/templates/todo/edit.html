@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='add-todo', headline=${editMode?.name() == 'UPDATE'}? 'Update Todo': 'Add a new Todo'">
+<head>
+  <title th:text="${editMode?.name() == 'UPDATE'}? 'Update Todo': 'New Todo'"></title>
+</head>
+<section class="section" layout:fragment="page-content">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form
+        id="todo-form"
+        th:action="${editMode?.name() == 'UPDATE'}?@{/todo/update/{id}(id=${todo.id})}:@{/todo}"
+        th:object="${todo}"
+        method="post">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text"
+                 th:field="*{title}"
+                 th:classappend="${#fields.hasErrors('title')}? 'is-invalid'"
+                 class="form-control"
+                 id="title"
+                 required>
+          <div th:if="${#fields.hasErrors('title')}"
+               th:text="${#strings.listJoin(#fields.errors('title'), ', ')}"
+               class="invalid-feedback">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text"
+                 th:field="*{description}"
+                 th:classappend="${#fields.hasErrors('description')}? 'is-invalid'"
+                 class="form-control"
+                 id="description">
+          <div th:if="${#fields.hasErrors('description')}"
+               th:text="${#strings.listJoin(#fields.errors('description'), ', ')}"
+               class="invalid-feedback">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="title">Priority</label>
+          <select th:field="*{priority}"
+                  class="form-control"
+                  id="priority"
+                  placeholder="Please select a priority."
+                  required>
+            <option th:each="priorityValue : ${T(dev.stratospheric.todo.Priority).values()}"
+                    th:value="${priorityValue}"
+                    th:text="${priorityValue.displayValue}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dueDate">Due date</label>
+          <input
+            type="date"
+            th:field="*{dueDate}"
+            th:classappend="${#fields.hasErrors('dueDate')}? 'is-invalid'"
+            class="form-control"
+            id="dueDate"
+            required>
+          <div th:if="${#fields.hasErrors('dueDate')}"
+               th:text="${#strings.listJoin(#fields.errors('dueDate'), ', ')}"
+               class="invalid-feedback">
+          </div>
+        </div>
+        <button type="submit"
+                class="btn btn-primary"
+                th:text="${editMode?.name() == 'UPDATE'}? 'Update': 'Create'">
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+</html>
