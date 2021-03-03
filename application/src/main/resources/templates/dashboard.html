@@ -48,7 +48,7 @@
           <a class="btn btn-success" role="button" th:href="@{/todo/edit/{id}(id=${todo.id})}">
             <i class="fas fa-edit"></i>
           </a>
-          <div class="dropdown d-inline-block">
+          <div class="dropdown d-inline-block" th:unless="${todo.isCollaboration}">
             <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <i class="fas fa-share"></i>
@@ -76,7 +76,8 @@
                   type="button"
                   data-th-attr="data-href=${'/todo/delete/' + todo.id}"
                   data-toggle="modal"
-                  data-target="#confirm-delete">
+                  data-target="#confirm-delete"
+                  th:unless="${todo.isCollaboration}">
             <i class="far fa-trash-alt"></i>
           </button>
         </td>
