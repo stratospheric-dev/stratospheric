@@ -173,25 +173,26 @@ public class ActiveMqStack extends Stack {
   }
 
   private void createOutputParameters() {
+    final String parameterType = "String";
 
     CfnParameter.Builder.create(this, PARAMETER_USERNAME)
-      .type("String")
+      .type(parameterType)
       .value(username)
       .build();
 
     CfnParameter.Builder.create(this, PARAMETER_PASSWORD)
-      .type("String")
+      .type(parameterType)
       .value(password)
       .build();
 
-    StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
-      .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
+    CfnParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
+      .type(parameterType)
+      .value(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
-    StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
-      .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
+    CfnParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
+      .type(parameterType)
+      .value(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
   }
 
