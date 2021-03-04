@@ -9,7 +9,8 @@ import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
 import software.amazon.awscdk.services.ec2.*;
-import software.amazon.awscdk.services.ssm.StringParameter;
+import software.amazon.awscdk.services.ssm.*;
+import software.amazon.awscdk.services.ssm.CfnParameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,14 +174,14 @@ public class ActiveMqStack extends Stack {
 
   private void createOutputParameters() {
 
-    StringParameter.Builder.create(this, PARAMETER_USERNAME)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
-      .stringValue(username)
+    CfnParameter.Builder.create(this, PARAMETER_USERNAME)
+      .type("String")
+      .value(username)
       .build();
 
-    StringParameter.Builder.create(this, PARAMETER_PASSWORD)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
-      .stringValue(password)
+    CfnParameter.Builder.create(this, PARAMETER_PASSWORD)
+      .type("String")
+      .value(password)
       .build();
 
     StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)

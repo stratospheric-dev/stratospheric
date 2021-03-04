@@ -48,12 +48,10 @@ class MessagingStack extends Stack {
   private static final String PARAMETER_TODO_SHARING_QUEUE_NAME = "todoSharingQueueName";
 
   private void createOutputParameters() {
-
-    StringParameter.Builder.create(this, "todoSharingQueueName")
+    StringParameter.Builder.create(this, PARAMETER_TODO_SHARING_QUEUE_NAME)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_TODO_SHARING_QUEUE_NAME))
       .stringValue(this.todoSharingQueue.getQueueName())
       .build();
-
   }
 
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
