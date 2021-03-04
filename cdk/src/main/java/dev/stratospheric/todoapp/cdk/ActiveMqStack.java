@@ -17,6 +17,11 @@ import java.util.List;
 
 public class ActiveMqStack extends Stack {
 
+  private static final String PARAMETER_USERNAME = "activeMqUsername";
+  private static final String PARAMETER_PASSWORD = "activeMqPassword";
+  private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
+  private static final String PARAMETER_STOMP_ENDPOINT = "stompEndpoint";
+
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
   private final String username;
@@ -90,6 +95,48 @@ public class ActiveMqStack extends Stack {
     createOutputParameters();
   }
 
+  public static void createDefaultOutputParameters(Construct scope, ApplicationEnvironment applicationEnvironment) {
+
+    final String emptyValue = "empty";
+
+    StringParameter.Builder.create(scope, PARAMETER_USERNAME)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
+      .stringValue(emptyValue)
+      .build();
+
+    StringParameter.Builder.create(scope, PARAMETER_PASSWORD)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
+      .stringValue(emptyValue)
+      .build();
+
+    StringParameter.Builder.create(scope, PARAMETER_AMQP_ENDPOINT)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
+      .stringValue(emptyValue)
+      .build();
+
+    StringParameter.Builder.create(scope, PARAMETER_STOMP_ENDPOINT)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
+      .stringValue(emptyValue)
+      .build();
+  }
+
+  public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return new ActiveMqOutputParameters(
+      getParameterUsername(scope, applicationEnvironment),
+      getParameterPassword(scope, applicationEnvironment),
+      getParameterAmqpEndpoint(scope, applicationEnvironment),
+      getParameterStompEndpoint(scope, applicationEnvironment));
+  }
+
+  public ActiveMqOutputParameters getOutputParameters() {
+    return new ActiveMqOutputParameters(
+      this.username,
+      this.password,
+      this.broker.getAttrAmqpEndpoints().get(0),
+      this.broker.getAttrStompEndpoints().get(0)
+    );
+  }
+
   private static String getParameterUsername(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return StringParameter.fromStringParameterName(scope, PARAMETER_USERNAME, createParameterName(applicationEnvironment, PARAMETER_USERNAME))
       .getStringValue();
@@ -110,23 +157,6 @@ public class ActiveMqStack extends Stack {
       .getStringValue();
   }
 
-  public ActiveMqOutputParameters getOutputParameters() {
-    return new ActiveMqOutputParameters(
-      this.username,
-      this.password,
-      this.broker.getAttrAmqpEndpoints().get(0),
-      this.broker.getAttrStompEndpoints().get(0)
-    );
-  }
-
-  public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return new ActiveMqOutputParameters(
-      getParameterUsername(scope, applicationEnvironment),
-      getParameterPassword(scope, applicationEnvironment),
-      getParameterAmqpEndpoint(scope, applicationEnvironment),
-      getParameterStompEndpoint(scope, applicationEnvironment));
-  }
-
   private String generatePassword() {
     PasswordGenerator passwordGenerator = new PasswordGenerator();
     CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
@@ -140,11 +170,6 @@ public class ActiveMqStack extends Stack {
     digitRule.setNumberOfCharacters(5);
     return passwordGenerator.generatePassword(32, lowerCaseRule, upperCaseRule, digitRule);
   }
-
-  private static final String PARAMETER_USERNAME = "activeMqUsername";
-  private static final String PARAMETER_PASSWORD = "activeMqPassword";
-  private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
-  private static final String PARAMETER_STOMP_ENDPOINT = "stompEndpoint";
 
   private void createOutputParameters() {
 
