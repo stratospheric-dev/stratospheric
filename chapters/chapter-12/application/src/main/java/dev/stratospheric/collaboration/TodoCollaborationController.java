@@ -1,5 +1,7 @@
 package dev.stratospheric.collaboration;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -18,9 +20,10 @@ public class TodoCollaborationController {
   public String shareTodoWithCollaborator(
     @PathVariable("todoId") Long todoId,
     @PathVariable("collaboratorId") Long collaboratorId,
+    @AuthenticationPrincipal OidcUser user,
     RedirectAttributes redirectAttributes
   ) {
-    String collaboratorName = todoCollaborationService.shareWithCollaborator(todoId, collaboratorId);
+    String collaboratorName = todoCollaborationService.shareWithCollaborator(user.getEmail(), todoId, collaboratorId);
 
     redirectAttributes.addFlashAttribute("message",
       String.format("You successfully shared your todo with the user %s. " +

@@ -42,10 +42,10 @@ public class TodoCollaborationService {
     this.todoSharingQueueName = todoSharingQueueName;
   }
 
-  public String shareWithCollaborator(Long todoId, Long collaboratorId) {
+  public String shareWithCollaborator(String email, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository
-      .findById(todoId)
+      .findByIdAndOwnerEmail(todoId, email)
       .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
 
     Person collaborator = personRepository
@@ -66,7 +66,11 @@ public class TodoCollaborationService {
     collaboration.setTodo(todo);
     todo.getCollaborationRequests().add(collaboration);
 
+    todoCollaborationRequestRepository.save(collaboration);
+
     queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
+
+    confirmCollaboration(todoId, collaboratorId, token);
 
     return collaborator.getName();
   }
