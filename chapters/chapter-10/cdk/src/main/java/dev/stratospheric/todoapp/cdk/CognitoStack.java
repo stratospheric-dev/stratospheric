@@ -122,7 +122,6 @@ public class CognitoStack extends Stack {
     // CDK. As a workaround, we create a custom resource that calls the AWS API to get the secret, and
     // then store it in the parameter store like the other parameters.
     // Source: https://github.com/aws/aws-cdk/issues/7225
-
     AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
       .resourceType("Custom::DescribeCognitoUserPoolClient")
       .onCreate(AwsSdkCall.builder()

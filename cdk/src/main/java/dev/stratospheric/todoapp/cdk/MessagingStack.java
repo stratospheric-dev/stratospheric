@@ -40,7 +40,6 @@ class MessagingStack extends Stack {
       .build();
 
     createOutputParameters();
-    ActiveMqStack.createDefaultOutputParameters(this, applicationEnvironment);
 
     applicationEnvironment.tag(this);
   }

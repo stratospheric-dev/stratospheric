@@ -10,7 +10,6 @@ import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
 import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.ssm.*;
-import software.amazon.awscdk.services.ssm.CfnParameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,31 +95,6 @@ public class ActiveMqStack extends Stack {
     createOutputParameters();
   }
 
-  public static void createDefaultOutputParameters(Construct scope, ApplicationEnvironment applicationEnvironment) {
-
-    final String emptyValue = "empty";
-
-    StringParameter.Builder.create(scope, PARAMETER_USERNAME)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
-      .stringValue(emptyValue)
-      .build();
-
-    StringParameter.Builder.create(scope, PARAMETER_PASSWORD)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
-      .stringValue(emptyValue)
-      .build();
-
-    StringParameter.Builder.create(scope, PARAMETER_AMQP_ENDPOINT)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
-      .stringValue(emptyValue)
-      .build();
-
-    StringParameter.Builder.create(scope, PARAMETER_STOMP_ENDPOINT)
-      .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
-      .stringValue(emptyValue)
-      .build();
-  }
-
   public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return new ActiveMqOutputParameters(
       getParameterUsername(scope, applicationEnvironment),
@@ -173,26 +147,24 @@ public class ActiveMqStack extends Stack {
   }
 
   private void createOutputParameters() {
-    final String parameterType = "String";
-
-    CfnParameter.Builder.create(this, PARAMETER_USERNAME)
-      .type(parameterType)
-      .value(username)
+    StringParameter.Builder.create(this, PARAMETER_USERNAME)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
+      .stringValue(username)
       .build();
 
-    CfnParameter.Builder.create(this, PARAMETER_PASSWORD)
-      .type(parameterType)
-      .value(password)
+    StringParameter.Builder.create(this, PARAMETER_PASSWORD)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_PASSWORD))
+      .stringValue(password)
       .build();
 
-    CfnParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
-      .type(parameterType)
-      .value(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
+    StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
+      .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
-    CfnParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
-      .type(parameterType)
-      .value(Fn.select(0, this.broker.getAttrStompEndpoints()))
+    StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
+      .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
   }
 
