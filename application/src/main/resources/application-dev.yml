@@ -24,5 +24,6 @@ spring:
         period: 0
   jpa:
     show-sql: true
+
 custom:
   web-socket-relay-endpoint: localhost:61613

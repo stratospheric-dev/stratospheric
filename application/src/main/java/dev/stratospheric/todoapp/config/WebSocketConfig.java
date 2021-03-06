@@ -26,9 +26,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   private final String websocketPassword;
 
   public WebSocketConfig(
-    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint,
-    @Value("${custom.web-socket-relay-username}") String websocketUsername,
-    @Value("${custom.web-socket-relay-password}") String websocketPassword
+    @Value("${custom.web-socket-relay-endpoint:#{null}}") String websocketRelayEndpoint,
+    @Value("${custom.web-socket-relay-username:#{null}}") String websocketUsername,
+    @Value("${custom.web-socket-relay-password:#{null}}") String websocketPassword
   ) {
     this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
     this.websocketUsername = websocketUsername;
@@ -50,11 +50,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
       StompBrokerRelayRegistration stompBrokerRelayRegistration = registry
         .enableStompBrokerRelay("/topic")
-        .setTcpClient(tcpClient)
-        .setClientLogin(websocketUsername)
-        .setClientPasscode(websocketPassword)
-        .setSystemLogin(websocketUsername)
-        .setSystemPasscode(websocketPassword);
+        .setTcpClient(tcpClient);
+
+      if (websocketUsername != null && websocketPassword != null) {
+        stompBrokerRelayRegistration
+          .setClientLogin(websocketUsername)
+          .setClientPasscode(websocketPassword)
+          .setSystemLogin(websocketUsername)
+          .setSystemPasscode(websocketPassword);
+      }
 
       if (this.websocketEndpoint.host != null && this.websocketEndpoint.port != null) {
         stompBrokerRelayRegistration
@@ -88,6 +92,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     static Endpoint fromEndpointString(String endpoint) {
+      if (endpoint == null) {
+        return null;
+      }
+
       String host;
       String port;
       String failoverURI;
