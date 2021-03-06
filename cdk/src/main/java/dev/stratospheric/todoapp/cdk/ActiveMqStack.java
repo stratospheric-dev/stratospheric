@@ -55,6 +55,8 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
     String vpcName = "NetworkStack/Network/vpc";
+    String cidrIp = "10.0.0.0/16";
+    int port = 61614;
 
     IVpc vpc = Vpc.fromLookup(this,
       vpcName,
@@ -68,14 +70,14 @@ public class ActiveMqStack extends Stack {
       .securityGroupName("AmazonMQSecurityGroup")
       .vpc(vpc)
       .build();
-    amqSecurityGroup.addIngressRule(Peer.ipv4("10.0.0.0/16"), Port.tcp(61614));
-    amqSecurityGroup.addEgressRule(Peer.ipv4("10.0.0.0/16"), Port.tcp(61614));
+    amqSecurityGroup.addIngressRule(Peer.ipv4(cidrIp), Port.tcp(port));
+    amqSecurityGroup.addEgressRule(Peer.ipv4(cidrIp), Port.tcp(port));
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
       .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
-      .subnetIds(networkOutputParameters.getIsolatedSubnets())
+      .subnetIds(networkOutputParameters.getPublicSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
