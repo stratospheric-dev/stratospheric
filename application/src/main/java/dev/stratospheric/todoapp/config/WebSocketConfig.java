@@ -1,8 +1,13 @@
 package dev.stratospheric.todoapp.config;
 
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.resolver.DefaultAddressResolverGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
+import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
+import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -16,17 +21,40 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final Endpoint websocketEndpoint;
 
+  private final String websocketUsername;
+
+  private final String websocketPassword;
+
   public WebSocketConfig(
-    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint) {
+    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint,
+    @Value("${custom.web-socket-relay-username}") String websocketUsername,
+    @Value("${custom.web-socket-relay-password}") String websocketPassword
+  ) {
     this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
+    this.websocketUsername = websocketUsername;
+    this.websocketPassword = websocketPassword;
   }
 
   @Override
-  public void configureMessageBroker(MessageBrokerRegistry config) {
-    /* Disabled until we can connect to MQ logs messages about failing connections are increasing
+  public void configureMessageBroker(MessageBrokerRegistry registry) {
     if (this.websocketEndpoint != null) {
-      StompBrokerRelayRegistration stompBrokerRelayRegistration = config
-        .enableStompBrokerRelay("/topic");
+      SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+      ReactorNettyTcpClient<byte[]> tcpClient = new ReactorNettyTcpClient<>(builder ->
+        builder
+          .host(this.websocketEndpoint.host)
+          .port(this.websocketEndpoint.port)
+          .secure(sslContextSpec -> sslContextSpec.sslContext(sslContextBuilder))
+          .resolver(DefaultAddressResolverGroup.INSTANCE),
+        new StompReactorNettyCodec()
+      );
+
+      StompBrokerRelayRegistration stompBrokerRelayRegistration = registry
+        .enableStompBrokerRelay("/topic")
+        .setTcpClient(tcpClient)
+        .setClientLogin(websocketUsername)
+        .setClientPasscode(websocketPassword)
+        .setSystemLogin(websocketUsername)
+        .setSystemPasscode(websocketPassword);
 
       if (this.websocketEndpoint.host != null && this.websocketEndpoint.port != null) {
         stompBrokerRelayRegistration
@@ -38,12 +66,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           .setRelayHost(this.websocketEndpoint.failoverURI);
       }
 
-      config.setApplicationDestinationPrefixes("/websocketEndpoints");
+      registry.setApplicationDestinationPrefixes("/websocketEndpoints");
     }
-    */
-
-    config.setApplicationDestinationPrefixes("/websocketEndpoints");
-    config.enableSimpleBroker("/topic");
   }
 
   private static class Endpoint {
