@@ -35,7 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${custom.web-socket-relay-username:#{null}}") String websocketUsername,
     @Value("${custom.web-socket-relay-password:#{null}}") String websocketPassword
   ) {
-    this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
+    this.websocketEndpoint = Endpoint.fromEndpointString("b-1a5c5777-2aeb-4e21-80c4-f053c80708eb-1.mq.eu-central-1.amazonaws.com:61614");
     this.websocketUsername = websocketUsername;
     this.websocketPassword = websocketPassword;
   }
