@@ -75,7 +75,7 @@ public class ActiveMqStack extends Stack {
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
-      .brokerName(applicationEnvironment.prefix("stratospheric-amq-message-broker"))
+      .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
       .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
       .subnetIds(networkOutputParameters.getIsolatedSubnets())
       .hostInstanceType("mq.t2.micro")
@@ -89,7 +89,7 @@ public class ActiveMqStack extends Stack {
           .build()
       )
       .users(userList)
-      .publiclyAccessible(true)
+      .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
       .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
       .build();
