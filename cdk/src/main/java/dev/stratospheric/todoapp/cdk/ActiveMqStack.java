@@ -55,7 +55,7 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
     String vpcName = "NetworkStack/Network/vpc";
-    String cidrIp = "10.0.0.0/16";
+    String cidrIp = "10.0.0.0/18";
     int port = 61614;
 
     IVpc vpc = Vpc.fromLookup(this,
