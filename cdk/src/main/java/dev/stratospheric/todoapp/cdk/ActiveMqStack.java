@@ -89,7 +89,7 @@ public class ActiveMqStack extends Stack {
           .build()
       )
       .users(userList)
-      .publiclyAccessible(false)
+      .publiclyAccessible(true)
       .autoMinorVersionUpgrade(true)
       .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
       .build();
