@@ -93,6 +93,9 @@ public class ActiveMqStack extends Stack {
       .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
       .build();
 
+    System.out.println(this.broker.getAttrStompEndpoints());
+    System.out.println("------ #");
+
     createOutputParameters();
   }
 
