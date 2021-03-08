@@ -161,6 +161,9 @@ public class ActiveMqStack extends Stack {
       .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
+    System.out.println(Fn.select(0, this.broker.getAttrStompEndpoints()));
+    System.out.println(Fn.select(1, this.broker.getAttrStompEndpoints()));
+
     StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
