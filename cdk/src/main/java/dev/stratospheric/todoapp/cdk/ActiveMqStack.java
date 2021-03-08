@@ -156,6 +156,16 @@ public class ActiveMqStack extends Stack {
       .stringValue(password)
       .build();
 
+    System.out.println(this.broker.getAttrAmqpEndpoints());
+    System.out.println(this.broker.getAttrAmqpEndpoints().get(0));
+    System.out.println(this.broker.getAttrAmqpEndpoints().size());
+
+    System.out.println(this.broker.getAttrStompEndpoints());
+    System.out.println(this.broker.getAttrStompEndpoints().get(0));
+    System.out.println(this.broker.getAttrStompEndpoints().size());
+
+    System.out.println("###### 1");
+
     String amqpEndpointsFailoverString = "failover:(" + this.broker.getAttrAmqpEndpoints().get(0) + "," + this.broker.getAttrAmqpEndpoints().get(1) + ")";
     StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
