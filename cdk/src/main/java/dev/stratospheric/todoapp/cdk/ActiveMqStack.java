@@ -156,26 +156,14 @@ public class ActiveMqStack extends Stack {
       .stringValue(password)
       .build();
 
-    System.out.println(this.broker.getAttrAmqpEndpoints());
-    System.out.println(this.broker.getAttrAmqpEndpoints().get(0));
-    System.out.println(this.broker.getAttrAmqpEndpoints().size());
-
-    System.out.println(this.broker.getAttrStompEndpoints());
-    System.out.println(this.broker.getAttrStompEndpoints().get(0));
-    System.out.println(this.broker.getAttrStompEndpoints().size());
-
-    System.out.println("###### 1");
-
-    String amqpEndpointsFailoverString = "failover:(" + this.broker.getAttrAmqpEndpoints().get(0) + "," + this.broker.getAttrAmqpEndpoints().get(1) + ")";
     StringParameter.Builder.create(this, PARAMETER_AMQP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_AMQP_ENDPOINT))
-      .stringValue(amqpEndpointsFailoverString)
+      .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
-    String stompEndpointsFailoverString = "failover:(" + this.broker.getAttrStompEndpoints().get(0) + "," + this.broker.getAttrStompEndpoints().get(1) + ")";
     StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
-      .stringValue(stompEndpointsFailoverString)
+      .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
 
     StringParameter.Builder.create(this, PARAMETER_SECURITY_GROUP_ID)
