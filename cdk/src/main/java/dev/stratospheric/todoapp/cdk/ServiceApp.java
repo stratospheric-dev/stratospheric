@@ -75,6 +75,11 @@ public class ServiceApp {
     ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
       ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
+    List<String> securityGroupIdsToGrantIngressFromEcs = Arrays.asList(
+      databaseOutputParameters.getDatabaseSecurityGroupId(),
+      activeMqOutputParameters.getActiveMqSecurityGroupId()
+    );
+
     new Service(
       serviceStack,
       "Service",
@@ -82,7 +87,7 @@ public class ServiceApp {
       applicationEnvironment,
       new Service.ServiceInputParameters(
         new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
-        Collections.singletonList(databaseOutputParameters.getDatabaseSecurityGroupId()),
+        securityGroupIdsToGrantIngressFromEcs,
         environmentVariables(
           serviceStack,
           databaseOutputParameters,

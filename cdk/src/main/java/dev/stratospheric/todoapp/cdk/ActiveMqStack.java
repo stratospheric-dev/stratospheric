@@ -21,11 +21,13 @@ public class ActiveMqStack extends Stack {
   private static final String PARAMETER_PASSWORD = "activeMqPassword";
   private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
   private static final String PARAMETER_STOMP_ENDPOINT = "stompEndpoint";
+  private static final String PARAMETER_SECURITY_GROUP_ID = "activeMqSecurityGroupId";
 
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
   private final String username;
   private final String password;
+  private final String securityGroupId;
 
   public ActiveMqStack(
     final Construct scope,
@@ -55,8 +57,6 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
     String vpcName = "NetworkStack/Network/vpc";
-    String cidrIp = "10.0.0.0/18";
-    int port = 61614;
 
     IVpc vpc = Vpc.fromLookup(this,
       vpcName,
@@ -70,13 +70,12 @@ public class ActiveMqStack extends Stack {
       .securityGroupName("AmazonMQSecurityGroup")
       .vpc(vpc)
       .build();
-    amqSecurityGroup.addIngressRule(Peer.ipv4(cidrIp), Port.tcp(port));
-    amqSecurityGroup.addEgressRule(Peer.ipv4(cidrIp), Port.tcp(port));
+    this.securityGroupId = amqSecurityGroup.getSecurityGroupId();
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .securityGroups(Collections.singletonList(amqSecurityGroup.getSecurityGroupId()))
+      .securityGroups(Collections.singletonList(this.securityGroupId))
       .subnetIds(networkOutputParameters.getIsolatedSubnets())
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
@@ -102,15 +101,8 @@ public class ActiveMqStack extends Stack {
       getParameterUsername(scope, applicationEnvironment),
       getParameterPassword(scope, applicationEnvironment),
       getParameterAmqpEndpoint(scope, applicationEnvironment),
-      getParameterStompEndpoint(scope, applicationEnvironment));
-  }
-
-  public ActiveMqOutputParameters getOutputParameters() {
-    return new ActiveMqOutputParameters(
-      this.username,
-      this.password,
-      this.broker.getAttrAmqpEndpoints().get(0),
-      this.broker.getAttrStompEndpoints().get(0)
+      getParameterStompEndpoint(scope, applicationEnvironment),
+      getParameterSecurityGroupId(scope, applicationEnvironment)
     );
   }
 
@@ -131,6 +123,11 @@ public class ActiveMqStack extends Stack {
 
   private static String getParameterStompEndpoint(Construct scope, ApplicationEnvironment applicationEnvironment) {
     return StringParameter.fromStringParameterName(scope, PARAMETER_STOMP_ENDPOINT, createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
+      .getStringValue();
+  }
+
+  private static String getParameterSecurityGroupId(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_SECURITY_GROUP_ID, createParameterName(applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
       .getStringValue();
   }
 
@@ -168,6 +165,11 @@ public class ActiveMqStack extends Stack {
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
       .build();
+
+    StringParameter.Builder.create(this, PARAMETER_SECURITY_GROUP_ID)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
+      .stringValue(this.securityGroupId)
+      .build();
   }
 
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
@@ -179,17 +181,20 @@ public class ActiveMqStack extends Stack {
     private final String activeMqPassword;
     private final String amqpEndpoint;
     private final String stompEndpoint;
+    private final String activeMqSecurityGroupId;
 
     public ActiveMqOutputParameters(
       String activeMqUsername,
       String activeMqPassword,
       String amqpEndpoint,
-      String stompEndpoint
+      String stompEndpoint,
+      String activeMqSecurityGroupId
     ) {
       this.activeMqUsername = activeMqUsername;
       this.activeMqPassword = activeMqPassword;
       this.amqpEndpoint = amqpEndpoint;
       this.stompEndpoint = stompEndpoint;
+      this.activeMqSecurityGroupId = activeMqSecurityGroupId;
     }
 
     public String getAmqpEndpoint() {
@@ -206,6 +211,10 @@ public class ActiveMqStack extends Stack {
 
     public String getActiveMqPassword() {
       return activeMqPassword;
+    }
+
+    public String getActiveMqSecurityGroupId() {
+      return activeMqSecurityGroupId;
     }
   }
 
