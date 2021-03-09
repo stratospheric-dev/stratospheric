@@ -8,8 +8,8 @@ import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
-import software.amazon.awscdk.services.ec2.*;
-import software.amazon.awscdk.services.ssm.*;
+import software.amazon.awscdk.services.ec2.CfnSecurityGroup;
+import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,21 +56,14 @@ public class ActiveMqStack extends Stack {
     ));
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
-    String vpcName = "NetworkStack/Network/vpc";
 
-    IVpc vpc = Vpc.fromLookup(this,
-      vpcName,
-      VpcLookupOptions.builder()
-        .vpcName(vpcName)
-        .build()
-    );
-
-    SecurityGroup amqSecurityGroup = SecurityGroup.Builder
-      .create(this, "amqSecurityGroup")
-      .securityGroupName("AmazonMQSecurityGroup")
-      .vpc(vpc)
+    CfnSecurityGroup amqSecurityGroup = CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
+      .vpcId(networkOutputParameters.getVpcId())
+      .groupDescription("Security Group for the Amazon MQ instance")
+      .groupName(applicationEnvironment.prefix("amqSecurityGroup"))
       .build();
-    this.securityGroupId = amqSecurityGroup.getSecurityGroupId();
+
+    this.securityGroupId = amqSecurityGroup.getAttrGroupId();
 
     this.broker = CfnBroker.Builder
       .create(this, "amqBroker")
