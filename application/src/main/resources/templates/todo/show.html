@@ -18,9 +18,10 @@
             <strong>Priority</strong>: <span th:text="${todo.priority?.displayValue}"></span><br>
             <strong>Due date</strong>: <span th:text="${todo.dueDate}"></span>
           </p>
-          <a class="btn btn-secondary" th:href="@{/dashboard}">Back</a>
-          <a class="btn btn-warning" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
+          <a class="btn btn-secondary" title="Back" th:href="@{/dashboard}">Back</a>
+          <a class="btn btn-warning" title="Edit" th:href="@{/todo/edit/{id}(id=${todo.id})}">Edit</a>
           <button class="btn btn-danger"
+                  title="Delete"
                   data-th-attr="data-href=${'/todo/delete/' + todo.id}"
                   data-toggle="modal"
                   data-target="#confirm-delete">
