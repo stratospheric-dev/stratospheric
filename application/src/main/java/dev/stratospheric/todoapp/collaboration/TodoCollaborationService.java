@@ -102,6 +102,7 @@ public class TodoCollaborationService {
 
       todoCollaborationRequestRepository.delete(collaborationRequest);
 
+
       String name = collaborationRequest.getCollaborator().getName();
       String subject = "Collaboration confirmed.";
       String message = "User "
@@ -109,9 +110,9 @@ public class TodoCollaborationService {
         + " has accepted your collaboration request for todo #"
         + collaborationRequest.getTodo().getId()
         + ".";
-      String collaboratorEmail = collaborationRequest.getCollaborator().getEmail();
+      String ownerEmail = collaborationRequest.getTodo().getOwner().getEmail();
 
-      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
+      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + ownerEmail, subject + " " + message);
 
       LOG.info("Successfully informed owner about accepted request.");
 
