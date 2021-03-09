@@ -52,6 +52,6 @@ public class TodoSharingListener {
     );
     mailSender.send(message);
 
-    LOG.info("Successfully informed collaborator about shared todo");
+    LOG.info("Successfully informed collaborator about shared todo.");
   }
 }

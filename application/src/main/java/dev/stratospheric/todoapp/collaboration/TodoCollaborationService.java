@@ -83,8 +83,13 @@ public class TodoCollaborationService {
     TodoCollaborationRequest collaborationRequest = todoCollaborationRequestRepository
       .findByTodoIdAndCollaboratorId(todoId, collaboratorId);
 
-    if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
+    LOG.info("Collaboration request: {}", collaborationRequest);
+    if (collaborationRequest != null) {
+      LOG.info("Original collaboration token: {}", collaborationRequest.getToken());
+      LOG.info("Request token: {}", token);
+    }
 
+    if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
       Todo todo = todoRepository
         .findById(todoId)
         .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
@@ -107,6 +112,8 @@ public class TodoCollaborationService {
       String collaboratorEmail = collaborationRequest.getCollaborator().getEmail();
 
       simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + collaboratorEmail, subject + " " + message);
+
+      LOG.info("Successfully informed owner about accepted request.");
 
       return true;
     }
