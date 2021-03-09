@@ -69,7 +69,7 @@ public class ActiveMqStack extends Stack {
       .create(this, "amqBroker")
       .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
       .securityGroups(Collections.singletonList(this.securityGroupId))
-      .subnetIds(networkOutputParameters.getIsolatedSubnets())
+      .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
@@ -83,7 +83,7 @@ public class ActiveMqStack extends Stack {
       .users(userList)
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
-      .deploymentMode("ACTIVE_STANDBY_MULTI_AZ")
+      .deploymentMode("SINGLE_INSTANCE")
       .build();
 
     createOutputParameters();
