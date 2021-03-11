@@ -60,7 +60,12 @@ jobs:
           readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
           for changed_file in ${changed_files[@]}; do
             echo "Do something with this ${changed_file}."
-            echo "${change_file}" | cut -d / -f 3
+            echo "${changed_file}" | cut -d / -f 3 | cut -d'-' -f 2
+            echo "${changed_file}" | cut -d / -f 3 | cut -d'-' -f 2 | read possibleChapter
+            if[[ "$possibleChapter" -ge 0 ]]; then
+              echo "Chapter number found! - ${possibleChapter}"
+            fi
+
           done
 
   build-complex-chapters:
