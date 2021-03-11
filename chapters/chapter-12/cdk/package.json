@@ -10,7 +10,9 @@
     "messaging:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.MessagingApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-12 -c environmentName=chapter-12 --require-approval never",
     "messaging:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.MessagingApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-12 -c environmentName=chapter-12 --force --require-approval never",
     "cognito:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c accountId=221875718260 -c region=eu-central-1 -c environmentName=chapter-12 -c applicationName=todo-app-chapter-12 -c applicationUrl=https://app.stratospheric.dev -c loginPageDomainPrefix=stratospheric-chapter-12 --require-approval never",
-    "cognito:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c accountId=221875718260 -c region=eu-central-1 -c environmentName=chapter-12 -c applicationName=todo-app-chapter-12 -c applicationUrl=https://app.stratospheric.dev -c loginPageDomainPrefix=stratospheric-chapter-12 --force --require-approval never"
+    "cognito:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c accountId=221875718260 -c region=eu-central-1 -c environmentName=chapter-12 -c applicationName=todo-app-chapter-12 -c applicationUrl=https://app.stratospheric.dev -c loginPageDomainPrefix=stratospheric-chapter-12 --force --require-approval never",
+    "all:deploy": "npm run messaging:deploy",
+    "all:destroy": "npm run messaging:destroy"
   },
   "devDependencies": {
     "aws-cdk": "1.88.0"

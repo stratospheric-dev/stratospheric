@@ -45,9 +45,18 @@ jobs:
             ./gradlew build --stacktrace
           fi
 
-  build-chapter-10:
+  build-complex-chapters:
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter-numbers: [ 10, 11, 12 ]
     runs-on: ubuntu-20.04
-    name: Build the application for chapter 10
+    name: Build the application for chapter ${{ matrix.chapter-numbers }}
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
     steps:
 
       - name: Checkout code
@@ -58,81 +67,21 @@ jobs:
         with:
           java-version: 11.0
 
-      - name: Build and destroy the infrastructure
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      - name: Create the AWS infrastructure
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
-          cd chapters/chapter-10/cdk
           npm install
-          npm run cognito:deploy
-          npm run cognito:destroy
+          npm run all:deploy
 
       - name: Build the application
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
         run: |
-          cd chapters/chapter-10/application
           ./gradlew build --stacktrace
+          docker build -t todo-app-${{ matrix.chapter-numbers }} .
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
-  build-chapter-11:
-    runs-on: ubuntu-20.04
-    name: Build the application for chapter 11
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v1
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11.0
-
-      - name: Build and destroy the infrastructure
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      - name: Destroy the AWS infrastructure
+        if: always()
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
-          cd chapters/chapter-11/cdk
-          npm install
-          npm run network:deploy
-          npm run database:deploy
-          npm run database:destroy
-          npm run network:destroy
-
-      - name: Build the application
-        run: |
-          cd chapters/chapter-11/application
-          ./gradlew build --stacktrace
-
-  build-chapter-12:
-    runs-on: ubuntu-20.04
-    name: Build the application for chapter 12
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v1
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11.0
-
-      - name: Build and destroy the infrastructure
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd chapters/chapter-12/cdk
-          npm install
-          npm run messaging:deploy
-          npm run messaging:destroy
-
-      - name: Build the application
-        run: |
-          cd chapters/chapter-12/application
-          ./gradlew build --stacktrace
+          npm run all:destroy
