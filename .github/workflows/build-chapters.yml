@@ -57,6 +57,11 @@ jobs:
       - run: |
           echo ${{ steps.files.outputs.all }}
           cat ${HOME}/files.json
+          readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
+          for changed_file in ${changed_files[@]}; do
+            echo "Do something with this ${changed_file}."
+            echo "${change_file}" | cut -d / -f 3
+          done
 
   build-complex-chapters:
     if: ${{ false }} # temporary disable
