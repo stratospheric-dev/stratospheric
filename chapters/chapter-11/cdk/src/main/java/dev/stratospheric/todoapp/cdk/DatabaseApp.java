@@ -14,8 +14,11 @@ public class DatabaseApp {
   public static void main(final String[] args) {
     App app = new App();
 
-    String environmentName = "chapter-11";
-    String applicationName = "todo-app-chapter-11";
+    String environmentName = (String) app.getNode().tryGetContext("environmentName");
+    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
+
+    String applicationName = (String) app.getNode().tryGetContext("applicationName");
+    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
     requireNonEmpty(accountId, "context variable 'accountId' must not be null");
