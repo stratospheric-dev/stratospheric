@@ -58,6 +58,9 @@ jobs:
           echo ${{ steps.files.outputs.all }}
           cat ${HOME}/files.json
           readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
+
+          FOUND_CHAPTERS=()
+
           for changed_file in ${changed_files[@]}; do
             echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2
             possibleChapter=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
@@ -65,11 +68,15 @@ jobs:
             if [[ $possibleChapter =~ ^[0-9]+$ ]]; then
               echo $possibleChapter
               echo "Chapter number found! - ${possibleChapter}"
+              FOUND_CHAPTERS+=($possibleChapter)
             else
               echo "No Number - ${possibleChapter}"
             fi
 
           done
+          echo "Found chapters: ${FOUND_CHAPTERS}"
+          UNIQUE_CHAPTER_LIST=($(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' '))
+          echo "Unqiue chapter list: ${UNIQUE_CHAPTER_LIST}"
 
   build-complex-chapters:
     if: ${{ false }} # temporary disable
