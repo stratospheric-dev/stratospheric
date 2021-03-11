@@ -70,8 +70,6 @@ public class TodoCollaborationService {
 
     queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
-    confirmCollaboration(todoId, collaboratorId, token);
-
     return collaborator.getName();
   }
 
