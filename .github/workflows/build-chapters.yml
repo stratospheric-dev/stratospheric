@@ -71,9 +71,9 @@ jobs:
             fi
 
           done
-          echo "Found chapters: ${FOUND_CHAPTERS}"
-          UNIQUE_CHAPTER_LIST=($(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' '))
-          echo "Unqiue chapter list: ${UNIQUE_CHAPTER_LIST}"
+          echo "Found chapters: ${FOUND_CHAPTERS[@]}"
+          UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
+          echo "Unqiue chapter list: ${UNIQUE_CHAPTER_LIST[@]}"
 
   build-complex-chapters:
     if: ${{ false }} # temporary disable
