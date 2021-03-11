@@ -70,15 +70,26 @@ jobs:
         with:
           java-version: 11.0
 
+      - name: Prepare the CDK context
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        run: |
+          echo $(cat cdk.json | jq \
+          --arg env "$ENVIRONMENT_NAME" \
+          --arg region "$AWS_REGION" \
+          --arg id "$AWS_ACCOUNT_ID" \
+          --arg app "$APPLICATION_NAME" \
+          '. * {context: {environmentName: $env, region: $region, accountId: $id, applicationName: $app}}') > cdk.json
+          cat cdk.json
+
       - name: Create the AWS infrastructure
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
           npm install
-          npm run network:deploy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME}
-          npm run repository:deploy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c applicationName=${APPLICATION_NAME}
-          npm run cognito:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME} -c loginPageDomainPrefix=${APPLICATION_NAME}
-          npm run database:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME}
-          npm run messaging:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME}
+          npm run network:deploy
+          npm run repository:deploy
+          npm run cognito:deploy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:deploy --if-present
+          npm run messaging:deploy --if-present
 
       - name: Build the application
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
@@ -87,19 +98,20 @@ jobs:
 
       - name: Publish the Docker image to ECR
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        env:
+          DOCKER_IMAGE_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
         run: |
-          docker build -t todo-app-chapter-${{ matrix.chapter-numbers }} .
-          docker tag todo-app-chapter-${{ matrix.chapter-numbers }} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
+          docker build -t ${DOCKER_IMAGE_NAME} .
+          docker tag ${DOCKER_IMAGE_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
 
       - name: Destroy the AWS infrastructure
         if: always()
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
-          npm run network:destroy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME}
-          npm run repository:destroy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c applicationName=${APPLICATION_NAME}
-          npm run cognito:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME} -c loginPageDomainPrefix=${APPLICATION_NAME}
-          npm run database:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME}
-          npm run messaging:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME}
-
+          npm run network:destroy
+          npm run repository:destroy
+          npm run cognito:destroy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:destroy --if-present
+          npm run messaging:destroy --if-present
