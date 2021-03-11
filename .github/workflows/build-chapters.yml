@@ -62,15 +62,12 @@ jobs:
           FOUND_CHAPTERS=()
 
           for changed_file in ${changed_files[@]}; do
-            echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2
-            possibleChapter=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
-            echo $possibleChapter
-            if [[ $possibleChapter =~ ^[0-9]+$ ]]; then
-              echo $possibleChapter
-              echo "Chapter number found! - ${possibleChapter}"
-              FOUND_CHAPTERS+=($possibleChapter)
+            POSSIBLE_CHAPTER=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
+            if [[ $POSSIBLE_CHAPTER =~ ^[0-9]+$ ]]; then
+              echo "Chapter number found! - ${POSSIBLE_CHAPTER}"
+              FOUND_CHAPTERS+=$POSSIBLE_CHAPTER
             else
-              echo "No Number - ${possibleChapter}"
+              echo "No Number - ${POSSIBLE_CHAPTER}"
             fi
 
           done
