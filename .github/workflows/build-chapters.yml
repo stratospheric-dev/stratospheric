@@ -65,7 +65,7 @@ jobs:
             POSSIBLE_CHAPTER=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
             if [[ $POSSIBLE_CHAPTER =~ ^[0-9]+$ ]]; then
               echo "Chapter number found! - ${POSSIBLE_CHAPTER}"
-              FOUND_CHAPTERS+=$POSSIBLE_CHAPTER
+              FOUND_CHAPTERS+=($POSSIBLE_CHAPTER)
             else
               echo "No Number - ${POSSIBLE_CHAPTER}"
             fi
