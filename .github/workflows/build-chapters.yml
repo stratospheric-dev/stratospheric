@@ -74,9 +74,11 @@ jobs:
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
           npm install
-          npm run network:deploy
-          npm run repository:deploy
-          npm run all:deploy
+          npm run network:deploy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME}
+          npm run repository:deploy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c applicationName=${APPLICATION_NAME}
+          npm run cognito:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME} -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME
+          npm run messaging:deploy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME
 
       - name: Build the application
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
@@ -95,6 +97,9 @@ jobs:
         if: always()
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
-          npm run network:destroy
-          npm run repository:destroy
-          npm run all:destroy
+          npm run network:destroy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME}
+          npm run repository:destroy -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c applicationName=${APPLICATION_NAME}
+          npm run cognito:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME} -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME
+          npm run messaging:destroy --if-present -- -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_REGION} -c environmentName=${ENVIRONMENT_NAME} -c applicationName=${APPLICATION_NAME
+
