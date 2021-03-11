@@ -79,7 +79,6 @@ jobs:
           --arg id "$AWS_ACCOUNT_ID" \
           --arg app "$APPLICATION_NAME" \
           '. * {context: {environmentName: $env, region: $region, accountId: $id, applicationName: $app}}') > cdk.json
-          cat cdk.json
 
       - name: Create the AWS infrastructure
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
