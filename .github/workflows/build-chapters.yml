@@ -89,7 +89,7 @@ jobs:
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
         run: |
           docker build -t todo-app-chapter-${{ matrix.chapter-numbers }} .
-          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
+          docker tag todo-app-chapter-${{ matrix.chapter-numbers }} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
 
