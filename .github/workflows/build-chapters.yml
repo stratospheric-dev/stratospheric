@@ -58,6 +58,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
+      APPLICATION_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
+      ENVIRONEMT_NAME: chapter-${{ matrix.chapter-numbers }}
     steps:
 
       - name: Checkout code
