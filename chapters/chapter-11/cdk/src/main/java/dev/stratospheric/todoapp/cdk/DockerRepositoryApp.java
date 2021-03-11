@@ -6,8 +6,6 @@ import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
-import java.util.Objects;
-
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 
 public class DockerRepositoryApp {
@@ -46,5 +44,4 @@ public class DockerRepositoryApp {
       .region(region)
       .build();
   }
-
 }
