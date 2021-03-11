@@ -5,10 +5,14 @@
   "scripts": {
     "network:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" -c sslCertificateArn=arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1 -c environmentName=chapter-11 -c accountId=221875718260 -c region=eu-central-1 --require-approval never",
     "network:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" -c sslCertificateArn=arn:aws:acm:eu-central-1:221875718260:certificate/20023378-c036-41df-90b9-c005938c4423 -c environmentName=chapter-11 -c accountId=221875718260 -c region=eu-central-1 --force --require-approval never",
+    "repository:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" -c applicationName=todo-app-chapter-11 -c accountId=221875718260 -c region=eu-central-1 --require-approval never",
+    "repository:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" -c applicationName=todo-app-chapter-11 -c accountId=221875718260 -c region=eu-central-1 --force --require-approval never",
+    "service:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-11 -c springProfile=aws -c environmentName=chapter-11 --require-approval never",
+    "service:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-11 -c springProfile=aws -c environmentName=chapter-11 --force --require-approval never",
     "database:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DatabaseApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-11  -c environmentName=chapter-11 --require-approval never",
     "database:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DatabaseApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app-chapter-11  -c environmentName=chapter-11 --force --require-approval never",
-    "all:deploy": "npm run network:deploy && npm run database:deploy",
-    "all:destroy": "npm run network:destroy && npm run database:destroy"
+    "all:deploy": "npm run database:deploy",
+    "all:destroy": "npm run database:destroy"
   },
   "devDependencies": {
     "aws-cdk": "1.88.0"

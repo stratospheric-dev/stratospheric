@@ -57,6 +57,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
 
       - name: Checkout code
@@ -71,17 +72,27 @@ jobs:
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
           npm install
+          npm run network:deploy
+          npm run repository:deploy
           npm run all:deploy
 
       - name: Build the application
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
         run: |
           ./gradlew build --stacktrace
-          docker build -t todo-app-${{ matrix.chapter-numbers }} .
+
+      - name: Publish the Docker image to ECR
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        run: |
+          docker build -t todo-app-chapter-${{ matrix.chapter-numbers }} .
+          docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app-chapter-${{ matrix.chapter-numbers }}:latest
 
       - name: Destroy the AWS infrastructure
         if: always()
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
+          npm run network:destroy
+          npm run repository:destroy
           npm run all:destroy
