@@ -74,13 +74,12 @@ jobs:
       - name: "Sending deployment event to queue"
         if: github.ref == 'refs/heads/main'
         env:
-          AWS_ACCOUNT_ID: ${{ secrets.STAGING_AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.STAGING_AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           SPRING_PROFILE: staging
           ENVIRONMENT_NAME: staging
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         run: |
-          export AWS_REGION=${AWS_DEFAULT_REGION}
           aws sqs send-message --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo --message-group-id default --message-body '{"commitSha": "${GITHUB_SHA}", "ref": "master", "owner": "stratospheric-dev", "repo": "stratospheric", "workflowId": "05-update-todo-app-in-staging.yml", "dockerImageTag": "${DOCKER_IMAGE_TAG}"}'
