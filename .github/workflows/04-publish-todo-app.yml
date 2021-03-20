@@ -82,4 +82,5 @@ jobs:
           ENVIRONMENT_NAME: staging
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         run: |
+          export AWS_REGION=${AWS_DEFAULT_REGION}
           aws sqs send-message --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo --message-group-id default --message-body '{"commitSha": "${GITHUB_SHA}", "ref": "master", "owner": "stratospheric-dev", "repo": "stratospheric", "workflowId": "05-update-todo-app-in-staging.yml", "dockerImageTag": "${DOCKER_IMAGE_TAG}"}'
