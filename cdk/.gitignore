@@ -12,3 +12,4 @@ target
 cdk.out
 
 node_modules
+/deployment-sequencer-lambda/dist/

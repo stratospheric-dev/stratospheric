@@ -1,0 +1,18 @@
+{
+  "name": "deployment-sequencer-lambda",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dist": "npm run transpile && npm run zip",
+    "zip": "cp -r node_modules dist/node_modules && cd dist && zip -r lambda.zip index.js node_modules",
+    "transpile": "tsc src/index.ts --outDir dist",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sqs": "3.7.0",
+    "axios": "0.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.31"
+  }
+}
