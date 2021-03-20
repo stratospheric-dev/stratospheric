@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    name: Build and deploy Todo App
+    name: Build and publish Todo App
     steps:
 
       - name: Checkout code
@@ -72,7 +72,7 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:latest
 
       - name: "Sending deployment event to queue"
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         env:
           AWS_ACCOUNT_ID: ${{ secrets.STAGING_AWS_ACCOUNT_ID }}
           AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
