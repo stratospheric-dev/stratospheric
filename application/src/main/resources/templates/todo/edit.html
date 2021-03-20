@@ -47,7 +47,7 @@
                   id="priority"
                   placeholder="Please select a priority."
                   required>
-            <option th:each="priorityValue : ${T(dev.stratospheric.todo.Priority).values()}"
+            <option th:each="priorityValue : ${T(dev.stratospheric.todoapp.todo.Priority).values()}"
                     th:value="${priorityValue}"
                     th:text="${priorityValue.displayValue}"></option>
           </select>
@@ -68,6 +68,7 @@
         </div>
         <button type="submit"
                 class="btn btn-primary"
+                th:title="${editMode?.name() == 'UPDATE'}? 'Update': 'Create'"
                 th:text="${editMode?.name() == 'UPDATE'}? 'Update': 'Create'">
         </button>
       </form>

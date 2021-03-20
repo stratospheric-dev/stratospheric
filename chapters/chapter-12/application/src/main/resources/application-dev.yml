@@ -1,0 +1,16 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            clientId: spring-boot-application
+            clientSecret: 27b07baf-53ba-42c6-b11f-6384769cada3
+            scope: openid
+        provider:
+          cognito:
+            issuerUri: http://localhost:8888/auth/realms/stratospheric
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stratospheric
+    username: stratospheric
+    password: stratospheric

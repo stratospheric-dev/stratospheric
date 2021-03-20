@@ -12,7 +12,7 @@ on:
 jobs:
   deploy-network-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the network stack
     steps:
 

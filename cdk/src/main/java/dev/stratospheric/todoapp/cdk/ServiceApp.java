@@ -13,7 +13,6 @@ import software.amazon.awscdk.services.secretsmanager.Secret;
 
 import java.util.*;
 
-import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 import static java.util.Collections.singletonList;
 
 public class ServiceApp {
@@ -21,27 +20,26 @@ public class ServiceApp {
   public static void main(final String[] args) {
     App app = new App();
 
-
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
+    Validations.requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
 
     String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
+    Validations.requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    requireNonEmpty(accountId, "context variable 'accountId' must not be null");
+    Validations.requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String springProfile = (String) app.getNode().tryGetContext("springProfile");
-    requireNonEmpty(springProfile, "context variable 'springProfile' must not be null");
+    Validations.requireNonEmpty(springProfile, "context variable 'springProfile' must not be null");
 
     String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    requireNonEmpty(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
+    Validations.requireNonEmpty(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
 
     String dockerImageTag = (String) app.getNode().tryGetContext("dockerImageTag");
-    requireNonEmpty(dockerImageTag, "context variable 'dockerImageTag' must not be null");
+    Validations.requireNonEmpty(dockerImageTag, "context variable 'dockerImageTag' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    requireNonEmpty(region, "context variable 'region' must not be null");
+    Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -77,14 +75,19 @@ public class ServiceApp {
     ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
       ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    Service service = new Service(
+    List<String> securityGroupIdsToGrantIngressFromEcs = Arrays.asList(
+      databaseOutputParameters.getDatabaseSecurityGroupId(),
+      activeMqOutputParameters.getActiveMqSecurityGroupId()
+    );
+
+    new Service(
       serviceStack,
       "Service",
       awsEnvironment,
       applicationEnvironment,
       new Service.ServiceInputParameters(
         new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
-        Collections.singletonList(databaseOutputParameters.getDatabaseSecurityGroupId()),
+        securityGroupIdsToGrantIngressFromEcs,
         environmentVariables(
           serviceStack,
           databaseOutputParameters,
@@ -133,13 +136,10 @@ public class ServiceApp {
     ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
     String springProfile
   ) {
-
     Map<String, String> vars = new HashMap<>();
-
 
     String databaseSecretArn = databaseOutputParameters.getDatabaseSecretArn();
     ISecret databaseSecret = Secret.fromSecretCompleteArn(scope, "databaseSecret", databaseSecretArn);
-
 
     vars.put("SPRING_PROFILES_ACTIVE", springProfile);
     vars.put("SPRING_DATASOURCE_URL",
@@ -157,8 +157,9 @@ public class ServiceApp {
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.getLogoutUrl());
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.getProviderUrl());
     vars.put("TODO_SHARING_QUEUE_NAME", messagingOutputParameters.getTodoSharingQueueName());
-    vars.put("TODO_UPDATES_TOPIC_NAME", messagingOutputParameters.getTodoUpdatesTopicName());
     vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
+    vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.getActiveMqUsername());
+    vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
 
     return vars;
   }
@@ -169,5 +170,4 @@ public class ServiceApp {
       .region(region)
       .build();
   }
-
 }

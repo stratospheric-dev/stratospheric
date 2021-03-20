@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,22 +43,22 @@ public class Todo {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<Reminder> reminders;
+  private List<Reminder> reminders = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<Note> notes;
+  private List<Note> notes = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "todo_id")
-  private List<TodoCollaborationRequest> collaborationRequests;
+  private List<TodoCollaborationRequest> collaborationRequests = new ArrayList<>();
 
   @ManyToMany
   @JoinTable(name = "todo_collaboration",
     joinColumns = @JoinColumn(name = "todo_id"),
     inverseJoinColumns = @JoinColumn(name = "collaborator_id")
   )
-  private List<Person> collaborators;
+  private List<Person> collaborators = new ArrayList<>();
 
   public Long getId() {
     return id;
@@ -145,6 +146,16 @@ public class Todo {
 
   public void setCollaborators(List<Person> collaborators) {
     this.collaborators = collaborators;
+  }
+
+  public void addCollaborator(Person person) {
+    this.collaborators.add(person);
+    person.getCollaborativeTodos().add(this);
+  }
+
+  public void removeCollaborator(Person person) {
+    this.collaborators.remove(person);
+    person.getCollaborativeTodos().remove(this);
   }
 
   @Override

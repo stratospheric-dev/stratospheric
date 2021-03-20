@@ -37,6 +37,7 @@ class CognitoStack extends Stack {
 
     this.userPool = UserPool.Builder.create(this, "userPool")
       .userPoolName(inputParameters.applicationName + "-user-pool")
+      .selfSignUpEnabled(false)
       .accountRecovery(AccountRecovery.EMAIL_ONLY)
       .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
       .signInAliases(SignInAliases.builder().username(true).email(true).build())
@@ -93,22 +94,22 @@ class CognitoStack extends Stack {
 
   private void createOutputParameters(Environment awsEnvironment) {
 
-    StringParameter userPoolId = StringParameter.Builder.create(this, "userPoolId")
+    StringParameter.Builder.create(this, "userPoolId")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_ID))
       .stringValue(this.userPool.getUserPoolId())
       .build();
 
-    StringParameter userPoolClientId = StringParameter.Builder.create(this, "userPoolClientId")
+    StringParameter.Builder.create(this, "userPoolClientId")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_ID))
       .stringValue(this.userPoolClient.getUserPoolClientId())
       .build();
 
-    StringParameter logoutUrl = StringParameter.Builder.create(this, "logoutUrl")
+    StringParameter.Builder.create(this, "logoutUrl")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_LOGOUT_URL))
       .stringValue(this.logoutUrl)
       .build();
 
-    StringParameter providerUrl = StringParameter.Builder.create(this, "providerUrl")
+   StringParameter.Builder.create(this, "providerUrl")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_PROVIDER_URL))
       .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();

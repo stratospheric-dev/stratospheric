@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build and deploy Todo App
     steps:
 
@@ -78,7 +78,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd cdk
-          npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app
+          npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app -c dockerImageTag=${GITHUB_RUN_NUMBER}
 
       # Each Service stack updates creates a new parameter stack that CloudFormation does not clean up for us.
       # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.

@@ -14,7 +14,7 @@ on:
 jobs:
   deploy-messaging-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the messaging stack
     steps:
 
@@ -39,7 +39,7 @@ jobs:
           npm run messaging:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-database-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the database stack
     steps:
 
@@ -64,7 +64,7 @@ jobs:
           npm run database:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-cognito-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the Cognito stack
     steps:
 
@@ -89,7 +89,7 @@ jobs:
           npm run cognito:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-activemq-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the ActiveMq stack
     steps:
 

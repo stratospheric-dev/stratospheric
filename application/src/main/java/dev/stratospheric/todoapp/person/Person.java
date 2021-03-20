@@ -5,6 +5,7 @@ import dev.stratospheric.todoapp.todo.Todo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,7 @@ public class Person {
   private Long id;
 
   @NotEmpty
+  @Column(unique = true)
   private String name;
 
   @NotEmpty
@@ -22,13 +24,13 @@ public class Person {
   private String email;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "owner")
-  private List<Todo> ownedTodos;
+  private List<Todo> ownedTodos = new ArrayList<>();
 
   @ManyToMany(mappedBy = "collaborators")
-  private List<Todo> collaborativeTodos;
+  private List<Todo> collaborativeTodos = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "collaborator")
-  private List<TodoCollaborationRequest> collaborationRequests;
+  private List<TodoCollaborationRequest> collaborationRequests = new ArrayList<>();
 
   public Long getId() {
     return id;

@@ -7,25 +7,24 @@ import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
-import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Objects.requireNonNull;
-
 public class DatabaseApp {
 
   public static void main(final String[] args) {
     App app = new App();
 
+    NetworkApp networkApp = new NetworkApp();
+
     String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
+    Validations.requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
 
     String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
+    Validations.requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
-    requireNonEmpty(accountId, "context variable 'accountId' must not be null");
+    Validations.requireNonEmpty(accountId, "context variable 'accountId' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
-    requireNonEmpty(region, "context variable 'region' must not be null");
+    Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -39,7 +38,7 @@ public class DatabaseApp {
       .env(awsEnvironment)
       .build());
 
-    PostgresDatabase database = new PostgresDatabase(
+    new PostgresDatabase(
       databaseStack,
       "Database",
       awsEnvironment,
@@ -55,5 +54,4 @@ public class DatabaseApp {
       .region(region)
       .build();
   }
-
 }

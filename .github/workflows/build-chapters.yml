@@ -10,9 +10,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter-numbers: [1, 8, 10, 11, 13]
-    runs-on: ubuntu-latest
-    name: Build the Application for Chapter ${{ matrix.chapter-numbers }}
+        chapter-numbers: [ 1, 8, 13 ]
+    runs-on: ubuntu-20.04
+    name: Build the application for chapter ${{ matrix.chapter-numbers }}
     steps:
 
       - name: Checkout code
@@ -44,3 +44,73 @@ jobs:
             cd chapters/chapter-${{ matrix.chapter-numbers }}/application
             ./gradlew build --stacktrace
           fi
+
+  build-complex-chapters:
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter-numbers: [ 10 ]
+    runs-on: ubuntu-20.04
+    name: Build the application for chapter ${{ matrix.chapter-numbers }}
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      APPLICATION_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
+      ENVIRONMENT_NAME: chapter-${{ matrix.chapter-numbers }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: Prepare the CDK context
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        run: |
+          echo $(cat cdk.json | jq \
+          --arg env "$ENVIRONMENT_NAME" \
+          --arg region "$AWS_REGION" \
+          --arg id "$AWS_ACCOUNT_ID" \
+          --arg app "$APPLICATION_NAME" \
+          '. * {context: {environmentName: $env, region: $region, accountId: $id, applicationName: $app}}') > cdk.json
+
+      - name: Create the AWS infrastructure
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        run: |
+          npm install
+          npm run network:deploy
+          npm run repository:deploy
+          npm run cognito:deploy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:deploy --if-present
+          npm run messaging:deploy --if-present
+
+      - name: Build the application
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        run: |
+          ./gradlew build --stacktrace
+
+      - name: Publish the Docker image to ECR
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        env:
+          DOCKER_IMAGE_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
+        run: |
+          docker build -t ${DOCKER_IMAGE_NAME} .
+          docker tag ${DOCKER_IMAGE_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
+
+      - name: Destroy the AWS infrastructure
+        if: always()
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        run: |
+          npm run network:destroy
+          npm run repository:destroy
+          npm run cognito:destroy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:destroy --if-present
+          npm run messaging:destroy --if-present

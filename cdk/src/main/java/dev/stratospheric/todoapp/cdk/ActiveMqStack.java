@@ -17,10 +17,17 @@ import java.util.List;
 
 public class ActiveMqStack extends Stack {
 
+  private static final String PARAMETER_USERNAME = "activeMqUsername";
+  private static final String PARAMETER_PASSWORD = "activeMqPassword";
+  private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
+  private static final String PARAMETER_STOMP_ENDPOINT = "stompEndpoint";
+  private static final String PARAMETER_SECURITY_GROUP_ID = "activeMqSecurityGroupId";
+
   private final ApplicationEnvironment applicationEnvironment;
   private final CfnBroker broker;
   private final String username;
   private final String password;
+  private final String securityGroupId;
 
   public ActiveMqStack(
     final Construct scope,
@@ -50,20 +57,29 @@ public class ActiveMqStack extends Stack {
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    CfnSecurityGroup securityGroup = CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
+    CfnSecurityGroup amqSecurityGroup = CfnSecurityGroup.Builder.create(this, "amqSecurityGroup")
       .vpcId(networkOutputParameters.getVpcId())
-      .groupDescription("Security Group for the message broker instance")
+      .groupDescription("Security Group for the Amazon MQ instance")
       .groupName(applicationEnvironment.prefix("amqSecurityGroup"))
       .build();
 
+    this.securityGroupId = amqSecurityGroup.getAttrGroupId();
+
     this.broker = CfnBroker.Builder
-      .create(this, "broker")
-      .brokerName(applicationEnvironment.prefix("stratospheric-message-broker"))
-      .subnetIds(Collections.singletonList(networkOutputParameters.getVpcId()))
+      .create(this, "amqBroker")
+      .brokerName(applicationEnvironment.prefix("stratospheric-amq-message-broker"))
+      .securityGroups(Collections.singletonList(this.securityGroupId))
+      .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
       .engineVersion("5.15.14")
       .authenticationStrategy("SIMPLE")
+      .encryptionOptions(
+        CfnBroker.EncryptionOptionsProperty
+          .builder()
+          .useAwsOwnedKey(true)
+          .build()
+      )
       .users(userList)
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
@@ -71,6 +87,16 @@ public class ActiveMqStack extends Stack {
       .build();
 
     createOutputParameters();
+  }
+
+  public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return new ActiveMqOutputParameters(
+      getParameterUsername(scope, applicationEnvironment),
+      getParameterPassword(scope, applicationEnvironment),
+      getParameterAmqpEndpoint(scope, applicationEnvironment),
+      getParameterStompEndpoint(scope, applicationEnvironment),
+      getParameterSecurityGroupId(scope, applicationEnvironment)
+    );
   }
 
   private static String getParameterUsername(Construct scope, ApplicationEnvironment applicationEnvironment) {
@@ -93,21 +119,9 @@ public class ActiveMqStack extends Stack {
       .getStringValue();
   }
 
-  public ActiveMqOutputParameters getOutputParameters() {
-    return new ActiveMqOutputParameters(
-      this.username,
-      this.password,
-      this.broker.getAttrAmqpEndpoints().get(0),
-      this.broker.getAttrStompEndpoints().get(0)
-    );
-  }
-
-  public static ActiveMqOutputParameters getOutputParametersFromParameterStore(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return new ActiveMqOutputParameters(
-      getParameterUsername(scope, applicationEnvironment),
-      getParameterPassword(scope, applicationEnvironment),
-      getParameterAmqpEndpoint(scope, applicationEnvironment),
-      getParameterStompEndpoint(scope, applicationEnvironment));
+  private static String getParameterSecurityGroupId(Construct scope, ApplicationEnvironment applicationEnvironment) {
+    return StringParameter.fromStringParameterName(scope, PARAMETER_SECURITY_GROUP_ID, createParameterName(applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
+      .getStringValue();
   }
 
   private String generatePassword() {
@@ -124,13 +138,7 @@ public class ActiveMqStack extends Stack {
     return passwordGenerator.generatePassword(32, lowerCaseRule, upperCaseRule, digitRule);
   }
 
-  private static final String PARAMETER_USERNAME = "activeMqUsername";
-  private static final String PARAMETER_PASSWORD = "activeMqPassword";
-  private static final String PARAMETER_AMQP_ENDPOINT = "amqpEndpoint";
-  private static final String PARAMETER_STOMP_ENDPOINT = "stompEndpoint";
-
   private void createOutputParameters() {
-
     StringParameter.Builder.create(this, PARAMETER_USERNAME)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USERNAME))
       .stringValue(username)
@@ -146,9 +154,15 @@ public class ActiveMqStack extends Stack {
       .stringValue(Fn.select(0, this.broker.getAttrAmqpEndpoints()))
       .build();
 
+    String stompEndpointsFailoverString = "failover:(" + Fn.select(0, this.broker.getAttrStompEndpoints()) + "," + Fn.select(1, this.broker.getAttrStompEndpoints()) + ")";
     StringParameter.Builder.create(this, PARAMETER_STOMP_ENDPOINT)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_STOMP_ENDPOINT))
       .stringValue(Fn.select(0, this.broker.getAttrStompEndpoints()))
+      .build();
+
+    StringParameter.Builder.create(this, PARAMETER_SECURITY_GROUP_ID)
+      .parameterName(createParameterName(applicationEnvironment, PARAMETER_SECURITY_GROUP_ID))
+      .stringValue(this.securityGroupId)
       .build();
   }
 
@@ -156,34 +170,25 @@ public class ActiveMqStack extends Stack {
     return applicationEnvironment.getEnvironmentName() + "-" + applicationEnvironment.getApplicationName() + "-ActiveMq-" + parameterName;
   }
 
-  private static String getFailoverString(String url1, String url2) {
-    if (url1 != null && url2 != null) {
-      return "failover:(" + url1 + "," + url2 + ")";
-    }
-
-    if (url1 != null) {
-      return url1;
-    }
-
-    return url2;
-  }
-
   public static class ActiveMqOutputParameters {
     private final String activeMqUsername;
     private final String activeMqPassword;
     private final String amqpEndpoint;
     private final String stompEndpoint;
+    private final String activeMqSecurityGroupId;
 
     public ActiveMqOutputParameters(
       String activeMqUsername,
       String activeMqPassword,
       String amqpEndpoint,
-      String stompEndpoint
+      String stompEndpoint,
+      String activeMqSecurityGroupId
     ) {
       this.activeMqUsername = activeMqUsername;
       this.activeMqPassword = activeMqPassword;
       this.amqpEndpoint = amqpEndpoint;
       this.stompEndpoint = stompEndpoint;
+      this.activeMqSecurityGroupId = activeMqSecurityGroupId;
     }
 
     public String getAmqpEndpoint() {
@@ -201,9 +206,13 @@ public class ActiveMqStack extends Stack {
     public String getActiveMqPassword() {
       return activeMqPassword;
     }
+
+    public String getActiveMqSecurityGroupId() {
+      return activeMqSecurityGroupId;
+    }
   }
 
-  private static class User {
+  static class User {
 
     String username;
 

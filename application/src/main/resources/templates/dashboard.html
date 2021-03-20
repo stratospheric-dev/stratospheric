@@ -33,42 +33,61 @@
           <a th:href="@{/todo/show/{id}(id=${todo.id})}">
             [[${todo.title}]]
           </a>
+          <span th:if="${todo.isCollaboration}"> (shared)</span>
         </td>
-        <td class="text-center" th:text="${todo.collaborators.size()}"></td>
-        <td class="text-center" th:text="${todo.collaborationRequests.size()}"></td>
+        <td class="text-center" th:text="${todo.amountOfCollaborators}"></td>
+        <td class="text-center" th:text="${todo.amountOfCollaborationRequests}"></td>
         <td>
           [[${todo.dueDate}]]
           <i class="far fa-bell"></i>
         </td>
         <td>
-          <a class="btn btn-primary" role="button" th:href="@{/todo/show/{id}(id=${todo.id})}">
+          <a class="btn btn-primary" title="Show" role="button" th:href="@{/todo/show/{id}(id=${todo.id})}">
             <i class="far fa-eye"></i>
           </a>
-          <a class="btn btn-success" role="button" th:href="@{/todo/edit/{id}(id=${todo.id})}">
+          <a class="btn btn-success" title="Edit" role="button" th:href="@{/todo/edit/{id}(id=${todo.id})}">
             <i class="fas fa-edit"></i>
           </a>
-          <div class="dropdown d-inline-block">
-            <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <div class="dropdown d-inline-block" th:unless="${todo.isCollaboration}">
+            <a class="btn btn-warning dropdown-toggle"
+               title="Share"
+               href="#"
+               role="button"
+               id="dropdownMenuButton"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="true">
               <i class="fas fa-share"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
                   No collaborator available
                 </span>
-              <a th:each="collaborator : ${collaborators}" class="dropdown-item"
-                 th:text="${collaborator.name}"
-                 th:href="@{/todo/{todoId}/share/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}"></a>
+              <form th:method="POST"
+                    th:each="collaborator : ${collaborators}"
+                    th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">
+                <button
+                  th:text="${collaborator.name}"
+                  type="submit"
+                  name="submit"
+                  class="dropdown-item">
+                </button>
+              </form>
             </div>
           </div>
-          <a class="btn btn-info" role="button" href="#">
+          <a class="btn btn-info"
+             title="Add note"
+             role="button"
+             href="#">
             <i class="far fa-sticky-note"></i>
           </a>
           <button class="btn btn-danger"
+                  title="Delete"
                   type="button"
                   data-th-attr="data-href=${'/todo/delete/' + todo.id}"
                   data-toggle="modal"
-                  data-target="#confirm-delete">
+                  data-target="#confirm-delete"
+                  th:unless="${todo.isCollaboration}">
             <i class="far fa-trash-alt"></i>
           </button>
         </td>
@@ -77,7 +96,7 @@
     </table>
 
     <p>
-      <a class="btn btn-primary" th:href="@{/todo/add}"><i class="fas fa-plus-circle"></i> Add todo</a>
+      <a class="btn btn-primary" title="Add todo" th:href="@{/todo/add}"><i class="fas fa-plus-circle"></i> Add todo</a>
     </p>
   </div>
 </section>

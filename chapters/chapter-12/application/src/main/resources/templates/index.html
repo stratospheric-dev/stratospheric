@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="activeMenuItem='start', headline='Welcome to the Todo Application!'">
+<head>
+  <title>Start</title>
+</head>
+<section class="section" layout:fragment="page-content">
+  <div class="container">
+    <div sec:authorize="isAnonymous()">
+      <p>Seems like you are not logged-in yet. Please login first to see your Todos.</p>
+      <a class="btn btn-primary" th:href="@{/oauth2/authorization/cognito}">
+        Login
+      </a>
+    </div >
+
+    <div sec:authorize="isAuthenticated()" class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-tachometer-alt"></i> Your Dashboard</h5>
+            <p class="card-text">Navigate to your personalized Dashboard for an overview of all your Todos.</p>
+            <a th:href="@{/dashboard}" class="btn btn-primary">Go to your Dashboard</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-lightbulb"></i> Keep Your Life Organised</h5>
+            <p class="card-text">Got something important to do or to remember? Make sure to create a Todo for it.</p>
+            <a th:href="@{/todo/add}" class="btn btn-primary">Create a new Todo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <a href="https://stratospheric.dev/"  title="Stratospheric - From Zero to Production with Spring Boot and AWS">
+          <img src="/images/book.png" alt="Stratospheric">
+        </a>
+        <p>
+          <a href="https://stratospheric.dev/" title="Stratospheric - From Zero to Production with Spring Boot and AWS">
+            Stratospheric - From Zero to Production with Spring Boot and AWS
+          </a>
+        </p>
+        <p>
+          All you need to know to get a Spring Boot application into production with AWS.
+        </p>
+      </div>
+      <div class="col-sm-3"></div>
+    </div>
+  </div>
+</section>
+</html>
