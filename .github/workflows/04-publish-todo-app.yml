@@ -82,4 +82,8 @@ jobs:
           ENVIRONMENT_NAME: staging
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         run: |
-          aws sqs send-message --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo --message-group-id default --message-deduplication-id ${GITHUB_SHA} --message-body '{"commitSha": "${GITHUB_SHA}", "ref": "main", "owner": "stratospheric-dev", "repo": "stratospheric", "workflowId": "05-update-todo-app-in-staging.yml", "dockerImageTag": "${DOCKER_IMAGE_TAG}"}'
+          aws sqs send-message \
+            --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo \
+            --message-group-id default \
+            --message-deduplication-id $GITHUB_SHA \
+            --message-body '{"commitSha": "$GITHUB_SHA", "ref": "main", "owner": "stratospheric-dev", "repo": "stratospheric", "workflowId": "05-update-todo-app-in-staging.yml", "dockerImageTag": "$DOCKER_IMAGE_TAG"}'
