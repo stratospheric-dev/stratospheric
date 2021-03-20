@@ -18,7 +18,6 @@ The purpose of this todo application is to serve as an example for the various u
 
 You can now login with the following users: `duke`, `tom`, `bjoern`, `philip`. They all have the same password `stratospheric`.
 
-
 ### Application profiles
 
 - `dev` running the application locally for development. You don't need any AWS account or running AWS services for this. All infrastructure components are started within `docker-compose.yml`.
