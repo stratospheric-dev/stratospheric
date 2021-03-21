@@ -40,11 +40,10 @@ public class TodoCollaborationController {
     @RequestParam("token") String token,
     RedirectAttributes redirectAttributes
   ) {
-
-    if(todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token)) {
+    if (todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token)) {
       redirectAttributes.addFlashAttribute("message", "You've confirmed that you'd like to collaborate on this todo.");
       redirectAttributes.addFlashAttribute("messageType", "success");
-    }else{
+    } else {
       redirectAttributes.addFlashAttribute("message", "Invalid collaboration request.");
       redirectAttributes.addFlashAttribute("messageType", "danger");
     }
