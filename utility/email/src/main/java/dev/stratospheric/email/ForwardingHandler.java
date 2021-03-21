@@ -100,7 +100,8 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
               .withCharset("UTF-8").withData(plainContent)))
           .withSubject(new Content()
             .withCharset("UTF-8").withData(subject)))
-        .withSource(from);
+        .withSource("noreply@stratospheric.dev")
+        .withReplyToAddresses(from);
 
       client.sendEmail(request);
       logger.log("Email forwarded to " + recipient);
