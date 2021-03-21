@@ -4,12 +4,13 @@ import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
 import dev.stratospheric.cdk.Service;
-import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 
@@ -18,8 +19,11 @@ public class ServiceApp {
   public static void main(final String[] args) {
     App app = new App();
 
-    String environmentName = "chapter-11";
-    String applicationName = "todo-app-chapter-11";
+    String environmentName = (String) app.getNode().tryGetContext("environmentName");
+    requireNonEmpty(environmentName, "context variable 'environmentName' must not be null");
+
+    String applicationName = (String) app.getNode().tryGetContext("applicationName");
+    requireNonEmpty(applicationName, "context variable 'applicationName' must not be null");
 
     String accountId = (String) app.getNode().tryGetContext("accountId");
     requireNonEmpty(accountId, "context variable 'accountId' must not be null");

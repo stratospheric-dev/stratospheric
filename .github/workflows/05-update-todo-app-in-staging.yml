@@ -1,0 +1,45 @@
+# This workflow deploys all resources that are specific to the Todo-App, but not the app itself.
+name: 05 - Update the Todo-App in staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker-image-tag:
+        description: "The Docker image to deploy"
+        required: true
+jobs:
+  deploy-app:
+    runs-on: ubuntu-20.04
+    name: Deploy Todo App
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: NPM install
+      run: cd cdk && npm install
+
+    - name: Create or update service stack
+      if: github.ref == 'refs/heads/main'
+      env:
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        cd cdk
+        npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app -c dockerImageTag=${{ github.event.inputs.docker-image-tag }}
+
+    # Each Service stack updates creates a new parameter stack that CloudFormation does not clean up for us.
+    # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.
+    - name: Clean up old parameter stacks
+      if: github.ref == 'refs/heads/main'
+      env:
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        cd cdk
+        aws cloudformation describe-stacks --region eu-central-1 --query "Stacks[].StackName" --output text | sed -e "s/\s\+/\n/g" | grep -e "staging-todo-app-Service-Parameters" | sort -r | tail -n+2 > stacks_to_be_deleted.txt
+        for stack in $(cat stacks_to_be_deleted.txt); do aws cloudformation delete-stack --stack-name $stack --region eu-central-1;  done

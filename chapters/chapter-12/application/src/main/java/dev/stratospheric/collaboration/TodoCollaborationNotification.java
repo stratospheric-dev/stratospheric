@@ -93,4 +93,18 @@ public class TodoCollaborationNotification {
   public void setToken(String token) {
     this.token = token;
   }
+
+  @Override
+  public String toString() {
+    return "TodoCollaborationNotification{" +
+      "collaboratorEmail='" + collaboratorEmail + '\'' +
+      ", collaboratorName='" + collaboratorName + '\'' +
+      ", collaboratorId=" + collaboratorId +
+      ", todoTitle='" + todoTitle + '\'' +
+      ", todoDescription='" + todoDescription + '\'' +
+      ", todoPriority=" + todoPriority +
+      ", todoId=" + todoId +
+      ", token='" + token + '\'' +
+      '}';
+  }
 }

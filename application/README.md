@@ -4,6 +4,7 @@ The purpose of this todo application is to serve as an example for the various u
 
 ## Getting Started
 
+
 ### Prerequisites
 
 * [Java 11 or higher](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)

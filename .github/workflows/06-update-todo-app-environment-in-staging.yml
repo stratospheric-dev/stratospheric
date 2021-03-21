@@ -1,5 +1,5 @@
 # This workflow deploys all resources that are specific to the Todo-App, but not the app itself.
-name: 05 - Update the Todo-App environment in staging
+name: 06 - Update the Todo-App environment in staging
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - 'cdk/**/*Cognito*'
       - 'cdk/**/*Database*'
       - 'cdk/**/*Messaging*'
+      - 'cdk/**/*DeploymentSequencer*'
       - 'cdk/pom.xml'
   workflow_dispatch:
 jobs:
@@ -111,3 +112,32 @@ jobs:
         run: |
           cd cdk
           npm run activeMq:deploy -- -c environmentName=staging -c applicationName=todo-app
+  deploy-sequencer-lambda:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy the Deployment Sequencer
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0
+
+      - name: NPM install
+        run: cd cdk && npm install
+
+      - name: Deploy Deployment Sequencer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd cdk
+          cd deployment-sequencer-lambda
+          npm install
+          npm run dist
+          cd ..
+          npm run deployment-sequencer:deploy -- -c applicationName=todo-app -c githubToken=${{ secrets.GH_API_TOKEN }}

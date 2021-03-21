@@ -44,4 +44,5 @@ public class DockerRepositoryApp {
       .region(region)
       .build();
   }
+
 }
