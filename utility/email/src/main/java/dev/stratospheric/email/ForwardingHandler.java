@@ -14,6 +14,7 @@ import org.apache.commons.mail.util.MimeMessageParser;
 
 import javax.mail.Address;
 import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,12 +96,13 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
         .withMessage(new Message()
           .withBody(new Body()
             .withHtml(new Content()
-              .withCharset("UTF-8").withData(htmlContent))
+              .withCharset(StandardCharsets.UTF_8.name()).withData(htmlContent))
             .withText(new Content()
-              .withCharset("UTF-8").withData(plainContent)))
+              .withCharset(StandardCharsets.UTF_8.name()).withData(plainContent)))
           .withSubject(new Content()
-            .withCharset("UTF-8").withData(subject)))
-        .withSource(from);
+            .withCharset(StandardCharsets.UTF_8.name()).withData(subject)))
+        .withSource("noreply@stratospheric.dev")
+        .withReplyToAddresses(from);
 
       client.sendEmail(request);
       logger.log("Email forwarded to " + recipient);
