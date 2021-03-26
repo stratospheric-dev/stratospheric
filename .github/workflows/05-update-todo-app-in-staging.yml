@@ -8,7 +8,7 @@ on:
         description: "The Docker image to deploy"
         required: true
 jobs:
-  deploy-app:
+  deploy:
     runs-on: ubuntu-20.04
     name: Deploy Todo App
     steps:
@@ -19,7 +19,7 @@ jobs:
     - name: NPM install
       run: cd cdk && npm install
 
-    - name: Create or update service stack
+    - name: Deploy service stack
       if: github.ref == 'refs/heads/main'
       env:
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
