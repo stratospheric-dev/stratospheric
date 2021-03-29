@@ -74,5 +74,5 @@ docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e A
 ## Authors
 
 - [Tom Hombergs](https://reflectoring.io/)
-- [Björn Wilsmann](https://bjoernkw.com/)
+- [Björn Wilmsmann](https://bjoernkw.com/)
 - [Philip Riecks](https://rieckpil.de/)

@@ -13,6 +13,6 @@
 
 ## Authors
 
-- [Björn Wilsmann](https://bjoernkw.com/)
+- [Björn Wilmsmann](https://bjoernkw.com/)
 - [Tom Hombergs](https://reflectoring.io/)
 - [Philip Riecks](https://rieckpil.de/)
