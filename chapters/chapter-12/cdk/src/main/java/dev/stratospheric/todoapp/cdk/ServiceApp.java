@@ -104,6 +104,11 @@ public class ServiceApp {
               "sqs:SendMessage",
               "sqs:ChangeMessageVisibility",
               "sqs:GetQueueAttributes"))
+            .build(),
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(singletonList("ses:*"))
             .build()
         )), // needs to be long enough to allow for slow start up with low-end computing instances
 
