@@ -28,6 +28,7 @@ public class TodoCollaborationService {
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
   private static final String INVALID_PERSON_ID = "Invalid person ID: ";
+  private static final String INVALID_PERSON_EMAIL = "Invalid person Email: ";
 
   public TodoCollaborationService(
     @Value("${custom.sharing-queue}") String todoSharingQueueName,
@@ -73,28 +74,31 @@ public class TodoCollaborationService {
     return collaborator.getName();
   }
 
-  public boolean confirmCollaboration(Long todoId, Long collaboratorId, String token) {
+  public boolean confirmCollaboration(String authenticatedUserEmail, Long todoId, Long collaboratorId, String token) {
+
+    Person collaborator = personRepository
+      .findByEmail(authenticatedUserEmail)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_EMAIL + authenticatedUserEmail));
+
+    if (!collaborator.getId().equals(collaboratorId)) {
+      return false;
+    }
 
     TodoCollaborationRequest collaborationRequest = todoCollaborationRequestRepository
       .findByTodoIdAndCollaboratorId(todoId, collaboratorId);
 
-    if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
-
-      Todo todo = todoRepository
-        .findById(todoId)
-        .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
-
-      Person collaborator = personRepository
-        .findById(collaboratorId)
-        .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
-
-      todo.addCollaborator(collaborator);
-
-      todoCollaborationRequestRepository.delete(collaborationRequest);
-
-      return true;
+    if (collaborationRequest == null || !collaborationRequest.getToken().equals(token)) {
+      return false;
     }
 
-    return false;
+    Todo todo = todoRepository
+      .findById(todoId)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+
+    todo.addCollaborator(collaborator);
+
+    todoCollaborationRequestRepository.delete(collaborationRequest);
+
+    return true;
   }
 }

@@ -83,9 +83,9 @@ public class TodoCollaborationService {
 
     Person collaborator = personRepository
       .findByEmail(authenticatedUserEmail)
-      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + authenticatedUserEmail));
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_EMAIL + authenticatedUserEmail));
 
-    if(!collaborator.getId().equals(collaboratorId)) {
+    if (!collaborator.getId().equals(collaboratorId)) {
       return false;
     }
 
@@ -94,35 +94,34 @@ public class TodoCollaborationService {
 
     LOG.info("Collaboration request: {}", collaborationRequest);
 
-    if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
-
-      LOG.info("Original collaboration token: {}", collaborationRequest.getToken());
-      LOG.info("Request token: {}", token);
-
-      Todo todo = todoRepository
-        .findById(todoId)
-        .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
-
-      todo.addCollaborator(collaborator);
-
-      todoCollaborationRequestRepository.delete(collaborationRequest);
-
-      String name = collaborationRequest.getCollaborator().getName();
-      String subject = "Collaboration confirmed.";
-      String message = "User "
-        + name
-        + " has accepted your collaboration request for todo #"
-        + collaborationRequest.getTodo().getId()
-        + ".";
-      String ownerEmail = collaborationRequest.getTodo().getOwner().getEmail();
-
-      simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + ownerEmail, subject + " " + message);
-
-      LOG.info("Successfully informed owner about accepted request.");
-
-      return true;
+    if (collaborationRequest == null || !collaborationRequest.getToken().equals(token)) {
+      return false;
     }
 
-    return false;
+    LOG.info("Original collaboration token: {}", collaborationRequest.getToken());
+    LOG.info("Request token: {}", token);
+
+    Todo todo = todoRepository
+      .findById(todoId)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
+
+    todo.addCollaborator(collaborator);
+
+    todoCollaborationRequestRepository.delete(collaborationRequest);
+
+    String name = collaborationRequest.getCollaborator().getName();
+    String subject = "Collaboration confirmed.";
+    String message = "User "
+      + name
+      + " has accepted your collaboration request for todo #"
+      + collaborationRequest.getTodo().getId()
+      + ".";
+    String ownerEmail = collaborationRequest.getTodo().getOwner().getEmail();
+
+    simpMessagingTemplate.convertAndSend("/topic/todoUpdates/" + ownerEmail, subject + " " + message);
+
+    LOG.info("Successfully informed owner about accepted request.");
+
+    return true;
   }
 }

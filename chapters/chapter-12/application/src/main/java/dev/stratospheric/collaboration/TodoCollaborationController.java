@@ -38,10 +38,11 @@ public class TodoCollaborationController {
     @PathVariable("todoId") Long todoId,
     @PathVariable("collaboratorId") Long collaboratorId,
     @RequestParam("token") String token,
+    @AuthenticationPrincipal OidcUser user,
     RedirectAttributes redirectAttributes
   ) {
 
-    if(todoCollaborationService.confirmCollaboration(todoId, collaboratorId, token)) {
+    if(todoCollaborationService.confirmCollaboration(user.getEmail(), todoId, collaboratorId, token)) {
       redirectAttributes.addFlashAttribute("message", "You've confirmed that you'd like to collaborate on this todo.");
       redirectAttributes.addFlashAttribute("messageType", "success");
     }else{
