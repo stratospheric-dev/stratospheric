@@ -66,7 +66,7 @@ public class TodoSharingListener {
 
     if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
       LOG.info("Auto-confirmed collaboration request for todo: {}", payload.getTodoId());
-      todoCollaborationService.confirmCollaboration(payload.getTodoId(), payload.getCollaboratorId(), payload.getToken());
+      todoCollaborationService.confirmCollaboration(payload.getCollaboratorEmail(), payload.getTodoId(), payload.getCollaboratorId(), payload.getToken());
     }
   }
 }

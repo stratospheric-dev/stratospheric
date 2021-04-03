@@ -31,6 +31,7 @@ public class TodoCollaborationService {
 
   private static final String INVALID_TODO_ID = "Invalid todo ID: ";
   private static final String INVALID_PERSON_ID = "Invalid person ID: ";
+  private static final String INVALID_PERSON_EMAIL = "Invalid person Email: ";
 
   public TodoCollaborationService(
     @Value("${custom.sharing-queue}") String todoSharingQueueName,
@@ -78,30 +79,33 @@ public class TodoCollaborationService {
     return collaborator.getName();
   }
 
-  public boolean confirmCollaboration(Long todoId, Long collaboratorId, String token) {
+  public boolean confirmCollaboration(String authenticatedUserEmail, Long todoId, Long collaboratorId, String token) {
+
+    Person collaborator = personRepository
+      .findByEmail(authenticatedUserEmail)
+      .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + authenticatedUserEmail));
+
+    if(!collaborator.getId().equals(collaboratorId)) {
+      return false;
+    }
 
     TodoCollaborationRequest collaborationRequest = todoCollaborationRequestRepository
       .findByTodoIdAndCollaboratorId(todoId, collaboratorId);
 
     LOG.info("Collaboration request: {}", collaborationRequest);
-    if (collaborationRequest != null) {
-      LOG.info("Original collaboration token: {}", collaborationRequest.getToken());
-      LOG.info("Request token: {}", token);
-    }
 
     if (collaborationRequest != null && collaborationRequest.getToken().equals(token)) {
+
+      LOG.info("Original collaboration token: {}", collaborationRequest.getToken());
+      LOG.info("Request token: {}", token);
+
       Todo todo = todoRepository
         .findById(todoId)
         .orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + todoId));
 
-      Person collaborator = personRepository
-        .findById(collaboratorId)
-        .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
-
       todo.addCollaborator(collaborator);
 
       todoCollaborationRequestRepository.delete(collaborationRequest);
-
 
       String name = collaborationRequest.getCollaborator().getName();
       String subject = "Collaboration confirmed.";
