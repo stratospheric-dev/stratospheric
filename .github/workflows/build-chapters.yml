@@ -54,6 +54,7 @@ jobs:
         id: files
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - run: |
           echo ${{ steps.files.outputs.all }}
           cat ${HOME}/files.json
@@ -75,12 +76,18 @@ jobs:
           UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
           echo "Unqiue chapter list: ${UNIQUE_CHAPTER_LIST[@]}"
 
+      - id: set-changed-folders
+        run: echo "::set-output name=changed-folders::${UNIQUE_CHAPTER_LIST[@]}"
+    outputs:
+      changed-folders: ${{ steps.set-changed-folders.outputs.changed-folders }}
+
   build-complex-chapters:
-    if: ${{ false }} # temporary disable
+    needs: determine-changed-folders
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
-        chapter-numbers: [ 10 ]
+        chapter-numbers: ${{ fromJson(needs.determine-changed-folders.outputs.changed-folders) }}
     runs-on: ubuntu-20.04
     name: Build the application for chapter ${{ matrix.chapter-numbers }}
     env:
