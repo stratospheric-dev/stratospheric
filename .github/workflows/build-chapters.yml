@@ -75,14 +75,13 @@ jobs:
 
           done
           echo "Found chapters: ${FOUND_CHAPTERS[@]}"
+
           UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
           CHAPTER_LIST_JSON_ARRAY=$(printf '%s\n' "${UNIQUE_CHAPTER_LIST[@]}" | jq -R -r . | jq -s -c .)
 
           echo "Unique chapter list: ${CHAPTER_LIST_JSON_ARRAY}"
 
-          jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-versions": $chapters}' | jq -c .
-
-          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-versions": $chapters}' | jq -c .)"
+          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-numbers": $chapters}' | jq -c .)"
 
     outputs:
       matrix: ${{ steps.set-changed-folders.outputs.matrix }}
