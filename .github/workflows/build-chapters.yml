@@ -47,6 +47,7 @@ jobs:
           fi
 
   determine-changed-folders:
+    name: Determine which chapter folders have code changes
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -87,9 +88,9 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        chapter-numbers: ${{ fromJson(needs.determine-changed-folders.outputs.changed-folders) }}
+        chapter-numbers: ${{ needs.determine-changed-folders.outputs.changed-folders }}
     runs-on: ubuntu-20.04
-    name: Build the application for chapter ${{ matrix.chapter-numbers }}
+    name: Build the application and infrastructure for chapter ${{ matrix.chapter-numbers }}
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
