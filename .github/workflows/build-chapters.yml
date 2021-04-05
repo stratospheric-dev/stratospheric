@@ -82,7 +82,7 @@ jobs:
           echo $(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
           echo "::set-output name=changed-folders::$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')"
 
-      - id: test outcome
+      - id: test-outcome
         run: echo ${{ steps.set-changed-folders.outputs.changed-folders }}
 
     outputs:
