@@ -78,8 +78,9 @@ jobs:
           UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
           echo "Unqiue chapter list: ${UNIQUE_CHAPTER_LIST[@]}"
 
-          printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' '
-          echo "::set-output name=changed-folders::$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')"
+          printf '%s\n' "${UNIQUE_CHAPTER_LIST[@]}" | jq -R . | jq -s .
+
+          echo "::set-output name=changed-folders::$(printf '%s\n' "${UNIQUE_CHAPTER_LIST[@]}" | jq -R . | jq -s .)"
 
       - id: test-outcome
         run: echo "${{ steps.set-changed-folders.outputs.changed-folders }}"
