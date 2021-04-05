@@ -35,7 +35,7 @@ public class DockerRepositoryApp {
       dockerRepositoryStack,
       "DockerRepository",
       awsEnvironment,
-      new DockerRepository.DockerRepositoryInputParameters(applicationName, accountId));
+      new DockerRepository.DockerRepositoryInputParameters(applicationName, accountId, 10, false));
 
     app.synth();
   }
