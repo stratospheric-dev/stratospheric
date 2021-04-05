@@ -7,7 +7,6 @@ on:
 
 jobs:
   build-simple-chapters:
-    if: ${{ false }} # temporary disable
     strategy:
       fail-fast: false
       matrix:
