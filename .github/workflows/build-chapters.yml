@@ -151,6 +151,7 @@ jobs:
           echo "TODO - now deploy the latest Docker image to ECS using the Service CDK construct"
 
       - name: Delete all images inside the ECR
+        if: always()
         run: |
           IMAGES_TO_DELETE=$( aws ecr list-images --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --filter --query 'imageIds[*]' --output json )
           aws ecr batch-delete-image --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --image-ids "$IMAGES_TO_DELETE" || true
