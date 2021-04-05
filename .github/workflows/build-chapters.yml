@@ -146,6 +146,15 @@ jobs:
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
 
+      - name: Deploy the application
+        run: |
+          echo "TODO - now deploy the latest Docker image to ECS using the Service CDK construct"
+
+      - name: Delete all images inside the ECR
+        run: |
+          IMAGES_TO_DELETE=$( aws ecr list-images --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --filter --query 'imageIds[*]' --output json )
+          aws ecr batch-delete-image --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --image-ids "$IMAGES_TO_DELETE" || true
+
       - name: Destroy the AWS infrastructure
         if: always()
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
