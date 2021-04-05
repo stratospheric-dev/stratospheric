@@ -1,6 +1,5 @@
 version: '3.3'
 
-
 services:
   keycloak:
     image: jboss/keycloak:11.0.0
