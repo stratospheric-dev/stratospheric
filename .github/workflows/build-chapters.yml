@@ -80,9 +80,9 @@ jobs:
 
           echo "Unique chapter list: ${CHAPTER_LIST_JSON_ARRAY}"
 
-          jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRY '{"chapter-versions": $chapters}' | jq -c .
+          jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-versions": $chapters}' | jq -c .
 
-          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRY '{"chapter-versions": $chapters}' | jq -c .)"
+          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-versions": $chapters}' | jq -c .)"
 
     outputs:
       matrix: ${{ steps.set-changed-folders.outputs.matrix }}
