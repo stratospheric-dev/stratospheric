@@ -79,11 +79,11 @@ jobs:
 
       - id: set-changed-folders
         run: |
-          echo $(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
+          printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' '
           echo "::set-output name=changed-folders::$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')"
 
       - id: test-outcome
-        run: echo ${{ steps.set-changed-folders.outputs.changed-folders }}
+        run: echo "${{ steps.set-changed-folders.outputs.changed-folders }}"
 
     outputs:
       changed-folders: ${{ steps.set-changed-folders.outputs.changed-folders }}
