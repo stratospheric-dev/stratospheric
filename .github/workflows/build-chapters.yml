@@ -6,11 +6,11 @@ on:
       - 'chapters/**'
 
 jobs:
-  build:
+  build-simple-chapters:
     strategy:
       fail-fast: false
       matrix:
-        chapter-numbers: [ 1, 8, 13 ]
+        chapter-numbers: [ 1, 8 ]
     runs-on: ubuntu-20.04
     name: Build the application for chapter ${{ matrix.chapter-numbers }}
     steps:
@@ -45,13 +45,54 @@ jobs:
             ./gradlew build --stacktrace
           fi
 
+  determine-changed-folders:
+    name: Determine which chapter folders have code changes
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: lots0logs/gh-action-get-changed-files@2.1.4
+        id: files
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: set-changed-folders
+        run: |
+          echo ${{ steps.files.outputs.all }}
+          cat ${HOME}/files.json
+          readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
+
+          FOUND_CHAPTERS=()
+
+          for changed_file in ${changed_files[@]}; do
+            POSSIBLE_CHAPTER=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
+            if [[ $POSSIBLE_CHAPTER =~ ^[0-9]+$ ]]; then
+              echo "Chapter number found! - ${POSSIBLE_CHAPTER}"
+              FOUND_CHAPTERS+=($POSSIBLE_CHAPTER)
+            else
+              echo "No Number - ${POSSIBLE_CHAPTER}"
+            fi
+
+          done
+          echo "Found chapters: ${FOUND_CHAPTERS[@]}"
+
+          UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
+          CHAPTER_LIST_JSON_ARRAY=$(printf '%s\n' "${UNIQUE_CHAPTER_LIST[@]}" | jq -R -r . | jq -s -c .)
+
+          echo "Unique chapter list: ${CHAPTER_LIST_JSON_ARRAY}"
+
+          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-numbers": $chapters}' | jq -c .)"
+
+    outputs:
+      matrix: ${{ steps.set-changed-folders.outputs.matrix }}
+
   build-complex-chapters:
+    needs: determine-changed-folders
     strategy:
       fail-fast: false
-      matrix:
-        chapter-numbers: [ 10 ]
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.determine-changed-folders.outputs.matrix) }}
     runs-on: ubuntu-20.04
-    name: Build the application for chapter ${{ matrix.chapter-numbers }}
+    name: Build the application and infrastructure for chapter ${{ matrix.chapter-numbers }}
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -104,6 +145,16 @@ jobs:
           docker tag ${DOCKER_IMAGE_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
           aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
+
+      - name: Deploy the application
+        run: |
+          echo "TODO - now deploy the latest Docker image to ECS using the Service CDK construct"
+
+      - name: Delete all images inside the ECR
+        if: always()
+        run: |
+          IMAGES_TO_DELETE=$( aws ecr list-images --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --query 'imageIds[*]' --output json )
+          aws ecr batch-delete-image --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --image-ids "$IMAGES_TO_DELETE" || true
 
       - name: Destroy the AWS infrastructure
         if: always()
