@@ -2,6 +2,7 @@ package dev.stratospheric.todoapp.collaboration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.core.env.Environment;
@@ -17,16 +18,19 @@ public class TodoSharingListener {
   private final MailSender mailSender;
   private final TodoCollaborationService todoCollaborationService;
   private final Environment environment;
+  private final boolean autoConfirmCollaborations;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoSharingListener.class.getName());
 
   public TodoSharingListener(
     MailSender mailSender,
     TodoCollaborationService todoCollaborationService,
-    Environment environment) {
+    Environment environment,
+    @Value("${custom.auto-confirm-collaborations}") boolean autoConfirmCollaborations) {
     this.mailSender = mailSender;
     this.todoCollaborationService = todoCollaborationService;
     this.environment = environment;
+    this.autoConfirmCollaborations = autoConfirmCollaborations;
   }
 
   @SqsListener(value = "${custom.sharing-queue}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
@@ -64,7 +68,7 @@ public class TodoSharingListener {
 
     LOG.info("Successfully informed collaborator about shared todo.");
 
-    if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+    if (autoConfirmCollaborations) {
       LOG.info("Auto-confirmed collaboration request for todo: {}", payload.getTodoId());
       todoCollaborationService.confirmCollaboration(payload.getCollaboratorEmail(), payload.getTodoId(), payload.getCollaboratorId(), payload.getToken());
     }

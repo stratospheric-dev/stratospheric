@@ -14,3 +14,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/stratospheric
     username: stratospheric
     password: stratospheric
+
+custom:
+  auto-confirm-collaborations: true

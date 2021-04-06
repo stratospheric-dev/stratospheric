@@ -14,3 +14,4 @@ server:
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC
   sharing-queue: stratospheric-todo-sharing
+  auto-confirm-collaborations: false

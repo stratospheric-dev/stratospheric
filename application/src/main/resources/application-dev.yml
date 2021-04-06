@@ -27,3 +27,4 @@ spring:
 
 custom:
   web-socket-relay-endpoint: localhost:61613
+  auto-confirm-collaborations: true
