@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=stratospheric
       - POSTGRES_DB=stratospheric
   activemq:
-    image: bjoernkw/activemq-docker-image
+    image: stratospheric/activemq-docker-image
     ports:
       - 5672:5672
       - 61613:61613
