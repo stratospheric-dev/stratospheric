@@ -21,7 +21,7 @@ services:
     ports:
       - 4566:4566
     environment:
-      - SERVICES=sqs,ses
+      - SERVICES=sqs,ses,dynamodb
       - DEFAULT_REGION=eu-central-1
     volumes:
       - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
