@@ -20,6 +20,9 @@ build/
 !**/src/main/**
 !**/src/test/**
 /gradle/
+/gradlew
+/gradlew.bat
 
 **/cdk.out/
 **/node_modules/
+
