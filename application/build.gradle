@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.4.3'
+  id 'org.springframework.boot' version '2.4.4'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
 }
@@ -13,8 +13,8 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR9')
-  set('testcontainersVersion', '1.15.1')
+  set('springCloudVersion', 'Hoxton.SR10')
+  set('testcontainersVersion', '1.15.2')
 }
 
 dependencies {
@@ -31,14 +31,16 @@ dependencies {
   implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
   implementation 'org.springframework.boot:spring-boot-starter-activemq'
   implementation 'org.webjars:webjars-locator-core'
-  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.1'
-  implementation 'org.webjars:sockjs-client:1.1.2'
-  implementation 'org.webjars:stomp-websocket:2.3.3-1'
-  implementation 'org.webjars:bootstrap:4.5.3'
-  implementation 'org.webjars:font-awesome:5.15.1'
+  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
+  implementation 'org.webjars:sockjs-client:1.5.1'
+  implementation 'org.webjars:stomp-websocket:2.3.4'
+  implementation 'org.webjars:bootstrap:4.6.0-1'
+  implementation 'org.webjars:font-awesome:5.15.2'
   implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'com.amazonaws:aws-java-sdk-ses'
+  implementation 'com.amazonaws:aws-java-sdk-dynamodb'
+  implementation 'com.github.derjust:spring-data-dynamodb:5.0.3'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.postgresql:postgresql'
