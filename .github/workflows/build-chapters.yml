@@ -160,8 +160,8 @@ jobs:
         if: always()
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
-          npm run network:destroy
-          npm run repository:destroy
-          npm run cognito:destroy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
-          npm run database:destroy --if-present
           npm run messaging:destroy --if-present
+          npm run database:destroy --if-present
+          npm run cognito:destroy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run repository:destroy
+          npm run network:destroy
