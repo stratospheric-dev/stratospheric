@@ -3,13 +3,15 @@ package dev.stratospheric.todoapp.cdk;
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.Service;
+import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.core.StackProps;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
@@ -46,9 +48,9 @@ public class ServiceApp {
       .env(awsEnvironment)
       .build());
 
-    DockerImageSource dockerImageSource = new DockerImageSource(dockerImageUrl);
-    NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName());
-    ServiceInputParameters serviceInputParameters = new ServiceInputParameters(dockerImageSource, environmentVariables(springProfile))
+    Service.DockerImageSource dockerImageSource = new Service.DockerImageSource(dockerImageUrl);
+    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName());
+    Service.ServiceInputParameters serviceInputParameters = new Service.ServiceInputParameters(dockerImageSource, environmentVariables(springProfile))
       .withHealthCheckIntervalSeconds(30);
 
     Service service = new Service(
