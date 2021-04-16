@@ -11,14 +11,15 @@ cloud:
 server:
   forward-headers-strategy: framework
 
-custom:
-  invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
-  sharing-queue: stratospheric-todo-sharing
-  external-url: https://app.stratospheric.dev
-  auto-confirm-collaborations: false
-
 spring:
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+
+custom:
+  invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
+  sharing-queue: stratospheric-todo-sharing
+  external-url: https://app.stratospheric.dev
+  auto-confirm-collaborations: false
+  breadcrumb-table-name: breadcrumbs

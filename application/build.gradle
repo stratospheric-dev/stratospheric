@@ -40,7 +40,6 @@ dependencies {
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'com.amazonaws:aws-java-sdk-ses'
   implementation 'com.amazonaws:aws-java-sdk-dynamodb'
-  implementation 'com.github.derjust:spring-data-dynamodb:5.0.3'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.postgresql:postgresql'
