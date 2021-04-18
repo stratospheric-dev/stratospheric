@@ -1,18 +1,12 @@
 package dev.stratospheric.todoapp;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration;
-
-import javax.annotation.PostConstruct;
-import java.util.Collections;
 
 @SpringBootApplication(exclude = ContextInstanceDataAutoConfiguration.class)
 public class TodoApplication {
@@ -33,26 +27,5 @@ public class TodoApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(TodoApplication.class, args);
-  }
-
-  @PostConstruct
-  public void initializeDynamoDBTables() {
-    DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-
-    try {
-      Table table = dynamoDB.createTable(
-        breadcrumbTableName,
-        Collections.singletonList(
-          new KeySchemaElement("id", KeyType.HASH)
-        ),
-        Collections.singletonList(
-          new AttributeDefinition("id", ScalarAttributeType.S)
-        ),
-        new ProvisionedThroughput(10L, 10L)
-      );
-      table.waitForActive();
-    } catch (Exception e) {
-      LOG.error("Unable to create DynamoDB table: {}", e.getMessage());
-    }
   }
 }

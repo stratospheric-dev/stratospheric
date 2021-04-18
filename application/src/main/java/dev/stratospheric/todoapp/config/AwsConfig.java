@@ -1,11 +1,8 @@
 package dev.stratospheric.todoapp.config;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderAsyncClientBuilder;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +18,6 @@ public class AwsConfig {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
       .withRegion(region)
-      .build();
-  }
-
-  @Bean
-  public AmazonDynamoDB amazonDynamoDB(@Value("${cloud.aws.region.static}") String region,
-                                       @Value("${custom.dynamo-db-service-endpoint}") String serviceEndpoint,
-                                       AWSCredentialsProvider awsCredentialsProvider) {
-    return AmazonDynamoDBClientBuilder.standard()
-      .withCredentials(awsCredentialsProvider)
-      .withEndpointConfiguration(
-        new AwsClientBuilder.EndpointConfiguration(serviceEndpoint, region)
-      )
       .build();
   }
 }
