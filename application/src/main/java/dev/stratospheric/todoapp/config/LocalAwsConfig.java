@@ -5,8 +5,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
@@ -50,10 +48,5 @@ public class LocalAwsConfig {
       .withCredentials(DUMMY_CREDENTIALS)
       .withEndpointConfiguration(LOCAL_ENDPOINT)
       .build();
-  }
-
-  @Bean
-  public DynamoDBMapper dynamoDBMapper() {
-    return new DynamoDBMapper(amazonDynamoDB(), DynamoDBMapperConfig.DEFAULT);
   }
 }
