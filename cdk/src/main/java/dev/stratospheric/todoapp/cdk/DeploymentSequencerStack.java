@@ -10,6 +10,7 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.FunctionProps;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.eventsources.SqsEventSource;
+import software.amazon.awscdk.services.logs.RetentionDays;
 import software.amazon.awscdk.services.sqs.IQueue;
 import software.amazon.awscdk.services.sqs.Queue;
 
@@ -47,6 +48,7 @@ class DeploymentSequencerStack extends Stack {
 				.code(Code.fromAsset("./deployment-sequencer-lambda/dist/lambda.zip"))
 				.runtime(Runtime.NODEJS_12_X)
 				.handler("index.handler")
+        .logRetention(RetentionDays.TWO_WEEKS)
 				.reservedConcurrentExecutions(1)
 				.events(singletonList(eventSource))
 				.environment(Map.of(
