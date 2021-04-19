@@ -11,6 +11,7 @@ import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import reactor.netty.tcp.TcpClient;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -26,16 +27,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final Endpoint websocketEndpoint;
 
+  private final String websocketProtocol;
+
   private final String websocketUsername;
 
   private final String websocketPassword;
 
   public WebSocketConfig(
     @Value("${custom.web-socket-relay-endpoint:#{null}}") String websocketRelayEndpoint,
+    @Value("${custom.web-socket-relay-protocol:#{null}}") String websocketProtocol,
     @Value("${custom.web-socket-relay-username:#{null}}") String websocketUsername,
     @Value("${custom.web-socket-relay-password:#{null}}") String websocketPassword
   ) {
     this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
+    this.websocketProtocol = websocketProtocol;
     this.websocketUsername = websocketUsername;
     this.websocketPassword = websocketPassword;
   }
@@ -81,14 +86,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       );
     }
 
-    return new ReactorNettyTcpClient<>(builder ->
-      builder
+    return new ReactorNettyTcpClient<>(builder -> {
+      TcpClient tcpClient = builder
         .host(this.websocketEndpoint.host)
         .port(this.websocketEndpoint.port)
-        .secure(sslContextSpec -> sslContextSpec.sslContext(sslContextBuilder))
-        .resolver(DefaultAddressResolverGroup.INSTANCE),
-      new StompReactorNettyCodec()
-    );
+        .resolver(DefaultAddressResolverGroup.INSTANCE);
+
+      if (this.websocketProtocol.equals("https")) {
+        tcpClient = tcpClient
+          .secure(sslContextSpec -> sslContextSpec.sslContext(sslContextBuilder));
+      }
+
+      return tcpClient;
+    }, new StompReactorNettyCodec());
   }
 
   @Override

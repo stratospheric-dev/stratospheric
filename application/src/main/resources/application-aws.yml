@@ -15,6 +15,7 @@ spring:
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
   web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}
+  web-socket-relay-protocol: https
   web-socket-relay-username: ${WEB_SOCKET_RELAY_USERNAME}
   web-socket-relay-password: ${WEB_SOCKET_RELAY_PASSWORD}
-  dynamo-db-service-endpoint: "http://localhost:8000"
+  dynamo-db-service-endpoint: http://localhost:8000
