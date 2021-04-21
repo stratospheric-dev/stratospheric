@@ -11,6 +11,11 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
     name: Deploy Todo App
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
     steps:
 
     - name: Checkout code
@@ -21,11 +26,6 @@ jobs:
 
     - name: Deploy service stack
       if: github.ref == 'refs/heads/main'
-      env:
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
       run: |
         cd cdk
         npm run service:deploy -- -c environmentName=staging -c applicationName=todo-app -c dockerImageTag=${{ github.event.inputs.docker-image-tag }}
@@ -34,11 +34,6 @@ jobs:
     # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.
     - name: Clean up old parameter stacks
       if: github.ref == 'refs/heads/main'
-      env:
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
       run: |
         cd cdk
         aws cloudformation describe-stacks --region eu-central-1 --query "Stacks[].StackName" --output text | sed -e "s/\s\+/\n/g" | grep -e "staging-todo-app-Service-Parameters" | sort -r | tail -n+2 > stacks_to_be_deleted.txt
