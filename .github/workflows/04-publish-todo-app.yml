@@ -12,6 +12,11 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
     name: Build and publish Todo App
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
 
       - name: Checkout code
@@ -31,10 +36,6 @@ jobs:
           java-version: 11.0
 
       - name: Build application
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd application
           ./gradlew build --stacktrace
@@ -57,10 +58,6 @@ jobs:
       - name: Publish Docker image to ECR registry
         if: github.ref == 'refs/heads/main'
         env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         run: |
           cd application
@@ -71,13 +68,9 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:${DOCKER_IMAGE_TAG}
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:latest
 
-      - name: "Sending deployment event to queue"
+      - name: Sending deployment event to queue
         if: github.ref == 'refs/heads/main'
         env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         run: |
           export EVENT_PAYLOAD="{\"commitSha\": \"$GITHUB_SHA\", \"ref\": \"main\", \"owner\": \"stratospheric-dev\", \"repo\": \"stratospheric\", \"workflowId\": \"05-update-todo-app-in-staging.yml\", \"dockerImageTag\": \"$DOCKER_IMAGE_TAG\"}"
