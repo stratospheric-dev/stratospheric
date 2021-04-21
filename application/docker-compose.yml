@@ -17,7 +17,7 @@ services:
       - 61614:61614
       - 61616:61616
   localstack:
-    image: localstack/localstack:0.12.9
+    image: localstack/localstack:0.12.9.1
     ports:
       - 4566:4566
     environment:
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
   keycloak:
-    image: jboss/keycloak:11.0.0
+    image: jboss/keycloak:12.0.4
     ports:
       - 8888:8080
     environment:
