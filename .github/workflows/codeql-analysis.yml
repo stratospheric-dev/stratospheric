@@ -49,6 +49,8 @@ jobs:
 
     - run: |
         cd application
+        java -version
+        ./gradlew -version
         ./gradlew build --stacktrace
 
     - name: Perform CodeQL Analysis
