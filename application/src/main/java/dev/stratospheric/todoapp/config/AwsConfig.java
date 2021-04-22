@@ -26,13 +26,10 @@ public class AwsConfig {
 
   @Bean
   public AmazonDynamoDB amazonDynamoDB(@Value("${cloud.aws.region.static}") String region,
-                                       @Value("${custom.dynamo-db-service-endpoint}") String serviceEndpoint,
                                        AWSCredentialsProvider awsCredentialsProvider) {
     return AmazonDynamoDBClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
-      .withEndpointConfiguration(
-        new AwsClientBuilder.EndpointConfiguration(serviceEndpoint, region)
-      )
+      .withRegion(region)
       .build();
   }
 }
