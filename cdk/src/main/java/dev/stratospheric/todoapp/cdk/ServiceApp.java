@@ -94,7 +94,8 @@ public class ServiceApp {
           cognitoOutputParameters,
           messagingOutputParameters,
           activeMqOutputParameters,
-          springProfile))
+          springProfile,
+          environmentName))
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
@@ -140,7 +141,8 @@ public class ServiceApp {
     CognitoStack.CognitoOutputParameters cognitoOutputParameters,
     MessagingStack.MessagingOutputParameters messagingOutputParameters,
     ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters,
-    String springProfile
+    String springProfile,
+    String environmentName
   ) {
     Map<String, String> vars = new HashMap<>();
 
@@ -166,6 +168,7 @@ public class ServiceApp {
     vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
     vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.getActiveMqUsername());
     vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
+    vars.put("ENVIRONMENT_NAME", environmentName);
 
     return vars;
   }

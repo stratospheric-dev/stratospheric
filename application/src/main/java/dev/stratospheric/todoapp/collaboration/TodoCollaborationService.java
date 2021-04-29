@@ -4,6 +4,7 @@ import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
 import dev.stratospheric.todoapp.todo.Todo;
 import dev.stratospheric.todoapp.todo.TodoRepository;
+import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,10 @@ public class TodoCollaborationService {
     this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
+  @Timed(
+    value = "stratospheric.collaboration.sharing_time",
+    description = "Measure the time how long it takes to share a todo"
+  )
   public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository

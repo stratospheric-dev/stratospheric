@@ -12,8 +12,19 @@ spring:
           cognito:
             issuerUri: ${COGNITO_PROVIDER_URL}
 
+management:
+  metrics:
+    export:
+      cloudwatch:
+        enabled: true
+        namespace: stratospheric
+        step: 1m
+    tags:
+      environment: ${ENVIRONMENT_NAME}
+
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
   web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}
   web-socket-relay-username: ${WEB_SOCKET_RELAY_USERNAME}
   web-socket-relay-password: ${WEB_SOCKET_RELAY_PASSWORD}
+

@@ -4,6 +4,7 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.DeliveryMediumType;
+import io.micrometer.core.annotation.Counted;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class CognitoRegistrationService implements RegistrationService {
     this.userPooldId = userPoolId;
   }
 
+  @Counted(
+    value = "stratospheric.registration.users",
+    description = "Count the number of registered users"
+  )
   @Override
   public void registerUser(Registration registration) {
     AdminCreateUserRequest registrationRequest = new AdminCreateUserRequest()
