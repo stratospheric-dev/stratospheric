@@ -125,7 +125,13 @@ public class ServiceApp {
             .effect(Effect.ALLOW)
             .resources(singletonList("*"))
             .actions(singletonList("dynamodb:*"))
-            .build()))
+            .build(),
+          PolicyStatement.Builder.create()
+            .effect(Effect.ALLOW)
+            .resources(singletonList("*"))
+            .actions(singletonList("cloudwatch:PutMetricData"))
+            .build()
+        ))
         .withStickySessionsEnabled(true)
         .withHealthCheckPath("/actuator/health")
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
