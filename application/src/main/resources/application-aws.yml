@@ -17,10 +17,8 @@ management:
     export:
       cloudwatch:
         enabled: true
-        namespace: stratospheric
+        namespace: stratospheric-${ENVIRONMENT_NAME}
         step: 1m
-    tags:
-      environment: ${ENVIRONMENT_NAME}
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
