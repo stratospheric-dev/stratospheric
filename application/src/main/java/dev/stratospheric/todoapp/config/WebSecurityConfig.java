@@ -1,5 +1,7 @@
 package dev.stratospheric.todoapp.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,8 +29,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .oauth2Login()
       .and()
       .authorizeRequests()
+      .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
       .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-      .mvcMatchers("/", "/health", "/register").permitAll()
+      .mvcMatchers("/", "/register").permitAll()
       .anyRequest().authenticated()
       .and()
       .logout()
