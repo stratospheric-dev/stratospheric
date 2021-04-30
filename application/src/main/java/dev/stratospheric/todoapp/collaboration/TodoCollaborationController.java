@@ -1,5 +1,6 @@
 package dev.stratospheric.todoapp.collaboration;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,10 @@ public class TodoCollaborationController {
     this.todoCollaborationService = todoCollaborationService;
   }
 
+  @Timed(
+    value = "stratospheric.collaboration.sharing",
+    description = "Measure the time how long it takes to share a todo"
+  )
   @PostMapping("/{todoId}/collaborations/{collaboratorId}")
   public String shareTodoWithCollaborator(
     @PathVariable("todoId") Long todoId,

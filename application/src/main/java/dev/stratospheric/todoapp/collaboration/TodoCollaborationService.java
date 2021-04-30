@@ -49,10 +49,6 @@ public class TodoCollaborationService {
     this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
-  @Timed(
-    value = "stratospheric.collaboration.sharing_time",
-    description = "Measure the time how long it takes to share a todo"
-  )
   public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository
