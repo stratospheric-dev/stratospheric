@@ -17,10 +17,15 @@ management:
     export:
       cloudwatch:
         enabled: true
-        namespace: stratospheric-${ENVIRONMENT_NAME}
+        namespace: stratospheric
         step: 1m
+    tags:
+      environment: ${ENVIRONMENT_NAME}
+    web:
+      server:
+        request:
+          metric-name: "Spring MVC metrics"
 
-custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
   web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}
   web-socket-relay-username: ${WEB_SOCKET_RELAY_USERNAME}
