@@ -75,6 +75,8 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
+    LOG.info("AWS SQS queue name: " + todoSharingQueueName);
+
     queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
