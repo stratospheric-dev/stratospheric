@@ -2,6 +2,7 @@ package dev.stratospheric.todoapp.todo;
 
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,15 @@ public class TodoService {
 
   private final TodoRepository todoRepository;
   private final PersonRepository personRepository;
+  private final MeterRegistry meterRegistry;
 
   public TodoService(
     TodoRepository todoRepository,
-    PersonRepository personRepository) {
+    PersonRepository personRepository,
+    MeterRegistry meterRegistry) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
+    this.meterRegistry = meterRegistry;
   }
 
   public Todo save(Todo todo) {
@@ -39,6 +43,8 @@ public class TodoService {
       todo.setOwner(person);
       todo.setStatus(Status.OPEN);
     }
+
+    meterRegistry.gauge("stratospheric.todo.created", 1);
 
     return todoRepository.save(todo);
   }
