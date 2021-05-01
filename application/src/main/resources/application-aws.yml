@@ -21,10 +21,6 @@ management:
         step: 1m
     tags:
       environment: ${ENVIRONMENT_NAME}
-    web:
-      server:
-        request:
-          metric-name: "Spring MVC metrics"
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
