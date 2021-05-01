@@ -43,13 +43,11 @@ public class CognitoRegistrationService implements RegistrationService {
 
     awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
 
-    Counter successCounter = Counter.builder("stratospheric.registration.users")
+    Counter successCounter = Counter.builder("stratospheric.registration.signups")
       .description("Number of user registrations")
       .tag("outcome", "success")
       .register(meterRegistry);
 
     successCounter.increment();
-
-    meterRegistry.counter("stratospheric.registration.signups", Tags.of("outcome", "success")).increment();
   }
 }
