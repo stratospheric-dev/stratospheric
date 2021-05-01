@@ -86,7 +86,7 @@ jobs:
           npm run cognito:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c applicationName=todo-app
   deploy-activemq-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the ActiveMq stack
     steps:
 
@@ -111,7 +111,7 @@ jobs:
           npm run activeMq:deploy -- -c environmentName=staging -c applicationName=todo-app
   deploy-sequencer-lambda:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the Deployment Sequencer
     steps:
 
@@ -140,7 +140,7 @@ jobs:
           npm run deployment-sequencer:deploy -- -c applicationName=todo-app -c githubToken=${{ secrets.GH_API_TOKEN }}
   deploy-monitoring-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Deploy the Monitoring stack
     steps:
 
