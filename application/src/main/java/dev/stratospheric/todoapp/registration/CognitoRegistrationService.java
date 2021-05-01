@@ -19,9 +19,9 @@ public class CognitoRegistrationService implements RegistrationService {
   private final String userPooldId;
 
   public CognitoRegistrationService(
+    @Value("${COGNITO_USER_POOL_ID}") String userPoolId,
     AWSCognitoIdentityProvider awsCognitoIdentityProvider,
-    MeterRegistry meterRegistry, @Value("${COGNITO_USER_POOL_ID}") String userPoolId) {
-
+    MeterRegistry meterRegistry) {
     this.awsCognitoIdentityProvider = awsCognitoIdentityProvider;
     this.meterRegistry = meterRegistry;
     this.userPooldId = userPoolId;
