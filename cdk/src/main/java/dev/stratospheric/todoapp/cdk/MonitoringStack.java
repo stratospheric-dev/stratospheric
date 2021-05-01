@@ -36,7 +36,7 @@ public class MonitoringStack extends Stack {
       CognitoStack.getOutputParametersFromParameterStore(this, applicationEnvironment);
 
     new Dashboard(this, "applicationDashboard", DashboardProps.builder()
-      .dashboardName(applicationEnvironment.getApplicationName())
+      .dashboardName(applicationEnvironment.getApplicationName() + "-application-dashboard")
       .widgets(List.of(
         List.of(
           TextWidget.Builder.create().markdown("# Monitoring Dashboard - proudly created with CDK").build(),
