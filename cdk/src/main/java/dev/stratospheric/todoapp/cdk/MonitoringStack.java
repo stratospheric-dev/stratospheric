@@ -34,7 +34,9 @@ public class MonitoringStack extends Stack {
       .widgets(List.of(
         List.of(
           TextWidget.Builder.create().markdown("# Monitoring Dashboard - proudly created with CDK").build(),
-          GraphWidget.Builder.create().title("Number of registrations").build(),
+          GraphWidget.Builder.create().title("Number of registrations").build()
+          ),
+        List.of(
           LogQueryWidget.Builder.create().title("Logs").logGroupNames(List.of("staging-todo-app-logs")).queryString(
             "fields @timestamp, @message" +
               "| sort @timestamp desc" +
