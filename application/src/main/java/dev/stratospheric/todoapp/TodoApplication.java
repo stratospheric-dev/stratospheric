@@ -2,7 +2,6 @@ package dev.stratospheric.todoapp;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +36,10 @@ public class TodoApplication {
 
   @PostConstruct
   public void initializeDynamoDBTables() {
-    DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+    var dynamoDB = new DynamoDB(amazonDynamoDB);
 
     try {
-      Table table = dynamoDB.createTable(
+      var table = dynamoDB.createTable(
         breadcrumbTableName,
         Collections.singletonList(
           new KeySchemaElement("id", KeyType.HASH)
@@ -51,7 +50,7 @@ public class TodoApplication {
         new ProvisionedThroughput(10L, 10L)
       );
       table.waitForActive();
-    } catch (Exception e) {
+    } catch (InterruptedException e) {
       LOG.error("Unable to create DynamoDB table: {}", e.getMessage());
     }
   }
