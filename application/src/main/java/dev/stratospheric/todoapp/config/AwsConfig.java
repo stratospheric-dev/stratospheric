@@ -1,7 +1,6 @@
 package dev.stratospheric.todoapp.config;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderAsyncClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
