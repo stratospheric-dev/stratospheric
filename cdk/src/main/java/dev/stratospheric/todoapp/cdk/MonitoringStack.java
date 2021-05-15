@@ -11,6 +11,7 @@ import software.amazon.awscdk.services.cloudwatch.GraphWidget;
 import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
+import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
 
 import java.util.List;
@@ -39,8 +40,28 @@ public class MonitoringStack extends Stack {
       .dashboardName(applicationEnvironment.getApplicationName() + "-application-dashboard")
       .widgets(List.of(
         List.of(
-          TextWidget.Builder.create().markdown("# Monitoring Dashboard - proudly created with CDK").build(),
-          GraphWidget.Builder.create().title("Number of registrations")
+          TextWidget.Builder
+            .create()
+            .markdown("# Stratospheric Dashboard \n Created with AWS CDK. \n * IaC \n * Configurable \n * Nice-looking")
+            .height(6)
+            .width(6)
+            .build(),
+          SingleValueWidget.Builder
+            .create()
+            .width(6)
+            .height(6)
+            .title("User Registrations")
+            .metrics(List.of(new Metric(MetricProps.builder()
+              .namespace("stratospheric")
+              .metricName("stratospheric.registration.users.count")
+              .statistic("sum")
+              .dimensions(Map.of("outcome", "success"))
+              .build())))
+            .build(),
+          GraphWidget.Builder.create()
+            .title("Number of registrations")
+            .height(6)
+            .width(6)
             .left(List.of(new Metric(MetricProps.builder()
               .namespace("Cognito")
               .metricName("SignInSuccess")
@@ -49,13 +70,17 @@ public class MonitoringStack extends Stack {
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
               .statistic("sum")
               .build())))
-            .build()
-        ),
-        List.of(
-          LogQueryWidget.Builder.create().title("Logs").logGroupNames(List.of("staging-todo-app-logs")).queryString(
-            "fields @timestamp, @message" +
-              "| sort @timestamp desc" +
-              "| limit 20")
+            .build(),
+          LogQueryWidget.Builder
+            .create()
+            .height(6)
+            .width(6)
+            .title("Logs")
+            .logGroupNames(List.of("staging-todo-app-logs"))
+            .queryString(
+              "fields @timestamp, @message" +
+                "| sort @timestamp desc" +
+                "| limit 20")
             .build()
         )
       ))

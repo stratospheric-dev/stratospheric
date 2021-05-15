@@ -28,7 +28,7 @@ public class MonitoringApp {
       environmentName
     );
 
-    new MonitoringStack(app, "messaging", awsEnvironment, applicationEnvironment);
+    new MonitoringStack(app, "monitoring", awsEnvironment, applicationEnvironment);
 
     app.synth();
   }
