@@ -53,9 +53,10 @@ public class MonitoringStack extends Stack {
             .width(6)
             .height(6)
             .title("User Registrations")
+            .setPeriodToTimeRange(true)
             .metrics(List.of(new Metric(MetricProps.builder()
               .namespace("stratospheric")
-              .metricName("stratospheric.registration.users.count")
+              .metricName("stratospheric.registration.signups.count")
               .region(awsEnvironment.getRegion())
               .statistic("sum")
               .dimensions(Map.of(
@@ -68,10 +69,10 @@ public class MonitoringStack extends Stack {
             .title("Number of registrations")
             .height(6)
             .width(6)
-            .view(GraphWidgetView.TIME_SERIES)
+            .view(GraphWidgetView.BAR)
             .left(List.of(new Metric(MetricProps.builder()
               .namespace("AWS/Cognito")
-              .metricName("SignInSuccess")
+              .metricName("SignInSuccesses")
               .region(awsEnvironment.getRegion())
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
