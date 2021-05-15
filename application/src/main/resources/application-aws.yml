@@ -16,7 +16,7 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: true
+        enabled: false
         namespace: stratospheric
         step: 1m
     tags:
