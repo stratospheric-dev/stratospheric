@@ -56,8 +56,12 @@ public class MonitoringStack extends Stack {
             .metrics(List.of(new Metric(MetricProps.builder()
               .namespace("stratospheric")
               .metricName("stratospheric.registration.users.count")
+              .region(awsEnvironment.getRegion())
               .statistic("sum")
-              .dimensions(Map.of("outcome", "success"))
+              .dimensions(Map.of(
+                "outcome", "success",
+                "environment", applicationEnvironment.getEnvironmentName())
+              )
               .build())))
             .build(),
           GraphWidget.Builder.create()
@@ -66,16 +70,18 @@ public class MonitoringStack extends Stack {
             .width(6)
             .view(GraphWidgetView.TIME_SERIES)
             .left(List.of(new Metric(MetricProps.builder()
-              .namespace("Cognito")
+              .namespace("AWS/Cognito")
               .metricName("SignInSuccess")
+              .region(awsEnvironment.getRegion())
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
               .statistic("sum")
               .build())))
             .right(List.of(new Metric(MetricProps.builder()
-              .namespace("Cognito")
+              .namespace("AWS/Cognito")
               .metricName("TokenRefreshSuccesses")
+              .region(awsEnvironment.getRegion())
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
