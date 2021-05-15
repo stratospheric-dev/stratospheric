@@ -2,6 +2,7 @@ package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
@@ -66,13 +67,14 @@ public class MonitoringStack extends Stack {
               .build())))
             .build(),
           GraphWidget.Builder.create()
-            .title("Number of registrations")
+            .title("User Sign In")
             .height(6)
             .width(6)
             .view(GraphWidgetView.BAR)
             .left(List.of(new Metric(MetricProps.builder()
               .namespace("AWS/Cognito")
               .metricName("SignInSuccesses")
+              .period(Duration.minutes(15))
               .region(awsEnvironment.getRegion())
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
@@ -82,6 +84,7 @@ public class MonitoringStack extends Stack {
             .right(List.of(new Metric(MetricProps.builder()
               .namespace("AWS/Cognito")
               .metricName("TokenRefreshSuccesses")
+              .period(Duration.minutes(15))
               .region(awsEnvironment.getRegion())
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
