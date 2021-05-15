@@ -8,6 +8,8 @@ import software.amazon.awscdk.core.StackProps;
 import software.amazon.awscdk.services.cloudwatch.Dashboard;
 import software.amazon.awscdk.services.cloudwatch.DashboardProps;
 import software.amazon.awscdk.services.cloudwatch.GraphWidget;
+import software.amazon.awscdk.services.cloudwatch.GraphWidgetView;
+import software.amazon.awscdk.services.cloudwatch.LogQueryVisualizationType;
 import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
@@ -62,9 +64,18 @@ public class MonitoringStack extends Stack {
             .title("Number of registrations")
             .height(6)
             .width(6)
+            .view(GraphWidgetView.TIME_SERIES)
             .left(List.of(new Metric(MetricProps.builder()
               .namespace("Cognito")
               .metricName("SignInSuccess")
+              .dimensions(Map.of(
+                "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
+                "UserPool", cognitoOutputParameters.getUserPoolId()))
+              .statistic("sum")
+              .build())))
+            .right(List.of(new Metric(MetricProps.builder()
+              .namespace("Cognito")
+              .metricName("TokenRefreshSuccesses")
               .dimensions(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
@@ -75,7 +86,7 @@ public class MonitoringStack extends Stack {
             .create()
             .height(6)
             .width(6)
-            .title("Logs")
+            .title("Backend Logs")
             .logGroupNames(List.of("staging-todo-app-logs"))
             .queryString(
               "fields @timestamp, @message" +
