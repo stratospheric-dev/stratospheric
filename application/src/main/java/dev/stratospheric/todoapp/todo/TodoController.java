@@ -1,5 +1,7 @@
 package dev.stratospheric.todoapp.todo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
+
+  private static final Logger logger = LoggerFactory.getLogger(TodoController.class);
 
   private final TodoService todoService;
 
@@ -58,6 +62,8 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("message", "Your new todo has been be saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
+    logger.info("successfully created todo");
+
     return "redirect:/dashboard";
   }
 
@@ -98,6 +104,8 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
+    logger.info("successfully updated todo");
+
     return "redirect:/dashboard";
   }
 
@@ -111,6 +119,8 @@ public class TodoController {
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
     redirectAttributes.addFlashAttribute("messageType", "success");
+
+    logger.info("successfully deleted todo");
 
     return "redirect:/dashboard";
   }
