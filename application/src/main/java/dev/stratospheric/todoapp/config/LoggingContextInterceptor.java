@@ -23,6 +23,7 @@ class LoggingContextInterceptor implements HandlerInterceptor {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userId = getUserIdFromPrincipal(authentication.getPrincipal());
+    logger.info("Intercepted request. UserId: {}", userId);
     MDC.put("userId", userId);
     return true;
   }

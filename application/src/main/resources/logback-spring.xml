@@ -15,7 +15,7 @@
 
     <springProfile name="dev">
         <root level="INFO">
-            <appender-ref ref="JSON"/>
+            <appender-ref ref="PLAIN"/>
         </root>
     </springProfile>
 
