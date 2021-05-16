@@ -20,7 +20,7 @@
     </springProfile>
 
     <springProfile name="aws">
-        <root level="WARN">
+        <root level="INFO">
             <appender-ref ref="JSON"/>
         </root>
     </springProfile>
