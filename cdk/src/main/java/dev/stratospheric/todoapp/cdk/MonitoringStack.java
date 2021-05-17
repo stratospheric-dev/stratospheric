@@ -22,8 +22,6 @@ import java.util.Map;
 
 public class MonitoringStack extends Stack {
 
-  private final ApplicationEnvironment applicationEnvironment;
-
   public MonitoringStack(
     final Construct scope,
     final String id,
@@ -34,13 +32,11 @@ public class MonitoringStack extends Stack {
       .stackName(applicationEnvironment.prefix("Monitoring"))
       .env(awsEnvironment).build());
 
-    this.applicationEnvironment = applicationEnvironment;
-
     CognitoStack.CognitoOutputParameters cognitoOutputParameters =
       CognitoStack.getOutputParametersFromParameterStore(this, applicationEnvironment);
 
     new Dashboard(this, "applicationDashboard", DashboardProps.builder()
-      .dashboardName(applicationEnvironment.getApplicationName() + "-application-dashboard")
+      .dashboardName(applicationEnvironment + "-application-dashboard")
       .widgets(List.of(
         List.of(
           TextWidget.Builder
@@ -51,8 +47,6 @@ public class MonitoringStack extends Stack {
             .build(),
           SingleValueWidget.Builder
             .create()
-            .width(6)
-            .height(6)
             .title("User Registrations")
             .setPeriodToTimeRange(true)
             .metrics(List.of(new Metric(MetricProps.builder()
@@ -65,11 +59,11 @@ public class MonitoringStack extends Stack {
                 "environment", applicationEnvironment.getEnvironmentName())
               )
               .build())))
+            .height(6)
+            .width(6)
             .build(),
           GraphWidget.Builder.create()
             .title("User Sign In")
-            .height(6)
-            .width(6)
             .view(GraphWidgetView.BAR)
             .left(List.of(new Metric(MetricProps.builder()
               .namespace("AWS/Cognito")
@@ -91,17 +85,19 @@ public class MonitoringStack extends Stack {
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
               .statistic("sum")
               .build())))
+            .height(6)
+            .width(6)
             .build(),
           LogQueryWidget.Builder
             .create()
-            .height(6)
-            .width(6)
             .title("Backend Logs")
             .logGroupNames(List.of("staging-todo-app-logs"))
             .queryString(
               "fields @timestamp, @message" +
                 "| sort @timestamp desc" +
                 "| limit 20")
+            .height(6)
+            .width(6)
             .build()
         )
       ))
