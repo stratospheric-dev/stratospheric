@@ -30,12 +30,16 @@ class LoggingContextInterceptor implements HandlerInterceptor {
 
   private String getUserIdFromPrincipal(Object principal) {
     if (principal instanceof String) {
+      logger.info("String principal: {}", principal);
       // anonymous users will have a String principal with value "anonymousUser"
       return principal.toString();
     }
 
     if (principal instanceof OidcUser) {
       try {
+        logger.info("OidcUser principal: {}", principal);
+        logger.info("OidcUser userInfo: {}", ((OidcUser) principal).getUserInfo().toString());
+        ((OidcUser) principal).getClaims().forEach((key, value) -> logger.info("OidcUser claim {}: {}", key, value));
         return ((OidcUser) principal).getUserInfo().getPreferredUsername();
       } catch (Exception e) {
         logger.warn("could not extract userId from Principal", e);
