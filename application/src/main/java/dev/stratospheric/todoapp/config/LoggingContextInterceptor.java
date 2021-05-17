@@ -23,24 +23,27 @@ class LoggingContextInterceptor implements HandlerInterceptor {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userId = getUserIdFromPrincipal(authentication.getPrincipal());
-    logger.info("Intercepted request. UserId: {}", userId);
     MDC.put("userId", userId);
     return true;
   }
 
   private String getUserIdFromPrincipal(Object principal) {
     if (principal instanceof String) {
-      logger.info("String principal: {}", principal);
       // anonymous users will have a String principal with value "anonymousUser"
       return principal.toString();
     }
 
     if (principal instanceof OidcUser) {
       try {
-        logger.info("OidcUser principal: {}", principal);
-        logger.info("OidcUser userInfo: {}", ((OidcUser) principal).getUserInfo().toString());
-        ((OidcUser) principal).getClaims().forEach((key, value) -> logger.info("OidcUser claim {}: {}", key, value));
-        return ((OidcUser) principal).getUserInfo().getPreferredUsername();
+        OidcUser user = (OidcUser) principal;
+        if (user.getPreferredUsername() != null) {
+          return user.getPreferredUsername();
+        } else if (user.getClaimAsString("name") != null) {
+          return user.getClaimAsString("name");
+        } else {
+          logger.warn("could not extract userId from Principal");
+          return "unknown";
+        }
       } catch (Exception e) {
         logger.warn("could not extract userId from Principal", e);
       }
