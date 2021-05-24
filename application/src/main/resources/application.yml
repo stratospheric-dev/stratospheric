@@ -21,7 +21,11 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: false
+        enabled: true
+        namespace: stratospheric
+        step: 1m
+    tags:
+      environment: ${ENVIRONMENT_NAME}
 
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
