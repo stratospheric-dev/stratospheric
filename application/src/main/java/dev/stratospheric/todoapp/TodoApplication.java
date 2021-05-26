@@ -13,6 +13,7 @@ import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAu
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication(exclude = ContextInstanceDataAutoConfiguration.class)
 public class TodoApplication {
@@ -40,14 +41,16 @@ public class TodoApplication {
     DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 
     try {
+      List<KeySchemaElement> keySchemaElementList = Collections.singletonList(
+        new KeySchemaElement("id", KeyType.HASH)
+      );
+      List<AttributeDefinition> attributeDefinitionList = Collections.singletonList(
+        new AttributeDefinition("id", ScalarAttributeType.S)
+      );
       Table table = dynamoDB.createTable(
         breadcrumbTableName,
-        Collections.singletonList(
-          new KeySchemaElement("id", KeyType.HASH)
-        ),
-        Collections.singletonList(
-          new AttributeDefinition("id", ScalarAttributeType.S)
-        ),
+        keySchemaElementList,
+        attributeDefinitionList,
         new ProvisionedThroughput(10L, 10L)
       );
       table.waitForActive();
