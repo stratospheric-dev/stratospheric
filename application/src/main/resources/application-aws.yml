@@ -16,11 +16,7 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: false
-        namespace: stratospheric
-        step: 1m
-    tags:
-      environment: ${ENVIRONMENT_NAME}
+        enabled: false # disabled to save some $$$ on our monthly AWS bill
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
