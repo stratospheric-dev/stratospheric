@@ -20,6 +20,9 @@ import software.amazon.awscdk.services.cloudwatch.MetricProps;
 import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
 import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
+import software.amazon.awscdk.services.cloudwatch.actions.SnsAction;
+import software.amazon.awscdk.services.sns.Topic;
+import software.amazon.awscdk.services.sns.TopicProps;
 
 import java.util.List;
 import java.util.Map;
@@ -107,7 +110,7 @@ public class MonitoringStack extends Stack {
       ))
       .build());
 
-    new Alarm(this, "basicAlarm", AlarmProps.builder()
+    Alarm basicAlarm = new Alarm(this, "basicAlarm", AlarmProps.builder()
       .alarmName("5xx Backend Alarm")
       .alarmDescription("Test Alarm")
       .metric(new Metric(MetricProps.builder()
@@ -123,6 +126,12 @@ public class MonitoringStack extends Stack {
       .threshold(5)
       .actionsEnabled(false)
       .build());
+
+    basicAlarm.addAlarmAction(new SnsAction(new Topic(this, "snsAlarmingTopic", TopicProps.builder()
+      .topicName(applicationEnvironment + "-alarming-topic")
+      .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
+      .fifo(false)
+      .build())));
 
   }
 }

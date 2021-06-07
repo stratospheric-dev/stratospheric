@@ -78,6 +78,12 @@
     </dependency>
 
     <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cloudwatch-actions</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.passay</groupId>
       <artifactId>passay</artifactId>
       <version>${passay.version}</version>
