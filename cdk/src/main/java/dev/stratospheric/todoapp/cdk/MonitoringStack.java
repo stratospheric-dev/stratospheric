@@ -6,6 +6,9 @@ import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.services.cloudwatch.Alarm;
+import software.amazon.awscdk.services.cloudwatch.AlarmProps;
+import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
 import software.amazon.awscdk.services.cloudwatch.Dashboard;
 import software.amazon.awscdk.services.cloudwatch.DashboardProps;
 import software.amazon.awscdk.services.cloudwatch.GraphWidget;
@@ -16,6 +19,7 @@ import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
 import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
+import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
 
 import java.util.List;
 import java.util.Map;
@@ -102,5 +106,23 @@ public class MonitoringStack extends Stack {
         )
       ))
       .build());
+
+    new Alarm(this, "basicAlarm", AlarmProps.builder()
+      .alarmName("5xx Backend Alarm")
+      .alarmDescription("Test Alarm")
+      .metric(new Metric(MetricProps.builder()
+        .namespace("AWS/ELB")
+        .metricName("HTTPCode_ELB_5XX_Count")
+        .region(awsEnvironment.getRegion())
+        .period(Duration.minutes(5))
+        .statistic("sum")
+        .build()))
+      .treatMissingData(TreatMissingData.NOT_BREACHING)
+      .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
+      .evaluationPeriods(3)
+      .threshold(5)
+      .actionsEnabled(false)
+      .build());
+
   }
 }
