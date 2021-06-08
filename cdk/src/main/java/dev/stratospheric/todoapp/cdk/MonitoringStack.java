@@ -128,6 +128,11 @@ public class MonitoringStack extends Stack {
       .build()
     );
 
+    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
+      .create("philip@stratospheric.dev")
+      .build()
+    );
+
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
       .alarmDescription("Test Alarm")
