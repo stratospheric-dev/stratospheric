@@ -129,7 +129,7 @@ public class MonitoringStack extends Stack {
     );
 
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
-      .alarmName("5xx Backend Alarm")
+      .alarmName("5xx-backend-alarm")
       .alarmDescription("Test Alarm")
       .metric(new Metric(MetricProps.builder()
         .namespace("AWS/ELB")
@@ -148,7 +148,7 @@ public class MonitoringStack extends Stack {
     elb5xxAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
 
     Alarm elbSlowResponseTimeAlarm = new Alarm(this, "elbSlowResponseTimeAlarm", AlarmProps.builder()
-      .alarmName("Slow API Response Time Alarm")
+      .alarmName("slow-api-response-alarm")
       .alarmDescription("Indicating potential problems with the Spring Boot Backend")
       .metric(new Metric(MetricProps.builder()
         .namespace("AWS/ELB")
@@ -167,8 +167,8 @@ public class MonitoringStack extends Stack {
     CompositeAlarm compositeAlarm = new CompositeAlarm(this, "basicCompositeAlarm",
       CompositeAlarmProps.builder()
         .actionsEnabled(true)
-        .alarmDescription("Showcasing a Composite Alarm")
         .compositeAlarmName("backend-api-failure")
+        .alarmDescription("Showcasing a Composite Alarm")
         .alarmRule(AlarmRule.allOf(
           AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
           AlarmRule.fromAlarm(elbSlowResponseTimeAlarm, AlarmState.ALARM)
