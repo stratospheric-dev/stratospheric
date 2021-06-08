@@ -164,16 +164,17 @@ public class MonitoringStack extends Stack {
       .actionsEnabled(false)
       .build());
 
-    CompositeAlarm compositeAlarm = new CompositeAlarm(this, "basicCompositeAlarm", CompositeAlarmProps.builder()
-      .actionsEnabled(true)
-      .alarmDescription("Showcasing a Composite Alarm")
-      .compositeAlarmName("Backend API Failure")
-      .alarmRule(AlarmRule.allOf(
-        AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
-        AlarmRule.fromAlarm(elbSlowResponseTimeAlarm, AlarmState.ALARM)
+    CompositeAlarm compositeAlarm = new CompositeAlarm(this, "basicCompositeAlarm",
+      CompositeAlarmProps.builder()
+        .actionsEnabled(true)
+        .alarmDescription("Showcasing a Composite Alarm")
+        .compositeAlarmName("backend-api-failure")
+        .alarmRule(AlarmRule.allOf(
+          AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
+          AlarmRule.fromAlarm(elbSlowResponseTimeAlarm, AlarmState.ALARM)
+          )
         )
-      )
-      .build());
+        .build());
 
     compositeAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
   }
