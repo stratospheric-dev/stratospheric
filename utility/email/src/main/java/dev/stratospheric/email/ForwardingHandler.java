@@ -96,9 +96,11 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
         .withMessage(new Message()
           .withBody(new Body()
             .withHtml(new Content()
-              .withCharset(StandardCharsets.UTF_8.name()).withData(htmlContent))
+              .withCharset(StandardCharsets.UTF_8.name())
+              .withData(htmlContent == null ? "No HTML Email Content Provided" : htmlContent))
             .withText(new Content()
-              .withCharset(StandardCharsets.UTF_8.name()).withData(plainContent)))
+              .withCharset(StandardCharsets.UTF_8.name())
+              .withData(plainContent == null ? "No Plain Email Text Content Provided" : plainContent)))
           .withSubject(new Content()
             .withCharset(StandardCharsets.UTF_8.name()).withData(subject)))
         .withSource("noreply@stratospheric.dev")
@@ -108,6 +110,7 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
       logger.log("Email forwarded to " + recipient);
     } catch (Exception ex) {
       logger.log("The email was not sent. Error message: " + ex.getMessage());
+      throw new RuntimeException("Failed to forward an incoming email - failing the Lambda to identify an error");
     }
   }
 }
