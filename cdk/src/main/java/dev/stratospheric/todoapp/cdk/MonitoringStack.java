@@ -17,7 +17,6 @@ import software.amazon.awscdk.services.cloudwatch.Dashboard;
 import software.amazon.awscdk.services.cloudwatch.DashboardProps;
 import software.amazon.awscdk.services.cloudwatch.GraphWidget;
 import software.amazon.awscdk.services.cloudwatch.GraphWidgetView;
-import software.amazon.awscdk.services.cloudwatch.LogQueryVisualizationType;
 import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
@@ -25,10 +24,8 @@ import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
 import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
 import software.amazon.awscdk.services.cloudwatch.actions.SnsAction;
-import software.amazon.awscdk.services.sns.SubscriptionProtocol;
 import software.amazon.awscdk.services.sns.Topic;
 import software.amazon.awscdk.services.sns.TopicProps;
-import software.amazon.awscdk.services.sns.TopicSubscriptionConfig;
 import software.amazon.awscdk.services.sns.subscriptions.EmailSubscription;
 
 import java.util.List;
@@ -128,17 +125,15 @@ public class MonitoringStack extends Stack {
       .build()
     );
 
-    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
-      .create("philip@stratospheric.dev")
-      .build()
-    );
-
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
-      .alarmDescription("Test Alarm")
+      .alarmDescription("Alert on multiple HTTP 5xx ELB responses")
       .metric(new Metric(MetricProps.builder()
-        .namespace("AWS/ELB")
+        .namespace("AWS/ApplicationELB")
         .metricName("HTTPCode_ELB_5XX_Count")
+        .dimensions(Map.of(
+          "LoadBalancer", "42" // TODO: Insert correct load balancer
+        ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
         .statistic("sum")
@@ -156,8 +151,11 @@ public class MonitoringStack extends Stack {
       .alarmName("slow-api-response-alarm")
       .alarmDescription("Indicating potential problems with the Spring Boot Backend")
       .metric(new Metric(MetricProps.builder()
-        .namespace("AWS/ELB")
+        .namespace("AWS/ApplicationELB")
         .metricName("TargetResponseTime")
+        .dimensions(Map.of(
+          "LoadBalancer", "42" // TODO: Insert correct load balancer
+        ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
         .statistic("avg")
