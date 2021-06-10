@@ -1,6 +1,7 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
+import dev.stratospheric.cdk.Network;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Environment;
@@ -45,6 +46,9 @@ public class MonitoringStack extends Stack {
 
     CognitoStack.CognitoOutputParameters cognitoOutputParameters =
       CognitoStack.getOutputParametersFromParameterStore(this, applicationEnvironment);
+
+    Network.NetworkOutputParameters networkOutputParameters =
+      Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
     new Dashboard(this, "applicationDashboard", DashboardProps.builder()
       .dashboardName(applicationEnvironment + "-application-dashboard")
@@ -132,7 +136,7 @@ public class MonitoringStack extends Stack {
         .namespace("AWS/ApplicationELB")
         .metricName("HTTPCode_ELB_5XX_Count")
         .dimensions(Map.of(
-          "LoadBalancer", "42" // TODO: Insert correct load balancer
+          "LoadBalancer", networkOutputParameters.getLoadBalancerArn()
         ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
@@ -154,7 +158,7 @@ public class MonitoringStack extends Stack {
         .namespace("AWS/ApplicationELB")
         .metricName("TargetResponseTime")
         .dimensions(Map.of(
-          "LoadBalancer", "42" // TODO: Insert correct load balancer
+          "LoadBalancer", networkOutputParameters.getLoadBalancerArn()
         ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
