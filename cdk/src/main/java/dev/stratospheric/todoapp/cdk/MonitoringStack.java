@@ -121,42 +121,9 @@ public class MonitoringStack extends Stack {
       ))
       .build());
 
-    Topic snsAlarmingTopic = new Topic(this, "snsAlarmingTopic", TopicProps.builder()
-      .topicName(applicationEnvironment + "-alarming-topic")
-      .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
-      .fifo(false)
-      .build());
-
-    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
-      .create("info@stratospheric.dev")
-      .build()
-    );
-
     String loadBalancerName = Fn
       .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
       .get(1);
-
-    Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
-      .alarmName("5xx-backend-alarm")
-      .alarmDescription("Alert on multiple HTTP 5xx ELB responses")
-      .metric(new Metric(MetricProps.builder()
-        .namespace("AWS/ApplicationELB")
-        .metricName("HTTPCode_ELB_5XX_Count")
-        .dimensions(Map.of(
-          "LoadBalancer", loadBalancerName
-        ))
-        .region(awsEnvironment.getRegion())
-        .period(Duration.minutes(5))
-        .statistic("sum")
-        .build()))
-      .treatMissingData(TreatMissingData.NOT_BREACHING)
-      .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
-      .evaluationPeriods(3)
-      .threshold(5)
-      .actionsEnabled(false)
-      .build());
-
-    elb5xxAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
 
     Alarm elbSlowResponseTimeAlarm = new Alarm(this, "elbSlowResponseTimeAlarm", AlarmProps.builder()
       .alarmName("slow-api-response-alarm")
@@ -175,6 +142,39 @@ public class MonitoringStack extends Stack {
       .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
       .evaluationPeriods(3)
       .threshold(2)
+      .actionsEnabled(true)
+      .build());
+
+    Topic snsAlarmingTopic = new Topic(this, "snsAlarmingTopic", TopicProps.builder()
+      .topicName(applicationEnvironment + "-alarming-topic")
+      .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
+      .fifo(false)
+      .build());
+
+    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
+      .create("info@stratospheric.dev")
+      .build()
+    );
+
+    elbSlowResponseTimeAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
+
+    Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
+      .alarmName("5xx-backend-alarm")
+      .alarmDescription("Alert on multiple HTTP 5xx ELB responses")
+      .metric(new Metric(MetricProps.builder()
+        .namespace("AWS/ApplicationELB")
+        .metricName("HTTPCode_ELB_5XX_Count")
+        .dimensions(Map.of(
+          "LoadBalancer", loadBalancerName
+        ))
+        .region(awsEnvironment.getRegion())
+        .period(Duration.minutes(5))
+        .statistic("sum")
+        .build()))
+      .treatMissingData(TreatMissingData.NOT_BREACHING)
+      .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
+      .evaluationPeriods(3)
+      .threshold(5)
       .actionsEnabled(false)
       .build());
 
