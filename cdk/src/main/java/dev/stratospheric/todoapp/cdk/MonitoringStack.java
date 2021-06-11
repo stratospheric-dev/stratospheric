@@ -3,10 +3,13 @@ package dev.stratospheric.todoapp.cdk;
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.DefaultTokenResolver;
 import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.core.Fn;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.Token;
 import software.amazon.awscdk.services.cloudwatch.Alarm;
 import software.amazon.awscdk.services.cloudwatch.AlarmProps;
 import software.amazon.awscdk.services.cloudwatch.AlarmRule;
@@ -129,10 +132,9 @@ public class MonitoringStack extends Stack {
       .build()
     );
 
-    String loadBalancerName =
-      networkOutputParameters.getLoadBalancerArn();
-
-    System.out.println(loadBalancerName);
+    String loadBalancerName = Fn
+      .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
+      .get(1);
 
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
