@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "network:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" -c sslCertificateArn=arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1 --require-approval never",
-    "network:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" -c sslCertificateArn=arn:aws:acm:eu-central-1:221875718260:certificate/20023378-c036-41df-90b9-c005938c4423 --force --require-approval never",
+    "network:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" -c sslCertificateArn=arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1 --force --require-approval never",
     "repository:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" --require-approval never",
     "repository:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" --force --require-approval never",
     "service:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.ServiceApp\" -c springProfile=aws  --require-approval never",
