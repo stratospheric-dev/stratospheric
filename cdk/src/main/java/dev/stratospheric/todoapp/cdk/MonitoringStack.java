@@ -129,7 +129,10 @@ public class MonitoringStack extends Stack {
       .build()
     );
 
-    String loadBalancerName = networkOutputParameters.getLoadBalancerArn().split(":loadbalancer")[1];
+    String loadBalancerName =
+      networkOutputParameters.getLoadBalancerArn();
+
+    System.out.println(loadBalancerName);
 
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
