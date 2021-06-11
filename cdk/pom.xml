@@ -11,10 +11,10 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdk.version>1.88.0</cdk.version>
+    <cdk.version>1.91.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <passay.version>1.6.0</passay.version>
-    <cdk-constructs.version>0.0.19</cdk-constructs.version>
+    <cdk-constructs.version>0.0.21</cdk-constructs.version>
   </properties>
 
   <build>
@@ -74,6 +74,12 @@
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
       <artifactId>cloudwatch</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cloudwatch-actions</artifactId>
       <version>${cdk.version}</version>
     </dependency>
 

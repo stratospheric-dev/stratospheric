@@ -48,6 +48,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
+  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:1.6.0'
 }
 
 dependencyManagement {
