@@ -129,6 +129,8 @@ public class MonitoringStack extends Stack {
       .build()
     );
 
+    String loadBalancerName = networkOutputParameters.getLoadBalancerArn().split(":loadbalancer")[1];
+
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
       .alarmDescription("Alert on multiple HTTP 5xx ELB responses")
@@ -136,7 +138,7 @@ public class MonitoringStack extends Stack {
         .namespace("AWS/ApplicationELB")
         .metricName("HTTPCode_ELB_5XX_Count")
         .dimensions(Map.of(
-          "LoadBalancer", networkOutputParameters.getLoadBalancerArn()
+          "LoadBalancer", loadBalancerName
         ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
@@ -158,7 +160,7 @@ public class MonitoringStack extends Stack {
         .namespace("AWS/ApplicationELB")
         .metricName("TargetResponseTime")
         .dimensions(Map.of(
-          "LoadBalancer", networkOutputParameters.getLoadBalancerArn()
+          "LoadBalancer", loadBalancerName
         ))
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(5))
