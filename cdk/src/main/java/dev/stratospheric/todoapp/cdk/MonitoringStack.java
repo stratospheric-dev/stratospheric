@@ -17,6 +17,7 @@ import software.amazon.awscdk.services.cloudwatch.AlarmState;
 import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarm;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarmProps;
+import software.amazon.awscdk.services.cloudwatch.CreateAlarmOptions;
 import software.amazon.awscdk.services.cloudwatch.Dashboard;
 import software.amazon.awscdk.services.cloudwatch.DashboardProps;
 import software.amazon.awscdk.services.cloudwatch.GraphWidget;
@@ -186,25 +187,17 @@ public class MonitoringStack extends Stack {
       MetricFilterProps.builder()
         .metricName("backend-error-logs")
         .metricNamespace("stratospheric")
+        .metricValue("1")
+        .defaultValue(0)
         .logGroup(LogGroup.fromLogGroupName(this, "applicationLogGroup", applicationEnvironment + "-logs"))
-        .filterPattern(FilterPattern.allTerms("ERROR")) // TODO: Adjust with structured access
+        .filterPattern(FilterPattern.stringValue("$.level", "=", "ERROR")) // { $.level = "ERROR" }
         .build());
 
-    // errorLogsMetricFilter.metric().createAlarm()
+    Metric errorLogsMetric = errorLogsMetricFilter.metric();
 
-    Alarm errorLogsAlarm = new Alarm(this, "errorLogsAlarm", AlarmProps.builder()
+    Alarm errorLogsAlarm = errorLogsMetric.createAlarm(this, "errorLogsAlarm", CreateAlarmOptions.builder()
       .alarmName("backend-error-logs-alarm")
       .alarmDescription("Alert on multiple ERROR backend logs")
-      .metric(new Metric(MetricProps.builder()
-        .namespace("AWS/ApplicationELB")
-        .metricName("HTTPCode_ELB_5XX_Count")
-        .dimensions(Map.of(
-          "LoadBalancer", loadBalancerName
-        ))
-        .region(awsEnvironment.getRegion())
-        .period(Duration.minutes(5))
-        .statistic("sum")
-        .build()))
       .treatMissingData(TreatMissingData.NOT_BREACHING)
       .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
       .evaluationPeriods(3)
