@@ -196,7 +196,7 @@ public class MonitoringStack extends Stack {
 
     Metric errorLogsMetric = errorLogsMetricFilter.metric(MetricOptions.builder()
       .period(Duration.minutes(5))
-      .statistic("count")
+      .statistic("sum")
       .region(awsEnvironment.getRegion())
       .build());
 
