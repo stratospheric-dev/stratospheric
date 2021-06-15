@@ -42,7 +42,7 @@
         </a>
       </li>
       <li class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link disabled" href="#">Howdy, [[${#authentication.principal.attributes.name}]]!</a>
+        <a class="nav-link disabled" href="#">Howdy, [[${#authentication.principal.name}]]!</a>
       </li>
       <li class="nav-item" sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post">

@@ -332,7 +332,7 @@
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister" : false,
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
   "users" : [ {
-    "id" : "191ee79e-2563-4782-b497-3a898991b7ce",
+    "id" : "bjoern",
     "createdTimestamp" : 1605901286819,
     "username" : "bjoern",
     "enabled" : true,
@@ -357,7 +357,7 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
-    "id" : "3e905e7f-e50b-4803-bf58-0b2fce421983",
+    "id" : "duke",
     "createdTimestamp" : 1605899552456,
     "username" : "duke",
     "enabled" : true,
@@ -382,7 +382,7 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
-    "id" : "707755d4-a71a-4d1e-85ba-b0c5d84c3fd5",
+    "id" : "philip",
     "createdTimestamp" : 1605901254831,
     "username" : "philip",
     "enabled" : true,
@@ -407,7 +407,7 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
-    "id" : "dbba5db2-916b-4ccd-a137-bd6101d43f08",
+    "id" : "tom",
     "createdTimestamp" : 1605901320232,
     "username" : "tom",
     "enabled" : true,
