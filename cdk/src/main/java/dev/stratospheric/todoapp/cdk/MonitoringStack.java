@@ -24,6 +24,7 @@ import software.amazon.awscdk.services.cloudwatch.GraphWidget;
 import software.amazon.awscdk.services.cloudwatch.GraphWidgetView;
 import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
+import software.amazon.awscdk.services.cloudwatch.MetricOptions;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
 import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
@@ -193,7 +194,11 @@ public class MonitoringStack extends Stack {
         .filterPattern(FilterPattern.stringValue("$.level", "=", "ERROR")) // { $.level = "ERROR" }
         .build());
 
-    Metric errorLogsMetric = errorLogsMetricFilter.metric();
+    Metric errorLogsMetric = errorLogsMetricFilter.metric(MetricOptions.builder()
+      .period(Duration.minutes(5))
+      .statistic("count")
+      .region(awsEnvironment.getRegion())
+      .build());
 
     Alarm errorLogsAlarm = errorLogsMetric.createAlarm(this, "errorLogsAlarm", CreateAlarmOptions.builder()
       .alarmName("backend-error-logs-alarm")
