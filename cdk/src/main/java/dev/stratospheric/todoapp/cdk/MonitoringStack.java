@@ -217,7 +217,6 @@ public class MonitoringStack extends Stack {
         .alarmDescription("Showcasing a Composite Alarm")
         .alarmRule(AlarmRule.allOf(
           AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
-          AlarmRule.fromAlarm(elbSlowResponseTimeAlarm, AlarmState.ALARM),
           AlarmRule.fromAlarm(errorLogsAlarm, AlarmState.ALARM)
           )
         )
