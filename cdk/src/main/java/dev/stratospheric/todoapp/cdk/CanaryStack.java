@@ -106,7 +106,7 @@ public class CanaryStack extends Stack {
         .period(Duration.minutes(50))
         .statistic("sum")
         .build()))
-      .treatMissingData(TreatMissingData.BREACHING)
+      .treatMissingData(TreatMissingData.NOT_BREACHING)
       .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
       .evaluationPeriods(1)
       .threshold(3)
