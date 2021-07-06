@@ -17,17 +17,23 @@ import software.amazon.awscdk.services.cloudwatch.AlarmState;
 import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarm;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarmProps;
+import software.amazon.awscdk.services.cloudwatch.CreateAlarmOptions;
 import software.amazon.awscdk.services.cloudwatch.Dashboard;
 import software.amazon.awscdk.services.cloudwatch.DashboardProps;
 import software.amazon.awscdk.services.cloudwatch.GraphWidget;
 import software.amazon.awscdk.services.cloudwatch.GraphWidgetView;
 import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
+import software.amazon.awscdk.services.cloudwatch.MetricOptions;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
 import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
 import software.amazon.awscdk.services.cloudwatch.TextWidget;
 import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
 import software.amazon.awscdk.services.cloudwatch.actions.SnsAction;
+import software.amazon.awscdk.services.logs.FilterPattern;
+import software.amazon.awscdk.services.logs.LogGroup;
+import software.amazon.awscdk.services.logs.MetricFilter;
+import software.amazon.awscdk.services.logs.MetricFilterProps;
 import software.amazon.awscdk.services.sns.Topic;
 import software.amazon.awscdk.services.sns.TopicProps;
 import software.amazon.awscdk.services.sns.subscriptions.EmailSubscription;
@@ -109,7 +115,7 @@ public class MonitoringStack extends Stack {
           LogQueryWidget.Builder
             .create()
             .title("Backend Logs")
-            .logGroupNames(List.of("staging-todo-app-logs"))
+            .logGroupNames(List.of(applicationEnvironment + "-logs"))
             .queryString(
               "fields @timestamp, @message" +
                 "| sort @timestamp desc" +
@@ -178,6 +184,32 @@ public class MonitoringStack extends Stack {
       .actionsEnabled(false)
       .build());
 
+    MetricFilter errorLogsMetricFilter = new MetricFilter(this, "errorLogsMetricFilter",
+      MetricFilterProps.builder()
+        .metricName("backend-error-logs")
+        .metricNamespace("stratospheric")
+        .metricValue("1")
+        .defaultValue(0)
+        .logGroup(LogGroup.fromLogGroupName(this, "applicationLogGroup", applicationEnvironment + "-logs"))
+        .filterPattern(FilterPattern.stringValue("$.level", "=", "ERROR")) // { $.level = "ERROR" }
+        .build());
+
+    Metric errorLogsMetric = errorLogsMetricFilter.metric(MetricOptions.builder()
+      .period(Duration.minutes(5))
+      .statistic("sum")
+      .region(awsEnvironment.getRegion())
+      .build());
+
+    Alarm errorLogsAlarm = errorLogsMetric.createAlarm(this, "errorLogsAlarm", CreateAlarmOptions.builder()
+      .alarmName("backend-error-logs-alarm")
+      .alarmDescription("Alert on multiple ERROR backend logs")
+      .treatMissingData(TreatMissingData.NOT_BREACHING)
+      .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
+      .evaluationPeriods(3)
+      .threshold(5)
+      .actionsEnabled(false)
+      .build());
+
     CompositeAlarm compositeAlarm = new CompositeAlarm(this, "basicCompositeAlarm",
       CompositeAlarmProps.builder()
         .actionsEnabled(true)
@@ -185,7 +217,7 @@ public class MonitoringStack extends Stack {
         .alarmDescription("Showcasing a Composite Alarm")
         .alarmRule(AlarmRule.allOf(
           AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
-          AlarmRule.fromAlarm(elbSlowResponseTimeAlarm, AlarmState.ALARM)
+          AlarmRule.fromAlarm(errorLogsAlarm, AlarmState.ALARM)
           )
         )
         .build());
