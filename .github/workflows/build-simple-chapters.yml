@@ -6,6 +6,7 @@ on:
     paths:
       - 'chapters/chapter-1/**'
       - 'chapters/chapter-8/**'
+      - '!chapters/chapter-19/**'
 
 jobs:
   build-chapters:
