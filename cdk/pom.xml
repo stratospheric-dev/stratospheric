@@ -101,9 +101,10 @@
     </dependency>
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
-      <artifactId>route53-patterns</artifactId>
+      <artifactId>elasticloadbalancingv2</artifactId>
       <version>${cdk.version}</version>
     </dependency>
+
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
       <artifactId>certificatemanager</artifactId>
