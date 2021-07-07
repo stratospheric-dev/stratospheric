@@ -4,9 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dev.stratospheric.todoapp</groupId>
-  <artifactId>cdk-chapter-12</artifactId>
+  <artifactId>cdk</artifactId>
   <version>0.1</version>
-  <description>CDK App for Chapter 12</description>
 
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
@@ -14,6 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cdk.version>1.108.1</cdk.version>
     <junit.version>5.7.0</junit.version>
+    <passay.version>1.6.0</passay.version>
     <cdk-constructs.version>0.0.22</cdk-constructs.version>
   </properties>
 
@@ -37,8 +37,83 @@
 
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
+      <artifactId>ec2</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cognito</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>lambda-event-sources</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>events-targets</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
       <artifactId>secretsmanager</artifactId>
       <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>amazonmq</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cloudwatch</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>cloudwatch-actions</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>synthetics</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>route53</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>route53-targets</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>route53-patterns</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awscdk</groupId>
+      <artifactId>certificatemanager</artifactId>
+      <version>${cdk.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.passay</groupId>
+      <artifactId>passay</artifactId>
+      <version>${passay.version}</version>
     </dependency>
 
     <dependency>
