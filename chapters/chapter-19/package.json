@@ -23,7 +23,7 @@
     "deployment-sequencer:deploy": "cdk deploy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DeploymentSequencerApp\" -c accountId=221875718260 -c applicationName=todo-app -c region=eu-central-1 --require-approval never",
     "deployment-sequencer:destroy": "cdk destroy \"*\" --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DeploymentSequencerApp\" -c accountId=221875718260 -c applicationName=todo-app -c region=eu-central-1 --require-approval never",
     "domain:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DomainApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c applicationDomain=https://app.stratospheric.dev --require-approval never",
-    "domain:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DomainApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app -c applicationDomain=https://app.stratospheric.dev --force --require-approval never"
+    "domain:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DomainApp\" -c accountId=221875718260 -c region=eu-central-1 -c applicationName=todo-app --force --require-approval never"
   },
   "devDependencies": {
     "aws-cdk": "1.108.1"
