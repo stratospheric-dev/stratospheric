@@ -21,6 +21,9 @@ public class DomainApp {
     String region = (String) app.getNode().tryGetContext("region");
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
+    String hostedZoneDomain = (String) app.getNode().tryGetContext("hostedZoneDomain");
+    Validations.requireNonEmpty(hostedZoneDomain, "context variable 'hostedZoneDomain' must not be null");
+
     String applicationDomain = (String) app.getNode().tryGetContext("applicationDomain");
     Validations.requireNonEmpty(applicationDomain, "context variable 'applicationDomain' must not be null");
 
@@ -31,7 +34,7 @@ public class DomainApp {
       environmentName
     );
 
-    new DomainStack(app, "domain", awsEnvironment, applicationEnvironment, applicationDomain);
+    new DomainStack(app, "domain", awsEnvironment, applicationEnvironment, hostedZoneDomain, applicationDomain);
 
     app.synth();
   }

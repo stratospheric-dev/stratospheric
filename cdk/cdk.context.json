@@ -56,5 +56,9 @@
         ]
       }
     ]
+  },
+  "hosted-zone:account=221875718260:domainName=stratospheric.dev:region=eu-central-1": {
+    "Id": "/hostedzone/Z081807328Y7TTKJ4NKFU",
+    "Name": "stratospheric.dev."
   }
 }
