@@ -24,7 +24,7 @@ We integrate various AWS services by implementing features for the sample applic
 
 **Automated Deployment**:
 
-We start right from the beginning to automate the CI/CD pipeline to get our changes deployed to production in a matter of minutes using GitHub Actions.
+We start right from the beginning with an automated CI/CD pipeline (GitHub Actions) to get our changes deployed to production in a matter of minutes.
 
 **Seamless Operation**:
 
