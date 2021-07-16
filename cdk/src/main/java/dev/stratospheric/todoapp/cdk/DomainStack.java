@@ -7,7 +7,6 @@ import software.amazon.awscdk.services.certificatemanager.DnsValidatedCertificat
 import software.amazon.awscdk.services.elasticloadbalancingv2.*;
 import software.amazon.awscdk.services.route53.*;
 import software.amazon.awscdk.services.route53.targets.LoadBalancerTarget;
-import software.amazon.awscdk.services.ssm.StringParameter;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ class DomainStack extends Stack {
   private static final String PARAMETER_LOAD_BALANCER_ARN = "loadBalancerArn";
   private static final String PARAMETER_LOAD_BALANCER_SECURITY_GROUP_ID = "loadBalancerSecurityGroupId";
   private static final String PARAMETER_LOAD_BALANCER_DNS_NAME = "loadBalancerDnsName";
-  private static final String PARAMETER_LOAD_CANONICAL_HOSTED_ZONE_ID = "loadBalancerCanonicalHostedZoneId";
+  private static final String PARAMETER_LOAD_BALANCER_CANONICAL_HOSTED_ZONE_ID = "loadBalancerCanonicalHostedZoneId";
 
   private final ApplicationEnvironment applicationEnvironment;
 
@@ -44,14 +43,16 @@ class DomainStack extends Stack {
       .subjectAlternativeNames(List.of(applicationDomain))
       .build();
 
+    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
+
     IApplicationLoadBalancer applicationLoadBalancer = ApplicationLoadBalancer.fromApplicationLoadBalancerAttributes(
       this,
       "LoadBalancer",
       ApplicationLoadBalancerAttributes.builder()
-        .loadBalancerArn(getParameterLoadbalancerArn(this, applicationEnvironment))
-        .securityGroupId(getParameterLoadbalancerSecurityGroupId(this, applicationEnvironment))
-        .loadBalancerCanonicalHostedZoneId(getParameterLoadBalancerCanonicalHostedZoneId(this, applicationEnvironment))
-        .loadBalancerDnsName(getParameterLoadBalancerDnsName(this, applicationEnvironment))
+        .loadBalancerArn(networkOutputParameters.getLoadBalancerArn())
+        .securityGroupId(networkOutputParameters.getLoadbalancerSecurityGroupId())
+        .loadBalancerCanonicalHostedZoneId(networkOutputParameters.getLoadBalancerCanonicalHostedZoneId())
+        .loadBalancerDnsName(networkOutputParameters.getLoadBalancerDnsName())
         .build()
     );
     ApplicationListener listener = applicationLoadBalancer.addListener(
@@ -90,37 +91,5 @@ class DomainStack extends Stack {
       .build();
 
     applicationEnvironment.tag(this);
-  }
-
-  private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
-    return applicationEnvironment.getEnvironmentName() + "-Network-" + parameterName;
-  }
-
-  private static String getParameterLoadbalancerArn(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.valueForStringParameter(
-      scope,
-      createParameterName(applicationEnvironment, PARAMETER_LOAD_BALANCER_ARN)
-    );
-  }
-
-  private static String getParameterLoadbalancerSecurityGroupId(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.valueForStringParameter(
-      scope,
-      createParameterName(applicationEnvironment, PARAMETER_LOAD_BALANCER_SECURITY_GROUP_ID)
-    );
-  }
-
-  private static String getParameterLoadBalancerDnsName(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.valueForStringParameter(
-      scope,
-      createParameterName(applicationEnvironment, PARAMETER_LOAD_BALANCER_DNS_NAME)
-    );
-  }
-
-  private static String getParameterLoadBalancerCanonicalHostedZoneId(Construct scope, ApplicationEnvironment applicationEnvironment) {
-    return StringParameter.valueForStringParameter(
-      scope,
-      createParameterName(applicationEnvironment, PARAMETER_LOAD_CANONICAL_HOSTED_ZONE_ID)
-    );
   }
 }
