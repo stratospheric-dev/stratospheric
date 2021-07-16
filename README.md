@@ -10,7 +10,9 @@
 
 ## About the Book
 
-All you need to know to get a Spring Boot application into production with AWS.
+This comprehensive book teaches everything you need to know to get your Spring Boot application into production with AWS.
+
+Throughout the book, we incrementally build a real-world sample application with a focus on the following topics:
 
 **Infrastructure As Code**:
 
