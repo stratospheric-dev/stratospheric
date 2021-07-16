@@ -12,7 +12,7 @@
 
 This comprehensive book teaches everything you need to know to get your Spring Boot application into production with AWS.
 
-Throughout the book, we incrementally build a real-world sample application with a focus on the following topics:
+Throughout the book, we incrementally build a real-world Spring Boot application with a focus on the following topics:
 
 **Infrastructure As Code**:
 
