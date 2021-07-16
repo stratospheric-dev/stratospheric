@@ -18,7 +18,7 @@ Throughout the book, we incrementally build a real-world Spring Boot application
 
 Say goodbye to long and hard-to-maintain CloudFormation YAML files. We're using the AWS Cloud Development Kit (CDK) and Java to express our infrastructure needs.
 
-**Integrate AWS Services**:
+**Integrate Various AWS Services**:
 
 We integrate various AWS services by implementing features for the sample application. You'll learn how to bootstrap, work with, and integrate: Amazon RDS (PostgreSQL), Amazon ECS (Fargate), Amazon SQS, Amazon SNS, Amazon CloudWatch, Amazon Cognito, Amazon MQ, Amazon DynamoDB, AWS Lambda etc.
 
