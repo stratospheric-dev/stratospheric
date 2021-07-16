@@ -16,7 +16,7 @@ jobs:
   deploy-messaging-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
-    name: Deploy the messaging stack
+    name: Deploy the Messaging stack
     steps:
 
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
       - name: NPM install
         run: cd cdk && npm install
 
-      - name: Deploy messaging stack
+      - name: Deploy Messaging stack
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -41,7 +41,7 @@ jobs:
   deploy-database-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
-    name: Deploy the database stack
+    name: Deploy the Database stack
     steps:
 
       - name: Checkout code
@@ -55,7 +55,7 @@ jobs:
       - name: NPM install
         run: cd cdk && npm install
 
-      - name: Deploy database stack
+      - name: Deploy Database stack
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -116,7 +116,7 @@ jobs:
   deploy-sequencer-lambda:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
-    name: Deploy the Deployment Sequencer
+    name: Deploy the Deployment Sequencer stack
     steps:
 
       - name: Checkout code
