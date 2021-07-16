@@ -22,11 +22,11 @@ Say goodbye to long and hard-to-maintain CloudFormation YAML files. We're using 
 
 We integrate various AWS services by implementing features for the sample application. You'll learn how to bootstrap, work with, and integrate: Amazon RDS (PostgreSQL), Amazon ECS (Fargate), Amazon SQS, Amazon SNS, Amazon CloudWatch, Amazon Cognito, Amazon MQ, Amazon DynamoDB, AWS Lambda etc.
 
-**Deployment**:
+**Automated Deployment**:
 
 We start right from the beginning to automate the CI/CD pipeline to get our changes deployed to production in a matter of minutes using GitHub Actions.
 
-**Operations**:
+**Seamless Operation**:
 
 We don't stop here. Once our application is running in production, things are getting serious. You'll learn how to monitor and operate a Spring Boot application in production effectively.
 
