@@ -119,19 +119,22 @@ class CognitoStack extends Stack {
     // then store it in the parameter store like the other parameters.
     // Source: https://github.com/aws/aws-cdk/issues/7225
 
+    AwsSdkCall fetchUserPoolClientMetadata = AwsSdkCall.builder()
+      .region(awsEnvironment.getRegion())
+      .service("CognitoIdentityServiceProvider")
+      .action("describeUserPoolClient")
+      .parameters(Map.of(
+        "UserPoolId", this.userPool.getUserPoolId(),
+        "ClientId", this.userPoolClient.getUserPoolClientId()
+      ))
+      .physicalResourceId(PhysicalResourceId.of(this.userPoolClient.getUserPoolClientId()))
+      .build();
+
     AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
       .resourceType("Custom::DescribeCognitoUserPoolClient")
       .installLatestAwsSdk(false)
-      .onUpdate(AwsSdkCall.builder()
-        .region(awsEnvironment.getRegion())
-        .service("CognitoIdentityServiceProvider")
-        .action("describeUserPoolClient")
-        .parameters(Map.of(
-          "UserPoolId", this.userPool.getUserPoolId(),
-          "ClientId", this.userPoolClient.getUserPoolClientId()
-        ))
-        .physicalResourceId(PhysicalResourceId.of(this.userPoolClient.getUserPoolClientId()))
-        .build())
+      .onUpdate(fetchUserPoolClientMetadata)
+      .onCreate(fetchUserPoolClientMetadata)
       .policy(AwsCustomResourcePolicy.fromSdkCalls(
         SdkCallsPolicyOptions.builder()
           .resources(ANY_RESOURCE)
