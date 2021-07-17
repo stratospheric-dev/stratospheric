@@ -109,7 +109,7 @@ class CognitoStack extends Stack {
       .stringValue(this.logoutUrl)
       .build();
 
-   StringParameter.Builder.create(this, "providerUrl")
+    StringParameter.Builder.create(this, "providerUrl")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_PROVIDER_URL))
       .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();
@@ -140,12 +140,11 @@ class CognitoStack extends Stack {
       .build();
 
     this.userPoolClientSecret = describeUserPoolResource.getResponseField("UserPoolClient.ClientSecret");
-    StringParameter userPoolClientSecret = StringParameter.Builder.create(this, "userPoolClientSecret")
+
+    StringParameter.Builder.create(this, "userPoolClientSecret")
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
       .stringValue(this.userPoolClientSecret)
       .build();
-
-
   }
 
   private static String createParameterName(ApplicationEnvironment applicationEnvironment, String parameterName) {
