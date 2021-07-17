@@ -122,7 +122,7 @@ class CognitoStack extends Stack {
     AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
       .resourceType("Custom::DescribeCognitoUserPoolClient")
       .installLatestAwsSdk(false)
-      .onCreate(AwsSdkCall.builder()
+      .onUpdate(AwsSdkCall.builder()
         .region(awsEnvironment.getRegion())
         .service("CognitoIdentityServiceProvider")
         .action("describeUserPoolClient")
