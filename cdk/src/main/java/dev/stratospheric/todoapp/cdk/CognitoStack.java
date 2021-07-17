@@ -114,7 +114,6 @@ class CognitoStack extends Stack {
       .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();
 
-
     // CloudFormation does not expose the UserPoolClient secret, so we can't access it directly with
     // CDK. As a workaround, we create a custom resource that calls the AWS API to get the secret, and
     // then store it in the parameter store like the other parameters.
@@ -122,6 +121,7 @@ class CognitoStack extends Stack {
 
     AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
       .resourceType("Custom::DescribeCognitoUserPoolClient")
+      .installLatestAwsSdk(false)
       .onCreate(AwsSdkCall.builder()
         .region(awsEnvironment.getRegion())
         .service("CognitoIdentityServiceProvider")
