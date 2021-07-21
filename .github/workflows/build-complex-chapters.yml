@@ -5,7 +5,10 @@ name: Build Complex Chapter Versions
 on:
   push:
     paths:
-      - 'chapters/**'
+      - 'chapters/chapter-6/**'
+      - 'chapters/chapter-10/**'
+      - 'chapters/chapter-11/**'
+      - 'chapters/chapter-12/**'
       - '!chapters/chapter-1/**'
       - '!chapters/chapter-19/**'
 
