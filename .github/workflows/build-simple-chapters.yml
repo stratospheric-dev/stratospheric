@@ -1,20 +1,15 @@
-# Simple means that this chapter version only requires a 'cdk deploy' to test them
+# Simple means that this chapter version doesn't require and entire AWS ECS setup to test
 name: Build Simple Chapter Versions
 
 on:
   push:
     paths:
       - 'chapters/chapter-1/**'
-      - '!chapters/chapter-19/**'
 
 jobs:
-  build-chapters:
-    strategy:
-      fail-fast: false
-      matrix:
-        chapter-numbers: [ 1, 8 ]
+  build-first-chapter:
     runs-on: ubuntu-20.04
-    name: Build the application for chapter ${{ matrix.chapter-numbers }}
+    name: Build the Application for Chapter 1
     steps:
 
       - name: Checkout code
@@ -25,24 +20,6 @@ jobs:
         with:
           java-version: 11.0
 
-      - name: Build and destroy the infrastructure
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/cdk" ]; then
-            cd chapters/chapter-${{ matrix.chapter-numbers }}/cdk
-            sudo npm install -g aws-cdk
-            mvn package
-            cdk deploy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --require-approval never
-            cdk destroy -c accountId=${AWS_ACCOUNT_ID} -c region=${AWS_DEFAULT_REGION} --force --require-approval never
-          fi
-
       - name: Build the application
-        run: |
-          if [ -d "chapters/chapter-${{ matrix.chapter-numbers }}/application" ]; then
-            cd chapters/chapter-${{ matrix.chapter-numbers }}/application
-            ./gradlew build --stacktrace
-          fi
+        working-directory: chapters/chapter-1/application
+        run: ./gradlew build --stacktrace
