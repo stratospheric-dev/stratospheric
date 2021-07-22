@@ -61,8 +61,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           .setSystemLogin(websocketUsername)
           .setSystemPasscode(websocketPassword);
       }
-
-      registry.setApplicationDestinationPrefixes("/websocketEndpoints");
     }
   }
 
