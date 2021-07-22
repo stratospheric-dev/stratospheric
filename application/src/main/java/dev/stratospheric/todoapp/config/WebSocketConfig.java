@@ -4,6 +4,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
 import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
@@ -46,7 +47,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   @Override
-  public void configureMessageBroker(MessageBrokerRegistry registry) {
+  public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
     if (this.websocketEndpoint != null) {
       ReactorNettyTcpClient<byte[]> tcpClient = createTcpClient(this.websocketEndpoint);
 
