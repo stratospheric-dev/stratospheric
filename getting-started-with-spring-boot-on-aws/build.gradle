@@ -19,9 +19,9 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config'
   testImplementation('org.springframework.boot:spring-boot-starter-test') {
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
@@ -29,7 +29,7 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}"
   }
 }
 

@@ -2,7 +2,7 @@ package dev.stratospheric;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration;
+import io.awspring.cloud.autoconfigure.context.ContextInstanceDataAutoConfiguration;
 
 @SpringBootApplication(exclude = ContextInstanceDataAutoConfiguration.class)
 public class TodoApplication {

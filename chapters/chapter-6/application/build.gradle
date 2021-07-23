@@ -18,7 +18,7 @@ ext {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.1'

@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.Bucket;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration;
+import io.awspring.cloud.autoconfigure.context.ContextInstanceDataAutoConfiguration;
 import org.springframework.context.event.EventListener;
 
 @SpringBootApplication(exclude = ContextInstanceDataAutoConfiguration.class)

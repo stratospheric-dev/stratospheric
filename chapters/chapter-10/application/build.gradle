@@ -23,7 +23,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.3'

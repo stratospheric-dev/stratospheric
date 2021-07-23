@@ -4,11 +4,10 @@ import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
 import dev.stratospheric.todoapp.todo.Todo;
 import dev.stratospheric.todoapp.todo.TodoRepository;
-import io.micrometer.core.annotation.Timed;
+import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
