@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', "2020.0.3")
+  set('springCloudAwsVersion', "2.2.6.RELEASE")
 }
 
 dependencies {
@@ -29,7 +29,7 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    mavenBom "org.springframework.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}"
   }
 }
 
