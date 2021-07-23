@@ -29,7 +29,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.cloud:spring-cloud-starter-aws'
   implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
-  implementation 'org.springframework.cloud:spring-cloud-aws-actuator'
+  implementation 'org.springframework.cloud:spring-cloud-aws-actuator:2.2.6.RELEASE'
   implementation 'org.springframework.boot:spring-boot-starter-activemq'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.3'
