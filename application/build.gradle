@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR10')
+  set('springCloudVersion', '2020.0.3')
   set('testcontainersVersion', '1.16.0')
 }
 
