@@ -72,7 +72,7 @@ public class ActiveMqStack extends Stack {
       .subnetIds(Collections.singletonList(networkOutputParameters.getIsolatedSubnets().get(0)))
       .hostInstanceType("mq.t2.micro")
       .engineType("ACTIVEMQ")
-      .engineVersion("5.15.14")
+      .engineVersion("5.16.2")
       .authenticationStrategy("SIMPLE")
       .encryptionOptions(
         CfnBroker.EncryptionOptionsProperty
