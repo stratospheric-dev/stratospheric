@@ -23,8 +23,8 @@
         <root level="INFO">
             <appender-ref ref="JSON"/>
         </root>
-      <logger name="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler" level="WARN"/>
-      <logger name="org.springframework.web.SimpLogging" level="WARN"/>
+      <logger name="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler" level="INFO"/>
+      <logger name="org.springframework.web.SimpLogging" level="INFO"/>
     </springProfile>
 
 </configuration>
