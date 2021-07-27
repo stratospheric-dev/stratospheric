@@ -84,6 +84,10 @@ public class ActiveMqStack extends Stack {
       .publiclyAccessible(false)
       .autoMinorVersionUpgrade(true)
       .deploymentMode("SINGLE_INSTANCE")
+      .logs(CfnBroker.LogListProperty
+        .builder()
+        .general(true)
+        .build())
       .build();
 
     createOutputParameters();
