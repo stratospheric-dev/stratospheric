@@ -51,12 +51,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     if (this.websocketEndpoint != null) {
       ReactorNettyTcpClient<byte[]> tcpClient = createTcpClient(this.websocketEndpoint);
 
+      ReactorNettyTcpClient<byte[]> simplifiedClient = new ReactorNettyTcpClient<>(configurer -> configurer
+        .host(this.websocketEndpoint.host)
+        .port(this.websocketEndpoint.port)
+        .secure(), new StompReactorNettyCodec());
+
       StompBrokerRelayRegistration stompBrokerRelayRegistration = registry
         .enableStompBrokerRelay("/topic")
-        .setTcpClient(tcpClient);
+        .setTcpClient(simplifiedClient);
 
       if (websocketUsername != null && websocketPassword != null) {
         stompBrokerRelayRegistration
+          .setAutoStartup(true)
           .setClientLogin(websocketUsername)
           .setClientPasscode(websocketPassword)
           .setSystemLogin(websocketUsername)
