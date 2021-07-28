@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR9')
+  set('springCloudVersion', 'Hoxton.SR12')
 }
 
 dependencies {

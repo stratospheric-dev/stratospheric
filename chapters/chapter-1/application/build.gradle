@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.4.2'
+  id 'org.springframework.boot' version '2.4.9'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'java'
 }
@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR6')
+  set('springCloudVersion', 'Hoxton.SR12')
 }
 
 dependencies {
