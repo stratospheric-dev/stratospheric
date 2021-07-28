@@ -33,5 +33,7 @@ management:
 
 custom:
   web-socket-relay-endpoint: localhost:61613
-  auto-confirm-collaborations: true
+  web-socket-relay-username: admin
+  web-socket-relay-password: admin
   web-socket-relay-use-ssl: false
+  auto-confirm-collaborations: true

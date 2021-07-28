@@ -1,20 +1,5 @@
 package dev.stratospheric.todoapp.config;
 
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.resolver.DefaultAddressResolverGroup;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNull;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
-import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
-import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import reactor.netty.tcp.TcpClient;
-
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,22 +7,29 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
+import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final Endpoint websocketEndpoint;
-
   private final String websocketUsername;
-
   private final String websocketPassword;
-
   private final boolean websocketUseSsl;
 
   public WebSocketConfig(
-    @Value("${custom.web-socket-relay-endpoint:#{null}}") String websocketRelayEndpoint,
-    @Value("${custom.web-socket-relay-username:#{null}}") String websocketUsername,
-    @Value("${custom.web-socket-relay-password:#{null}}") String websocketPassword,
+    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint,
+    @Value("${custom.web-socket-relay-username}") String websocketUsername,
+    @Value("${custom.web-socket-relay-password}") String websocketPassword,
     @Value("${custom.web-socket-relay-use-ssl:#{false}}") boolean websocketUseSsl
   ) {
     this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
@@ -48,62 +40,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
-    if (this.websocketEndpoint != null) {
-      ReactorNettyTcpClient<byte[]> tcpClient = createTcpClient(this.websocketEndpoint);
+    ReactorNettyTcpClient<byte[]> simplifiedClient = new ReactorNettyTcpClient<>(configurer -> configurer
+      .host(this.websocketEndpoint.host)
+      .port(this.websocketEndpoint.port)
+      .secure(), new StompReactorNettyCodec());
 
-      ReactorNettyTcpClient<byte[]> simplifiedClient = new ReactorNettyTcpClient<>(configurer -> configurer
-        .host(this.websocketEndpoint.host)
-        .port(this.websocketEndpoint.port)
-        .secure(), new StompReactorNettyCodec());
-
-      StompBrokerRelayRegistration stompBrokerRelayRegistration = registry
-        .enableStompBrokerRelay("/topic")
-        .setTcpClient(simplifiedClient);
-
-      if (websocketUsername != null && websocketPassword != null) {
-        stompBrokerRelayRegistration
-          .setAutoStartup(true)
-          .setClientLogin(websocketUsername)
-          .setClientPasscode(websocketPassword)
-          .setSystemLogin(websocketUsername)
-          .setSystemPasscode(websocketPassword);
-      }
-    }
-  }
-
-  private ReactorNettyTcpClient<byte[]> createTcpClient(Endpoint endpoint) {
-    SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
-
-    if (endpoint.activeStandbyHosts != null && !endpoint.activeStandbyHosts.isEmpty()) {
-      final List<InetSocketAddress> addressList = new ArrayList<>();
-      for (String hostURI : endpoint.activeStandbyHosts) {
-        String[] hostAndPort = hostURI.split(":");
-        addressList.add(new InetSocketAddress(hostAndPort[0], Integer.parseInt(hostAndPort[1])));
-      }
-      final RoundRobinList<InetSocketAddress> addresses = new RoundRobinList<>(addressList);
-
-      return new ReactorNettyTcpClient<>(builder ->
-        builder
-          .remoteAddress(addresses::get)
-          .secure(sslContextSpec -> sslContextSpec.sslContext(sslContextBuilder))
-          .resolver(DefaultAddressResolverGroup.INSTANCE),
-        new StompReactorNettyCodec()
-      );
-    }
-
-    return new ReactorNettyTcpClient<>(builder -> {
-      TcpClient tcpClient = builder
-        .host(this.websocketEndpoint.host)
-        .port(this.websocketEndpoint.port)
-        .resolver(DefaultAddressResolverGroup.INSTANCE);
-      if (websocketUseSsl) {
-        tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContextBuilder));
-      }
-
-      return tcpClient;
-    },
-      new StompReactorNettyCodec()
-    );
+    registry
+      .enableStompBrokerRelay("/topic")
+      .setRelayHost(this.websocketEndpoint.host)
+      .setRelayPort(this.websocketEndpoint.port)
+      .setClientLogin(this.websocketUsername)
+      .setClientPasscode(this.websocketPassword)
+      .setSystemLogin(this.websocketUsername)
+      .setSystemPasscode(this.websocketPassword);
+      // .setTcpClient(simplifiedClient);
   }
 
   @Override
@@ -168,30 +118,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       }
 
       return null;
-    }
-  }
-
-  private static class RoundRobinList<T> {
-
-    private Iterator<T> iterator;
-    private final Collection<T> elements;
-
-    public RoundRobinList(Collection<T> elements) {
-      this.elements = elements;
-      iterator = this.elements.iterator();
-    }
-
-    public synchronized T get() {
-      if (iterator.hasNext()) {
-        return iterator.next();
-      } else {
-        iterator = elements.iterator();
-        return iterator.next();
-      }
-    }
-
-    public int size() {
-      return elements.size();
     }
   }
 }
