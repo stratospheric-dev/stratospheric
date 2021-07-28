@@ -25,9 +25,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   private final boolean websocketUseSsl;
 
   public WebSocketConfig(
-    @Value("${custom.web-socket-relay-endpoint}") String websocketRelayEndpoint,
-    @Value("${custom.web-socket-relay-username}") String websocketUsername,
-    @Value("${custom.web-socket-relay-password}") String websocketPassword,
+    @Value("${custom.web-socket-relay-endpoint:#{null}}") String websocketRelayEndpoint,
+    @Value("${custom.web-socket-relay-username:#{null}}") String websocketUsername,
+    @Value("${custom.web-socket-relay-password:#{null}}") String websocketPassword,
     @Value("${custom.web-socket-relay-use-ssl:#{false}}") boolean websocketUseSsl
   ) {
     this.websocketEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
@@ -38,20 +38,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
-    ReactorNettyTcpClient<byte[]> customTcpClient = new ReactorNettyTcpClient<>(configurer -> {
-      configurer
-        .host(this.websocketEndpoint.host)
-        .port(this.websocketEndpoint.port);
-
-      if (websocketUseSsl) {
-        configurer.secure();
-      }
-
-      return configurer;
-    }, new StompReactorNettyCodec());
+    ReactorNettyTcpClient<byte[]> customTcpClient = new ReactorNettyTcpClient<>(configurer -> configurer
+      .host(this.websocketEndpoint.host)
+      .port(this.websocketEndpoint.port)
+      .secure(), new StompReactorNettyCodec());
 
     registry
       .enableStompBrokerRelay("/topic")
+      .setAutoStartup(true)
       .setClientLogin(this.websocketUsername)
       .setClientPasscode(this.websocketPassword)
       .setSystemLogin(this.websocketUsername)
