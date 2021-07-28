@@ -38,10 +38,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
-    ReactorNettyTcpClient<byte[]> simplifiedClient = new ReactorNettyTcpClient<>(configurer -> configurer
-      .host(this.websocketEndpoint.host)
-      .port(this.websocketEndpoint.port)
-      .secure(), new StompReactorNettyCodec());
+    ReactorNettyTcpClient<byte[]> customTcpClient = new ReactorNettyTcpClient<>(configurer -> {
+      configurer
+        .host(this.websocketEndpoint.host)
+        .port(this.websocketEndpoint.port);
+
+      if (websocketUseSsl) {
+        configurer.secure();
+      }
+
+      return configurer;
+    }, new StompReactorNettyCodec());
 
     registry
       .enableStompBrokerRelay("/topic")
@@ -50,8 +57,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       .setClientLogin(this.websocketUsername)
       .setClientPasscode(this.websocketPassword)
       .setSystemLogin(this.websocketUsername)
-      .setSystemPasscode(this.websocketPassword);
-      // .setTcpClient(simplifiedClient);
+      .setSystemPasscode(this.websocketPassword)
+      .setTcpClient(customTcpClient);
   }
 
   @Override
