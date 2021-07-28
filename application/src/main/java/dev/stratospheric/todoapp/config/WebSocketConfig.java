@@ -52,8 +52,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     registry
       .enableStompBrokerRelay("/topic")
-      .setRelayHost(this.websocketEndpoint.host)
-      .setRelayPort(this.websocketEndpoint.port)
       .setClientLogin(this.websocketUsername)
       .setClientPasscode(this.websocketPassword)
       .setSystemLogin(this.websocketUsername)
