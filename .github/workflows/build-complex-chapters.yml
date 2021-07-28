@@ -83,6 +83,7 @@ jobs:
 
       - name: Prepare the CDK context
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        if: ${{ false }}  # disable for now
         run: |
           echo $(cat cdk.json | jq \
           --arg env "$ENVIRONMENT_NAME" \
@@ -93,6 +94,7 @@ jobs:
 
       - name: Create the AWS infrastructure
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        if: ${{ false }}  # disable for now
         run: |
           npm install
           npm run network:deploy
@@ -108,6 +110,7 @@ jobs:
 
       - name: Publish the Docker image to ECR
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        if: ${{ false }}  # disable for now
         env:
           DOCKER_IMAGE_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
         run: |
@@ -117,17 +120,18 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
 
       - name: Deploy the application
+        if: ${{ false }}  # disable for now
         run: |
           echo "TODO - now deploy the latest Docker image to ECS using the Service CDK construct"
 
       - name: Delete all images inside the ECR
-        if: always()
+        if: ${{ false }}  # disable for now
         run: |
           IMAGES_TO_DELETE=$( aws ecr list-images --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --query 'imageIds[*]' --output json )
           aws ecr batch-delete-image --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --image-ids "$IMAGES_TO_DELETE" || true
 
       - name: Destroy the AWS infrastructure
-        if: always()
+        if: ${{ false }}  # disable for now
         working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
         run: |
           npm run messaging:destroy --if-present
