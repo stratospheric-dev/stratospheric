@@ -10,21 +10,21 @@ The purpose of this todo application is to serve as an example for the various u
 * [Java 11 or higher](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 * [Gradle](https://gradle.org/)
 
-### Running the application on your local machine
+### Running the Application on Your Local Machine
 
 * Make sure you have Docker up- and running and Docker Compose installed
 * Start the required infrastructure with `docker-compose up`
 * Run `./gradlew bootRun` to start the application
 * Access http://localhost:8080 in your browser
 
-You can now login with the following users: `duke`, `tom`, `bjoern`, `philip`. They all have the same password `stratospheric`.
+You can now log in with the following users: `duke`, `tom`, `bjoern`, `philip`. They all have the same password `stratospheric`.
 
-### Application profiles
+### Application Profiles
 
 - `dev` running the application locally for development. You don't need any AWS account or running AWS services for this. All infrastructure components are started within `docker-compose.yml`.
 - `aws` running the application inside AWS. This requires the whole infrastructure setup inside your AWS account.
 
-### Running the tests
+### Running the Tests
 
 Run `./gradlew build` from the command line.
 
@@ -49,13 +49,13 @@ information on Spring Boot deployment techniques and alternatives:
 #### Database schema
 ![alt text][database-schema-diagram]
 
-[class-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/model/Todo%20App%20-%20Class%20Diagram.png "class diagram"
-[entity-relationship-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/model/Todo%20App%20-%20ER%20diagram.png "entity-relationship diagram"
-[database-schema-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/model/Todo%20App%20-%20ER%20diagram%20from%20database%20schema.png "database schema diagram"
+[class-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/application/docs/Todo%20App%20-%20Class%20Diagram.png "class diagram"
+[entity-relationship-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/application/docs/Todo%20App%20-%20ER%20diagram.png "entity-relationship diagram"
+[database-schema-diagram]:https://github.com/stratospheric-dev/stratospheric/raw/main/application/docs/Todo%20App%20-%20ER%20diagram%20from%20database%20schema.png "database schema diagram"
 
 ## Built with
 
-* [Spring Boot](https://projects.spring.io/spring-boot/)
+* [Spring Boot](https://projects.spring.io/spring-boot/) and the following starters: Spring Web MVC, Spring Data JPA, Spring Cloud AWS, Spring WebFlux, Spring WebSocket, Thymeleaf, Spring Mail, Spring Validation, Spring Security, Actuator, OAuth2 Client
 * [Gradle](https://gradle.org/)
 
 ## License
