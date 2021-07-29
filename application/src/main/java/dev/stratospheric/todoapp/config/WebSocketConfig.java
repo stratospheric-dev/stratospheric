@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -18,6 +20,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+  private static final Logger LOG = LoggerFactory.getLogger(WebSocketConfig.class);
 
   private final Endpoint websocketEndpoint;
   private final String websocketUsername;
@@ -38,11 +42,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
-    ReactorNettyTcpClient<byte[]> customTcpClient = new ReactorNettyTcpClient<>(configurer -> configurer
-      .host(this.websocketEndpoint.host)
-      .port(this.websocketEndpoint.port)
-      .secure(), new StompReactorNettyCodec());
-    
+    ReactorNettyTcpClient<byte[]> customTcpClient = this.websocketUseSsl ?
+      getCustomTcpClientWithSSLSupport() : getCustomTcpClientWithoutSSLSupport();
+
     registry
       .enableStompBrokerRelay("/topic")
       .setAutoStartup(true)
@@ -51,6 +53,21 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       .setSystemLogin(this.websocketUsername)
       .setSystemPasscode(this.websocketPassword)
       .setTcpClient(customTcpClient);
+  }
+
+  private ReactorNettyTcpClient<byte[]> getCustomTcpClientWithoutSSLSupport() {
+    LOG.warn("no SSL Support");
+    return new ReactorNettyTcpClient<>(configurer -> configurer
+      .host(this.websocketEndpoint.host)
+      .port(this.websocketEndpoint.port), new StompReactorNettyCodec());
+  }
+
+  private ReactorNettyTcpClient<byte[]> getCustomTcpClientWithSSLSupport() {
+    LOG.warn("With SSL Support");
+    return new ReactorNettyTcpClient<>(configurer -> configurer
+      .host(this.websocketEndpoint.host)
+      .port(this.websocketEndpoint.port)
+      .secure(), new StompReactorNettyCodec());
   }
 
   @Override
