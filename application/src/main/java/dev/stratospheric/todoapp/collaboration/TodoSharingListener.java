@@ -5,19 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 public class TodoSharingListener {
 
   private final MailSender mailSender;
   private final TodoCollaborationService todoCollaborationService;
-  private final Environment environment;
   private final boolean autoConfirmCollaborations;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoSharingListener.class.getName());
@@ -25,16 +21,14 @@ public class TodoSharingListener {
   public TodoSharingListener(
     MailSender mailSender,
     TodoCollaborationService todoCollaborationService,
-    Environment environment,
     @Value("${custom.auto-confirm-collaborations}") boolean autoConfirmCollaborations) {
     this.mailSender = mailSender;
     this.todoCollaborationService = todoCollaborationService;
-    this.environment = environment;
     this.autoConfirmCollaborations = autoConfirmCollaborations;
   }
 
   @SqsListener(value = "${custom.sharing-queue}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-  public void listenToSharingMessages(TodoCollaborationNotification payload) {
+  public void listenToSharingMessages(TodoCollaborationNotification payload) throws InterruptedException {
     LOG.info("Incoming todo sharing payload: {}", payload);
 
     SimpleMailMessage message = new SimpleMailMessage();
@@ -70,6 +64,7 @@ public class TodoSharingListener {
 
     if (autoConfirmCollaborations) {
       LOG.info("Auto-confirmed collaboration request for todo: {}", payload.getTodoId());
+      Thread.sleep(2_500);
       todoCollaborationService.confirmCollaboration(payload.getCollaboratorEmail(), payload.getTodoId(), payload.getCollaboratorId(), payload.getToken());
     }
   }
