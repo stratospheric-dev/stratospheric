@@ -26,5 +26,5 @@ function disconnectFromWebSocketEndpoint() {
 }
 
 $(document).ready(function () {
-  $('#toast').toast({delay: 5000});
+  $('#toast').toast({delay: 10000});
 });
