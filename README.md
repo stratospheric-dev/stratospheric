@@ -41,6 +41,10 @@ We don't stop here. Once our application is running in production, things are ge
 ![Todo Dashboard](https://stratospheric.dev/assets/images/application/stratospheric-dashboard-page.png)
 ![Creating New Todos](https://stratospheric.dev/assets/images/application/stratospheric-create-todo-page.png)
 
+## Technical Architecture
+
+![Stratospheric Technical Architecture](https://stratospheric.dev/assets/images/application/stratospheric-technical-architecture-transparent.png)
+
 ## Authors
 
 - [Björn Wilmsmann](https://bjoernkw.com/)
