@@ -1,6 +1,9 @@
 package dev.stratospheric.todoapp.config;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,6 +69,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       .secure(), new StompReactorNettyCodec());
   }
 
+  private ReactorNettyTcpClient<byte[]> createRoundRobinTcpClient(Endpoint endpoint) {
+    final List<InetSocketAddress> addressList = new ArrayList<>();
+
+    for (String hostURI : endpoint.activeStandbyHosts) {
+      String[] hostAndPort = hostURI.split(":");
+      addressList.add(new InetSocketAddress(hostAndPort[0], Integer.parseInt(hostAndPort[1])));
+    }
+
+    final RoundRobinList<InetSocketAddress> addresses = new RoundRobinList<>(addressList);
+
+    return new ReactorNettyTcpClient<>(builder ->
+      builder
+        .remoteAddress(addresses::get)
+        .secure()
+        .resolver(DefaultAddressResolverGroup.INSTANCE),
+      new StompReactorNettyCodec()
+    );
+  }
+
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry
@@ -128,6 +150,30 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       }
 
       return null;
+    }
+  }
+
+  private static class RoundRobinList<T> {
+
+    private Iterator<T> iterator;
+    private final Collection<T> elements;
+
+    public RoundRobinList(Collection<T> elements) {
+      this.elements = elements;
+      iterator = this.elements.iterator();
+    }
+
+    public synchronized T get() {
+      if (iterator.hasNext()) {
+        return iterator.next();
+      } else {
+        iterator = elements.iterator();
+        return iterator.next();
+      }
+    }
+
+    public int size() {
+      return elements.size();
     }
   }
 }
