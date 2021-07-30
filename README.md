@@ -35,15 +35,15 @@ We don't stop here. Once our application is running in production, things are ge
 
 ## What We're Going to Build
 
+![Stratospheric Technical Architecture](https://stratospheric.dev/assets/images/application/stratospheric-technical-architecture-transparent.png)
+
+## What It's Going to Look Like
+
 ![Landing Page Without Being Logged In](https://stratospheric.dev/assets/images/application/stratospheric-overview-page-no-login.png)
 ![Registration Form Using Amazon Cognito](https://stratospheric.dev/assets/images/application/stratospheric-register-page.png)
 ![Landing Page While Being Logged In](https://stratospheric.dev/assets/images/application/stratospheric-overview-page-with-login.png)
 ![Todo Dashboard](https://stratospheric.dev/assets/images/application/stratospheric-dashboard-page.png)
 ![Creating New Todos](https://stratospheric.dev/assets/images/application/stratospheric-create-todo-page.png)
-
-## Technical Architecture
-
-![Stratospheric Technical Architecture](https://stratospheric.dev/assets/images/application/stratospheric-technical-architecture-transparent.png)
 
 ## Authors
 
