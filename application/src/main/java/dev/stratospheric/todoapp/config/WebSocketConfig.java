@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.netty.resolver.DefaultAddressResolverGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -61,6 +62,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     return new ReactorNettyTcpClient<>(configurer -> configurer
       .host(this.websocketEndpoint.host)
       .port(this.websocketEndpoint.port)
+      .resolver(DefaultAddressResolverGroup.INSTANCE)
       .secure(), new StompReactorNettyCodec());
   }
 
