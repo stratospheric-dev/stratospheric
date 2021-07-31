@@ -20,9 +20,6 @@ public class NetworkApp {
     String region = (String) app.getNode().tryGetContext("region");
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String sslCertificateArn = (String) app.getNode().tryGetContext("sslCertificateArn");
-    Validations.requireNonEmpty(region, "context variable 'sslCertificateArn' must not be null");
-
     Environment awsEnvironment = makeEnv(accountId, region);
 
     Stack networkStack = new Stack(app, "NetworkStack", StackProps.builder()
@@ -35,7 +32,7 @@ public class NetworkApp {
       "Network",
       awsEnvironment,
       environmentName,
-      new Network.NetworkInputParameters(sslCertificateArn));
+      new Network.NetworkInputParameters());
 
     app.synth();
   }
