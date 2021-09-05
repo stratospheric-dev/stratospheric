@@ -28,6 +28,6 @@
     "domain:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DomainApp\" -c accountId=221875718260 -c environmentName=${ENVIRONMENT_NAME} -c region=eu-central-1 -c applicationName=todo-app --force --require-approval never"
   },
   "devDependencies": {
-    "aws-cdk": "1.114.0"
+    "aws-cdk": "1.121.0"
   }
 }
