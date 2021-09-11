@@ -21,7 +21,7 @@ public class NetworkApp {
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
     String sslCertificateArn = (String) app.getNode().tryGetContext("sslCertificateArn");
-    Validations.requireNonEmpty(region, "context variable 'sslCertificateArn' must not be null");
+    Validations.requireNonEmpty(sslCertificateArn, "context variable 'sslCertificateArn' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
