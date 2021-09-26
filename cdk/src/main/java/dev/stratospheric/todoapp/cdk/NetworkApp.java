@@ -1,6 +1,7 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.Network;
+import dev.stratospheric.cdk.Network.NetworkInputParameters;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
@@ -21,7 +22,6 @@ public class NetworkApp {
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
     String sslCertificateArn = (String) app.getNode().tryGetContext("sslCertificateArn");
-    Validations.requireNonEmpty(sslCertificateArn, "context variable 'sslCertificateArn' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -30,12 +30,18 @@ public class NetworkApp {
       .env(awsEnvironment)
       .build());
 
+    NetworkInputParameters inputParameters = new NetworkInputParameters();
+
+    if(sslCertificateArn != null && !sslCertificateArn.isEmpty()){
+      inputParameters.withSslCertificateArn(sslCertificateArn);
+    }
+
     Network network = new Network(
       networkStack,
       "Network",
       awsEnvironment,
       environmentName,
-      new Network.NetworkInputParameters(sslCertificateArn));
+      inputParameters);
 
     app.synth();
   }
