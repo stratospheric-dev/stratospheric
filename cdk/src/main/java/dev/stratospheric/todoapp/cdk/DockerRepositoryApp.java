@@ -32,11 +32,6 @@ public class DockerRepositoryApp {
       awsEnvironment,
       new DockerRepository.DockerRepositoryInputParameters(applicationName, accountId));
 
-    CfnOutput.Builder.create(dockerRepository, "OUTPUT")
-      .exportName("PUTPUTPUTPUT")
-      .value("PUT")
-      .build();
-
     app.synth();
   }
 
