@@ -1,5 +1,10 @@
 package dev.stratospheric.email;
 
+import javax.mail.Address;
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -9,15 +14,14 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.simpleemail.model.*;
+import com.amazonaws.services.simpleemail.model.Body;
+import com.amazonaws.services.simpleemail.model.Content;
+import com.amazonaws.services.simpleemail.model.Destination;
+import com.amazonaws.services.simpleemail.model.Message;
+import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import org.apache.commons.mail.util.MimeMessageParser;
 
-import javax.mail.Address;
-import javax.mail.internet.MimeMessage;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import static java.nio.charset.StandardCharsets.*;
 
 public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
@@ -27,33 +31,39 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
   private LambdaLogger logger;
 
+  private final AmazonS3 s3Client = AmazonS3ClientBuilder
+    .defaultClient();
+
+  private final AmazonSimpleEmailService sesClient = AmazonSimpleEmailServiceClientBuilder
+    .standard()
+    .withRegion(Regions.EU_WEST_1)
+    .build();
+
   @Override
   public Void handleRequest(S3Event s3Event, Context context) {
 
     this.logger = context.getLogger();
 
-    String bucket = s3Event.getRecords().get(0).getS3().getBucket().getName();
-    String key = s3Event.getRecords().get(0).getS3().getObject().getKey();
+    var bucket = s3Event.getRecords().get(0).getS3().getBucket().getName();
+    var key = s3Event.getRecords().get(0).getS3().getObject().getKey();
+
     logger.log("New E-Mail received: " + bucket + "/" + key);
 
-    AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
-    logger.log("Connection to S3 established");
-
     try {
-      MimeMessageParser messageParser = new MimeMessageParser(new MimeMessage(null, s3Client.getObject(bucket, key).getObjectContent()));
+      var messageParser = new MimeMessageParser(new MimeMessage(null, s3Client.getObject(bucket, key).getObjectContent()));
       messageParser = messageParser.parse();
 
-      String plainContent = messageParser.getPlainContent();
-      String htmlContent = messageParser.getHtmlContent();
-      String from = messageParser.getFrom();
-      String subject = "Forwarded (Stratospheric) Mail: " + messageParser.getSubject();
+      var plainContent = messageParser.getPlainContent();
+      var htmlContent = messageParser.getHtmlContent();
+      var from = messageParser.getFrom();
+      var subject = "Forwarded (Stratospheric) Mail: " + messageParser.getSubject();
 
-      List<Address> receivers = messageParser.getTo();
+      var receivers = messageParser.getTo();
 
-      Set<String> forwardingRecipients = new HashSet<>();
+      var forwardingRecipients = new HashSet<String>();
 
       for (Address address : receivers) {
-        final String emailAddress = address.toString();
+        var emailAddress = address.toString();
         if (emailAddress.contains("info")) {
           forwardingRecipients.add(EMAIL_BJOERN);
           forwardingRecipients.add(EMAIL_PHILIP);
@@ -73,8 +83,10 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
         }
       }
 
-      for (String forwardingRecipient : forwardingRecipients) {
-        sendEmail(plainContent, htmlContent, subject, forwardingRecipient, from);
+      var emailContent = constructEmailContent(plainContent, htmlContent, subject);
+
+      for (var forwardingRecipient : forwardingRecipients) {
+        sendEmail(emailContent, forwardingRecipient, from);
       }
 
     } catch (Exception e) {
@@ -84,29 +96,51 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
     return null;
   }
 
-  private void sendEmail(String plainContent, String htmlContent, String subject, String recipient, String from) {
-    try {
-      AmazonSimpleEmailService client =
-        AmazonSimpleEmailServiceClientBuilder.standard()
-          .withRegion(Regions.EU_WEST_1).build();
+  private Message constructEmailContent(String plainContent, String htmlContent, String subject) {
 
-      SendEmailRequest request = new SendEmailRequest()
+    var message = new Message()
+      .withBody(new Body())
+      .withSubject(new Content().withCharset(UTF_8.name()).withData(subject));
+
+    if (plainContent == null && htmlContent == null) {
+      message.getBody()
+        .setText(new Content()
+          .withCharset(UTF_8.name())
+          .withData("Neither HTML nor plain/text provided in the E-Mail. Please check our S3 bucket for the raw email"));
+
+      return message;
+    }
+
+    if (htmlContent != null) {
+      message.getBody()
+        .setHtml(new Content()
+          .withCharset(UTF_8.name())
+          .withData(htmlContent)
+        );
+    }
+
+    if (plainContent != null) {
+      message.getBody()
+        .setText(new Content()
+          .withCharset(UTF_8.name())
+          .withData(plainContent)
+        );
+    }
+
+    return message;
+  }
+
+  private void sendEmail(Message emailContent, String recipient, String from) {
+    try {
+      var sendEmailRequest = new SendEmailRequest()
         .withDestination(
           new Destination().withToAddresses(recipient))
-        .withMessage(new Message()
-          .withBody(new Body()
-            .withHtml(new Content()
-              .withCharset(StandardCharsets.UTF_8.name())
-              .withData(htmlContent == null ? "No HTML Email Content Provided" : htmlContent))
-            .withText(new Content()
-              .withCharset(StandardCharsets.UTF_8.name())
-              .withData(plainContent == null ? "No Plain Email Text Content Provided" : plainContent)))
-          .withSubject(new Content()
-            .withCharset(StandardCharsets.UTF_8.name()).withData(subject)))
+        .withMessage(emailContent)
         .withSource("noreply@stratospheric.dev")
         .withReplyToAddresses(from);
 
-      client.sendEmail(request);
+      sesClient.sendEmail(sendEmailRequest);
+
       logger.log("Email forwarded to " + recipient);
     } catch (Exception ex) {
       logger.log("The email was not sent. Error message: " + ex.getMessage());
