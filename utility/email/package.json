@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "serverless-plugin-aws-alerts": "^1.7.3"
+  }
+}

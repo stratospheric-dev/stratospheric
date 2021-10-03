@@ -1,8 +1,12 @@
 service: email-utilities
 
+plugins:
+  - serverless-plugin-aws-alerts
+
 provider:
   name: aws
   runtime: java11
+  stage: production
   region: eu-central-1
   timeout: 10
   memorySize: 1024
@@ -23,7 +27,20 @@ provider:
 
 custom:
   emailBucket: stratospheric-emails
-
+  alerts:
+    stages:
+      - production
+    definitions:
+      functionErrors:
+        period: 3600 # evaluate every 60 minutes -> emails don't come regularly
+    topics:
+      alarm:
+        topic: ${self:service}-production-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: ${ssm:/email-philip}
+    alarms:
+      - functionErrors
 package:
   artifact: build/distributions/email-1.0.0.zip
 
