@@ -6,7 +6,7 @@ plugins:
 provider:
   name: aws
   runtime: java11
-  stage: production
+  stage: dev
   region: eu-central-1
   timeout: 10
   memorySize: 1024
@@ -30,7 +30,7 @@ custom:
   emailBucket: stratospheric-emails
   alerts:
     stages:
-      - production
+      - dev
     definitions:
       functionErrors:
         period: 3600 # evaluate every 60 minutes -> emails don't come regularly
