@@ -36,7 +36,7 @@ custom:
         period: 3600 # evaluate every 60 minutes -> emails don't come regularly
     topics:
       alarm:
-        topic: ${self:service}-production-alerts-alarm
+        topic: ${self:service}-alerts-alarm
         notifications:
           - protocol: email
             endpoint: ${ssm:/email-philip}
