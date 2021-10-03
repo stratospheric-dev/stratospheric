@@ -11,7 +11,7 @@
   </a>
 </p>
 
-» Get Your Discounted Copy of Stratospheric by [Joining Our Mailing List](https://stratospheric.dev/)
+» Get Your Discounted Copy of Stratospheric by [Joining Our Mailing List](https://stratospheric.dev/#mailing-list)
 
 ## About the Book
 
