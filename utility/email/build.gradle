@@ -11,11 +11,11 @@ repositories {
 }
 
 dependencies {
-  implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.925')
+  implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.75')
   implementation 'com.amazonaws:aws-java-sdk-s3'
   implementation 'com.amazonaws:aws-java-sdk-ses'
   implementation 'org.apache.commons:commons-email:1.5'
-  implementation 'com.amazonaws:aws-lambda-java-events:3.1.0'
+  implementation 'com.amazonaws:aws-lambda-java-events:3.10.0'
   implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
   runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
   implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
