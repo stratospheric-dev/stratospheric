@@ -1,7 +1,9 @@
 ## Stratospheric - From Zero to Production with Spring Boot and AWS
 
+<!---
 [![04 - Publish Todo-App](https://github.com/stratospheric-dev/stratospheric/actions/workflows/04-publish-todo-app.yml/badge.svg)](https://github.com/stratospheric-dev/stratospheric/actions/workflows/04-publish-todo-app.yml) [![05 - Update the Todo-App in staging](https://github.com/stratospheric-dev/stratospheric/actions/workflows/05-update-todo-app-in-staging.yml/badge.svg)](https://github.com/stratospheric-dev/stratospheric/actions/workflows/05-update-todo-app-in-staging.yml)
 [![06 - Update the Todo-App environment in staging](https://github.com/stratospheric-dev/stratospheric/actions/workflows/06-update-todo-app-environment-in-staging.yml/badge.svg)](https://github.com/stratospheric-dev/stratospheric/actions/workflows/06-update-todo-app-environment-in-staging.yml)
+--->
 
 <p align="center">
   <a href="https://stratospheric.dev">
