@@ -27,22 +27,6 @@ public class LocalAwsConfig {
     = new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", "eu-central-1");
 
   @Bean
-  public AmazonSQSAsync amazonSQS() {
-    return AmazonSQSAsyncClientBuilder.standard()
-      .withCredentials(DUMMY_CREDENTIALS)
-      .withEndpointConfiguration(LOCAL_ENDPOINT)
-      .build();
-  }
-
-  @Bean
-  public AmazonSimpleEmailService amazonSimpleEmailService() {
-    return AmazonSimpleEmailServiceClientBuilder.standard()
-      .withCredentials(DUMMY_CREDENTIALS)
-      .withEndpointConfiguration(LOCAL_ENDPOINT)
-      .build();
-  }
-
-  @Bean
   public AmazonDynamoDB amazonDynamoDB() {
     return AmazonDynamoDBClientBuilder.standard()
       .withCredentials(DUMMY_CREDENTIALS)
