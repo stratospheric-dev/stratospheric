@@ -1,0 +1,31 @@
+name: Book Feedback
+description: "Everything related to the eBook: Typos, Layout Issues, Broken Links, Wrong Explanations, etc."
+title: "[eBook]: "
+labels: ["ebook-feedback", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to provide feedback to improve the overall quality of Stratospheric!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "On page 47 there's a typo 'Strotospheric'"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: To which eBook version are you referring to (pick the latest verison of the Changelog?
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-change
+    attributes:
+      label: Suggested Changes
+      description: What would you suggest to change or what do you expect as a reader?
+
