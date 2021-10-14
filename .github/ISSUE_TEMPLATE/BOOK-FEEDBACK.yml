@@ -1,6 +1,5 @@
-name: Book Feedback
+name: Feedback for the eBook
 description: "Everything related to the eBook: Typos, Layout Issues, Broken Links, Wrong Explanations, etc."
-title: "[eBook]: "
 labels: ["ebook-feedback", "triage"]
 body:
   - type: markdown
@@ -10,17 +9,15 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "On page 47 there's a typo 'Strotospheric'"
+      label: What can we improve?
+      description: "Try to be as specific as possible, e.g.: On page 47 there's a typo 'Strotospheric'"
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: Version
-      description: To which eBook version are you referring to (pick the latest verison of the Changelog?
+      description: "To which eBook version are you referring to? You can find the version as part of the Changelog (one of the last pages). Pick 'latest' if you can't find it"
     validations:
       required: true
   - type: textarea
