@@ -9,8 +9,8 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What can we improve?
-      description: "Try to be as specific as possible, e.g.: On page 47 there's a typo 'Strotospheric'"
+      label: "What can we improve?"
+      description: "Try to be as specific as possible - for example: On page 47 there's a typo 'Strotospheric'"
     validations:
       required: true
   - type: input
