@@ -1,5 +1,5 @@
 name: Feedback for the sample application
-description: "Everything related to the sample Todo application: Bugs, AWS infrastructure setup issues and everything related to the code"
+description: "Everything related to the sample Todo application: Bugs, Improvements, AWS infrastructure setup issues"
 labels: ["application-feedback", "triage"]
 body:
   - type: markdown
