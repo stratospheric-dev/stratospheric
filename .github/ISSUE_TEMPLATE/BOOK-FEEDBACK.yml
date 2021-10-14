@@ -1,5 +1,5 @@
 name: Feedback for the eBook
-description: "Everything related to the eBook: Typos, Layout Issues, Broken Links, Wrong Explanations, etc."
+description: "Everything related to the eBook: Typos, Layout issues, Broken links, Explanations gaps, Inconsistencies, Testimonials, etc."
 labels: ["ebook-feedback", "triage"]
 body:
   - type: markdown
