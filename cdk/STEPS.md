@@ -49,6 +49,9 @@ npm run service:deploy -- --profile rieckpil
 npm run domain:deploy -- --profile rieckpil
 ```
 
+Things to consider:
+- For Sending Emails with SES you need to get out of the sandbox mode (see the book) hence the sharing feature won't work before. This takes some hours as you have to raise a support ticket with the AWS Support. Alternative manually verify each email youÄre about to send an invitation to
+
 ## 5. Deploy Optional Infrastructure
 Optional
 

@@ -29,8 +29,8 @@ public class CanaryApp {
     String canaryUserPassword = (String) app.getNode().tryGetContext("canaryUserPassword");
     Validations.requireNonEmpty(canaryUserPassword, "context variable 'canaryUserPassword' must not be null");
 
-    String targetUrl = (String) app.getNode().tryGetContext("targetUrl");
-    Validations.requireNonEmpty(targetUrl, "context variable 'targetUrl' must not be null");
+    String applicationUrl = (String) app.getNode().tryGetContext("applicationUrl");
+    Validations.requireNonEmpty(applicationUrl, "context variable 'applicationUrl' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -39,7 +39,7 @@ public class CanaryApp {
       environmentName
     );
 
-    new CanaryStack(app, "canary", awsEnvironment, applicationEnvironment, targetUrl, canaryUsername, canaryUserPassword);
+    new CanaryStack(app, "canary", awsEnvironment, applicationEnvironment, applicationUrl, canaryUsername, canaryUserPassword);
 
     app.synth();
   }
