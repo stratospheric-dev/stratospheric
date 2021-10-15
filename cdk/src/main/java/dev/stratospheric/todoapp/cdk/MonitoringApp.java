@@ -21,6 +21,9 @@ public class MonitoringApp {
     String region = (String) app.getNode().tryGetContext("region");
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
+    String confirmationEmail = (String) app.getNode().tryGetContext("confirmationEmail");
+    Validations.requireNonEmpty(region, "context variable 'confirmationEmail' must not be null");
+
     Environment awsEnvironment = makeEnv(accountId, region);
 
     ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(
@@ -28,7 +31,7 @@ public class MonitoringApp {
       environmentName
     );
 
-    new MonitoringStack(app, "monitoring", awsEnvironment, applicationEnvironment);
+    new MonitoringStack(app, "monitoring", awsEnvironment, applicationEnvironment, confirmationEmail);
 
     app.synth();
   }
