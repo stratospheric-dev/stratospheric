@@ -1,9 +1,10 @@
 {
+  "app": "./mvnw -e -q compile exec:java",
   "context": {
     "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1",
     "applicationName": "todo-app",
     "region": "eu-central-1",
-    "accountId": "547530709389",
+    "accountId": "221875718260",
     "dockerRepositoryName": "todo-app",
     "applicationUrl": "https://app.stratospheric.dev/",
     "loginPageDomainPrefix": "stratospheric",
@@ -11,9 +12,9 @@
     "springProfile": "aws",
     "activeMqUsername": "activemqUser",
     "canaryUsername": "canary",
-    "targetUrl": "https://app.utilzr.io/",
-    "applicationDomain": "app.utilzr.io",
-    "hostedZoneDomain": "utilzr.io",
+    "targetUrl": "https://app.stratospheric.dev/",
+    "applicationDomain": "app.stratospheric.dev",
+    "hostedZoneDomain": "stratospheric.dev",
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true"
