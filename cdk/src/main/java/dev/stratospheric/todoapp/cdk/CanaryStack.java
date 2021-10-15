@@ -46,6 +46,7 @@ public class CanaryStack extends Stack {
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
       .bucketName(applicationEnvironment.prefix("two-canary-bucket"))
       .removalPolicy(RemovalPolicy.DESTROY)
+      .autoDeleteObjects(true)
       .build();
 
     Role executionRole = Role.Builder.create(this, "canaryExecutionRole")
