@@ -58,6 +58,5 @@ Optional
 ```
 # After App Deployment
 npm run monitoring:deploy -- --profile rieckpil
-
-
+npm run canary:deploy -- --profile rieckpil
 ```
