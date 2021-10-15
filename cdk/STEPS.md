@@ -5,6 +5,7 @@ Prerequisites:
 - the `arn` for the SSL certificate for that domain
 - AWS credentials configured with sufficient rights to create/delete resources
 - expected initial bootstrap duration 30 - 45 minutes (you can speed up the process by increasing the instances sizes for the DB, ActiveMQ and the ECS cluster)
+- Docker Engine and an x64 processor
 
 **IMPORTANT NOTE**: Deploying this infrastructure will result in reoccuring costs if you don't cleanup the resources afterward. Closely follow
 
