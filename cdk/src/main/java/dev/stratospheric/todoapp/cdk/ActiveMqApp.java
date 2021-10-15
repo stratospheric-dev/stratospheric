@@ -21,8 +21,8 @@ public class ActiveMqApp {
     String region = (String) app.getNode().tryGetContext("region");
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String username = (String) app.getNode().tryGetContext("username");
-    Validations.requireNonEmpty(username, "context variable 'username' must not be null");
+    String activeMqUsername = (String) app.getNode().tryGetContext("activeMqUsername");
+    Validations.requireNonEmpty(activeMqUsername, "context variable 'activeMqUsername' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -31,7 +31,7 @@ public class ActiveMqApp {
       environmentName
     );
 
-    new ActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, username);
+    new ActiveMqStack(app, "activeMq", awsEnvironment, applicationEnvironment, activeMqUsername);
 
     app.synth();
   }
