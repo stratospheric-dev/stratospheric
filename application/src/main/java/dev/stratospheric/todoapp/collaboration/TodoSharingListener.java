@@ -16,6 +16,7 @@ public class TodoSharingListener {
   private final TodoCollaborationService todoCollaborationService;
   private final boolean autoConfirmCollaborations;
   private final String confirmEmailFromAddress;
+  private final String externalUrl;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoSharingListener.class.getName());
 
@@ -23,11 +24,13 @@ public class TodoSharingListener {
     MailSender mailSender,
     TodoCollaborationService todoCollaborationService,
     @Value("${custom.auto-confirm-collaborations}") boolean autoConfirmCollaborations,
-    @Value("${custom.confirm-email-from-address}") String confirmEmailFromAddress) {
+    @Value("${custom.confirm-email-from-address}") String confirmEmailFromAddress,
+    @Value("${custom.external-url}") String externalUrl) {
     this.mailSender = mailSender;
     this.todoCollaborationService = todoCollaborationService;
     this.autoConfirmCollaborations = autoConfirmCollaborations;
     this.confirmEmailFromAddress = confirmEmailFromAddress;
+    this.externalUrl = externalUrl;
   }
 
   @SqsListener(value = "${custom.sharing-queue}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
@@ -41,23 +44,25 @@ public class TodoSharingListener {
     message.setText(
       String.format(
         "Hi %s, \n\n" +
-          "someone shared a Todo from https://app.stratospheric.dev with you.\n\n" +
+          "someone shared a Todo from %s with you.\n\n" +
           "Information about the shared Todo item: \n\n" +
           "Title: %s \n" +
           "Description: %s \n" +
           "Priority: %s \n" +
           "\n" +
           "You can accept the collaboration by clicking this link: " +
-          "https://app.stratospheric.dev/todo/%s/collaborations/%s/confirm?token=%s " +
+          "%s/todo/%s/collaborations/%s/confirm?token=%s " +
           "\n\n" +
           "Kind regards, \n" +
           "Stratospheric",
         payload.getCollaboratorEmail(),
+        externalUrl,
         payload.getTodoTitle(),
         payload.getTodoDescription(),
         payload.getTodoPriority(),
         payload.getTodoId(),
         payload.getCollaboratorId(),
+        externalUrl,
         payload.getToken()
       )
     );
