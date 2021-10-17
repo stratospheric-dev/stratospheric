@@ -47,8 +47,9 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    - run: |
-        cd application
+    - name: Build the main application
+      working-directory: application
+      run: |
         java -version
         ./gradlew -version
         ./gradlew build --stacktrace
