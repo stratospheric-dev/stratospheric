@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.4.1'
+  id 'org.springframework.boot' version '2.5.5'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'java'
 }
@@ -13,14 +13,14 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR12')
+  set('awsSpringVersion', '2.3.2')
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.1'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'org.webjars:bootstrap:4.5.3'
@@ -31,7 +31,7 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}"
   }
 }
 
