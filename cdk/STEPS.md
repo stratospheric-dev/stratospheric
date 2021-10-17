@@ -9,20 +9,32 @@ Prerequisites:
 
 **IMPORTANT NOTE**: Deploying this infrastructure will result in reoccuring costs if you don't cleanup the resources afterward. Closely follow
 
-## 1. Deploy the surrounding Infrastructure
+## 1. Deploy the Surrounding Infrastructure
+
+1. adjust the configuration in `cdk.json`
+2. Bootstrap CDK for your AWS account:
 
 ```
 npm run bootstrap -- --profile rieckpil
-npm run network:deploy -- --profile rieckpil
-npm run repository:deploy -- --profile rieckpil
-npm run cognito:deploy -- --profile rieckpil
-npm run database:deploy -- --profile rieckpil
-npm run messaging:deploy -- --profile rieckpil
-npm run activeMq:deploy -- --profile rieckpil
-
 ```
 
-## 2. Build and push the first Docker Image
+3. Deploy the `NetworkStack`-dependent infrastructure:
+
+```
+npm run network:deploy -- --profile rieckpil
+npm run database:deploy -- --profile rieckpil
+npm run activeMq:deploy -- --profile rieckpil
+```
+
+4. (Or in parallel to 3.) Deploy `NetworkStack`-independent infrastructure:
+
+```
+npm run repository:deploy -- --profile rieckpil
+npm run messaging:deploy -- --profile rieckpil
+npm run cognito:deploy -- --profile rieckpil
+```
+
+## 2. Build and Push the First Docker Image
 
 Build the first Docker Image
 
@@ -37,13 +49,21 @@ aws ecr get-login-password --region eu-central-1 --profile rieckpil | docker log
 docker push 547530709389.dkr.ecr.eu-central-1.amazonaws.com/todo-app:1
 ```
 
+On Apple M1:
+
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 --push -t 547530709389.dkr.ecr.eu-central-1.amazonaws.com/todo-app:3 .
+```
+
 ## 3. Deploy the Docker Image to the ECS Cluster
+
+1. Adjust the `dockerImageTag` property inside the `cdk.json` to match the Docker image tag you've just pushed:
 
 ```shell
 npm run service:deploy -- --profile rieckpil
 ```
 
-## 4. Secure the access with SSL
+## 4. Secure the Application with SSL
 
 ```
 npm run domain:deploy -- --profile rieckpil
@@ -60,3 +80,10 @@ Optional
 npm run monitoring:deploy -- --profile rieckpil
 npm run canary:deploy -- --profile rieckpil
 ```
+
+
+## 6. Destroy Everything
+
+Run all `npm run *:destroy -- --profile rieckpil` scripts in the reverse order they were created.
+
+Visit the CloudFormation web console to ensure all stacks have been removed.
