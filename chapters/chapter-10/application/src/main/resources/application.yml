@@ -3,10 +3,12 @@ cloud:
     stack:
       auto: false
     region:
-      auto: false
       static: eu-central-1
-    credentials:
-      use-default-aws-credentials-chain: true
+    instance:
+      data:
+        enabled: false
+    sns:
+      enabled: false
 
 server:
   forward-headers-strategy: framework
