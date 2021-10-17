@@ -40,3 +40,4 @@ custom:
   external-url: https://app.stratospheric.dev
   auto-confirm-collaborations: false
   breadcrumb-table-name: breadcrumbs
+  confirm-email-from-address: noreply@stratospheric.dev
