@@ -28,3 +28,6 @@ cloud:
     mail:
       endpoint: http://localhost:4566
       region: eu-central-1
+    credentials:
+      access-key: foo
+      secret-key: bar
