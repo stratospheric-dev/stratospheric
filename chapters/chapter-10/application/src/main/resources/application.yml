@@ -7,8 +7,6 @@ cloud:
     instance:
       data:
         enabled: false
-    sns:
-      enabled: false
 
 server:
   forward-headers-strategy: framework
