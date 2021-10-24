@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.4.9'
+  id 'org.springframework.boot' version '2.5.5'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
 }
@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('springCloudVersion', 'Hoxton.SR12')
+  set('awsSpringVersion', '2.3.2')
   set('testcontainersVersion', '1.16.0')
 }
 
@@ -27,9 +27,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws'
-  implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
-  implementation 'org.springframework.cloud:spring-cloud-aws-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
+  implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
+  implementation 'io.micrometer:micrometer-registry-cloudwatch'
   implementation 'org.springframework.boot:spring-boot-starter-activemq'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
@@ -43,17 +44,20 @@ dependencies {
   implementation 'com.amazonaws:aws-java-sdk-dynamodb'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
   implementation 'de.siegmar:logback-awslogs-json-encoder:1.1.0'
+  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:1.6.0'
+
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
   runtimeOnly 'org.postgresql:postgresql'
+
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
-  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:1.6.0'
 }
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}"
     mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
   }
 }

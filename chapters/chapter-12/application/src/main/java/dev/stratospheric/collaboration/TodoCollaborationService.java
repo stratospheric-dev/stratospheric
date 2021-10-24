@@ -4,10 +4,10 @@ import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
 import dev.stratospheric.todo.Todo;
 import dev.stratospheric.todo.TodoRepository;
+import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

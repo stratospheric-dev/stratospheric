@@ -10,3 +10,8 @@ spring:
         provider:
           cognito:
             issuerUri: http://localhost:8888/auth/realms/stratospheric
+cloud:
+  aws:
+    credentials:
+      access-key: foo
+      secret-key: bar
