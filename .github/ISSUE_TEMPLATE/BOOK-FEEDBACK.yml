@@ -1,23 +1,23 @@
 name: Feedback for the eBook
-description: "Everything related to the eBook: Typos, Layout issues, Broken links, Explanations gaps, Inconsistencies, Testimonials, etc."
-labels: ["ebook-feedback", "triage"]
+description: "Everything related to the eBook: typos, layout issues, broken links, explanation gaps, inconsistencies, testimonials, etc."
+labels: [ "ebook-feedback", "triage" ]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to provide feedback to improve the overall quality of Stratospheric!
+        Thanks for taking the time to provide feedback and improve the overall quality of Stratospheric!
   - type: textarea
     id: what-happened
     attributes:
       label: "What can we improve?"
-      description: "Try to be as specific as possible - for example: On page 47 there's a typo 'Strotospheric'"
+      description: "Try to be as specific as possible - for example: On page 47, there's a typo in the word 'Strotospheric'."
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: Version
-      description: "To which eBook version are you referring to? You can find the version as part of the Changelog (one of the last pages). Pick 'latest' if you can't find it"
+      description: "Which eBook version are you referring to? You can find the version as part of the changelog (one of the last pages). Pick 'latest' if you can't find it."
     validations:
       required: true
   - type: textarea
