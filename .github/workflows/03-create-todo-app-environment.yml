@@ -130,7 +130,7 @@ jobs:
 
       - name: Deploy Deployment Sequencer
         working-directory: cdk
-        run: npm run deployment-sequencer:deploy -- -c githubToken=${{ secrets.GH_API_TOKEN }}
+        run: npm run deployment-sequencer:deploy -- -c environmentName=${{ github.event.inputs.environmentName }} -c githubToken=${{ secrets.GH_API_TOKEN }}
 
   deploy-monitoring-stack:
     if: github.ref == 'refs/heads/main'

@@ -1,6 +1,11 @@
 # This workflow deploys all resources that are specific to the Todo-App, but not the app itself.
 name: 06 - Update the Todo-App environment in staging
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+
 on:
   push:
     paths:
@@ -28,16 +33,13 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy Messaging stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run messaging:deploy -- -c environmentName=staging -c applicationName=todo-app
+        working-directory: cdk
+        run: npm run messaging:deploy
+
   deploy-database-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -53,16 +55,13 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy Database stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run database:deploy -- -c environmentName=staging -c applicationName=todo-app
+        working-directory: cdk
+        run: npm run database:deploy
+
   deploy-cognito-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -78,16 +77,13 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy Cognito stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run cognito:deploy -- -c environmentName=staging -c applicationName=todo-app
+        working-directory: cdk
+        run: npm run cognito:deploy
+
   deploy-activemq-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -103,16 +99,13 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy ActiveMq stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run activeMq:deploy -- -c environmentName=staging -c applicationName=todo-app
+        working-directory: cdk
+        run: npm run activeMq:deploy
+
   deploy-sequencer-lambda:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -127,21 +120,22 @@ jobs:
         with:
           java-version: 11.0
 
-      - name: NPM install
-        run: cd cdk && npm install
+      - name: NPM install CDK dependencies
+        working-directory: cdk
+        run: npm install
+
+      - name: NPM install Deployment Sequencer dependencies
+        working-directory: cdk/deployment-sequencer-lambda
+        run: npm install
+
+      - name: Build Deployment Sequencer
+        working-directory: cdk/deployment-sequencer-lambda
+        run: npm run dist
 
       - name: Deploy Deployment Sequencer
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          cd deployment-sequencer-lambda
-          npm install
-          npm run dist
-          cd ..
-          npm run deployment-sequencer:deploy -- -c applicationName=todo-app -c githubToken=${{ secrets.GH_API_TOKEN }}
+        working-directory: cdk
+        run: npm run deployment-sequencer:deploy -- -c githubToken=${{ secrets.GH_API_TOKEN }}
+
   deploy-monitoring-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -157,16 +151,13 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy Monitoring stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run monitoring:deploy -- -c environmentName=staging -c applicationName=todo-app
+        working-directory: cdk
+        run: npm run monitoring:deploy
+
   deploy-canary-stack:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
@@ -182,13 +173,9 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy Canary stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run canary:deploy -- -c environmentName=staging -c applicationName=todo-app -c password=${{ secrets.CANARY_USER_PASSWORD }}
+        working-directory: cdk
+        run: npm run canary:deploy -- -c canaryUserPassword=${{ secrets.CANARY_USER_PASSWORD }}
