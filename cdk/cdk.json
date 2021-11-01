@@ -16,6 +16,7 @@
     "applicationDomain": "app.utilzr.io",
     "sslCertificateArn": "arn:aws:acm:eu-central-1:547530709389:certificate/4db31ae5-157b-4673-aef2-abe89e1f2a88",
     "hostedZoneDomain": "utilzr.io",
+    "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW",
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true"
