@@ -11,7 +11,7 @@
     "springProfile": "aws",
     "activeMqUsername": "activemqUser",
     "canaryUsername": "canary",
-    "canaryUserPassword": "s3cret",
+    "canaryUserPassword": "SECRET_OVERRIDDEN_BY_WORKFLOW",
     "confirmationEmail": "philip@stratospheric.dev",
     "applicationDomain": "app.utilzr.io",
     "sslCertificateArn": "arn:aws:acm:eu-central-1:547530709389:certificate/4db31ae5-157b-4673-aef2-abe89e1f2a88",
