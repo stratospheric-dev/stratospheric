@@ -23,7 +23,7 @@ class TodoApplicationDevTest {
     new DockerComposeContainer<>(new File("docker-compose.yml"))
       .withExposedService("postgres_1", 5432, Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
-        .withStartupTimeout(Duration.ofSeconds(30)))
+        .withStartupTimeout(Duration.ofSeconds(45)))
       .withExposedService("localstack_1", 4566, Wait.forListeningPort());
 
   static {
