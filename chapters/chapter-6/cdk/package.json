@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "info": "IMPORTANT NOTE: Please make sure to replace the values inside the cdk.json with your configuration",
+    "bootstrap": "cdk bootstrap --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.BootstrapApp\"",
     "network:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" --require-approval never",
     "network:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.NetworkApp\" --force --require-approval never",
     "repository:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DockerRepositoryApp\" --require-approval never",
