@@ -1,6 +1,11 @@
 {
-  "app": "./mvnw -e -q compile exec:java",
   "context": {
+    "applicationName": "todo-app",
+    "region": "eu-central-1",
+    "accountId": "221875718260",
+    "springProfile": "aws",
+    "environmentName": "staging",
+    "dockerImageUrl": "docker.io/stratospheric/todo-app-v1:latest",
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true"
