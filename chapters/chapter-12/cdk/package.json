@@ -18,6 +18,9 @@
     "cognito:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" -c applicationUrl=https://app.stratospheric.dev -c environmentName=staging -c region=eu-central-1 -c accountId=221875718260 --force --require-approval never"
   },
   "devDependencies": {
-    "aws-cdk": "1.121.0"
+    "aws-cdk": "1.124.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }

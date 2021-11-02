@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "aws-cdk": "1.124.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
