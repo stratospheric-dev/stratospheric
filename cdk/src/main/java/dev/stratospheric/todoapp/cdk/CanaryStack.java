@@ -44,7 +44,7 @@ public class CanaryStack extends Stack {
     this.applicationEnvironment = applicationEnvironment;
 
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
-      .bucketName(applicationEnvironment.prefix("two-canary-bucket"))
+      .bucketName(applicationEnvironment.prefix("canary-bucket"))
       .removalPolicy(RemovalPolicy.DESTROY)
       .autoDeleteObjects(true)
       .build();
