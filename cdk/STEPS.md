@@ -1,66 +1,91 @@
+# Deploying the Stratospheric Sample Application to your AWS Account
 
 Prerequisites:
 
-- a hosted domain inside Amazon Route53
-- the `arn` for the SSL certificate for that domain
-- AWS credentials configured with sufficient rights to create/delete resources
-- expected initial bootstrap duration 30 - 45 minutes (you can speed up the process by increasing the instances sizes for the DB, ActiveMQ and the ECS cluster)
-- Docker Engine and an x64 processor
+- you have a custom domain (e.g. `mycompany.io`) hosted within Amazon Route53. You can also host your domain at a different provider (e.g., GoDaddy, Namecheap, Hetzner, etc.). However, this involves some additional manual efforts to get the SSL setup correct
+- you've created an SSL certificate within the AWS Certificate Manager for that domain and have the `arn` for the SSL certificate
+- you've [configured a named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) for the AWS CLI (e.g., `stratopsheric`) with sufficient rights to create/delete resources
+- your Docker Engine is up and running
+- you've Node >= 16 installed: `node -v`
+- you've Java 11 installed: `java -version`
+- you're using a x64 processor or are able to create a Docker image for this architecture (see this [article](https://blog.jaimyn.dev/how-to-build-multi-architecture-docker-images-on-an-m1-mac/) if you're using an Apple M1)
 
-**IMPORTANT NOTE**: Deploying this infrastructure will result in reoccuring costs if you don't cleanup the resources afterward. Closely follow
+Bootstrapping the entire infrastructure from scratch takes 20 - 30 minutes. You can speed up the process by increasing the instances sizes for the database, ActiveMQ and the ECS tasks.
+
+**IMPORTANT NOTE**: Deploying this infrastructure will result in reoccurring costs if you don't clean up the resources afterward. Closely follow the progress of the stack deletion and check the CloudFormation overview in the AWS console afterward. There shouldn't be any stack definition left
 
 ## 1. Deploy the Surrounding Infrastructure
 
-1. adjust the configuration in `cdk.json`
-2. Bootstrap CDK for your AWS account:
+We're assuming you're using a named profile for the AWS CLI called `stratospheric`. If you're using the default profile, you can remove `-- --profile statrospheric` from all upcoming commands
+
+1. Navigate to the `cdk` folder: `cdk cdk`
+2. Adjust the configuration in `cdk.json`:
+   1. `applicationName`: The name of your application, e.g. `todo-app` (make sure the application name and staging combination is unique as we're creating resources that require a unique name).
+   2. `region`: The region you want to deploy the infrastructure, e.g. `eu-central-1`.
+   3. `accountId`: The account ID of your AWS account, e.g. `221875718260`.
+   4. `dockerRepositoryName`: The name of your Docker repository. Unless you want to deploy a Docker image from another registry, this should be similar to the `applicationName`, e.g. `todo-app`.
+   5. `dockerImageTag`: The Docker image you want to deploy. Use `1` and update this number if you want to deploy a new version of the application.
+   6. `applicationUrl`: The full application URL of your application, e.g. `https://app.stratospheric.dev`.
+   7. `loginPageDomainPrefix`: This becomes the subdomain for the Cognito login from, e.g. `stratospheric-staging`.
+   8. `environmentName`: The application environment, e.g. `staging` or `prod`.
+   9. `springProfile`: The Spring profile that should be activated for the running ECS container, e.g. `aws`.
+   10. `activeMqUsername`: The name of the active MQ root user, e.g. `activemqUser`
+   11. (Optional - leave empty if you're not planning to deploy the Canary stack) `canaryUsername`: `canary`,
+   12. (Optional - leave empty if you're not planning to deploy the Canary stack) `canaryUserPassword`: `SECRET_OVERRIDDEN_BY_WORKFLOW`.
+   13. (Optional - leave empty if you're not planning to deploy the Monitoring stack) `confirmationEmail`: The email to receive CloudWatch alerts, e.g. `info@stratospheric.dev`.
+   14. `applicationDomain`: The domain of your application, without any protocol information, e.g. `app.stratospheric.dev`.
+   15. `sslCertificateArn`: The `arn` for the the SSL certificate for your custom domain, e.g. `arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1`,
+   16. `hostedZoneDomain`: The domain name for the hosted zone within Route53, e.g. `stratospheric.dev`,
+   17. (Optional - leave empty if you're not planning to deploy the Deployment Sequencer stack) `githubToken`: A access token for GitHub to trigger GitHub Actions remotely from the AWS Lambda function.
+3. Bootstrap CDK for your AWS account:
 
 ```
-npm run bootstrap -- --profile rieckpil
+npm run bootstrap -- --profile stratospheric
 ```
 
 3. Deploy the `NetworkStack`-dependent infrastructure:
 
 ```
-npm run network:deploy -- --profile rieckpil
-npm run database:deploy -- --profile rieckpil
-npm run activeMq:deploy -- --profile rieckpil
+npm run network:deploy -- --profile stratopsheric
+npm run database:deploy -- --profile stratopsheric
+npm run activeMq:deploy -- --profile stratopsheric
 ```
 
 4. (Or in parallel to 3.) Deploy `NetworkStack`-independent infrastructure:
 
 ```
-npm run repository:deploy -- --profile rieckpil
-npm run messaging:deploy -- --profile rieckpil
-npm run cognito:deploy -- --profile rieckpil
+npm run repository:deploy -- --profile stratopsheric
+npm run messaging:deploy -- --profile stratopsheric
+npm run cognito:deploy -- --profile stratopsheric
 ```
 
 ## 2. Build and Push the First Docker Image
 
-Build the first Docker Image
+Build the first Docker Image:
 
 ```
+cd application
 ./gradlew build
-docker build -t todo-app .
-docker tag todo-app 547530709389.dkr.ecr.eu-central-1.amazonaws.com/todo-app:1
-docker tag todo-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:1
 
-aws ecr get-login-password --region eu-central-1 --profile rieckpil | docker login --username AWS --password-stdin 547530709389.dkr.ecr.eu-central-1.amazonaws.com
+docker build -t <accountId>.dkr.ecr.<region>.amazonaws.com/<applicationName>:1 .
 
-docker push 547530709389.dkr.ecr.eu-central-1.amazonaws.com/todo-app:1
+aws ecr get-login-password --region <region> --profile stratopsheric | docker login --username AWS --password-stdin <accountId>.dkr.ecr.<region>.amazonaws.com
+
+docker push <accountId>.dkr.ecr.<region>.amazonaws.com/<applicationName>:1
 ```
 
 On Apple M1:
 
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 --push -t 547530709389.dkr.ecr.eu-central-1.amazonaws.com/todo-app:3 .
+docker buildx build --platform linux/amd64,linux/arm64 --push -t <accountId>.dkr.ecr.<region>.amazonaws.com/todo-app:1 .
 ```
 
 ## 3. Deploy the Docker Image to the ECS Cluster
 
-1. Adjust the `dockerImageTag` property inside the `cdk.json` to match the Docker image tag you've just pushed:
+1. Adjust the `dockerImageTag` property inside the `cdk/cdk.json` to match the Docker image tag you've just pushed:
 
 ```shell
-npm run service:deploy -- --profile rieckpil
+npm run service:deploy -- --profile stratospheric
 ```
 
 ## 4. Secure the Application with SSL
@@ -69,22 +94,37 @@ npm run service:deploy -- --profile rieckpil
 npm run domain:deploy -- --profile rieckpil
 ```
 
-Things to consider:
-- For Sending Emails with SES you need to get out of the sandbox mode (see the book) hence the sharing feature won't work before. This takes some hours as you have to raise a support ticket with the AWS Support. Alternative manually verify each email you're about to send an invitation to
-- You must verify the domain for email sending
+Afterward, you'll be able to access the application from your custom domain.
 
-## 5. Deploy Optional Infrastructure
-Optional
+Please consider the following:
+- The sharing functionality only works if you either:
+  - Request production access for SES and verify the domain from which your application sends emails
+  - manually verify all emails you're about to send email to and verify the domain from which your application sends emails
+
+## 5. (Optional): Deploy the Monitoring Infrastructure
+
+1. Deploying the Amazon CloudWatch dashboard and alarms:
 
 ```
-# After App Deployment
-npm run monitoring:deploy -- --profile rieckpil
-npm run canary:deploy -- --profile rieckpil
+cd cdk
+npm run monitoring:deploy -- --profile stratospheric
 ```
 
+2. You'll receive an email to verify the SNS subscription based on what you've configured for `confirmationEmail`
 
-## 6. Destroy Everything
+## 6. (Optional): Deploy the Canary Stack
 
-Run all `npm run *:destroy -- --profile rieckpil` scripts in the reverse order they were created.
+1. Create an application user within the sample application
+2. Update the `canaryUsername` and `canaryUserPassword` inside the `cdk/cdk.json`
+3. Deploy the canary stack
+
+```
+cd cdk
+npm run canary:deploy -- --profile stratospheric
+```
+
+## 7. Destroy Everything
+
+Run all `npm run *:destroy -- --profile stratospheric` scripts in the reverse order they were created.
 
 Visit the CloudFormation web console to ensure all stacks have been removed.
