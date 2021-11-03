@@ -109,7 +109,7 @@ npm run service:deploy -- --profile stratospheric
 ## 4. Secure the Application with SSL
 
 ```
-npm run domain:deploy -- --profile rieckpil
+npm run domain:deploy -- --profile stratospheric
 ```
 
 Afterwards, you'll be able to access the application from your custom domain.
