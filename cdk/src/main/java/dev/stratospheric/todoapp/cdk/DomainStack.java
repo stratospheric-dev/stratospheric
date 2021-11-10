@@ -55,13 +55,28 @@ class DomainStack extends Stack {
         .loadBalancerDnsName(networkOutputParameters.getLoadBalancerDnsName())
         .build()
     );
-    ApplicationListener listener = applicationLoadBalancer.addListener(
-      "HttpListener",
-      BaseApplicationListenerProps.builder()
-        .protocol(ApplicationProtocol.HTTP)
-        .port(80)
-        .build()
-    );
+
+    // Only add an HTTP listener at this point if one doesn't already exist. Otherwise, get the existing listener.
+    ApplicationListener listener;
+    String httpListenerArn = networkOutputParameters.getHttpListenerArn();
+    if ("null".equals(httpListenerArn)) {
+      listener = applicationLoadBalancer.addListener(
+        "HttpListener",
+        BaseApplicationListenerProps.builder()
+          .protocol(ApplicationProtocol.HTTP)
+          .port(80)
+          .build()
+      );
+    } else {
+      listener = (ApplicationListener)ApplicationListener.fromLookup(
+        this,
+        "HttpListener",
+        ApplicationListenerLookupOptions.builder()
+          .listenerArn(httpListenerArn)
+          .build()
+      );
+    }
+
     ListenerAction redirectAction = ListenerAction.redirect(
       RedirectOptions.builder()
         .port("443")
