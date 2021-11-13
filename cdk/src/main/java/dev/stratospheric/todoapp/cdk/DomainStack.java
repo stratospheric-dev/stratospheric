@@ -56,49 +56,6 @@ class DomainStack extends Stack {
         .build()
     );
 
-    // Only add an HTTP listener at this point if one doesn't already exist. Otherwise, get the existing listener.
-    ApplicationListener listener;
-    String httpListenerArn = networkOutputParameters.getHttpListenerArn();
-    if ("null".equals(httpListenerArn)) {
-      listener = applicationLoadBalancer.addListener(
-        "HttpListener",
-        BaseApplicationListenerProps.builder()
-          .protocol(ApplicationProtocol.HTTP)
-          .port(80)
-          .build()
-      );
-    } else {
-      listener = (ApplicationListener)ApplicationListener.fromLookup(
-        this,
-        "HttpListener",
-        ApplicationListenerLookupOptions.builder()
-          .listenerArn(httpListenerArn)
-          .build()
-      );
-    }
-
-    ListenerAction redirectAction = ListenerAction.redirect(
-      RedirectOptions.builder()
-        .port("443")
-        .build()
-    );
-    listener.addAction(
-      "Redirect",
-      AddApplicationActionProps.builder()
-        .action(redirectAction)
-        .build()
-    );
-    ApplicationListenerRule applicationListenerRule = new ApplicationListenerRule(
-      this,
-      "HttpListenerRule",
-      ApplicationListenerRuleProps.builder()
-        .listener(listener)
-        .priority(1)
-        .conditions(List.of(ListenerCondition.pathPatterns(List.of("*"))))
-        .action(redirectAction)
-        .build()
-    );
-
     ARecord aRecord = ARecord.Builder.create(this, "ARecord")
       .recordName(applicationDomain)
       .zone(hostedZone)
