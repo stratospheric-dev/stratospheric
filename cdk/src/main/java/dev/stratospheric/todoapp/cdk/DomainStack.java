@@ -55,34 +55,6 @@ class DomainStack extends Stack {
         .loadBalancerDnsName(networkOutputParameters.getLoadBalancerDnsName())
         .build()
     );
-    ApplicationListener listener = applicationLoadBalancer.addListener(
-      "HttpListener",
-      BaseApplicationListenerProps.builder()
-        .protocol(ApplicationProtocol.HTTP)
-        .port(80)
-        .build()
-    );
-    ListenerAction redirectAction = ListenerAction.redirect(
-      RedirectOptions.builder()
-        .port("443")
-        .build()
-    );
-    listener.addAction(
-      "Redirect",
-      AddApplicationActionProps.builder()
-        .action(redirectAction)
-        .build()
-    );
-    ApplicationListenerRule applicationListenerRule = new ApplicationListenerRule(
-      this,
-      "HttpListenerRule",
-      ApplicationListenerRuleProps.builder()
-        .listener(listener)
-        .priority(1)
-        .conditions(List.of(ListenerCondition.pathPatterns(List.of("*"))))
-        .action(redirectAction)
-        .build()
-    );
 
     ARecord aRecord = ARecord.Builder.create(this, "ARecord")
       .recordName(applicationDomain)
