@@ -20,6 +20,5 @@ jobs:
           java-version: 11.0
 
       - name: Build application
-        run: |
-          cd getting-started-with-spring-boot-on-aws
-          ./gradlew build --stacktrace
+        working-directory: getting-started-with-spring-boot-on-aws
+        run: ./gradlew build --stacktrace

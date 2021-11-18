@@ -1,15 +1,16 @@
 package dev.stratospheric.todoapp.cdk;
 
+import java.util.List;
+import java.util.Map;
+
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import software.amazon.awscdk.core.Construct;
-import software.amazon.awscdk.core.DefaultTokenResolver;
 import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Fn;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
-import software.amazon.awscdk.core.Token;
 import software.amazon.awscdk.services.cloudwatch.Alarm;
 import software.amazon.awscdk.services.cloudwatch.AlarmProps;
 import software.amazon.awscdk.services.cloudwatch.AlarmRule;
@@ -38,16 +39,14 @@ import software.amazon.awscdk.services.sns.Topic;
 import software.amazon.awscdk.services.sns.TopicProps;
 import software.amazon.awscdk.services.sns.subscriptions.EmailSubscription;
 
-import java.util.List;
-import java.util.Map;
-
 public class MonitoringStack extends Stack {
 
   public MonitoringStack(
     final Construct scope,
     final String id,
     final Environment awsEnvironment,
-    final ApplicationEnvironment applicationEnvironment) {
+    final ApplicationEnvironment applicationEnvironment,
+    final String confirmationEmail) {
 
     super(scope, id, StackProps.builder()
       .stackName(applicationEnvironment.prefix("Monitoring"))
@@ -158,7 +157,7 @@ public class MonitoringStack extends Stack {
       .build());
 
     snsAlarmingTopic.addSubscription(EmailSubscription.Builder
-      .create("info@stratospheric.dev")
+      .create(confirmationEmail)
       .build()
     );
 
@@ -216,8 +215,8 @@ public class MonitoringStack extends Stack {
         .compositeAlarmName("backend-api-failure")
         .alarmDescription("Showcasing a Composite Alarm")
         .alarmRule(AlarmRule.allOf(
-          AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
-          AlarmRule.fromAlarm(errorLogsAlarm, AlarmState.ALARM)
+            AlarmRule.fromAlarm(elb5xxAlarm, AlarmState.ALARM),
+            AlarmRule.fromAlarm(errorLogsAlarm, AlarmState.ALARM)
           )
         )
         .build());

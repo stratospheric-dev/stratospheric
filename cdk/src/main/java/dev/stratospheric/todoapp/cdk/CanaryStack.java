@@ -28,7 +28,7 @@ public class CanaryStack extends Stack {
     final String id,
     final Environment awsEnvironment,
     final ApplicationEnvironment applicationEnvironment,
-    final String targetUrl,
+    final String applicationUrl,
     final String username,
     final String password
   ) throws IOException {
@@ -46,6 +46,7 @@ public class CanaryStack extends Stack {
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
       .bucketName(applicationEnvironment.prefix("canary-bucket"))
       .removalPolicy(RemovalPolicy.DESTROY)
+      .autoDeleteObjects(true)
       .build();
 
     Role executionRole = Role.Builder.create(this, "canaryExecutionRole")
@@ -84,7 +85,7 @@ public class CanaryStack extends Stack {
         .build())
       .runConfig(RunConfigProperty.builder()
         .environmentVariables(Map.of(
-          "TARGET_URL", targetUrl,
+          "TARGET_URL", applicationUrl,
           "USER_NAME", username,
           "PASSWORD", password
         ))

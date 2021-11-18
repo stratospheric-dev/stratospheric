@@ -2,6 +2,11 @@
 # This needs to run before creating an application-specific environment.
 name: 02 - Manually create a shared environment
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+
 on:
   workflow_dispatch:
     inputs:
@@ -25,13 +30,9 @@ jobs:
           java-version: 11.0
 
       - name: NPM install
-        run: cd cdk && npm install
+        working-directory: cdk
+        run: npm install
 
       - name: Deploy network stack
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          cd cdk
-          npm run network:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
+        working-directory: cdk
+        run: npm run network:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
