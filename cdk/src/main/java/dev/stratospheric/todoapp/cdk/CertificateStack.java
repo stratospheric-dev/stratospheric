@@ -1,6 +1,8 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
+import software.amazon.awscdk.core.CfnOutput;
+import software.amazon.awscdk.core.CfnOutputProps;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.Stack;
@@ -32,5 +34,10 @@ public class CertificateStack extends Stack {
       .region(awsEnvironment.getRegion())
       .domainName(applicationDomain)
       .build();
+
+    CfnOutput sslCertificateArn = new CfnOutput(this, "sslCertificateArn", CfnOutputProps.builder()
+      .exportName("sslCertificateArn")
+      .value(websiteCertificate.getCertificateArn())
+      .build());
   }
 }
