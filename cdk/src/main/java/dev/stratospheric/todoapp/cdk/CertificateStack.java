@@ -1,7 +1,5 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.util.List;
-
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Environment;
@@ -33,9 +31,6 @@ public class CertificateStack extends Stack {
       .hostedZone(hostedZone)
       .region(awsEnvironment.getRegion())
       .domainName(applicationDomain)
-      .subjectAlternativeNames(List.of(applicationDomain))
       .build();
-
-    System.out.println("SSL Certificate ARN: " + websiteCertificate.getCertificateArn());
   }
 }

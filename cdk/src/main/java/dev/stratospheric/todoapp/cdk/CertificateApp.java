@@ -21,11 +21,11 @@ public class CertificateApp {
     String region = (String) app.getNode().tryGetContext("region");
     Validations.requireNonEmpty(region, "context variable 'region' must not be null");
 
-    String hostedZoneDomain = (String) app.getNode().tryGetContext("hostedZoneDomain");
-    Validations.requireNonEmpty(hostedZoneDomain, "context variable 'hostedZoneDomain' must not be null");
-
     String applicationDomain = (String) app.getNode().tryGetContext("applicationDomain");
     Validations.requireNonEmpty(applicationDomain, "context variable 'applicationDomain' must not be null");
+
+    String hostedZoneDomain = (String) app.getNode().tryGetContext("hostedZoneDomain");
+    Validations.requireNonEmpty(hostedZoneDomain, "context variable 'hostedZoneDomain' must not be null");
 
     Environment awsEnvironment = makeEnv(accountId, region);
 
@@ -34,7 +34,7 @@ public class CertificateApp {
       environmentName
     );
 
-    new CertificateStack(app, "certificate", awsEnvironment, applicationEnvironment, hostedZoneDomain, applicationDomain);
+    new CertificateStack(app, "certificate", awsEnvironment, applicationEnvironment, applicationDomain, hostedZoneDomain);
 
     app.synth();
   }
