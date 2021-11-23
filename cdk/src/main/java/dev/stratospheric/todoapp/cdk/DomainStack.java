@@ -12,13 +12,6 @@ import java.util.List;
 
 class DomainStack extends Stack {
 
-  private static final String PARAMETER_LOAD_BALANCER_ARN = "loadBalancerArn";
-  private static final String PARAMETER_LOAD_BALANCER_SECURITY_GROUP_ID = "loadBalancerSecurityGroupId";
-  private static final String PARAMETER_LOAD_BALANCER_DNS_NAME = "loadBalancerDnsName";
-  private static final String PARAMETER_LOAD_BALANCER_CANONICAL_HOSTED_ZONE_ID = "loadBalancerCanonicalHostedZoneId";
-
-  private final ApplicationEnvironment applicationEnvironment;
-
   public DomainStack(
     final Construct scope,
     final String id,
@@ -30,18 +23,9 @@ class DomainStack extends Stack {
       .stackName(applicationEnvironment.prefix("Domain"))
       .env(awsEnvironment).build());
 
-    this.applicationEnvironment = applicationEnvironment;
-
     IHostedZone hostedZone = HostedZone.fromLookup(this, "HostedZone", HostedZoneProviderProps.builder()
       .domainName(hostedZoneDomain)
       .build());
-
-    DnsValidatedCertificate websiteCertificate = DnsValidatedCertificate.Builder.create(this, "WebsiteCertificate")
-      .hostedZone(hostedZone)
-      .region(awsEnvironment.getRegion())
-      .domainName(applicationDomain)
-      .subjectAlternativeNames(List.of(applicationDomain))
-      .build();
 
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
