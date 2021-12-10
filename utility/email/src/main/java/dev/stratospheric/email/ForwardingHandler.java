@@ -72,21 +72,21 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
       for (Address address : receivers) {
         var emailAddress = address.toString();
-        if (emailAddress.equals("info@stratospheric.dev")) {
+        if (emailAddress.contains("info@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_BJOERN);
           forwardingRecipients.add(EMAIL_PHILIP);
           forwardingRecipients.add(EMAIL_TOM);
         }
 
-        if (emailAddress.equals("bjoern@stratospheric.dev")) {
+        if (emailAddress.contains("bjoern@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_BJOERN);
         }
 
-        if (emailAddress.equals("philip@stratospheric.dev")) {
+        if (emailAddress.contains("philip@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_PHILIP);
         }
 
-        if (emailAddress.equals("tom@stratospheric.dev")) {
+        if (emailAddress.contains("tom@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_TOM);
         }
       }
