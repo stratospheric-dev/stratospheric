@@ -2,6 +2,7 @@ package dev.stratospheric.email;
 
 import javax.mail.Address;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -59,7 +60,9 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
       var subject = "Forwarded (Stratospheric) Mail: " + messageParser.getSubject();
 
-      var receivers = messageParser.getTo();
+      var receivers = new ArrayList<Address>();
+
+      receivers.addAll(messageParser.getTo());
       receivers.addAll(messageParser.getCc());
       receivers.addAll(messageParser.getBcc());
 
