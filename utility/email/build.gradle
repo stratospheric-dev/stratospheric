@@ -10,6 +10,10 @@ repositories {
   mavenCentral()
 }
 
+ext {
+  set('log4j2.version', '2.15.0')
+}
+
 dependencies {
   implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.75')
   implementation 'com.amazonaws:aws-java-sdk-s3'
@@ -17,7 +21,7 @@ dependencies {
   implementation 'org.apache.commons:commons-email:1.5'
   implementation 'com.amazonaws:aws-lambda-java-events:3.10.0'
   implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
-  runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
+  runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.3.0'
   implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 }
 
