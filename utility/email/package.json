@@ -1,5 +1,14 @@
 {
+  "scripts": {
+    "preinstall": "npm-force-resolutions"
+  },
+  "resolutions": {
+    "json-schema": "0.4.0"
+  },
   "dependencies": {
     "serverless-plugin-aws-alerts": "^1.7.4"
+  },
+  "devDependencies": {
+    "npm-force-resolutions": "^0.0.10"
   }
 }
