@@ -8,6 +8,6 @@
     "dockerImageUrl": "docker.io/stratospheric/todo-app-v1:latest",
     "applicationUrl": "https://app.stratospheric.dev",
     "loginPageDomainPrefix": "staging-stratospheric",
-    "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1",
+    "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1"
   }
 }

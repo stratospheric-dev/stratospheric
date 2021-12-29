@@ -16,6 +16,6 @@
     "applicationDomain": "app.stratospheric.dev",
     "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1",
     "hostedZoneDomain": "stratospheric.dev",
-    "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW",
+    "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW"
   }
 }
