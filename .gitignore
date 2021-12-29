@@ -25,3 +25,6 @@ build/
 
 **/cdk.out/
 **/node_modules/
+
+# Custom CDK context files
+cdk-rieckpil.json
