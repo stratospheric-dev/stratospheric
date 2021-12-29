@@ -13,7 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.7.0</junit.version>
     <passay.version>1.6.0</passay.version>
-    <cdk-constructs.version>2.0.0-SNAPSHOT</cdk-constructs.version>
+    <cdk-constructs.version>2.0.0-SNAPSHOT</cdk-constructs.version> <!-- TODO: Adjust with CDK v2 compatible version -->
     <log4j2.version>2.17.0</log4j2.version>
     <aws-cdk-lib.version>2.3.0</aws-cdk-lib.version>
   </properties>
@@ -28,12 +28,21 @@
     </plugins>
   </build>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>software.amazon.awscdk</groupId>
+        <artifactId>aws-cdk-lib</artifactId>
+        <version>${aws-cdk-lib.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- AWS Cloud Development Kit -->
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
       <artifactId>aws-cdk-lib</artifactId>
-      <version>${aws-cdk-lib.version}</version>
     </dependency>
 
     <dependency>
