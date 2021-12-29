@@ -1,14 +1,36 @@
 package dev.stratospheric.todoapp.cdk;
 
-import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.core.*;
-import software.amazon.awscdk.customresources.*;
-import software.amazon.awscdk.services.cognito.*;
-import software.amazon.awscdk.services.ssm.StringParameter;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+
+import dev.stratospheric.cdk.ApplicationEnvironment;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.customresources.AwsCustomResource;
+import software.amazon.awscdk.customresources.AwsCustomResourcePolicy;
+import software.amazon.awscdk.customresources.AwsSdkCall;
+import software.amazon.awscdk.customresources.PhysicalResourceId;
+import software.amazon.awscdk.customresources.SdkCallsPolicyOptions;
+import software.amazon.awscdk.services.cognito.AccountRecovery;
+import software.amazon.awscdk.services.cognito.AutoVerifiedAttrs;
+import software.amazon.awscdk.services.cognito.CognitoDomainOptions;
+import software.amazon.awscdk.services.cognito.Mfa;
+import software.amazon.awscdk.services.cognito.OAuthFlows;
+import software.amazon.awscdk.services.cognito.OAuthScope;
+import software.amazon.awscdk.services.cognito.OAuthSettings;
+import software.amazon.awscdk.services.cognito.PasswordPolicy;
+import software.amazon.awscdk.services.cognito.SignInAliases;
+import software.amazon.awscdk.services.cognito.StandardAttribute;
+import software.amazon.awscdk.services.cognito.StandardAttributes;
+import software.amazon.awscdk.services.cognito.UserPool;
+import software.amazon.awscdk.services.cognito.UserPoolClient;
+import software.amazon.awscdk.services.cognito.UserPoolClientIdentityProvider;
+import software.amazon.awscdk.services.cognito.UserPoolDomain;
+import software.amazon.awscdk.services.ssm.StringParameter;
+import software.constructs.Construct;
 
 import static software.amazon.awscdk.customresources.AwsCustomResourcePolicy.ANY_RESOURCE;
 
