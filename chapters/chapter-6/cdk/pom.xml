@@ -12,10 +12,10 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdk.version>1.124.0</cdk.version>
     <junit.version>5.7.0</junit.version>
-    <cdk-constructs.version>0.0.28</cdk-constructs.version>
+    <cdk-constructs.version>2.0.0-SNAPSHOT</cdk-constructs.version> <!-- TODO: Adjust with CDK v2 compatible version -->
     <log4j2.version>2.17.0</log4j2.version>
+    <aws-cdk-lib.version>2.3.0</aws-cdk-lib.version>
   </properties>
 
   <build>
@@ -25,16 +25,24 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
       </plugin>
-
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>software.amazon.awscdk</groupId>
+        <artifactId>aws-cdk-lib</artifactId>
+        <version>${aws-cdk-lib.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <!-- AWS Cloud Development Kit -->
     <dependency>
       <groupId>software.amazon.awscdk</groupId>
-      <artifactId>core</artifactId>
-      <version>${cdk.version}</version>
+      <artifactId>aws-cdk-lib</artifactId>
     </dependency>
 
     <dependency>
