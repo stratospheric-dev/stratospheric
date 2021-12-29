@@ -103,6 +103,7 @@ jobs:
         run: npm run activeMq:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
 
   deploy-sequencer-lambda:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
     name: Deploy the Deployment Sequencer
     steps:
