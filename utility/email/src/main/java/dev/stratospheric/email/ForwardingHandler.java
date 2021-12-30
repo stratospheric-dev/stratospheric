@@ -2,7 +2,8 @@ package dev.stratospheric.email;
 
 import javax.mail.Address;
 import javax.mail.internet.MimeMessage;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import com.amazonaws.regions.Regions;
@@ -21,7 +22,7 @@ import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import org.apache.commons.mail.util.MimeMessageParser;
 
-import static java.nio.charset.StandardCharsets.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ForwardingHandler implements RequestHandler<S3Event, Void> {
 
@@ -56,29 +57,36 @@ public class ForwardingHandler implements RequestHandler<S3Event, Void> {
       var plainContent = messageParser.getPlainContent();
       var htmlContent = messageParser.getHtmlContent();
       var from = messageParser.getFrom();
+
       var subject = "Forwarded (Stratospheric) Mail: " + messageParser.getSubject();
 
-      var receivers = messageParser.getTo();
+      var receivers = new ArrayList<Address>();
+
+      receivers.addAll(messageParser.getTo());
+      receivers.addAll(messageParser.getCc());
+      receivers.addAll(messageParser.getBcc());
+
+      logger.log("Potential receivers of this email are: " + Arrays.toString(receivers.toArray()));
 
       var forwardingRecipients = new HashSet<String>();
 
       for (Address address : receivers) {
         var emailAddress = address.toString();
-        if (emailAddress.contains("info")) {
+        if (emailAddress.contains("info@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_BJOERN);
           forwardingRecipients.add(EMAIL_PHILIP);
           forwardingRecipients.add(EMAIL_TOM);
         }
 
-        if (emailAddress.contains("bjoern")) {
+        if (emailAddress.contains("bjoern@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_BJOERN);
         }
 
-        if (emailAddress.contains("philip")) {
+        if (emailAddress.contains("philip@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_PHILIP);
         }
 
-        if (emailAddress.contains("tom")) {
+        if (emailAddress.contains("tom@stratospheric.dev")) {
           forwardingRecipients.add(EMAIL_TOM);
         }
       }

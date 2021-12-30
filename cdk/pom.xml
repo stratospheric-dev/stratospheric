@@ -14,7 +14,8 @@
     <cdk.version>1.121.0</cdk.version>
     <junit.version>5.7.0</junit.version>
     <passay.version>1.6.0</passay.version>
-    <cdk-constructs.version>0.0.26</cdk-constructs.version>
+    <cdk-constructs.version>0.0.28</cdk-constructs.version>
+    <log4j2.version>2.17.0</log4j2.version>
   </properties>
 
   <build>

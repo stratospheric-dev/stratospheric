@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.5.5'
+  id 'org.springframework.boot' version '2.6.2'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
 }
@@ -15,6 +15,7 @@ repositories {
 ext {
   set('awsSpringVersion', '2.3.2')
   set('testcontainersVersion', '1.16.0')
+  set('log4j2.version', '2.17.1')
 }
 
 dependencies {
@@ -33,18 +34,18 @@ dependencies {
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
   implementation 'org.springframework.boot:spring-boot-starter-activemq'
   implementation 'org.webjars:webjars-locator-core'
-  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
+  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
   implementation 'org.webjars:stomp-websocket:2.3.4'
-  implementation 'org.webjars:bootstrap:4.6.0-1'
-  implementation 'org.webjars:font-awesome:5.15.2'
+  implementation 'org.webjars:bootstrap:4.6.1'
+  implementation 'org.webjars:font-awesome:5.15.3'
   implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'com.amazonaws:aws-java-sdk-ses'
   implementation 'com.amazonaws:aws-java-sdk-dynamodb'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
   implementation 'de.siegmar:logback-awslogs-json-encoder:1.1.0'
-  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:1.6.0'
+  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:1.7.0'
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -71,4 +72,8 @@ bootRun {
     "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
     "-Dspring.profiles.active=dev",
   ]
+}
+
+jar {
+  enabled = false
 }

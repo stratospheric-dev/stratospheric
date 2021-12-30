@@ -1,8 +1,4 @@
-import {
-  SQSClient,
-  GetQueueAttributesCommand,
-  GetQueueAttributesResult,
-} from "@aws-sdk/client-sqs";
+import { GetQueueAttributesCommand, GetQueueAttributesResult, SQSClient, } from "@aws-sdk/client-sqs";
 import axios from "axios";
 
 export const handler = async (e: SqsEvent): Promise<any> => {
@@ -29,7 +25,7 @@ export const handler = async (e: SqsEvent): Promise<any> => {
     console.log(
       "GitHub workflow is currently running - retrying at a later time!"
     );
-    throw "retyring later!";
+    throw "retrying later!";
   }
 
   // Triggering the GitHub workflow.
@@ -110,7 +106,7 @@ class DeploymentQueue {
 
   constructor(queueUrl: string, region: string) {
     this.queueUrl = queueUrl;
-    this.sqsClient = new SQSClient({ region: region });
+    this.sqsClient = new SQSClient({region: region});
   }
 
   async hasWaitingEvents(): Promise<boolean> {
