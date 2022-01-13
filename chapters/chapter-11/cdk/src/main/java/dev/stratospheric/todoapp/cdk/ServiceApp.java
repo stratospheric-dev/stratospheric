@@ -1,16 +1,20 @@
 package dev.stratospheric.todoapp.cdk;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
 import dev.stratospheric.cdk.Service;
-import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import software.constructs.Construct;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 

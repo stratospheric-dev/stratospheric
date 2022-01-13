@@ -1,9 +1,10 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.DockerRepository;
-import software.amazon.awscdk.core.*;
-
-import java.util.Objects;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 
 public class DockerRepositoryApp {
 

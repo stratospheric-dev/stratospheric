@@ -12,10 +12,10 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdk.version>1.124.0</cdk.version>
     <junit.version>5.7.0</junit.version>
-    <cdk-constructs.version>0.0.28</cdk-constructs.version>
-    <log4j2.version>2.17.0</log4j2.version>
+    <cdk-constructs.version>0.1.0</cdk-constructs.version>
+    <log4j2.version>2.17.1</log4j2.version>
+    <aws-cdk-lib.version>2.7.0</aws-cdk-lib.version>
   </properties>
 
   <build>
@@ -29,19 +29,6 @@
   </build>
 
   <dependencies>
-    <!-- AWS Cloud Development Kit -->
-    <dependency>
-      <groupId>software.amazon.awscdk</groupId>
-      <artifactId>core</artifactId>
-      <version>${cdk.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>software.amazon.awscdk</groupId>
-      <artifactId>cognito</artifactId>
-      <version>${cdk.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>dev.stratospheric</groupId>
       <artifactId>cdk-constructs</artifactId>
@@ -54,6 +41,7 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
