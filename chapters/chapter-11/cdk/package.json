@@ -15,7 +15,7 @@
     "database:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DatabaseApp\" --force --require-approval never"
   },
   "devDependencies": {
-    "aws-cdk": "2.5.0"
+    "aws-cdk": "2.7.0"
   },
   "engines": {
     "node": ">=16"
