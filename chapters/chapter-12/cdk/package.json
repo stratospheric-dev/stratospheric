@@ -19,7 +19,7 @@
     "cognito:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CognitoApp\" --force --require-approval never"
   },
   "devDependencies": {
-    "aws-cdk": "1.124.0"
+    "aws-cdk": "2.7.0"
   },
   "engines": {
     "node": ">=16"

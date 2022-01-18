@@ -7,9 +7,6 @@
     "springProfile": "aws",
     "dockerRepositoryName": "todo-app",
     "dockerImageTag": "1",
-    "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1",
-    "@aws-cdk/core:enableStackNameDuplicates": "true",
-    "aws-cdk:enableDiffNoFail": "true",
-    "@aws-cdk/core:stackRelativeExports": "true"
+    "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1"
   }
 }

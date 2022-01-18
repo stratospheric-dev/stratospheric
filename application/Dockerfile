@@ -1,4 +1,4 @@
-FROM openjdk:11.0.9.1-jre
+FROM openjdk:11.0.13-jre
 
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar

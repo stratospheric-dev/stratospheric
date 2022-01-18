@@ -2,13 +2,19 @@ package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
-import software.amazon.awscdk.core.*;
-import software.amazon.awscdk.services.certificatemanager.DnsValidatedCertificate;
-import software.amazon.awscdk.services.elasticloadbalancingv2.*;
-import software.amazon.awscdk.services.route53.*;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.elasticloadbalancingv2.ApplicationLoadBalancer;
+import software.amazon.awscdk.services.elasticloadbalancingv2.ApplicationLoadBalancerAttributes;
+import software.amazon.awscdk.services.elasticloadbalancingv2.IApplicationLoadBalancer;
+import software.amazon.awscdk.services.route53.ARecord;
+import software.amazon.awscdk.services.route53.HostedZone;
+import software.amazon.awscdk.services.route53.HostedZoneProviderProps;
+import software.amazon.awscdk.services.route53.IHostedZone;
+import software.amazon.awscdk.services.route53.RecordTarget;
 import software.amazon.awscdk.services.route53.targets.LoadBalancerTarget;
-
-import java.util.List;
+import software.constructs.Construct;
 
 class DomainStack extends Stack {
 

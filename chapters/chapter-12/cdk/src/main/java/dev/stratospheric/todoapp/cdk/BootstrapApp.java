@@ -1,9 +1,9 @@
 package dev.stratospheric.todoapp.cdk;
 
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 
 /**
  * This is an empty app that we can use for bootstrapping the CDK with the "cdk bootstrap" command.
