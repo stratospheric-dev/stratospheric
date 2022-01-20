@@ -1,17 +1,23 @@
 package dev.stratospheric.todoapp.cdk;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
 import dev.stratospheric.cdk.Service;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iam.Effect;
 import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
-
-import java.util.*;
+import software.constructs.Construct;
 
 import static java.util.Collections.singletonList;
 

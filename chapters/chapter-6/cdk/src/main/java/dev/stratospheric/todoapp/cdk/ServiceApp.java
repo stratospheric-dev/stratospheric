@@ -1,15 +1,15 @@
 package dev.stratospheric.todoapp.cdk;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.Service;
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
-
-import java.util.HashMap;
-import java.util.Map;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 

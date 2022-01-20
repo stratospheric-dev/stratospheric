@@ -5,12 +5,11 @@ import java.util.Map;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
-import software.amazon.awscdk.core.Construct;
-import software.amazon.awscdk.core.Duration;
-import software.amazon.awscdk.core.Environment;
-import software.amazon.awscdk.core.Fn;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Fn;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.cloudwatch.Alarm;
 import software.amazon.awscdk.services.cloudwatch.AlarmProps;
 import software.amazon.awscdk.services.cloudwatch.AlarmRule;
@@ -38,6 +37,7 @@ import software.amazon.awscdk.services.logs.MetricFilterProps;
 import software.amazon.awscdk.services.sns.Topic;
 import software.amazon.awscdk.services.sns.TopicProps;
 import software.amazon.awscdk.services.sns.subscriptions.EmailSubscription;
+import software.constructs.Construct;
 
 public class MonitoringStack extends Stack {
 
@@ -77,7 +77,7 @@ public class MonitoringStack extends Stack {
               .metricName("stratospheric.registration.signups.count")
               .region(awsEnvironment.getRegion())
               .statistic("sum")
-              .dimensions(Map.of(
+              .dimensionsMap(Map.of(
                 "outcome", "success",
                 "environment", applicationEnvironment.getEnvironmentName())
               )
@@ -93,7 +93,7 @@ public class MonitoringStack extends Stack {
               .metricName("SignInSuccesses")
               .period(Duration.minutes(15))
               .region(awsEnvironment.getRegion())
-              .dimensions(Map.of(
+              .dimensionsMap(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
               .statistic("sum")
@@ -103,7 +103,7 @@ public class MonitoringStack extends Stack {
               .metricName("TokenRefreshSuccesses")
               .period(Duration.minutes(15))
               .region(awsEnvironment.getRegion())
-              .dimensions(Map.of(
+              .dimensionsMap(Map.of(
                 "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
                 "UserPool", cognitoOutputParameters.getUserPoolId()))
               .statistic("sum")
@@ -136,7 +136,7 @@ public class MonitoringStack extends Stack {
       .metric(new Metric(MetricProps.builder()
         .namespace("AWS/ApplicationELB")
         .metricName("TargetResponseTime")
-        .dimensions(Map.of(
+        .dimensionsMap(Map.of(
           "LoadBalancer", loadBalancerName
         ))
         .region(awsEnvironment.getRegion())
@@ -169,7 +169,7 @@ public class MonitoringStack extends Stack {
       .metric(new Metric(MetricProps.builder()
         .namespace("AWS/ApplicationELB")
         .metricName("HTTPCode_ELB_5XX_Count")
-        .dimensions(Map.of(
+        .dimensionsMap(Map.of(
           "LoadBalancer", loadBalancerName
         ))
         .region(awsEnvironment.getRegion())

@@ -1,11 +1,15 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.sqs.DeadLetterQueue;
 import software.amazon.awscdk.services.sqs.IQueue;
 import software.amazon.awscdk.services.sqs.Queue;
 import software.amazon.awscdk.services.ssm.StringParameter;
+import software.constructs.Construct;
 
 class MessagingStack extends Stack {
 

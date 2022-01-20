@@ -1,19 +1,23 @@
 package dev.stratospheric.todoapp.cdk;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
-import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.Fn;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.amazonmq.CfnBroker;
 import software.amazon.awscdk.services.ec2.CfnSecurityGroup;
 import software.amazon.awscdk.services.ssm.StringParameter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import software.constructs.Construct;
 
 public class ActiveMqStack extends Stack {
 

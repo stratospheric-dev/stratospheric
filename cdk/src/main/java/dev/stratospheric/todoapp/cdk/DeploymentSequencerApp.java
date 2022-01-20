@@ -1,7 +1,7 @@
 package dev.stratospheric.todoapp.cdk;
 
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
 

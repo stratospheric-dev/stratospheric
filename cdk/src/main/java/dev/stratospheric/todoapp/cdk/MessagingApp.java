@@ -1,8 +1,8 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
 
 public class MessagingApp {
 
@@ -39,5 +39,4 @@ public class MessagingApp {
       .region(region)
       .build();
   }
-
 }
