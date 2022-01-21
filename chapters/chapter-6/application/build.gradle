@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.3.2')
+  set('awsSpringVersion', '2.3.3')
 }
 
 dependencies {
