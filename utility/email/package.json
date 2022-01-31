@@ -4,7 +4,8 @@
   },
   "resolutions": {
     "json-schema": "0.4.0",
-    "nanoid": "3.2.0"
+    "nanoid": "3.2.0",
+    "simple-get": "4.0.1"
   },
   "dependencies": {
     "serverless-plugin-aws-alerts": "^1.7.4"
