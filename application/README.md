@@ -7,11 +7,11 @@ The purpose of this todo application is to serve as an example for the various u
 ### Prerequisites
 
 * [Java 11 or higher](https://adoptium.net/)
-* [Gradle](https://gradle.org/) (Optional as this project also ships with the Gradle wrapper)
+* [Gradle](https://gradle.org/) (Optional as this project ships with the Gradle wrapper)
 
 ### Running the Application on Your Local Machine
 
-* Make sure you have Docker up- and running and Docker Compose installed
+* Make sure you have Docker up- and running (`docker info`) and Docker Compose installed (`docker-compose -v`)
 * Start the required infrastructure with `docker-compose up`
 * Run `./gradlew bootRun` to start the application
 * Access http://localhost:8080 in your browser
