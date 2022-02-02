@@ -6,7 +6,7 @@ The purpose of this todo application is to serve as an example for the various u
 
 ### Prerequisites
 
-* [Java 11 or higher](https://adoptium.net/)
+* [Java 17 or higher](https://adoptium.net/)
 * [Gradle](https://gradle.org/) (Optional as this project ships with the Gradle wrapper)
 
 ### Running the Application on Your Local Machine

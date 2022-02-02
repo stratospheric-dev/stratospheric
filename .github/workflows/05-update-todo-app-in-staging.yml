@@ -1,4 +1,4 @@
-# This workflow deploys all resources that are specific to the Todo-App, but not the app itself.
+# This workflow deploys the Todo-App itself.
 name: 05 - Update the Todo-App in staging
 
 env:
