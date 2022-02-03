@@ -27,5 +27,4 @@
       <logger name="org.springframework.web.SimpLogging" level="INFO"/>
       <logger name="org.springframework.web.socket.config.WebSocketMessageBrokerStats" level="WARN"/>
     </springProfile>
-
 </configuration>
