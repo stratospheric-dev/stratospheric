@@ -37,7 +37,7 @@ dependencies {
   implementation 'org.webjars:sockjs-client:1.5.1'
   implementation 'org.webjars:stomp-websocket:2.3.4'
   implementation 'org.webjars:bootstrap:4.6.1'
-  implementation 'org.webjars:font-awesome:5.15.4'
+  implementation 'org.webjars:font-awesome:6.0.0'
   implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'com.amazonaws:aws-java-sdk-ses'
