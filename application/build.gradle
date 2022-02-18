@@ -44,7 +44,7 @@ dependencies {
   implementation 'com.amazonaws:aws-java-sdk-dynamodb'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
   implementation 'de.siegmar:logback-awslogs-json-encoder:1.1.1'
-  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:2.0.0'
+  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:2.1.0'
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
