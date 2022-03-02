@@ -50,7 +50,7 @@ Resources:
       DBName: !Ref 'DBName'
       DBSubnetGroupName: !Ref 'DBSubnetGroup'
       Engine: postgres
-      EngineVersion: 11.5
+      EngineVersion: 12.9
       MasterUsername: !Ref 'DBUsername'
       MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref Secret, ':SecretString:password}}' ]]
       PubliclyAccessible: false
