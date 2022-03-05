@@ -1,6 +1,8 @@
 spring:
   application:
     name: stratospheric-demo
+  config:
+    import: 'aws-parameterstore:'
 
 cloud:
   aws:
@@ -8,6 +10,9 @@ cloud:
       profile-name: stratospheric
     region:
       static: eu-central-1
-      auto: false
     stack:
       auto: false # Automatic stack detection
+    sns:
+      enabled: true
+    sqs:
+      enabled: true
