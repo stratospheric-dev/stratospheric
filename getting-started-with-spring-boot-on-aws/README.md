@@ -2,6 +2,8 @@
 
 [![Demo](docs/s3simpleFileViewer.png)](https://stratospheric.dev)
 
+**UPDATE**: As Spring Cloud AWS is [no longer part of the Spring Cloud release train](https://spring.io/blog/2020/04/17/spring-cloud-2020-0-0-m1-released), the sample application has been migrated to the successor [awspring](https://awspring.io/). Read more about the rationale behind this move [here](https://maciejwalkowiak.com/blog/spring-cloud-aws-2-3-rc2-released/).
+
 ## How to run the demo application
 
 1. Make sure you have the AWS CLI installed and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) a `stratospheric` profile with the correct credentials and AWS region e.g.:
@@ -39,7 +41,7 @@ Please note that for demonstration purposes the S3 Bucket and its content is pub
 4. Create at least the following two parameters using the AWS Parameter Store (inside SSM):
 
 ```
-/config/stratospheric-demo/custom.bucket-name -> your S3 bucket name
+/config/stratospheric-demo/custom.bucket-name -> the S3 bucket name you passed to ./create.sh
 /config/stratospheric-demo/custom.sqs-queue-name -> stratospheric-demo-queue
 ```
 
@@ -62,6 +64,9 @@ aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-c
 docker build -t statospheric-demo .
 docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
 ```
+
+9. Make sure to clean up all AWS resources afterwards. Empty all files within your S3 bucket and then delete the CloudFormation stack inside the AWS console.
+
 
 ## Further resources
 
