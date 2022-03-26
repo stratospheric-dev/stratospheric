@@ -3,10 +3,11 @@
     "preinstall": "npm-force-resolutions"
   },
   "resolutions": {
-    "json-schema": "0.4.0",
-    "nanoid": "3.2.0",
+    "json-schema": "1.4.0",
+    "nanoid": "3.3.1",
     "simple-get": "4.0.1",
-    "ansi-regex": "5.0.1"
+    "ansi-regex": "6.0.1",
+    "simple-git": "3.4.0"
   },
   "dependencies": {
     "serverless-plugin-aws-alerts": "^1.7.4"
