@@ -1,9 +1,9 @@
 package dev.stratospheric.todoapp.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 public class LogoutSuccessHandlerConfig {
 
   @Bean
-  @Profile("aws")
+  @ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "true")
   public LogoutSuccessHandler cognitoOidcLogoutSuccessHandler(
     @Value("${COGNITO_CLIENT_ID}") String clientId,
     @Value("${COGNITO_LOGOUT_URL}") String userPoolLogoutUrl) {
@@ -20,7 +20,7 @@ public class LogoutSuccessHandlerConfig {
   }
 
   @Bean
-  @Profile("dev")
+  @ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "false")
   public LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
     OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
     successHandler.setPostLogoutRedirectUri("{baseUrl}");

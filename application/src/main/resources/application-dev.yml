@@ -38,6 +38,9 @@ custom:
   web-socket-relay-password: admin
   web-socket-relay-use-ssl: false
   auto-confirm-collaborations: true
+  provide-test-todo-controller: true
+  use-cognito-as-identity-provider: false
+  provide-dynamodb-via-aws: false
 
 cloud:
   aws:
