@@ -53,6 +53,8 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
+
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 dependencyManagement {
