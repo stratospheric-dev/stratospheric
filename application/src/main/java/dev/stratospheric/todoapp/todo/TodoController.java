@@ -37,7 +37,6 @@ public class TodoController {
     Model model
   ) {
     Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
-
     if (!todo.getOwner().getEmail().equals(user.getEmail())) {
       throw new ForbiddenException();
     }
