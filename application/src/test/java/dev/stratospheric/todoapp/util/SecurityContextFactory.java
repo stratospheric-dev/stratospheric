@@ -24,7 +24,8 @@ public class SecurityContextFactory {
         Instant.MAX,
         Map.of(
           "email", emailAddress,
-          "sub", emailAddress
+          "sub", emailAddress,
+          "name", emailAddress
         )
       )
     );

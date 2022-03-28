@@ -28,8 +28,6 @@ import static org.mockito.BDDMockito.given;
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {
 
-  private static final String TODO_URL = "/todo/show/1";
-
   @Autowired
   private TodoController todoController;
 
