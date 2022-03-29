@@ -2,12 +2,12 @@ package dev.stratospheric.todoapp.collaboration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("dev")
+@ConditionalOnProperty(prefix = "custom", name = "provide-test-todo-controller", havingValue = "true")
 public class TodoTestCollaborationService {
 
   private final SimpMessagingTemplate simpMessagingTemplate;

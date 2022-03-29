@@ -1,10 +1,10 @@
 package dev.stratospheric.todoapp.registration;
 
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("dev")
+@ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "false")
 public class LocalRegistrationService implements RegistrationService {
 
   @Override
