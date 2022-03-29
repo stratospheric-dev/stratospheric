@@ -2,6 +2,8 @@ package dev.stratospheric.todoapp.todo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,9 +31,16 @@ public class TodoController {
   }
 
   @GetMapping("/show/{id}")
-  public String showView(@PathVariable("id") long id, Model model) {
-
+  public String showView(
+    @AuthenticationPrincipal OidcUser user,
+    @PathVariable("id") long id,
+    Model model
+  ) {
     Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    if (!todo.getOwner().getEmail().equals(user.getEmail())) {
+      throw new ForbiddenException();
+    }
+
     model.addAttribute("todo", todo);
 
     return "todo/show";
@@ -41,6 +50,7 @@ public class TodoController {
   public String addView(Model model) {
     model.addAttribute("todo", new Todo());
     model.addAttribute("editMode", EditMode.CREATE);
+
     return "todo/edit";
   }
 
@@ -54,6 +64,7 @@ public class TodoController {
     if (bindingResult.hasErrors()) {
       model.addAttribute("todo", todo);
       model.addAttribute("editMode", EditMode.CREATE);
+
       return "todo/edit";
     }
 
@@ -69,10 +80,15 @@ public class TodoController {
 
   @GetMapping("/edit/{id}")
   public String editView(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
     Model model
   ) {
     Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+
+    if (!todo.getOwner().getEmail().equals(user.getEmail())) {
+      throw new ForbiddenException();
+    }
 
     model.addAttribute("todo", todo);
     model.addAttribute("editMode", EditMode.UPDATE);
@@ -82,6 +98,7 @@ public class TodoController {
 
   @PostMapping("/update/{id}")
   public String update(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
     @Valid Todo todo,
     BindingResult result,
@@ -91,10 +108,16 @@ public class TodoController {
     if (result.hasErrors()) {
       model.addAttribute("todo", todo);
       model.addAttribute("editMode", EditMode.UPDATE);
+
       return "todo/edit";
     }
 
     Todo existingTodo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+
+    if (!todo.getOwner().getEmail().equals(user.getEmail())) {
+      throw new ForbiddenException();
+    }
+
     existingTodo.setTitle(todo.getTitle());
     existingTodo.setDescription(todo.getDescription());
     existingTodo.setPriority(todo.getPriority());
@@ -111,10 +134,16 @@ public class TodoController {
 
   @GetMapping("/delete/{id}")
   public String delete(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
   ) {
     Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+
+    if (!todo.getOwner().getEmail().equals(user.getEmail())) {
+      throw new ForbiddenException();
+    }
+
     todoService.delete(todo);
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
