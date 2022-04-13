@@ -31,7 +31,7 @@
     "canary:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --force --require-approval never"
   },
   "devDependencies": {
-    "aws-cdk": "2.14.0"
+    "aws-cdk": "2.20.0"
   },
   "engines": {
     "node": ">=16"
