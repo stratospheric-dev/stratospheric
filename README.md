@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://stratospheric.dev">
-    <img src="https://stratospheric.dev/assets/images/book-mockup-500.png" alt="Stratospheric Book Cover"/>
+    <img src="https://stratospheric.dev/images/stratospheric-ebook-cover-500x452.png" alt="Stratospheric Book Cover"/>
   </a>
 </p>
 
@@ -37,15 +37,15 @@ We don't stop here. Once our application is running in production, things are ge
 
 ## What We're Going to Build
 
-![Stratospheric Technical Architecture](https://stratospheric.dev/assets/images/application/stratospheric-technical-architecture-transparent.png)
+![Stratospheric Technical Architecture](https://stratospheric.dev/images/application/stratospheric-technical-architecture-transparent.png)
 
 ## What It's Going to Look Like
 
-![Landing Page Without Being Logged In](https://stratospheric.dev/assets/images/application/stratospheric-overview-page-no-login.png)
-![Registration Form Using Amazon Cognito](https://stratospheric.dev/assets/images/application/stratospheric-register-page.png)
-![Landing Page While Being Logged In](https://stratospheric.dev/assets/images/application/stratospheric-overview-page-with-login.png)
-![Todo Dashboard](https://stratospheric.dev/assets/images/application/stratospheric-dashboard-page.png)
-![Creating New Todos](https://stratospheric.dev/assets/images/application/stratospheric-create-todo-page.png)
+![Landing Page Without Being Logged In](https://stratospheric.dev/images/application/stratospheric-overview-page-no-login.png)
+![Registration Form Using Amazon Cognito](https://stratospheric.dev/images/application/stratospheric-register-page.png)
+![Landing Page While Being Logged In](https://stratospheric.dev/images/application/stratospheric-overview-page-with-login.png)
+![Todo Dashboard](https://stratospheric.dev/images/application/stratospheric-dashboard-page.png)
+![Creating New Todos](https://stratospheric.dev/images/application/stratospheric-create-todo-page.png)
 
 ## Authors
 
