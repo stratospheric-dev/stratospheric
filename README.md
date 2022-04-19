@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://stratospheric.dev">
-    <img src="https://stratospheric.dev/assets/images/book-mockup-500.png" alt="Stratospheric Book Cover"/>
+    <img src="https://stratospheric.dev/images/stratospheric-ebook-cover-500x452.png" alt="Stratospheric Book Cover"/>
   </a>
 </p>
 
