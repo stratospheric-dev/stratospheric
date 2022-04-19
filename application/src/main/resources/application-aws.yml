@@ -24,5 +24,6 @@ custom:
   web-socket-relay-username: ${WEB_SOCKET_RELAY_USERNAME}
   web-socket-relay-password: ${WEB_SOCKET_RELAY_PASSWORD}
   web-socket-relay-use-ssl: true
+  provide-test-todo-controller: false
   use-cognito-as-identity-provider: true
   provide-dynamodb-via-aws: true
