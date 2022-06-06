@@ -45,3 +45,7 @@ bootRun {
     "-Dspring.profiles.active=dev",
   ]
 }
+
+jar {
+  enabled = false
+}
