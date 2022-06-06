@@ -19,6 +19,8 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
     name: Build and publish Todo App
+    outputs:
+      dockerImageTag: ${{ steps.dockerImageTag.outputs.tag }}
     steps:
 
       - name: Checkout code
@@ -63,14 +65,50 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:${DOCKER_IMAGE_TAG}
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:latest
 
-      - name: Sending deployment event to queue
-        if: github.ref == 'refs/heads/main'
-        env:
-          DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
+#      Superseded by GitHub Action's concurrency support, see below
+#      - name: Sending deployment event to queue
+#        if: github.ref == 'refs/heads/main'
+#        env:
+#          DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
+#        run: |
+#          export EVENT_PAYLOAD="{\"commitSha\": \"$GITHUB_SHA\", \"ref\": \"main\", \"owner\": \"stratospheric-dev\", \"repo\": \"stratospheric\", \"workflowId\": \"05-update-todo-app-in-staging.yml\", \"dockerImageTag\": \"$DOCKER_IMAGE_TAG\"}"
+#          aws sqs send-message \
+#            --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo \
+#            --message-group-id default \
+#            --message-deduplication-id $GITHUB_SHA \
+#            --message-body "$EVENT_PAYLOAD"
+
+  deploy:
+    runs-on: ubuntu-20.04
+    name: Deploy Todo App
+    needs: build-and-publish
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    concurrency: todo-application-deployment
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+
+      - name: NPM install
+        working-directory: cdk
+        run: npm install
+
+      - name: Deploy service stack
+        working-directory: cdk
+        run: npm run service:deploy -- -c dockerImageTag=${{ needs.build-and-publish.outputs.dockerImageTag }}
+
+      # Each Service stack updates creates a new parameter stack that CloudFormation does not clean up for us.
+      # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.
+      - name: Clean up old parameter stacks
+        working-directory: cdk
         run: |
-          export EVENT_PAYLOAD="{\"commitSha\": \"$GITHUB_SHA\", \"ref\": \"main\", \"owner\": \"stratospheric-dev\", \"repo\": \"stratospheric\", \"workflowId\": \"05-update-todo-app-in-staging.yml\", \"dockerImageTag\": \"$DOCKER_IMAGE_TAG\"}"
-          aws sqs send-message \
-            --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo \
-            --message-group-id default \
-            --message-deduplication-id $GITHUB_SHA \
-            --message-body "$EVENT_PAYLOAD"
+          aws cloudformation describe-stacks --region eu-central-1 --query "Stacks[].StackName" --output text | sed -e "s/\s\+/\n/g" | grep -e "staging-todo-app-Service-Parameters" | sort -r | tail -n+2 > stacks_to_be_deleted.txt
+          for stack in $(cat stacks_to_be_deleted.txt); do aws cloudformation delete-stack --stack-name $stack --region eu-central-1;  done
