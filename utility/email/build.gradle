@@ -4,7 +4,7 @@ plugins {
 
 group 'dev.stratospheric'
 version '1.0.0'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
   mavenCentral()
