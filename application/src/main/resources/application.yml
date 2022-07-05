@@ -3,7 +3,7 @@ cloud:
     stack:
       auto: false
     region:
-      static: eu-central-1
+      static: eu-west-1
     instance:
       data:
         enabled: false
