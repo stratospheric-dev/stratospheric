@@ -1,11 +1,11 @@
 {
   "context": {
     "applicationName": "todo-app",
-    "region": "eu-central-1",
+    "region": "eu-west-1",
     "accountId": "221875718260",
     "dockerRepositoryName": "todo-app",
     "dockerImageTag": "DYNAMICALLY_OVERRIDDEN_BY_WORKFLOW",
-    "applicationUrl": "https://app.stratospheric.dev",
+    "applicationUrl": "https://staging.stratospheric.dev",
     "loginPageDomainPrefix": "stratospheric-staging",
     "environmentName": "staging",
     "springProfile": "aws",
@@ -13,8 +13,8 @@
     "canaryUsername": "canary",
     "canaryUserPassword": "SECRET_OVERRIDDEN_BY_WORKFLOW",
     "confirmationEmail": "info@stratospheric.dev",
-    "applicationDomain": "app.stratospheric.dev",
-    "sslCertificateArn": "arn:aws:acm:eu-central-1:221875718260:certificate/8d92169c-ea74-4086-b407-b951429ac2b1",
+    "applicationDomain": "staging.stratospheric.dev",
+    "sslCertificateArn": "arn:aws:acm:eu-west-1:221875718260:certificate/f02de9b4-1f8e-4e10-8ec9-a222bdf27674",
     "hostedZoneDomain": "stratospheric.dev",
     "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW"
   }
