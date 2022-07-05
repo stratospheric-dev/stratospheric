@@ -4,7 +4,7 @@ name: 06 - Update the Todo-App environment in staging
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+  AWS_DEFAULT_REGION: eu-west-1
 
 on:
   push:
