@@ -11,8 +11,6 @@ spring:
         provider:
           cognito:
             issuerUri: ${COGNITO_PROVIDER_URL}
-  main:
-    banner-mode: off
 
 management:
   metrics:
