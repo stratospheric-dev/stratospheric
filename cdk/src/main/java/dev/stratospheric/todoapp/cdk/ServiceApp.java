@@ -165,7 +165,7 @@ public class ServiceApp {
         ))
         .withStickySessionsEnabled(true)
         .withHealthCheckPath("/actuator/health")
-        .withAwsLogsDateTimeFormat("%Y-%m-%dT%H:%M:%S.%f%z")
+        .withAwsLogsDateTimeFormat("%Y-%m-%d %H:%M:%S")
         .withHealthCheckIntervalSeconds(30), // needs to be long enough to allow for slow start up with low-end computing instances
 
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
