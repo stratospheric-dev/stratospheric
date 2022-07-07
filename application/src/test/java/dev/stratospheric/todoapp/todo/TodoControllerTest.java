@@ -1,80 +1,102 @@
 package dev.stratospheric.todoapp.todo;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Map;
 
-import dev.stratospheric.todoapp.AbstractDevIntegrationTest;
-import dev.stratospheric.todoapp.person.PersonRepository;
+import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.util.SecurityContextFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class TodoControllerTest extends AbstractDevIntegrationTest {
+@WebMvcTest(TodoController.class)
+class TodoControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
-  @Autowired
-  private TodoController todoController;
+  @MockBean
+  private TodoService todoService;
 
-  @Autowired
-  private PersonRepository personRepository;
+  @MockBean
+  private LogoutSuccessHandler logoutSuccessHandler;
 
-  @Autowired
-  private TodoRepository todoRepository;
+  @MockBean
+  private ClientRegistrationRepository clientRegistrationRepository;
 
-  @Test
-  void contextLoads() {
-    assertNotNull(mockMvc);
+  @BeforeEach
+  void setUp() {
+    Person owner = new Person();
+    owner.setEmail("info@stratospheric.dev");
+
+    Todo todo = new Todo();
+    todo.setStatus(Status.OPEN);
+    todo.setTitle("Test");
+    todo.setDescription("Sample Description");
+    todo.setDueDate(LocalDate.now().plusDays(42));
+    todo.setId(1L);
+    todo.setOwner(owner);
+
+    given(todoService.getOwnedTodo(1L, "info@stratospheric.dev")).willReturn(todo);
   }
 
   @Test
-  void shouldAllowCrudOperationOnTodo() throws Exception {
-    SecurityContextFactory.createSecurityContext("info@stratospheric.dev");
-
-    OidcUser user = new DefaultOidcUser(
-      null,
-      new OidcIdToken(
-        "emailAddress",
-        Instant.now(),
-        Instant.MAX,
-        Map.of(
-          "email", "emailAddress",
-          "sub", "emailAddress",
-          "name", "duke"
-        )
-      )
-    );
+  void shouldAllowAccessForAuthenticatedUser() throws Exception {
+    OidcUser user = createOidcUser("info@stratospheric.dev");
 
     this.mockMvc
-      .perform(post("/todo")
-        .with(authentication(new TestingAuthenticationToken(user, null)))
-          .param("title", "Duke")
-          .param("description", "" )
-          .param("dueDate", LocalDate.now().plusDays(42).toString())
-        )
-        .andExpect(status().isOk());
+      .perform(get("/todo/show/1")
+        .with(oidcLogin().oidcUser(user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
 
-    assertThat(todoRepository.findAll())
-      .hasSize(1);
+    this.mockMvc
+      .perform(get("/todo/edit/1")
+        .with(oidcLogin().oidcUser(user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
 
-    assertThat(personRepository.findAll())
-      .hasSize(1);
+    this.mockMvc
+      .perform(get("/todo/delete/1")
+        .with(oidcLogin().oidcUser(user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isFound());
+  }
+
+  @Test
+  void shouldRejectAccessForUnknownUser() throws Exception {
+
+    this.mockMvc
+      .perform(get("/todo/show/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
+
+    this.mockMvc
+      .perform(get("/todo/edit/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
+
+    this.mockMvc
+      .perform(get("/todo/delete/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
+  }
+
+  private OidcUser createOidcUser(String emailAddress) {
+    SecurityContextFactory.createSecurityContext(emailAddress);
+
+    return (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 }

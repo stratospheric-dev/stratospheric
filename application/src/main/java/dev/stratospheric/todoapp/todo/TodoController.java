@@ -67,7 +67,7 @@ public class TodoController {
 
     todoService.saveNewTodo(toBeCreatedTodo, user.getEmail(), user.getAttribute("name"));
 
-    redirectAttributes.addFlashAttribute("message", "Your new todo has been be saved.");
+    redirectAttributes.addFlashAttribute("message", "Your new todo has been successfully saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     logger.info("successfully created todo");
@@ -107,7 +107,7 @@ public class TodoController {
 
     todoService.updateTodo(updatedTodo, id, user.getEmail());
 
-    redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
+    redirectAttributes.addFlashAttribute("message", "Your todo was successfully updated.");
     redirectAttributes.addFlashAttribute("messageType", "success");
 
     logger.info("successfully updated todo");

@@ -62,7 +62,7 @@ public class TodoService {
   public Todo getOwnedTodo(long id, String ownerEmail) {
     Todo todo = this.todoRepository
       .findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("Invalid todo ID: " + id));
+      .orElseThrow(NotFoundException::new);
 
     if (!todo.getOwner().getEmail().equals(ownerEmail)) {
       throw new ForbiddenException();
