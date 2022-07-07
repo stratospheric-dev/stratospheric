@@ -32,7 +32,7 @@ public abstract class AbstractDevIntegrationTest {
   static GenericContainer keycloak = new GenericContainer(DockerImageName.parse("quay.io/keycloak/keycloak:18.0.0-legacy"))
     .withExposedPorts(8080)
     .withClasspathResourceMapping("/keycloak", "/tmp", BindMode.READ_ONLY)
-    .withEnv("JAVA_OPTS", "JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json")
+    .withEnv("JAVA_OPTS", "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json")
     .withEnv("DB_VENDOR", "H2")
     .withEnv("KEYCLOAK_USER", "keycloak")
     .withEnv("KEYCLOAK_PASSWORD", "keycloak")
