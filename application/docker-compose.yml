@@ -25,7 +25,7 @@ services:
       - DEFAULT_REGION=eu-central-1
       - USE_SINGLE_REGION=true
     volumes:
-      - ./init/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+      - ./src/test/resources/localstack/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0-legacy
     ports:
@@ -36,4 +36,4 @@ services:
       - DB_VENDOR=h2
       - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json
     volumes:
-      - ./init/stratospheric-realm.json:/tmp/stratospheric-realm.json
+      - ./src/test/resources/keycloak/stratospheric-realm.json:/tmp/stratospheric-realm.json
