@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   keycloak:
-    image: jboss/keycloak:11.0.0
+    image: quay.io/keycloak/keycloak:18.0.0-legacy
     ports:
       - 8888:8080
     environment:
@@ -11,4 +11,4 @@ services:
       - DB_VENDOR=h2
       - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json
     volumes:
-      - ./init/stratospheric-realm.json:/tmp/stratospheric-realm.json
+      - ./src/test/resources/keycloak/stratospheric-realm.json:/tmp/stratospheric-realm.json
