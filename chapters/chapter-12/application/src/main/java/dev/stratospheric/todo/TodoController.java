@@ -1,5 +1,11 @@
 package dev.stratospheric.todo;
 
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,15 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
 
-  private final TodoService todoService;
+  private static final Logger logger = LoggerFactory.getLogger(TodoController.class);
 
-  private static final String INVALID_TODO_ID = "Invalid todo ID: ";
+  private final TodoService todoService;
 
   public TodoController(
     TodoService todoService) {
@@ -25,9 +29,14 @@ public class TodoController {
   }
 
   @GetMapping("/show/{id}")
-  public String showView(@PathVariable("id") long id, Model model) {
+  public String showView(
+    @AuthenticationPrincipal OidcUser user,
+    @PathVariable("id") long id,
+    Model model
+  ) {
 
-    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    Todo todo = todoService.getOwnedTodo(id, user.getEmail());
+
     model.addAttribute("todo", todo);
 
     return "todo/show";
@@ -37,36 +46,42 @@ public class TodoController {
   public String addView(Model model) {
     model.addAttribute("todo", new Todo());
     model.addAttribute("editMode", EditMode.CREATE);
+
     return "todo/edit";
   }
 
   @PostMapping
   public String add(
-    @Valid Todo todo,
+    @Valid Todo toBeCreatedTodo,
+    @AuthenticationPrincipal OidcUser user,
     BindingResult bindingResult,
     Model model,
     RedirectAttributes redirectAttributes
   ) {
     if (bindingResult.hasErrors()) {
-      model.addAttribute("todo", todo);
+      model.addAttribute("todo", toBeCreatedTodo);
       model.addAttribute("editMode", EditMode.CREATE);
+
       return "todo/edit";
     }
 
-    todoService.save(todo);
+    todoService.saveNewTodo(toBeCreatedTodo, user.getEmail(), user.getAttribute("name"));
 
-    redirectAttributes.addFlashAttribute("message", "Your new todo has been be saved.");
+    redirectAttributes.addFlashAttribute("message", "Your new todo has been successfully saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
+
+    logger.info("successfully created todo");
 
     return "redirect:/dashboard";
   }
 
   @GetMapping("/edit/{id}")
   public String editView(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
+    Todo todo = todoService.getOwnedTodo(id, user.getEmail());
 
     model.addAttribute("todo", todo);
     model.addAttribute("editMode", EditMode.UPDATE);
@@ -76,41 +91,43 @@ public class TodoController {
 
   @PostMapping("/update/{id}")
   public String update(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
-    @Valid Todo todo,
+    @Valid Todo updatedTodo,
     BindingResult result,
     Model model,
     RedirectAttributes redirectAttributes
   ) {
     if (result.hasErrors()) {
-      model.addAttribute("todo", todo);
+      model.addAttribute("todo", updatedTodo);
       model.addAttribute("editMode", EditMode.UPDATE);
+
       return "todo/edit";
     }
 
-    Todo existingTodo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
-    existingTodo.setTitle(todo.getTitle());
-    existingTodo.setDescription(todo.getDescription());
-    existingTodo.setPriority(todo.getPriority());
-    existingTodo.setDueDate(todo.getDueDate());
-    todoService.save(existingTodo);
+    todoService.updateTodo(updatedTodo, id, user.getEmail());
 
-    redirectAttributes.addFlashAttribute("message", "Your todo has been be saved.");
+    redirectAttributes.addFlashAttribute("message", "Your todo was successfully updated.");
     redirectAttributes.addFlashAttribute("messageType", "success");
+
+    logger.info("successfully updated todo");
 
     return "redirect:/dashboard";
   }
 
   @GetMapping("/delete/{id}")
   public String delete(
+    @AuthenticationPrincipal OidcUser user,
     @PathVariable("id") long id,
     RedirectAttributes redirectAttributes
   ) {
-    Todo todo = todoService.findById(id).orElseThrow(() -> new IllegalArgumentException(INVALID_TODO_ID + id));
-    todoService.delete(todo);
+
+    todoService.delete(id, user.getEmail());
 
     redirectAttributes.addFlashAttribute("message", "Your todo has been be deleted.");
     redirectAttributes.addFlashAttribute("messageType", "success");
+
+    logger.info("successfully deleted todo");
 
     return "redirect:/dashboard";
   }

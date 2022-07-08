@@ -389,7 +389,7 @@
     "totp" : false,
     "emailVerified" : true,
     "firstName" : "Philip",
-    "lastName" : "RIecks",
+    "lastName" : "Riecks",
     "email" : "philip@stratospheric.dev",
     "credentials" : [ {
       "id" : "4cc2e243-69cf-4045-95bd-cad8f5ce1478",
@@ -648,7 +648,7 @@
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "27b07baf-53ba-42c6-b11f-6384769cada3",
-    "redirectUris" : [ "http://localhost:8080/*" ],
+    "redirectUris" : [ "http://localhost:*" ],
     "webOrigins" : [ "http://localhost:8080" ],
     "notBefore" : 0,
     "bearerOnly" : false,
