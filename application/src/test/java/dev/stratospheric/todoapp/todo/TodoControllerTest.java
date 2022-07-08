@@ -1,8 +1,9 @@
 package dev.stratospheric.todoapp.todo;
 
+import java.time.LocalDate;
+
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.util.SecurityContextFactory;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +13,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.MapBindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {
 
   @Autowired
-  private TodoController todoController;
+  private MockMvc mockMvc;
 
   @MockBean
   private TodoService todoService;
@@ -40,84 +36,67 @@ class TodoControllerTest {
   @MockBean
   private ClientRegistrationRepository clientRegistrationRepository;
 
-  private Todo todo;
-
   @BeforeEach
   void setUp() {
     Person owner = new Person();
     owner.setEmail("info@stratospheric.dev");
 
-    todo = new Todo();
+    Todo todo = new Todo();
+    todo.setStatus(Status.OPEN);
+    todo.setTitle("Test");
+    todo.setDescription("Sample Description");
+    todo.setDueDate(LocalDate.now().plusDays(42));
     todo.setId(1L);
     todo.setOwner(owner);
 
-    given(todoService.findById(1L)).willReturn(Optional.of(todo));
+    given(todoService.getOwnedTodo(1L, "info@stratospheric.dev")).willReturn(todo);
   }
 
   @Test
-  void withMatchingCredentials() {
-    SecurityContextFactory.createSecurityContext("info@stratospheric.dev");
+  void shouldAllowAccessForAuthenticatedUser() throws Exception {
+    OidcUser user = createOidcUser("info@stratospheric.dev");
 
-    OidcUser user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Model model = new ExtendedModelMap();
-
-    assertEquals("todo/show", todoController.showView(user, 1L, model));
-    assertEquals("todo/edit", todoController.editView(user, 1L, model));
-
-    RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-    assertEquals("redirect:/dashboard",
-      todoController.update(
-        user,
-        1L,
-        todo,
-        new MapBindingResult(model.asMap(), "todo"),
-        model, redirectAttributes
+    this.mockMvc
+      .perform(get("/todo/show/1")
+        .with(oidcLogin().oidcUser(user))
       )
-    );
-    assertEquals("redirect:/dashboard",
-      todoController.delete(user,
-        1L,
-        redirectAttributes
+      .andExpect(MockMvcResultMatchers.status().isOk());
+
+    this.mockMvc
+      .perform(get("/todo/edit/1")
+        .with(oidcLogin().oidcUser(user))
       )
-    );
+      .andExpect(MockMvcResultMatchers.status().isOk());
+
+    this.mockMvc
+      .perform(get("/todo/delete/1")
+        .with(oidcLogin().oidcUser(user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isFound());
   }
 
   @Test
-  void withoutMatchingCredentials() {
-    SecurityContextFactory.createSecurityContext("somebody-else@stratospheric.dev");
+  void shouldRejectAccessForUnknownUser() throws Exception {
 
-    OidcUser user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Model model = new ExtendedModelMap();
+    this.mockMvc
+      .perform(get("/todo/show/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
 
-    assertThrows(ForbiddenException.class, () ->
-      todoController.showView(user, 1L, model)
-    );
-    assertThrows(ForbiddenException.class, () ->
-      todoController.editView(user, 1L, model)
-    );
+    this.mockMvc
+      .perform(get("/todo/edit/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
 
-    BindingResult bindingResult = new MapBindingResult(model.asMap(), "todo");
-    RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-    assertThrows(ForbiddenException.class, () ->
-      todoController.update(
-        user,
-        1L,
-        todo,
-        bindingResult,
-        model,
-        redirectAttributes
-      )
-    );
-    assertThrows(ForbiddenException.class, () -> {
-      todoController.delete(user,
-        1L,
-        redirectAttributes
-      );
-    });
+    this.mockMvc
+      .perform(get("/todo/delete/1"))
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(header().string("Location", "http://localhost/login"));
   }
 
-  @AfterEach
-  void tearDown() {
-    SecurityContextHolder.clearContext();
+  private OidcUser createOidcUser(String emailAddress) {
+    SecurityContextFactory.createSecurityContext(emailAddress);
+
+    return (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 }

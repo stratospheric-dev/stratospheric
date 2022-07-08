@@ -1,19 +1,18 @@
 package dev.stratospheric.todo;
 
-import dev.stratospheric.person.Person;
-import dev.stratospheric.person.PersonRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
+import dev.stratospheric.person.Person;
+import dev.stratospheric.person.PersonRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
+@Transactional
 public class TodoService {
 
   private final TodoRepository todoRepository;
   private final PersonRepository personRepository;
-
 
   public TodoService(
     TodoRepository todoRepository,
@@ -22,24 +21,19 @@ public class TodoService {
     this.personRepository = personRepository;
   }
 
-  public Todo save(Todo todo) {
-    if (todo.getOwner() == null) {
+  public Todo saveNewTodo(Todo todo, String ownerEmail, String ownerName) {
 
-      OidcUser user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Person person = personRepository.findByEmail(ownerEmail).orElse(null);
 
-      String email = user.getEmail();
-      Person person = personRepository.findByEmail(email).orElse(null);
+    if (person == null) {
+      Person newUser = new Person();
+      newUser.setName(ownerName);
+      newUser.setEmail(ownerEmail);
 
-      if (person == null) {
-        Person newUser = new Person();
-        newUser.setName(user.getAttribute("name"));
-        newUser.setEmail(email);
-
-        person = personRepository.save(newUser);
-      }
-      todo.setOwner(person);
-      todo.setStatus(Status.OPEN);
+      person = personRepository.save(newUser);
     }
+    todo.setOwner(person);
+    todo.setStatus(Status.OPEN);
 
     return todoRepository.save(todo);
   }
@@ -48,7 +42,31 @@ public class TodoService {
     return this.todoRepository.findById(id);
   }
 
-  public void delete(Todo todo) {
-    this.todoRepository.delete(todo);
+  public void updateTodo(Todo updatedTodo, long id, String ownerEmail) {
+    Todo existingTodo = getOwnedTodo(id, ownerEmail);
+
+    existingTodo.setTitle(updatedTodo.getTitle());
+    existingTodo.setDescription(updatedTodo.getDescription());
+    existingTodo.setPriority(updatedTodo.getPriority());
+    existingTodo.setDueDate(updatedTodo.getDueDate());
+
+    this.todoRepository.save(existingTodo);
+  }
+
+  public Todo getOwnedTodo(long id, String ownerEmail) {
+    Todo todo = this.todoRepository
+      .findById(id)
+      .orElseThrow(NotFoundException::new);
+
+    if (!todo.getOwner().getEmail().equals(ownerEmail)) {
+      throw new ForbiddenException();
+    }
+
+    return todo;
+  }
+
+  public void delete(long id, String ownerEmail) {
+    Todo toBeDeletedTodo = getOwnedTodo(id, ownerEmail);
+    this.todoRepository.delete(toBeDeletedTodo);
   }
 }

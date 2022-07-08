@@ -1,97 +1,100 @@
 package dev.stratospheric.todoapp.todo;
 
-import dev.stratospheric.todoapp.person.Person;
-import dev.stratospheric.todoapp.util.SecurityContextFactory;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeEach;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Map;
+
+import dev.stratospheric.todoapp.AbstractDevIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@WebMvcTest(TodoController.class)
-class TodoControllerIntegrationTest {
+@SpringBootTest
+@AutoConfigureMockMvc
+class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
 
   @Autowired
   private MockMvc mockMvc;
 
-  @MockBean
-  private TodoService todoService;
-
-  @MockBean
-  private LogoutSuccessHandler logoutSuccessHandler;
-
-  @MockBean
-  private ClientRegistrationRepository clientRegistrationRepository;
-
-  @BeforeEach
-  void setUp() {
-    Person owner = new Person();
-    owner.setEmail("info@stratospheric.dev");
-
-    Todo todo = new Todo();
-    todo.setId(1L);
-    todo.setOwner(owner);
-
-    given(todoService.findById(1L)).willReturn(Optional.of(todo));
-  }
+  private OidcUser user = new DefaultOidcUser(
+    null,
+    new OidcIdToken(
+      "emailAddress",
+      Instant.now(),
+      Instant.MAX,
+      Map.of(
+        "email", "info@stratospheric.dev",
+        "sub", "stratospheric",
+        "name", "duke"
+      )
+    )
+  );
 
   @Test
-  void withMatchingCredentials() throws Exception {
-    OidcUser user = createOidcUser("info@stratospheric.dev");
-
-    performGetRequest("/todo/show/1", user)
-      .andExpect(MockMvcResultMatchers.status().isOk());
-
-    performGetRequest("/todo/edit/1", user)
-      .andExpect(MockMvcResultMatchers.status().isOk());
-
-    performGetRequest("/todo/delete/1", user)
-      .andExpect(MockMvcResultMatchers.status().isFound());
+  void shouldAllowCrudOperationOnTodo() throws Exception {
+    shouldCreateTodo();
+    shouldShowCreatedTodo();
+    shouldUpdateTodo();
+    shouldDeleteTodo();
+    shouldNotFindDeletedTodo();
   }
 
-  @Test
-  void withoutMatchingCredentials() throws Exception {
-    OidcUser user = createOidcUser("somebody-else@stratospheric.dev");
-
-    performGetRequest("/todo/show/1", user)
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
-
-    performGetRequest("/todo/edit/1", user)
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
-
-    performGetRequest("/todo/delete/1", user)
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
+  private void shouldNotFindDeletedTodo() throws Exception {
+    this.mockMvc
+      .perform(get("/todo/show/1")
+        .with(oidcLogin().oidcUser(user)))
+      .andExpect(status().isNotFound());
   }
 
-  @NotNull
-  private ResultActions performGetRequest(String urlTemplate, OidcUser user) throws Exception {
-    return mockMvc.perform(
-      MockMvcRequestBuilders
-        .get(urlTemplate)
-        .with(
-          oidcLogin()
-            .oidcUser(user)
-        )
-    );
+  private void shouldDeleteTodo() throws Exception {
+    this.mockMvc
+      .perform(get("/todo/delete/1")
+        .with(oidcLogin().oidcUser(user)))
+      .andExpect(status().is3xxRedirection())
+      .andExpect(view().name("redirect:/dashboard"));
   }
 
-  private OidcUser createOidcUser(String emailAddress) {
-    SecurityContextFactory.createSecurityContext(emailAddress);
+  private void shouldUpdateTodo() throws Exception {
+    this.mockMvc
+      .perform(post("/todo/update/1")
+        .with(oidcLogin().oidcUser(user))
+        .with(csrf())
+        .param("title", "Updated Title")
+        .param("description", "Updated Description")
+        .param("dueDate", LocalDate.now().plusDays(30).toString()))
+      .andExpect(status().is3xxRedirection())
+      .andExpect(view().name("redirect:/dashboard"));
+  }
 
-    return (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  private void shouldShowCreatedTodo() throws Exception {
+    this.mockMvc
+      .perform(get("/todo/show/1")
+        .with(oidcLogin().oidcUser(user)))
+        .andExpect(status().isOk());
+  }
+
+  private void shouldCreateTodo() throws Exception {
+    this.mockMvc
+      .perform(post("/todo")
+        .with(oidcLogin().oidcUser(user))
+        .with(csrf())
+        .param("title", "Duke")
+        .param("description", "Duke's gonna test it")
+        .param("dueDate", LocalDate.now().plusDays(42).toString())
+      )
+      .andExpect(status().is3xxRedirection())
+      .andExpect(view().name("redirect:/dashboard"));
   }
 }

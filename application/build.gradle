@@ -13,8 +13,8 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.3.3')
-  set('testcontainersVersion', '1.16.3')
+  set('awsSpringVersion', '2.4.1')
+  set('testcontainersVersion', '1.17.2')
 }
 
 dependencies {
@@ -48,12 +48,19 @@ dependencies {
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+  // Fixing Console Warning on M1 Processors
+  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
+
   runtimeOnly 'org.postgresql:postgresql'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
-  testImplementation 'org.springframework.security:spring-security-test'
+  testImplementation 'org.testcontainers:postgresql'
+  testImplementation 'org.testcontainers:localstack'
+
+  testImplementation 'com.codeborne:selenide:6.6.6'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
