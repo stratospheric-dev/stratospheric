@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.3.3')
+  set('awsSpringVersion', '2.4.1')
   set('testcontainersVersion', '1.17.2')
 }
 
@@ -59,6 +59,8 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
+
+  testImplementation 'com.codeborne:selenide:6.6.6'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }

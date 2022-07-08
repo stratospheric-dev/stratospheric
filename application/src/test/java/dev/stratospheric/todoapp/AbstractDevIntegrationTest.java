@@ -20,14 +20,16 @@ public abstract class AbstractDevIntegrationTest {
   static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.9")
     .withDatabaseName("stratospheric")
     .withUsername("stratospheric")
-    .withPassword("stratospheric");
+    .withPassword("stratospheric")
+    .withReuse(true);
 
   static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.3"))
     .withClasspathResourceMapping("/localstack", "/docker-entrypoint-initaws.d", BindMode.READ_ONLY)
     .withEnv("USE_SINGLE_REGION", "true")
     .withEnv("DEFAULT_REGION", "eu-central-1")
     .withServices(SQS, SES, DYNAMODB)
-    .waitingFor(Wait.forLogMessage(".*Initialized\\.\n", 1));
+    .waitingFor(Wait.forLogMessage(".*Initialized\\.\n", 1))
+    .withReuse(true);
 
   static GenericContainer keycloak = new GenericContainer(DockerImageName.parse("quay.io/keycloak/keycloak:18.0.0-legacy"))
     .withExposedPorts(8080)
@@ -36,10 +38,13 @@ public abstract class AbstractDevIntegrationTest {
     .withEnv("DB_VENDOR", "H2")
     .withEnv("KEYCLOAK_USER", "keycloak")
     .withEnv("KEYCLOAK_PASSWORD", "keycloak")
-    .waitingFor(Wait.forHttp("/auth").forStatusCode(200));
+    .waitingFor(Wait.forHttp("/auth").forStatusCode(200))
+    .withReuse(true);
+
 
   static GenericContainer<?> activeMq = new GenericContainer<>(DockerImageName.parse("stratospheric/activemq-docker-image"))
-    .withExposedPorts(5672, 61613, 61614, 61616);
+    .withExposedPorts(5672, 61613, 61614, 61616)
+    .withReuse(true);
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
