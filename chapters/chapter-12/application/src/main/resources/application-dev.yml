@@ -17,6 +17,7 @@ spring:
 
 custom:
   auto-confirm-collaborations: true
+  use-cognito-as-identity-provider: false
 
 cloud:
   aws:

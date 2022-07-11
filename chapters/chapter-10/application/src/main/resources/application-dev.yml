@@ -15,3 +15,6 @@ cloud:
     credentials:
       access-key: foo
       secret-key: bar
+
+custom:
+  use-cognito-as-identity-provider: false
