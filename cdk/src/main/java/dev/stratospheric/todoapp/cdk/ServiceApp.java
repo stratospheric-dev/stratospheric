@@ -104,7 +104,7 @@ public class ServiceApp {
           environmentName))
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
-            .sid("Allow SQS Access")
+            .sid("AllowSQSAccess")
             .effect(Effect.ALLOW)
             .resources(List.of(
               String.format("arn:aws:sqs:%s:%s:%s", region, accountId, messagingOutputParameters.getTodoSharingQueueName())
@@ -121,7 +121,7 @@ public class ServiceApp {
               "sqs:GetQueueAttributes"))
             .build(),
           PolicyStatement.Builder.create()
-            .sid("Allow Creating Users in Cognito User Pool")
+            .sid("AllowCreatingUsers")
             .effect(Effect.ALLOW)
             .resources(
               List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", region, accountId, cognitoOutputParameters.getUserPoolId()))
@@ -131,7 +131,7 @@ public class ServiceApp {
             ))
             .build(),
           PolicyStatement.Builder.create()
-            .sid("Allow Sending Emails via SES")
+            .sid("AllowSendingEmails")
             .effect(Effect.ALLOW)
             .resources(
               List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", region, accountId))
@@ -142,11 +142,13 @@ public class ServiceApp {
             ))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowDynamoTableAccess")
             .effect(Effect.ALLOW)
             .resources(singletonList("*")) // TODO: Fix once we manage the table with a CDK Construct
             .actions(singletonList("dynamodb:*"))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowSendingMetricsToCloudWatch")
             .effect(Effect.ALLOW)
             .resources(singletonList("*")) // CloudWatch does not have any resource-level permissions, see https://stackoverflow.com/a/38055068/9085273
             .actions(singletonList("cloudwatch:PutMetricData"))
