@@ -43,7 +43,7 @@ public class TodoService {
   }
 
   public void updateTodo(Todo updatedTodo, long id, String email) {
-    Todo existingTodo = getOwnedOrShared(id, email);
+    Todo existingTodo = getOwnedOrSharedTodo(id, email);
 
     existingTodo.setTitle(updatedTodo.getTitle());
     existingTodo.setDescription(updatedTodo.getDescription());
@@ -54,11 +54,10 @@ public class TodoService {
   }
 
   public void delete(long id, String ownerEmail) {
-    Todo toBeDeletedTodo = getOwnedTodo(id, ownerEmail);
-    this.todoRepository.delete(toBeDeletedTodo);
+    this.todoRepository.delete(getOwnedTodo(id, ownerEmail));
   }
 
-  public Todo getOwnedOrShared(long id, String email) {
+  public Todo getOwnedOrSharedTodo(long id, String email) {
     Todo todo = this.todoRepository
       .findById(id)
       .orElseThrow(NotFoundException::new);

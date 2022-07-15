@@ -35,7 +35,7 @@ public class TodoController {
     Model model
   ) {
 
-    Todo todo = todoService.getOwnedOrShared(id, user.getEmail());
+    Todo todo = todoService.getOwnedOrSharedTodo(id, user.getEmail());
 
     model.addAttribute("todo", todo);
 
@@ -82,7 +82,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoService.getOwnedOrShared(id, user.getEmail());
+    Todo todo = todoService.getOwnedOrSharedTodo(id, user.getEmail());
 
     model.addAttribute("todo", todo);
     model.addAttribute("editMode", EditMode.UPDATE);
