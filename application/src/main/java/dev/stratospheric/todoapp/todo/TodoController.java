@@ -40,8 +40,8 @@ public class TodoController {
 
     model.addAttribute("todo", todo);
 
-    logger.info("Showing todo with id {}", id);
     MDC.put("todoId", String.valueOf(id));
+    logger.info("Showing todo with id {}", id);
 
     return "todo/show";
   }
