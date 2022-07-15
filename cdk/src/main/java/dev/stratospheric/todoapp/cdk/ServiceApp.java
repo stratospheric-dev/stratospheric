@@ -104,8 +104,11 @@ public class ServiceApp {
           environmentName))
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
+            .sid("Allow SQS Access")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(List.of(
+              String.format("arn:aws:sqs:%s:%s:%s", region, accountId, messagingOutputParameters.getTodoSharingQueueName())
+            ))
             .actions(Arrays.asList(
               "sqs:DeleteMessage",
               "sqs:GetQueueUrl",
@@ -118,9 +121,10 @@ public class ServiceApp {
               "sqs:GetQueueAttributes"))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("Allow Creating Users in Cognito User Pool")
             .effect(Effect.ALLOW)
             .resources(
-              List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", accountId, region, cognitoOutputParameters.getUserPoolId()))
+              List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", region, accountId, cognitoOutputParameters.getUserPoolId()))
             )
             .actions(List.of(
               "cognito-idp:AdminCreateUser"
@@ -130,7 +134,7 @@ public class ServiceApp {
             .sid("Allow Sending Emails via SES")
             .effect(Effect.ALLOW)
             .resources(
-              List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", accountId, region))
+              List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", region, accountId))
             )
             .actions(List.of(
               "ses:SendEmail",
@@ -139,12 +143,12 @@ public class ServiceApp {
             .build(),
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(singletonList("*")) // TODO: Fix once we manage the table with a CDK Construct
             .actions(singletonList("dynamodb:*"))
             .build(),
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(singletonList("*")) // CloudWatch does not have any resource-level permissions, see https://stackoverflow.com/a/38055068/9085273
             .actions(singletonList("cloudwatch:PutMetricData"))
             .build()
         ))
