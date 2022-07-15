@@ -123,9 +123,15 @@ public class ServiceApp {
             .actions(singletonList("cognito-idp:*"))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("Allow Sending Emails via SES")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("ses:*"))
+            .resources(
+              List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", accountId, region))
+            )
+            .actions(List.of(
+              "ses:SendEmail",
+              "ses:SendRawEmail"
+            ))
             .build(),
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
