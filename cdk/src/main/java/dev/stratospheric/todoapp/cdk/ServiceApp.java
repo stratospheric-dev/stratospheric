@@ -119,8 +119,12 @@ public class ServiceApp {
             .build(),
           PolicyStatement.Builder.create()
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("cognito-idp:*"))
+            .resources(
+              List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", accountId, region, cognitoOutputParameters.getUserPoolId()))
+            )
+            .actions(List.of(
+              "cognito-idp:AdminCreateUser"
+            ))
             .build(),
           PolicyStatement.Builder.create()
             .sid("Allow Sending Emails via SES")
