@@ -35,7 +35,7 @@ public class TodoController {
     Model model
   ) {
 
-    Todo todo = todoService.getOwnedTodo(id, user.getEmail());
+    Todo todo = todoService.getOwnedOrShared(id, user.getEmail());
 
     model.addAttribute("todo", todo);
 
@@ -65,10 +65,11 @@ public class TodoController {
       return "todo/edit";
     }
 
-    todoService.saveNewTodo(toBeCreatedTodo, user.getEmail(), user.getAttribute("name"));
+    Todo savedTodo = todoService.saveNewTodo(toBeCreatedTodo, user.getEmail(), user.getAttribute("name"));
 
     redirectAttributes.addFlashAttribute("message", "Your new todo has been successfully saved.");
     redirectAttributes.addFlashAttribute("messageType", "success");
+    redirectAttributes.addFlashAttribute("todoId", savedTodo.getId());
 
     logger.info("successfully created todo");
 
@@ -81,7 +82,7 @@ public class TodoController {
     @PathVariable("id") long id,
     Model model
   ) {
-    Todo todo = todoService.getOwnedTodo(id, user.getEmail());
+    Todo todo = todoService.getOwnedOrShared(id, user.getEmail());
 
     model.addAttribute("todo", todo);
     model.addAttribute("editMode", EditMode.UPDATE);

@@ -1,7 +1,5 @@
 package dev.stratospheric.todo;
 
-import java.util.Optional;
-
 import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
 import org.springframework.stereotype.Service;
@@ -38,12 +36,8 @@ public class TodoService {
     return todoRepository.save(todo);
   }
 
-  public Optional<Todo> findById(Long id) {
-    return this.todoRepository.findById(id);
-  }
-
-  public void updateTodo(Todo updatedTodo, long id, String ownerEmail) {
-    Todo existingTodo = getOwnedTodo(id, ownerEmail);
+  public void updateTodo(Todo updatedTodo, long id, String email) {
+    Todo existingTodo = getOwnedOrShared(id, email);
 
     existingTodo.setTitle(updatedTodo.getTitle());
     existingTodo.setDescription(updatedTodo.getDescription());
@@ -53,20 +47,40 @@ public class TodoService {
     this.todoRepository.save(existingTodo);
   }
 
-  public Todo getOwnedTodo(long id, String ownerEmail) {
+  public void delete(long id, String ownerEmail) {
+    Todo toBeDeletedTodo = getOwnedTodo(id, ownerEmail);
+    this.todoRepository.delete(toBeDeletedTodo);
+  }
+
+  public Todo getOwnedOrShared(long id, String email) {
     Todo todo = this.todoRepository
       .findById(id)
       .orElseThrow(NotFoundException::new);
 
-    if (!todo.getOwner().getEmail().equals(ownerEmail)) {
+    if (userIsNotOwner(email, todo) && userIsNotCollaborator(email, todo)) {
       throw new ForbiddenException();
     }
 
     return todo;
   }
 
-  public void delete(long id, String ownerEmail) {
-    Todo toBeDeletedTodo = getOwnedTodo(id, ownerEmail);
-    this.todoRepository.delete(toBeDeletedTodo);
+  private boolean userIsNotCollaborator(String email, Todo todo) {
+    return todo.getCollaborators().stream().noneMatch(collaborator -> collaborator.getEmail().equals(email));
+  }
+
+  private boolean userIsNotOwner(String email, Todo todo) {
+    return !todo.getOwner().getEmail().equals(email);
+  }
+
+  private Todo getOwnedTodo(long id, String ownerEmail) {
+    Todo todo = this.todoRepository
+      .findById(id)
+      .orElseThrow(NotFoundException::new);
+
+    if (userIsNotOwner(ownerEmail, todo)) {
+      throw new ForbiddenException();
+    }
+
+    return todo;
   }
 }
