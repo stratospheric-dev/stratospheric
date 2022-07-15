@@ -49,7 +49,7 @@ class TodoControllerTest {
     todo.setId(1L);
     todo.setOwner(owner);
 
-    given(todoService.getOwnedTodo(1L, "info@stratospheric.dev")).willReturn(todo);
+    given(todoService.getOwnedOrShared(1L, "info@stratospheric.dev")).willReturn(todo);
   }
 
   @Test

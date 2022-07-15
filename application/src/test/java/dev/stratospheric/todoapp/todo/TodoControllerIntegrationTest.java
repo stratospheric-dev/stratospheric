@@ -2,7 +2,6 @@ package dev.stratospheric.todoapp.todo;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,8 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
@@ -38,50 +40,27 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
   @Autowired
   private TodoRepository todoRepository;
 
-  private OidcUser user = new DefaultOidcUser(
-    null,
-    new OidcIdToken(
-      "emailAddress",
-      Instant.now(),
-      Instant.MAX,
-      Map.of(
-        "email", "duke@stratospheric.dev",
-        "sub", "stratospheric",
-        "name", "duke"
-      )
-    )
-  );
-
   @Test
   void shouldAllowCrudOperationOnTodo() throws Exception {
-    shouldCreateTodo();
-    shouldShowCreatedTodo();
-    shouldUpdateTodo();
-    shouldDeleteTodo();
-    shouldNotFindDeletedTodo();
+
+    OidcUser todoOwner = createOidcUser("duke@stratospheric.dev", "duke");
+
+    Long createdTodoId = shouldCreateTodo(todoOwner);
+    shouldAllowViewingTodo(createdTodoId, todoOwner);
+    shouldAllowUpdatingTodo(createdTodoId, todoOwner);
+    shouldAllowDeletingTodo(createdTodoId, todoOwner);
+    shouldNotFindTodo(createdTodoId, todoOwner);
   }
 
   @Test
   void shouldAllowCollaboratingOnSharedTodo() throws Exception {
 
-    OidcUser collaborator = new DefaultOidcUser(
-      null,
-      new OidcIdToken(
-        "emailAddress",
-        Instant.now(),
-        Instant.MAX,
-        Map.of(
-          "email", "collaborator@stratospheric.dev",
-          "sub", "stratospheric",
-          "name", "collaborator"
-        )
-      )
-    );
+    OidcUser collaborator = createOidcUser("collaborator@stratospheric.dev", "collaborator");
 
     Long sharedTodoId = givenSharedTodo();
 
-    shouldAllowViewingSharedTodo(sharedTodoId, collaborator);
-    shouldAllowUpdatingSharedTodo(sharedTodoId, collaborator);
+    shouldAllowViewingTodo(sharedTodoId, collaborator);
+    shouldAllowUpdatingTodo(sharedTodoId, collaborator);
     shouldNotAllowDeletingSharedTodo(sharedTodoId, collaborator);
   }
 
@@ -92,15 +71,7 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
       .andExpect(status().isForbidden());
   }
 
-  private void shouldAllowViewingSharedTodo(Long sharedTodoId, OidcUser collaborator) throws Exception {
-    this.mockMvc
-      .perform(get("/todo/show/"+ sharedTodoId)
-        .with(oidcLogin().oidcUser(collaborator)))
-      .andExpect(status().isOk());
-  }
-
   private Long givenSharedTodo() {
-
     Person todoOwner = new Person();
     todoOwner.setName("duke");
     todoOwner.setEmail("duke@stratospheric.dev");
@@ -118,42 +89,30 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
     sharedTodo.setStatus(Status.OPEN);
     sharedTodo.setPriority(Priority.DEFAULT);
     sharedTodo.setOwner(todoOwner);
-    sharedTodo.setCollaborators(Arrays.asList(todoCollaborator));
+    sharedTodo.getCollaborators().add(todoCollaborator);
 
     Todo savedTodo = todoRepository.save(sharedTodo);
     return savedTodo.getId();
   }
 
-  private void shouldNotFindDeletedTodo() throws Exception {
+  private void shouldNotFindTodo(Long todoId, OidcUser user) throws Exception {
     this.mockMvc
-      .perform(get("/todo/show/1")
+      .perform(get("/todo/show/" + todoId)
         .with(oidcLogin().oidcUser(user)))
       .andExpect(status().isNotFound());
   }
 
-  private void shouldDeleteTodo() throws Exception {
+  private void shouldAllowDeletingTodo(Long todoId, OidcUser user) throws Exception {
     this.mockMvc
-      .perform(get("/todo/delete/1")
+      .perform(get("/todo/delete/" + todoId)
         .with(oidcLogin().oidcUser(user)))
       .andExpect(status().is3xxRedirection())
       .andExpect(view().name("redirect:/dashboard"));
   }
 
-  private void shouldAllowUpdatingSharedTodo(Long sharedTodoId, OidcUser collaborator) throws Exception {
+  private void shouldAllowUpdatingTodo(Long todoId, OidcUser user) throws Exception {
     this.mockMvc
-      .perform(post("/todo/update/" + sharedTodoId)
-        .with(oidcLogin().oidcUser(collaborator))
-        .with(csrf())
-        .param("title", "Updated Title")
-        .param("description", "Updated Description")
-        .param("dueDate", LocalDate.now().plusDays(30).toString()))
-      .andExpect(status().is3xxRedirection())
-      .andExpect(view().name("redirect:/dashboard"));
-  }
-
-  private void shouldUpdateTodo() throws Exception {
-    this.mockMvc
-      .perform(post("/todo/update/1")
+      .perform(post("/todo/update/" + todoId)
         .with(oidcLogin().oidcUser(user))
         .with(csrf())
         .param("title", "Updated Title")
@@ -163,15 +122,15 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
       .andExpect(view().name("redirect:/dashboard"));
   }
 
-  private void shouldShowCreatedTodo() throws Exception {
+  private void shouldAllowViewingTodo(Long todoId, OidcUser user) throws Exception {
     this.mockMvc
-      .perform(get("/todo/show/1")
+      .perform(get("/todo/show/" + todoId)
         .with(oidcLogin().oidcUser(user)))
       .andExpect(status().isOk());
   }
 
-  private void shouldCreateTodo() throws Exception {
-    this.mockMvc
+  private Long shouldCreateTodo(OidcUser user) throws Exception {
+    MvcResult result = this.mockMvc
       .perform(post("/todo")
         .with(oidcLogin().oidcUser(user))
         .with(csrf())
@@ -180,6 +139,25 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
         .param("dueDate", LocalDate.now().plusDays(42).toString())
       )
       .andExpect(status().is3xxRedirection())
-      .andExpect(view().name("redirect:/dashboard"));
+      .andExpect(view().name("redirect:/dashboard"))
+      .andReturn();
+
+    return (Long) result.getFlashMap().get("todoId");
+  }
+
+  private DefaultOidcUser createOidcUser(String email, String username) {
+    return new DefaultOidcUser(
+      null,
+      new OidcIdToken(
+        "some-id",
+        Instant.now(),
+        Instant.MAX,
+        Map.of(
+          "email", email,
+          "sub", "stratospheric",
+          "name", username
+        )
+      )
+    );
   }
 }
