@@ -39,7 +39,7 @@ error:
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
   sharing-queue: stratospheric-todo-sharing
-  external-url: https://app.stratospheric.dev
+  external-url: https://staging.stratospheric.dev
   auto-confirm-collaborations: false
   confirm-email-from-address: noreply@stratospheric.dev
   environment: ${ENVIRONMENT_NAME}
