@@ -18,7 +18,7 @@ public class AmazonDynamoDBConfig {
 
     return new DynamoDBMapper(amazonDynamoDB, DynamoDBMapperConfig.builder()
       .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride
-        .withTableNamePrefix(applicationName + "-" + environmentName + "-"))
+        .withTableNamePrefix(environmentName + "-" + applicationName + "-"))
       .build());
   }
 }

@@ -48,7 +48,6 @@ public class DatabaseApp {
     new BreadcrumbsDynamoTable(
       databaseStack,
       "DynamoDbTable",
-      awsEnvironment,
       applicationEnvironment,
       new BreadcrumbsDynamoTable.BreadcrumbsDynamoTableInputParameters("breadcrumbs")
     );

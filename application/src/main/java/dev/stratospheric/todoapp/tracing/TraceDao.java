@@ -1,13 +1,18 @@
 package dev.stratospheric.todoapp.tracing;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
-
 import java.time.ZonedDateTime;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TraceDao {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TraceDao.class);
 
   private final DynamoDBMapper dynamoDBMapper;
 
@@ -15,8 +20,9 @@ public class TraceDao {
     this.dynamoDBMapper = dynamoDBMapper;
   }
 
+  @Async
   @EventListener(TracingEvent.class)
-  public Breadcrumb create(TracingEvent tracingEvent) {
+  public void storeTracingEvent(TracingEvent tracingEvent) {
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUri(tracingEvent.getUri());
     breadcrumb.setUsername(tracingEvent.getUsername());
@@ -24,6 +30,6 @@ public class TraceDao {
 
     dynamoDBMapper.save(breadcrumb);
 
-    return breadcrumb;
+    LOG.info("Successfully stored breadcrumb trace");
   }
 }

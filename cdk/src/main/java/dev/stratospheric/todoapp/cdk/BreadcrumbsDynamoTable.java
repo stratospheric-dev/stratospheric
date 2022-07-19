@@ -1,7 +1,6 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.services.dynamodb.Attribute;
 import software.amazon.awscdk.services.dynamodb.AttributeType;
 import software.amazon.awscdk.services.dynamodb.BillingMode;
@@ -15,7 +14,6 @@ public class BreadcrumbsDynamoTable extends Construct {
   public BreadcrumbsDynamoTable(
     final Construct scope,
     final String id,
-    final Environment awsEnvironment,
     final ApplicationEnvironment applicationEnvironment,
     final BreadcrumbsDynamoTableInputParameters inputParameters
   ) {
@@ -35,7 +33,6 @@ public class BreadcrumbsDynamoTable extends Construct {
         .writeCapacity(10)
         .build());
   }
-
 
   record BreadcrumbsDynamoTableInputParameters(String tableName) {
   }
