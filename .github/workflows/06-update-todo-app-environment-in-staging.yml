@@ -44,7 +44,7 @@ jobs:
         run: npm run messaging:deploy
 
   deploy-database-stack:
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
     name: Deploy the Database stack
     steps:
