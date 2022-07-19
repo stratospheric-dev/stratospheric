@@ -45,6 +45,14 @@ public class DatabaseApp {
       applicationEnvironment,
       new PostgresDatabase.DatabaseInputParameters());
 
+    new BreadcrumbsDynamoTable(
+      databaseStack,
+      "DynamoDbTable",
+      awsEnvironment,
+      applicationEnvironment,
+      new BreadcrumbsDynamoTable.BreadcrumbsDynamoTableInputParameters("breadcrumbs")
+    );
+
     app.synth();
   }
 

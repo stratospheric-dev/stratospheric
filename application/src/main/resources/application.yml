@@ -18,6 +18,8 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+  application:
+    name: todo-app
 
 management:
   metrics:
@@ -39,5 +41,5 @@ custom:
   sharing-queue: stratospheric-todo-sharing
   external-url: https://app.stratospheric.dev
   auto-confirm-collaborations: false
-  breadcrumb-table-name: breadcrumbs
   confirm-email-from-address: noreply@stratospheric.dev
+  environment: ${ENVIRONMENT_NAME}

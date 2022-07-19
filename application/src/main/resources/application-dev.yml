@@ -41,6 +41,7 @@ custom:
   provide-test-todo-controller: true
   use-cognito-as-identity-provider: false
   provide-dynamodb-via-aws: false
+  environment: local
 
 cloud:
   aws:
