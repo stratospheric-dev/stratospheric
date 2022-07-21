@@ -1,13 +1,14 @@
 package dev.stratospheric.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
   private final LogoutSuccessHandler logoutSuccessHandler;
 
@@ -15,9 +16,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     this.logoutSuccessHandler = logoutSuccessHandler;
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
       .csrf()
       .and()
       .oauth2Login()
@@ -29,5 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .logout()
       .logoutSuccessHandler(logoutSuccessHandler);
+
+    return httpSecurity.build();
   }
 }

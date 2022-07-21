@@ -2,6 +2,7 @@ package dev.stratospheric.todoapp.todo;
 
 import java.time.LocalDate;
 
+import dev.stratospheric.todoapp.config.WebSecurityConfig;
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.util.SecurityContextFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(TodoController.class)
+@Import(WebSecurityConfig.class)
 class TodoControllerTest {
 
   @Autowired
