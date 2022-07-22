@@ -1,6 +1,7 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
+import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.services.dynamodb.Attribute;
 import software.amazon.awscdk.services.dynamodb.AttributeType;
 import software.amazon.awscdk.services.dynamodb.BillingMode;
@@ -31,6 +32,7 @@ public class BreadcrumbsDynamoDbTable extends Construct {
         .billingMode(BillingMode.PROVISIONED)
         .readCapacity(10)
         .writeCapacity(10)
+        .removalPolicy(RemovalPolicy.DESTROY)
         .build());
   }
 
