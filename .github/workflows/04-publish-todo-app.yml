@@ -1,4 +1,4 @@
-# This workflow builds the Docker image for the Todo-App and dispatches an SQS event to schedule the deployment.
+# This workflow builds the Docker image for the Todo-App and then deploys the application.
 name: 04 - Publish Todo-App
 
 env:
