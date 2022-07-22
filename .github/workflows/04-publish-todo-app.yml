@@ -53,7 +53,7 @@ jobs:
         run: echo "::set-output name=tag::$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}"
 
       - name: Publish Docker image to ECR registry
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
         env:
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
         working-directory: application
@@ -83,7 +83,7 @@ jobs:
     name: Deploy Todo App
     needs: build-and-publish
     timeout-minutes: 15
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     concurrency: todo-application-deployment
     steps:
 
