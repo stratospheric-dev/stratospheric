@@ -16,7 +16,6 @@ import software.amazon.awscdk.services.iam.Effect;
 import software.amazon.awscdk.services.iam.PolicyStatement;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
@@ -68,10 +67,16 @@ public class ServiceApp {
       .withHealthCheckIntervalSeconds(30)
       .withTaskRolePolicyStatements(List.of(
         PolicyStatement.Builder.create()
+          .sid("AllowCreatingUsers")
           .effect(Effect.ALLOW)
-          .resources(singletonList("*"))
-          .actions(singletonList("cognito-idp:*"))
-          .build()));
+          .resources(
+            List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", region, accountId, cognitoOutputParameters.getUserPoolId()))
+          )
+          .actions(List.of(
+            "cognito-idp:AdminCreateUser"
+          ))
+          .build())
+      );
 
     Service service = new Service(
       serviceStack,
