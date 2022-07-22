@@ -12,10 +12,10 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>5.7.0</junit.version>
-    <cdk-constructs.version>0.1.0</cdk-constructs.version>
-    <log4j2.version>2.17.1</log4j2.version>
-    <aws-cdk-lib.version>2.7.0</aws-cdk-lib.version>
+    <junit.version>5.8.2</junit.version>
+    <cdk-constructs.version>0.1.11</cdk-constructs.version>
+    <log4j2.version>2.18.0</log4j2.version>
+    <aws-cdk-lib.version>2.33.0</aws-cdk-lib.version>
   </properties>
 
   <build>
