@@ -104,8 +104,11 @@ public class ServiceApp {
           environmentName))
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
+            .sid("AllowSQSAccess")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(List.of(
+              String.format("arn:aws:sqs:%s:%s:%s", region, accountId, messagingOutputParameters.getTodoSharingQueueName())
+            ))
             .actions(Arrays.asList(
               "sqs:DeleteMessage",
               "sqs:GetQueueUrl",
@@ -118,23 +121,45 @@ public class ServiceApp {
               "sqs:GetQueueAttributes"))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowCreatingUsers")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("cognito-idp:*"))
+            .resources(
+              List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", region, accountId, cognitoOutputParameters.getUserPoolId()))
+            )
+            .actions(List.of(
+              "cognito-idp:AdminCreateUser"
+            ))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowSendingEmails")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("ses:*"))
+            .resources(
+              List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", region, accountId))
+            )
+            .actions(List.of(
+              "ses:SendEmail",
+              "ses:SendRawEmail"
+            ))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowDynamoTableAccess")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("dynamodb:*"))
+            .resources(
+              List.of(String.format("arn:aws:dynamodb:%s:%s:table/%s", region, accountId, applicationEnvironment.prefix("breadcrumbs")))
+            )
+            .actions(List.of(
+              "dynamodb:Scan",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:BatchWriteGet"
+              ))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowSendingMetricsToCloudWatch")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(singletonList("*")) // CloudWatch does not have any resource-level permissions, see https://stackoverflow.com/a/38055068/9085273
             .actions(singletonList("cloudwatch:PutMetricData"))
             .build()
         ))

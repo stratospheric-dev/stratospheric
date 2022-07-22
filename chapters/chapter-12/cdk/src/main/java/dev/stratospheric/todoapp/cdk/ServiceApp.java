@@ -21,7 +21,6 @@ import software.amazon.awscdk.services.secretsmanager.Secret;
 import software.constructs.Construct;
 
 import static dev.stratospheric.todoapp.cdk.Validations.requireNonEmpty;
-import static java.util.Collections.singletonList;
 
 public class ServiceApp {
 
@@ -91,16 +90,25 @@ public class ServiceApp {
           messagingOutputParameters,
           springProfile))
         .withStickySessionsEnabled(true)
+        // needs to be long enough to allow for slow start up with low-end computing instances
         .withHealthCheckIntervalSeconds(30)
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
+            .sid("AllowCreatingUsers")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("cognito-idp:*"))
+            .resources(
+              List.of(String.format("arn:aws:cognito-idp:%s:%s:userpool/%s", region, accountId, cognitoOutputParameters.getUserPoolId()))
+            )
+            .actions(List.of(
+              "cognito-idp:AdminCreateUser"
+            ))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowSQSAccess")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
+            .resources(List.of(
+              String.format("arn:aws:sqs:%s:%s:%s", region, accountId, messagingOutputParameters.getTodoSharingQueueName())
+            ))
             .actions(Arrays.asList(
               "sqs:DeleteMessage",
               "sqs:GetQueueUrl",
@@ -113,12 +121,17 @@ public class ServiceApp {
               "sqs:GetQueueAttributes"))
             .build(),
           PolicyStatement.Builder.create()
+            .sid("AllowSendingEmails")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*"))
-            .actions(singletonList("ses:*"))
+            .resources(
+              List.of(String.format("arn:aws:ses:%s:%s:identity/stratospheric.dev", region, accountId))
+            )
+            .actions(List.of(
+              "ses:SendEmail",
+              "ses:SendRawEmail"
+            ))
             .build()
-        )), // needs to be long enough to allow for slow start up with low-end computing instances
-
+        )),
       Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName()));
 
     app.synth();
