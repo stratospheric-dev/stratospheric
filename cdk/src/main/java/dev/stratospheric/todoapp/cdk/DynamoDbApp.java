@@ -1,13 +1,12 @@
 package dev.stratospheric.todoapp.cdk;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import dev.stratospheric.cdk.PostgresDatabase;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 
-public class DatabaseApp {
+public class DynamoDbApp {
 
   public static void main(final String[] args) {
     App app = new App();
@@ -31,17 +30,17 @@ public class DatabaseApp {
       environmentName
     );
 
-    Stack databaseStack = new Stack(app, "DatabaseStack", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Database"))
+    Stack dynamoDbStack = new Stack(app, "DynamoDbStack", StackProps.builder()
+      .stackName(applicationEnvironment.prefix("DynamoDb"))
       .env(awsEnvironment)
       .build());
 
-    new PostgresDatabase(
-      databaseStack,
-      "Database",
-      awsEnvironment,
+    new BreadcrumbsDynamoDbTable(
+      dynamoDbStack,
+      "BreadcrumbTable",
       applicationEnvironment,
-      new PostgresDatabase.DatabaseInputParameters());
+      new BreadcrumbsDynamoDbTable.InputParameter("breadcrumbs")
+    );
 
     app.synth();
   }

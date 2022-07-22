@@ -9,13 +9,13 @@ import software.amazon.awscdk.services.dynamodb.TableEncryption;
 import software.amazon.awscdk.services.dynamodb.TableProps;
 import software.constructs.Construct;
 
-public class BreadcrumbsDynamoTable extends Construct {
+public class BreadcrumbsDynamoDbTable extends Construct {
 
-  public BreadcrumbsDynamoTable(
+  public BreadcrumbsDynamoDbTable(
     final Construct scope,
     final String id,
     final ApplicationEnvironment applicationEnvironment,
-    final BreadcrumbsDynamoTableInputParameters inputParameters
+    final InputParameter inputParameters
   ) {
 
     super(scope, id);
@@ -34,6 +34,6 @@ public class BreadcrumbsDynamoTable extends Construct {
         .build());
   }
 
-  record BreadcrumbsDynamoTableInputParameters(String tableName) {
+  record InputParameter(String tableName) {
   }
 }
