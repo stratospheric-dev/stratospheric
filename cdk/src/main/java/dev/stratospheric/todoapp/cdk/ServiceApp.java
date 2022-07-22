@@ -144,8 +144,17 @@ public class ServiceApp {
           PolicyStatement.Builder.create()
             .sid("AllowDynamoTableAccess")
             .effect(Effect.ALLOW)
-            .resources(singletonList("*")) // TODO: Fix once we manage the table with a CDK Construct
-            .actions(singletonList("dynamodb:*"))
+            .resources(
+              List.of(String.format("arn:aws:dynamodb:%s:%s:table/%s", region, accountId, applicationEnvironment.prefix("breadcrumbs")))
+            )
+            .actions(List.of(
+              "dynamodb:Scan",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:BatchWriteGet"
+              ))
             .build(),
           PolicyStatement.Builder.create()
             .sid("AllowSendingMetricsToCloudWatch")
