@@ -15,6 +15,7 @@ on:
       - 'cdk/**/*Messaging*'
       - 'cdk/**/*DeploymentSequencer*'
       - 'cdk/**/*Monitoring*'
+      - 'cdk/**/*DynamoDb*'
       - 'cdk/pom.xml'
       - '.github/workflows/06-update-todo-app-environment-in-staging.yml'
   workflow_dispatch:
@@ -66,6 +67,30 @@ jobs:
       - name: Deploy Database stack
         working-directory: cdk
         run: npm run database:deploy
+
+  deploy-dynamo-db-stack:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-20.04
+    name: Deploy the DynamoDb stack
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+
+      - name: NPM install
+        working-directory: cdk
+        run: npm install
+
+      - name: Deploy DynamoDb stack
+        working-directory: cdk
+        run: npm run dynamo:deploy
 
   deploy-cognito-stack:
     if: github.ref == 'refs/heads/main'

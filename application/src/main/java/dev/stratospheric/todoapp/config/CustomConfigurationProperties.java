@@ -1,11 +1,11 @@
 package dev.stratospheric.todoapp.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "custom")
 @Validated
@@ -24,7 +24,7 @@ class CustomConfigurationProperties {
   private Boolean autoConfirmCollaborations;
 
   @NotEmpty
-  private String breadcrumbTableName;
+  private String environment;
 
   @NotEmpty
   private String confirmEmailFromAddress;
@@ -82,12 +82,12 @@ class CustomConfigurationProperties {
     this.autoConfirmCollaborations = autoConfirmCollaborations;
   }
 
-  public String getBreadcrumbTableName() {
-    return breadcrumbTableName;
+  public String getEnvironment() {
+    return environment;
   }
 
-  public void setBreadcrumbTableName(String breadcrumbTableName) {
-    this.breadcrumbTableName = breadcrumbTableName;
+  public void setEnvironment(String environment) {
+    this.environment = environment;
   }
 
   public String getConfirmEmailFromAddress() {

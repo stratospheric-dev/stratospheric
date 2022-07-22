@@ -28,7 +28,9 @@
     "monitoring:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.MonitoringApp\" --require-approval never",
     "monitoring:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.MonitoringApp\" --force --require-approval never",
     "canary:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --require-approval never",
-    "canary:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --force --require-approval never"
+    "canary:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --force --require-approval never",
+    "dynamo:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DynamoDbApp\" --require-approval never",
+    "dynamo:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DynamoDbApp\" --force --require-approval never"
   },
   "devDependencies": {
     "aws-cdk": "2.23.0"
