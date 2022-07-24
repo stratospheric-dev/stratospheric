@@ -50,7 +50,7 @@ jobs:
   deploy-sequencer-lambda:
     if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     runs-on: ubuntu-20.04
-    name: Deploy the Deployment Sequencer stack
+    name: Deploy the deployment sequencer stack
     steps:
 
       - name: Checkout code
