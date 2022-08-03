@@ -25,14 +25,10 @@
       <tbody>
       <tr th:each="todo : ${todos}">
         <td>
-          <a th:href="@{/todo/show/{id}(id=${todo.id})}">
-            [[${todo.id}]]
-          </a>
+          <a th:href="@{/todo/show/{id}(id=${todo.id})}">[[${todo.id}]]</a>
         </td>
         <td>
-          <a th:href="@{/todo/show/{id}(id=${todo.id})}">
-            [[${todo.title}]]
-          </a>
+          <a th:href="@{/todo/show/{id}(id=${todo.id})}">[[${todo.title}]]</a>
           <span th:if="${todo.isCollaboration}"> (shared)</span>
         </td>
         <td class="text-center" th:text="${todo.amountOfCollaborators}"></td>
