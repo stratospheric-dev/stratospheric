@@ -16,7 +16,7 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: false # disabled to save some $$$ on our monthly AWS bill
+        enabled: true
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
