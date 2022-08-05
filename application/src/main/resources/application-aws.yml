@@ -16,7 +16,7 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: true
+        enabled: true #
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
