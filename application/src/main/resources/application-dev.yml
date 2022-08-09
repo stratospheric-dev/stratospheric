@@ -25,12 +25,14 @@ spring:
   jpa:
     show-sql: true
 
-
 management:
-  metrics:
-    export:
-      cloudwatch:
-        enabled: false
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        exclude: 'shutdown'
 
 custom:
   web-socket-relay-endpoint: localhost:61613

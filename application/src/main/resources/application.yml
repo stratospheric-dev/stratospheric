@@ -25,11 +25,7 @@ management:
   metrics:
     export:
       cloudwatch:
-        enabled: true
-        namespace: stratospheric
-        step: 1m
-    tags:
-      environment: ${ENVIRONMENT_NAME}
+        enabled: false
 
 # configuration of error-handling-spring-boot-starter (https://wimdeblauwe.github.io/error-handling-spring-boot-starter/)
 error:
