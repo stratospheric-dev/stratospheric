@@ -1,10 +1,14 @@
 package dev.stratospheric.todoapp.registration;
 
+import java.time.Duration;
+import java.util.List;
+
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.DeliveryMediumType;
 import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.ImmutableTag;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,12 +44,22 @@ public class CognitoRegistrationService implements RegistrationService {
       .withDesiredDeliveryMediums(DeliveryMediumType.EMAIL)
       .withForceAliasCreation(Boolean.FALSE);
 
-    awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+    meterRegistry.timer("stratospheric.registration.speed")
+      .record(() -> {
+        awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+      });
+
+    meterRegistry.timer("stratospheric.registration.speed2")
+      .record(Duration.ofSeconds(30));
 
     Counter successCounter = Counter.builder("stratospheric.registration.signups")
       .description("Number of user registrations")
       .tag("outcome", "success")
       .register(meterRegistry);
+
+    meterRegistry.counter("stratospheric.registration.signup"
+        , List.of(new ImmutableTag("outcome", "success")))
+      .increment();
 
     successCounter.increment();
   }
