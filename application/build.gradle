@@ -60,7 +60,7 @@ dependencies {
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
 
-  testImplementation 'com.codeborne:selenide:6.7.1'
+  testImplementation 'com.codeborne:selenide:6.7.2'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
