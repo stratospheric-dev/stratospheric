@@ -2,24 +2,24 @@
 export AWS_PAGER=""
 
 aws cloudformation create-stack \
-  --stack-name aws101-ecs-basic-network \
+  --stack-name stratospheric-ecs-basic-network \
   --template-body file://network.yml \
   --capabilities CAPABILITY_IAM
 
-aws cloudformation wait stack-create-complete --stack-name aws101-ecs-basic-network
+aws cloudformation wait stack-create-complete --stack-name stratospheric-ecs-basic-network
 
 aws cloudformation create-stack \
-  --stack-name aws101-ecs-basic-service \
+  --stack-name stratospheric-ecs-basic-service \
   --template-body file://service.yml \
   --parameters \
-      ParameterKey=StackName,ParameterValue=aws101-ecs-basic-network \
-      ParameterKey=ServiceName,ParameterValue=reflectoring-hello-world \
-      ParameterKey=ImageUrl,ParameterValue=docker.io/reflectoring/aws-hello-world:latest \
+      ParameterKey=StackName,ParameterValue=stratospheric-ecs-basic-network \
+      ParameterKey=ServiceName,ParameterValue=stratospheric-hello-world \
+      ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/aws-hello-world:latest \
       ParameterKey=ContainerPort,ParameterValue=8080
 
-aws cloudformation wait stack-create-complete --stack-name aws101-ecs-basic-service
+aws cloudformation wait stack-create-complete --stack-name stratospheric-ecs-basic-service
 
-CLUSTER_NAME=$(aws cloudformation describe-stacks --stack-name aws101-ecs-basic-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ClusterName`].OutputValue | [0]')
+CLUSTER_NAME=$(aws cloudformation describe-stacks --stack-name stratospheric-ecs-basic-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ClusterName`].OutputValue | [0]')
 echo "ECS Cluster:       " $CLUSTER_NAME
 
 TASK_ARN=$(aws ecs list-tasks --cluster $CLUSTER_NAME --output text --query 'taskArns[0]')

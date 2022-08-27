@@ -14,7 +14,7 @@ aws cloudformation create-stack \
   --template-body file://service.yml \
   --parameters \
       ParameterKey=NetworkStackName,ParameterValue=stratospheric-basic-network \
-      ParameterKey=ServiceName,ParameterValue=todo-app-v1 \
+      ParameterKey=ServiceName,ParameterValue=stratospheric-todo-app \
       ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/todo-app-v1:latest \
       ParameterKey=ContainerPort,ParameterValue=8080
 
