@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.2'
+  id 'org.springframework.boot' version '2.7.3'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
 }
@@ -26,6 +26,7 @@ dependencies {
   implementation 'org.webjars:webjars-locator-core'
   implementation 'org.webjars:bootstrap:4.6.1'
   implementation 'org.webjars:font-awesome:5.15.3'
+  implementation 'org.flywaydb:flyway-core'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.postgresql:postgresql'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
