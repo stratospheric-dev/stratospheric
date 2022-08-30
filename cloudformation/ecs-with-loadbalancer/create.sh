@@ -13,8 +13,8 @@ aws cloudformation create-stack \
   --template-body file://service.yml \
   --parameters \
       ParameterKey=StackName,ParameterValue=stratospheric-ecs-with-loadbalancer-network \
-      ParameterKey=ServiceName,ParameterValue=stratospheric-hello-world \
-      ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/aws-hello-world:latest \
+      ParameterKey=ServiceName,ParameterValue=stratospheric-todo-app-v1 \
+      ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/todo-app-v1:latest \
       ParameterKey=ContainerPort,ParameterValue=8080 \
       ParameterKey=HealthCheckPath,ParameterValue=/hello \
       ParameterKey=HealthCheckIntervalSeconds,ParameterValue=90
