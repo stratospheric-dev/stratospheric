@@ -2,24 +2,24 @@
 export AWS_PAGER=""
 
 aws cloudformation create-stack \
-  --stack-name aws101-ecs-with-loadbalancer-network \
+  --stack-name stratospheric-ecs-with-loadbalancer-network \
   --template-body file://network.yml \
   --capabilities CAPABILITY_IAM
 
-aws cloudformation wait stack-create-complete --stack-name aws101-ecs-with-loadbalancer-network
+aws cloudformation wait stack-create-complete --stack-name stratospheric-ecs-with-loadbalancer-network
 
 aws cloudformation create-stack \
-  --stack-name aws101-ecs-with-loadbalancer-service \
+  --stack-name stratospheric-ecs-with-loadbalancer-service \
   --template-body file://service.yml \
   --parameters \
-      ParameterKey=StackName,ParameterValue=aws101-ecs-with-loadbalancer-network \
-      ParameterKey=ServiceName,ParameterValue=reflectoring-hello-world \
-      ParameterKey=ImageUrl,ParameterValue=docker.io/reflectoring/aws-hello-world:latest \
+      ParameterKey=StackName,ParameterValue=stratospheric-ecs-with-loadbalancer-network \
+      ParameterKey=ServiceName,ParameterValue=stratospheric-todo-app-v1 \
+      ParameterKey=ImageUrl,ParameterValue=docker.io/stratospheric/todo-app-v1:latest \
       ParameterKey=ContainerPort,ParameterValue=8080 \
       ParameterKey=HealthCheckPath,ParameterValue=/hello \
       ParameterKey=HealthCheckIntervalSeconds,ParameterValue=90
 
-aws cloudformation wait stack-create-complete --stack-name aws101-ecs-with-loadbalancer-service
+aws cloudformation wait stack-create-complete --stack-name stratospheric-ecs-with-loadbalancer-service
 
-EXTERNAL_URL=$(aws cloudformation describe-stacks --stack-name aws101-ecs-with-loadbalancer-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue | [0]')
+EXTERNAL_URL=$(aws cloudformation describe-stacks --stack-name stratospheric-ecs-with-loadbalancer-network --output text --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue | [0]')
 echo "You can access your service at $EXTERNAL_URL"
