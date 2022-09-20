@@ -20,9 +20,7 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
