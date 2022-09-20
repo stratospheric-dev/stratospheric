@@ -1,6 +1,6 @@
 spring:
   application:
-    name: stratospheric-demo
+    name: demo-application
   config:
     import: 'aws-parameterstore:'
 
