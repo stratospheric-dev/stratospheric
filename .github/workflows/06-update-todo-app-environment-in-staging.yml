@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        stacks: ['messaging', 'activeMq', 'dynamo', 'database', 'cognito', 'monitoring', 'canary']
+        stacks: ['messaging', 'activeMq', 'dynamo', 'database', 'cognito', 'monitoring']
     name: Deploy the ${{ matrix.stacks }} stack
     steps:
       - name: Checkout code
@@ -46,35 +46,3 @@ jobs:
       - name: Deploy the AWS CDK stack
         working-directory: cdk
         run: npm run ${{ matrix.stacks }}:deploy -- -c canaryUserPassword=${{ secrets.CANARY_USER_PASSWORD }}
-
-  deploy-sequencer-lambda:
-    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
-    runs-on: ubuntu-20.04
-    name: Deploy the deployment sequencer stack
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-          cache: 'maven'
-
-      - name: NPM install CDK dependencies
-        working-directory: cdk
-        run: npm install
-
-      - name: NPM install Deployment Sequencer dependencies
-        working-directory: cdk/deployment-sequencer-lambda
-        run: npm install
-
-      - name: Build Deployment Sequencer
-        working-directory: cdk/deployment-sequencer-lambda
-        run: npm run dist
-
-      - name: Deploy Deployment Sequencer
-        working-directory: cdk
-        run: npm run deployment-sequencer:deploy -- -c githubToken=${{ secrets.GH_API_TOKEN }}
