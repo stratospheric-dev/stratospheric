@@ -57,6 +57,13 @@ public class MonitoringStack extends Stack {
         cognitoOutputParameters.getUserPoolId()
       ));
 
+    new OperationalCloudWatchDashboard(this, "operationalCloudWatchDashboard", applicationEnvironment,
+      awsEnvironment,
+      new OperationalCloudWatchDashboard.InputParameter(
+        cognitoOutputParameters.getUserPoolClientId(),
+        cognitoOutputParameters.getUserPoolId()
+      ));
+
     String loadBalancerName = Fn
       .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
       .get(1);
