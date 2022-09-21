@@ -57,7 +57,6 @@ public class MonitoringStack extends Stack {
         cognitoOutputParameters.getUserPoolId()
       ));
 
-
     new OperationalCloudWatchDashboard(this, "operationalCloudWatchDashboard", applicationEnvironment,
       awsEnvironment,
       new OperationalCloudWatchDashboard.InputParameter(
