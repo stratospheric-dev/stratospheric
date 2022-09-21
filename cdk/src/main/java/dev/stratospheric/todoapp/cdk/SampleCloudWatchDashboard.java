@@ -89,7 +89,8 @@ public class SampleCloudWatchDashboard extends Construct {
             .queryString(
               "fields @timestamp, @message" +
                 "| sort @timestamp desc" +
-                "| limit 20")
+                "| limit 20" +
+                "| display timestamp, message")
             .height(6)
             .width(6)
             .build()
