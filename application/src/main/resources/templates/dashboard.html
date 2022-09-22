@@ -45,16 +45,10 @@
             <i class="fas fa-edit"></i>
           </a>
           <div class="dropdown d-inline-block" th:unless="${todo.isCollaboration}">
-            <a class="btn btn-warning dropdown-toggle"
-               title="Share"
-               href="#"
-               role="button"
-               id="dropdownMenuButton"
-               data-toggle="dropdown"
-               aria-haspopup="true"
-               aria-expanded="true">
+            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-share"></i>
-            </a>
+            </button>
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
                   No collaborator available
