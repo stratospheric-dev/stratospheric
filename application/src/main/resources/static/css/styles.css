@@ -4,3 +4,7 @@
   right: 0;
   margin: .5rem 1rem;
 }
+
+a {
+  text-decoration: none;
+}

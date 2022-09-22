@@ -28,7 +28,7 @@
                class="invalid-feedback">
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-3">
           <label for="description">Description</label>
           <input type="text"
                  th:field="*{description}"
@@ -40,7 +40,7 @@
                class="invalid-feedback">
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-3">
           <label for="title">Priority</label>
           <select th:field="*{priority}"
                   class="form-control"
@@ -52,7 +52,7 @@
                     th:text="${priorityValue.displayValue}"></option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-3">
           <label for="dueDate">Due date</label>
           <input
             type="date"
