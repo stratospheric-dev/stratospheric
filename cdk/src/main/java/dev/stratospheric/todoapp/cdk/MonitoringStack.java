@@ -4,6 +4,7 @@ import java.util.Map;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
+import dev.stratospheric.cdk.PostgresDatabase;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Fn;
@@ -50,6 +51,13 @@ public class MonitoringStack extends Stack {
     Network.NetworkOutputParameters networkOutputParameters =
       Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
+    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
+      PostgresDatabase.getOutputParametersFromParameterStore(this, applicationEnvironment);
+
+    String loadBalancerName = Fn
+      .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
+      .get(1);
+
     new SampleCloudWatchDashboard(this, "sampleCloudWatchDashboard", applicationEnvironment,
       awsEnvironment,
       new SampleCloudWatchDashboard.InputParameter(
@@ -60,13 +68,9 @@ public class MonitoringStack extends Stack {
     new OperationalCloudWatchDashboard(this, "operationalCloudWatchDashboard", applicationEnvironment,
       awsEnvironment,
       new OperationalCloudWatchDashboard.InputParameter(
-        cognitoOutputParameters.getUserPoolClientId(),
-        cognitoOutputParameters.getUserPoolId()
+        databaseOutputParameters.getDbName(),
+        loadBalancerName
       ));
-
-    String loadBalancerName = Fn
-      .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
-      .get(1);
 
     Alarm elbSlowResponseTimeAlarm = new Alarm(this, "elbSlowResponseTimeAlarm", AlarmProps.builder()
       .alarmName("slow-api-response-alarm")
