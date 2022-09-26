@@ -1,10 +1,10 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.util.List;
 import java.util.Map;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
+import dev.stratospheric.cdk.PostgresDatabase;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Fn;
@@ -18,16 +18,9 @@ import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarm;
 import software.amazon.awscdk.services.cloudwatch.CompositeAlarmProps;
 import software.amazon.awscdk.services.cloudwatch.CreateAlarmOptions;
-import software.amazon.awscdk.services.cloudwatch.Dashboard;
-import software.amazon.awscdk.services.cloudwatch.DashboardProps;
-import software.amazon.awscdk.services.cloudwatch.GraphWidget;
-import software.amazon.awscdk.services.cloudwatch.GraphWidgetView;
-import software.amazon.awscdk.services.cloudwatch.LogQueryWidget;
 import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricOptions;
 import software.amazon.awscdk.services.cloudwatch.MetricProps;
-import software.amazon.awscdk.services.cloudwatch.SingleValueWidget;
-import software.amazon.awscdk.services.cloudwatch.TextWidget;
 import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
 import software.amazon.awscdk.services.cloudwatch.actions.SnsAction;
 import software.amazon.awscdk.services.logs.FilterPattern;
@@ -58,77 +51,26 @@ public class MonitoringStack extends Stack {
     Network.NetworkOutputParameters networkOutputParameters =
       Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
 
-    new Dashboard(this, "applicationDashboard", DashboardProps.builder()
-      .dashboardName(applicationEnvironment + "-application-dashboard")
-      .widgets(List.of(
-        List.of(
-          TextWidget.Builder
-            .create()
-            .markdown("# Stratospheric Dashboard \n Created with AWS CDK. \n * IaC \n * Configurable \n * Nice-looking")
-            .height(6)
-            .width(6)
-            .build(),
-          SingleValueWidget.Builder
-            .create()
-            .title("User Registrations")
-            .setPeriodToTimeRange(true)
-            .metrics(List.of(new Metric(MetricProps.builder()
-              .namespace("stratospheric")
-              .metricName("stratospheric.registration.signups.count")
-              .region(awsEnvironment.getRegion())
-              .statistic("sum")
-              .dimensionsMap(Map.of(
-                "outcome", "success",
-                "environment", applicationEnvironment.getEnvironmentName())
-              )
-              .build())))
-            .height(6)
-            .width(6)
-            .build(),
-          GraphWidget.Builder.create()
-            .title("User Sign In")
-            .view(GraphWidgetView.BAR)
-            .left(List.of(new Metric(MetricProps.builder()
-              .namespace("AWS/Cognito")
-              .metricName("SignInSuccesses")
-              .period(Duration.minutes(15))
-              .region(awsEnvironment.getRegion())
-              .dimensionsMap(Map.of(
-                "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
-                "UserPool", cognitoOutputParameters.getUserPoolId()))
-              .statistic("sum")
-              .build())))
-            .right(List.of(new Metric(MetricProps.builder()
-              .namespace("AWS/Cognito")
-              .metricName("TokenRefreshSuccesses")
-              .period(Duration.minutes(15))
-              .region(awsEnvironment.getRegion())
-              .dimensionsMap(Map.of(
-                "UserPoolClient", cognitoOutputParameters.getUserPoolClientId(),
-                "UserPool", cognitoOutputParameters.getUserPoolId()))
-              .statistic("sum")
-              .build())))
-            .height(6)
-            .width(6)
-            .build(),
-          LogQueryWidget.Builder
-            .create()
-            .title("Backend Logs")
-            .logGroupNames(List.of(applicationEnvironment + "-logs"))
-            .queryString(
-              "fields @timestamp, @message" +
-                "| sort @timestamp desc" +
-                "| limit 20")
-            .height(6)
-            .width(6)
-            .build()
-        )
-      ))
-      .build());
+    PostgresDatabase.DatabaseOutputParameters databaseOutputParameters =
+      PostgresDatabase.getOutputParametersFromParameterStore(this, applicationEnvironment);
 
     String loadBalancerName = Fn
       .split(":loadbalancer/", networkOutputParameters.getLoadBalancerArn(), 2)
       .get(1);
+
+    new SampleCloudWatchDashboard(this, "sampleCloudWatchDashboard", applicationEnvironment,
+      awsEnvironment,
+      new SampleCloudWatchDashboard.InputParameter(
+        cognitoOutputParameters.getUserPoolClientId(),
+        cognitoOutputParameters.getUserPoolId()
+      ));
+
+    new OperationalCloudWatchDashboard(this, "operationalCloudWatchDashboard", applicationEnvironment,
+      awsEnvironment,
+      new OperationalCloudWatchDashboard.InputParameter(
+        databaseOutputParameters.getInstanceId(),
+        loadBalancerName
+      ));
 
     Alarm elbSlowResponseTimeAlarm = new Alarm(this, "elbSlowResponseTimeAlarm", AlarmProps.builder()
       .alarmName("slow-api-response-alarm")
