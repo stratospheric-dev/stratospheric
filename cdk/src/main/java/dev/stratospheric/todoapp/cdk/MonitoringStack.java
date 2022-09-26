@@ -68,7 +68,7 @@ public class MonitoringStack extends Stack {
     new OperationalCloudWatchDashboard(this, "operationalCloudWatchDashboard", applicationEnvironment,
       awsEnvironment,
       new OperationalCloudWatchDashboard.InputParameter(
-        databaseOutputParameters.getDbName(),
+        databaseOutputParameters.getInstanceId(),
         loadBalancerName
       ));
 
