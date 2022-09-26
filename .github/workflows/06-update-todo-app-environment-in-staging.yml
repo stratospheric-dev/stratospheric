@@ -18,6 +18,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         stacks: ['messaging', 'activeMq', 'dynamo', 'database', 'cognito', 'monitoring', 'canary']
     name: Deploy the ${{ matrix.stacks }} stack
