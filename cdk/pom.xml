@@ -13,7 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.9.1</junit.version>
     <passay.version>1.6.2</passay.version>
-    <cdk-constructs.version>0.1.12</cdk-constructs.version>
+    <cdk-constructs.version>0.1.13</cdk-constructs.version>
   </properties>
 
   <build>
