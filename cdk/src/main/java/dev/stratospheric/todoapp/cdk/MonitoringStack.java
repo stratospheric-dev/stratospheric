@@ -88,22 +88,10 @@ public class MonitoringStack extends Stack {
       .treatMissingData(TreatMissingData.NOT_BREACHING)
       .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
       .evaluationPeriods(3)
+      .datapointsToAlarm(3)
       .threshold(2)
       .actionsEnabled(true)
       .build());
-
-    Topic snsAlarmingTopic = new Topic(this, "snsAlarmingTopic", TopicProps.builder()
-      .topicName(applicationEnvironment + "-alarming-topic")
-      .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
-      .fifo(false)
-      .build());
-
-    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
-      .create(confirmationEmail)
-      .build()
-    );
-
-    elbSlowResponseTimeAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
 
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
@@ -121,6 +109,7 @@ public class MonitoringStack extends Stack {
       .treatMissingData(TreatMissingData.NOT_BREACHING)
       .comparisonOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD)
       .evaluationPeriods(3)
+      .datapointsToAlarm(3)
       .threshold(5)
       .actionsEnabled(false)
       .build());
@@ -163,6 +152,18 @@ public class MonitoringStack extends Stack {
         )
         .build());
 
+    Topic snsAlarmingTopic = new Topic(this, "snsAlarmingTopic", TopicProps.builder()
+      .topicName(applicationEnvironment + "-alarming-topic")
+      .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
+      .fifo(false)
+      .build());
+
+    snsAlarmingTopic.addSubscription(EmailSubscription.Builder
+      .create(confirmationEmail)
+      .build()
+    );
+
+    elbSlowResponseTimeAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
     compositeAlarm.addAlarmAction(new SnsAction(snsAlarmingTopic));
   }
 }
