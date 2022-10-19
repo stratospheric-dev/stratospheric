@@ -1,6 +1,6 @@
 plugins {
   id 'org.springframework.boot' version '2.7.4'
-  id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+  id 'io.spring.dependency-management' version '1.1.0'
   id 'java'
 }
 
@@ -13,8 +13,8 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.3.3')
-  set('testcontainersVersion', '1.16.3')
+  set('awsSpringVersion', '2.4.2')
+  set('testcontainersVersion', '1.17.5')
 }
 
 dependencies {
