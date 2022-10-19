@@ -15,8 +15,7 @@ repositories {
 ext {
   set('awsSpringVersion', '2.4.2')
   set('testcontainersVersion', '1.17.5')
-  set('selenideVersion', '6.9.0')
-  set('seleniumVersion', '4.5.0')
+  set('selenium.version', '4.5.0')
 }
 
 dependencies {
@@ -64,30 +63,7 @@ dependencies {
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
 
-  testImplementation("com.codeborne:selenide:${selenideVersion}") {
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
-    dependencies {
-      testImplementation("org.seleniumhq.selenium:selenium-java:${seleniumVersion}") {
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-api'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-chrome-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-firefox-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-ie-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-opera-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-safari-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-support'
-        dependencies {
-          testImplementation "org.seleniumhq.selenium:selenium-api:${seleniumVersion}"
-          testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:${seleniumVersion}"
-          testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
-          testImplementation "org.seleniumhq.selenium:selenium-remote-driver:${seleniumVersion}"
-          testImplementation "org.seleniumhq.selenium:selenium-safari-driver:${seleniumVersion}"
-          testImplementation "org.seleniumhq.selenium:selenium-support:${seleniumVersion}"
-        }
-      }
-    }
-  }
+  testImplementation 'com.codeborne:selenide:6.9.0'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
