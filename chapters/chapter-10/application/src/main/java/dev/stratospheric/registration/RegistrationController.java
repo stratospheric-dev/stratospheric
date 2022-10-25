@@ -1,9 +1,6 @@
 package dev.stratospheric.registration;
 
 import com.amazonaws.services.cognitoidp.model.AWSCognitoIdentityProviderException;
-import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
-import com.amazonaws.services.cognitoidp.model.UserType;
-import com.amazonaws.services.cognitoidp.model.UsernameExistsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
