@@ -69,8 +69,8 @@
                   title="Delete"
                   type="button"
                   data-th-attr="data-href=${'/todo/delete/' + todo.id}"
-                  data-toggle="modal"
-                  data-target="#confirm-delete"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirm-delete"
                   th:unless="${todo.isCollaboration}">
             <i class="far fa-trash-alt"></i>
           </button>
