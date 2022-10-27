@@ -12,23 +12,31 @@ Clients and other dependent systems are unable to communicate with the Todo appl
 
 ## Diagnosis
 
-1. Check the CloudWatch logs for errors.
-2. Check the operational dashboard for
-4. Check
-5. If timeout or 502 or 503 may a wrong load balancer. 500 is from the server
-6. Check the availablilty
+1. Check the [CloudWatch logs](#) for errors and warnings
+2. Check the [operational dashboard](#) for any anomaly in the infrastructure
+3. Verify in the [#platform](#) channel that there's currently no ongoing platform incident or a maintenance window
+4. Log in to the [administration backend](#) to see if
 
 ## Mitigation
 
-### NullPointerExceptions
+### HTTP 502 and 503
 
-Reconfigure your data source (Prometheus, Opentelemetry Collector, etc.) to ensure that all applied configurations
-are as specified in the documentation
-
-### Downstream System are unavailable
+The application may be in a starting loop. Verify this by checking the uptime and events for the ECS tasks
 
 ### Database is unhealthy
+
 1. Ensure proper connection to the database
 2. Go through Postgres logs for detailed information
 3. Add more disk space to your Postgres cluster
 4. Fix errors to make sure database that is able to accept connections
+5. Restart the database the `./restart-db.sh` script
+
+### NullPointerExceptions
+
+Programming error, no . Get in touc with the developers, track the latest release log and identifyi f there have been recent commit and deployments.
+
+### The payment provider is unavailable
+
+In case the payment provider is unavailable, log in to the administration overview and disable the feature to pay by card. The application will fall back to bank transfer payments.
+
+### ...

@@ -95,7 +95,8 @@ public class MonitoringStack extends Stack {
 
     Alarm elb5xxAlarm = new Alarm(this, "elb5xxAlarm", AlarmProps.builder()
       .alarmName("5xx-backend-alarm")
-      .alarmDescription("Alert on multiple HTTP 5xx ELB responses")
+      .alarmDescription("Alert on multiple HTTP 5xx ELB responses. " +
+        "See the runbook for a diagnosis and mitigation hints: https://github.com/stratospheric-dev/stratospheric/blob/main/docs/runbooks/elb5xxAlarm.md")
       .metric(new Metric(MetricProps.builder()
         .namespace("AWS/ApplicationELB")
         .metricName("HTTPCode_ELB_5XX_Count")
