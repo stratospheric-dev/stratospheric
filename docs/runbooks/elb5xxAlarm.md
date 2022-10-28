@@ -39,7 +39,7 @@ In case the payment provider is unavailable, log in to the administration overvi
 
 ### NullPointerExceptions
 
-Thisrogramming error, no . Get in touch with the developers, track the latest release log and identify if there has been a recent deployment.
+This is usually due to a programming error. Get in touch with the developers, track the latest release log and identify if there has been a recent deployment.
 
 Revert the recent deployment and re-deploy the last Docker image using our [deployment hub](#).
 
