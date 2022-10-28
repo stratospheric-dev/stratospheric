@@ -12,31 +12,36 @@ Clients and other dependent systems are unable to communicate with the Todo appl
 
 ## Diagnosis
 
+(0.) Verify in the [#platform](#) channel that there's currently no ongoing platform incident or a maintenance window
+
 1. Check the [CloudWatch logs](#) for errors and warnings
-2. Check the [operational dashboard](#) for any anomaly in the infrastructure
-3. Verify in the [#platform](#) channel that there's currently no ongoing platform incident or a maintenance window
-4. Log in to the [administration backend](#) to see if
+2. Check the [operational dashboard](#) to detect any anomaly in the infrastructure
+3. Try to log in to the [administration backend](#) to see if the service is reachable
 
 ## Mitigation
 
-### HTTP 502 and 503
+### HTTP 502 and 503 Errors
 
-The application may be in a starting loop. Verify this by checking the uptime and events for the ECS tasks
+The load balancer fails to connect to our service. The application may be in an endless starting loop. Verify this by checking the uptime duration for the ECS tasks.
+
+The logs should output the reason for the failing startup attempts. Ensure that all credentials are present in the AWS Systems manager. Trigger a credentials rotation and wait until the next container startup attempt.
 
 ### Database is unhealthy
 
-1. Ensure proper connection to the database
-2. Go through Postgres logs for detailed information
-3. Add more disk space to your Postgres cluster
-4. Fix errors to make sure database that is able to accept connections
-5. Restart the database the `./restart-db.sh` script
-
-### NullPointerExceptions
-
-Programming error, no . Get in touc with the developers, track the latest release log and identifyi f there have been recent commit and deployments.
+1. Ensure there are active connections to the database by checking the [database dashboard](#)
+2. Verify the CPU, disk space and memory usage of the database cluster
+3. Resize the database to the next larger instance
+4. Restart the database the `./restart-db.sh` script
 
 ### The payment provider is unavailable
 
 In case the payment provider is unavailable, log in to the administration overview and disable the feature to pay by card. The application will fall back to bank transfer payments.
+
+### NullPointerExceptions
+
+Thisrogramming error, no . Get in touch with the developers, track the latest release log and identify if there has been a recent deployment.
+
+Revert the recent deployment and re-deploy the last Docker image using our [deployment hub](#).
+
 
 ### ...
