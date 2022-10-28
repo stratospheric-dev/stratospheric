@@ -31,7 +31,7 @@ The logs should output the reason for the failing startup attempts. Ensure that 
 1. Ensure there are active connections to the database by checking the [database dashboard](#)
 2. Verify the CPU, disk space and memory usage of the database cluster
 3. Resize the database to the next larger instance
-4. Restart the database the `./restart-db.sh` script
+4. Restart the database using the `./restart-db.sh` script
 
 ### The payment provider is unavailable
 
