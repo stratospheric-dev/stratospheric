@@ -2,9 +2,9 @@ package dev.stratospheric.todoapp.person;
 
 import dev.stratospheric.todoapp.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.todoapp.todo.Todo;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 

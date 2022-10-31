@@ -5,13 +5,13 @@ import dev.stratospheric.todoapp.person.PersonRepository;
 import dev.stratospheric.todoapp.todo.Todo;
 import dev.stratospheric.todoapp.todo.TodoRepository;
 import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
