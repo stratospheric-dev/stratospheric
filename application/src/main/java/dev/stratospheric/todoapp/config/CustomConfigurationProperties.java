@@ -1,11 +1,11 @@
 package dev.stratospheric.todoapp.config;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
-
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Set;
 
 @ConfigurationProperties(prefix = "custom")
 @Validated

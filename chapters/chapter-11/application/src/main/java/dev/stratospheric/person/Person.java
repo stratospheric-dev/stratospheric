@@ -3,8 +3,8 @@ package dev.stratospheric.person;
 import dev.stratospheric.collaboration.TodoCollaborationRequest;
 import dev.stratospheric.todo.Todo;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity

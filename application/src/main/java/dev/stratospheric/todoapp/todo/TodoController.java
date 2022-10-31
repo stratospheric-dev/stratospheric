@@ -1,7 +1,6 @@
 package dev.stratospheric.todoapp.todo;
 
-import javax.validation.Valid;
-
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

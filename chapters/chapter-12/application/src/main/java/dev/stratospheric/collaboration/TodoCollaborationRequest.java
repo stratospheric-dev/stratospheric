@@ -3,7 +3,7 @@ package dev.stratospheric.collaboration;
 import dev.stratospheric.person.Person;
 import dev.stratospheric.todo.Todo;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class TodoCollaborationRequest {
