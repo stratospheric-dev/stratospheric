@@ -22,17 +22,17 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
     httpSecurity
       .csrf()
-      .ignoringAntMatchers(
+      .ignoringRequestMatchers(
         "/stratospheric-todo-updates/**",
         "/websocket/**"
       )
       .and()
       .oauth2Login()
       .and()
-      .authorizeRequests()
+      .authorizeHttpRequests()
       .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
       .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-      .mvcMatchers("/", "/register").permitAll()
+      .requestMatchers("/", "/register").permitAll()
       .anyRequest().authenticated()
       .and()
       .logout()
