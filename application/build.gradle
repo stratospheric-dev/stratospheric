@@ -14,7 +14,7 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '3.0.0-M3')
+  set('awsSpringVersion', '2.4.2')
   set('testcontainersVersion', '1.17.5')
   set('selenium.version', '4.5.3')
 }
@@ -22,7 +22,7 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.0.RC1'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-mail'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -33,7 +33,7 @@ dependencies {
   implementation 'io.awspring.cloud:spring-cloud-starter-aws'
   implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
-  implementation 'org.springframework.boot:spring-boot-starter-activemq'
+  implementation 'org.springframework.boot:spring-boot-starter-activemq:2.7.5'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
