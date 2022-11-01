@@ -14,9 +14,9 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.4.2')
+  set('awsSpringVersion', '3.0.0-M3')
   set('testcontainersVersion', '1.17.5')
-  set('selenium.version', '4.5.0')
+  set('selenium.version', '4.5.3')
 }
 
 dependencies {
