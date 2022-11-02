@@ -14,18 +14,17 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '3.0.0-M3')
+  set('awsSpringVersion', '2.4.2')
   set('testcontainersVersion', '1.17.5')
+  set('thymeleafExtrasSpringSecurityVersion', '3.1.0.RC1')
+  set('springBootStarterActiveMQVersion', '2.7.5')
   set('selenium.version', '4.5.3')
-  set('thymeleafExtrasSpringsecurity5Version', '3.1.0.RC1')
-  set('springCloudStarterAwsVersion', '2.4.2')
-  set('springBootStarterActivemqVersion', '2.7.5')
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5:${thymeleafExtrasSpringsecurity5Version}"
+  implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${thymeleafExtrasSpringSecurityVersion}"
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-mail'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -35,10 +34,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-actuator'
   // https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-core
   implementation "io.awspring.cloud:spring-cloud-aws-core:${awsSpringVersion}"
-  implementation "io.awspring.cloud:spring-cloud-starter-aws:${springCloudStarterAwsVersion}"
-  implementation "io.awspring.cloud:spring-cloud-starter-aws-messaging:${springCloudStarterAwsVersion}"
+  implementation "io.awspring.cloud:spring-cloud-starter-aws"
+  implementation "io.awspring.cloud:spring-cloud-starter-aws-messaging"
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
-  implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActivemqVersion}"
+  implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'

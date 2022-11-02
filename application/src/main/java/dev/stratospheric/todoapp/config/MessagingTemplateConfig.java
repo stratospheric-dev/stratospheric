@@ -32,6 +32,7 @@ public class MessagingTemplateConfig {
     messageConverter.setObjectMapper(objectMapper);
     messageConverter.setStrictContentTypeMatch(false);
     factory.setArgumentResolvers(Collections.singletonList(new PayloadMethodArgumentResolver(messageConverter)));
+
     return factory;
   }
 }

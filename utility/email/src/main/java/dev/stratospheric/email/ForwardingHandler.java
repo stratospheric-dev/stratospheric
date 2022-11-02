@@ -10,10 +10,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
-import jakarta.mail.Address;
-import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.mail.util.MimeMessageParser;
 
+import javax.mail.Address;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
