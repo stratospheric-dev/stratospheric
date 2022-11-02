@@ -26,7 +26,7 @@ public class LocalAwsConfig {
     ) {
     return AmazonDynamoDBClientBuilder.standard()
       .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("foo", "bar")))
-      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpointUrl, regionProvider.getRegion().id()))
+      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpointUrl, regionProvider.getRegion().toString()))
       .build();
   }
 }

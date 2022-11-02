@@ -20,7 +20,7 @@ public class AwsConfig {
     AWSCredentialsProvider awsCredentialsProvider) {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
-      .withRegion(regionProvider.getRegion().id())
+      .withRegion(regionProvider.getRegion().toString())
       .build();
   }
 
@@ -31,7 +31,7 @@ public class AwsConfig {
     AWSCredentialsProvider awsCredentialsProvider) {
     return AmazonDynamoDBClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)
-      .withRegion(regionProvider.getRegion().id())
+      .withRegion(regionProvider.getRegion().toString())
       .build();
   }
 }
