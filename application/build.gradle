@@ -14,7 +14,7 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.4.2')
+  set('awsSpringVersion', '3.0.0-M3')
   set('testcontainersVersion', '1.17.5')
   set('selenium.version', '4.7.2')
   set('httpclient5.version', '5.2.1')
@@ -34,10 +34,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  // https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-core
   implementation "io.awspring.cloud:spring-cloud-aws-core:${awsSpringVersion}"
-  implementation "io.awspring.cloud:spring-cloud-starter-aws"
-  implementation "io.awspring.cloud:spring-cloud-starter-aws-messaging"
+  implementation "io.awspring.cloud:spring-cloud-aws-starter"
+  implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+  implementation "io.awspring.cloud:spring-cloud-starter-aws-messaging:${springCloudStarterAwsMessagingVersion}"
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
   implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
   implementation 'org.webjars:webjars-locator-core'
