@@ -37,7 +37,6 @@ dependencies {
   implementation "io.awspring.cloud:spring-cloud-aws-core:${awsSpringVersion}"
   implementation "io.awspring.cloud:spring-cloud-aws-starter"
   implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
-  implementation "io.awspring.cloud:spring-cloud-starter-aws-messaging:${springCloudStarterAwsMessagingVersion}"
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
   implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
   implementation 'org.webjars:webjars-locator-core'
