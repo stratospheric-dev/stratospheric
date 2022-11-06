@@ -4,11 +4,12 @@ import dev.stratospheric.person.Person;
 import dev.stratospheric.person.PersonRepository;
 import dev.stratospheric.todo.Todo;
 import dev.stratospheric.todo.TodoRepository;
-import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import jakarta.transaction.Transactional;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class TodoCollaborationService {
   private final PersonRepository personRepository;
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
-  private final QueueMessagingTemplate queueMessagingTemplate;
+  private final SqsClient sqsClient;
   private final String todoSharingQueueName;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
@@ -35,11 +36,11 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository,
-    QueueMessagingTemplate queueMessagingTemplate) {
+    SqsClient sqsClient) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
-    this.queueMessagingTemplate = queueMessagingTemplate;
+    this.sqsClient = sqsClient;
     this.todoSharingQueueName = todoSharingQueueName;
   }
 
@@ -69,7 +70,17 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
-    queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
+    sqsClient.sendMessage(
+      SendMessageRequest
+        .builder()
+        .queueUrl(todoSharingQueueName)
+        .messageBody(
+          objectMapper.writeValueAsString(
+            new TodoCollaborationNotification(collaboration)
+          )
+        )
+        .build()
+    );
 
     return collaborator.getName();
   }
