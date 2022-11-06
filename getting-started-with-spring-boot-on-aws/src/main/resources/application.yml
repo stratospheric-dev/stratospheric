@@ -2,7 +2,7 @@ spring:
   application:
     name: demo-application
   config:
-    import: 'aws-parameterstore:'
+    import: 'aws-parameterstore:/config/app'
 
 cloud:
   aws:
@@ -16,3 +16,7 @@ cloud:
       enabled: true
     sqs:
       enabled: true
+
+custom:
+  bucket-name: stratospheric-demo-application
+

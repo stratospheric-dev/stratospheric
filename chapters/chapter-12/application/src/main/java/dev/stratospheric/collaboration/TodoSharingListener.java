@@ -1,7 +1,6 @@
 package dev.stratospheric.collaboration;
 
-import io.awspring.cloud.messaging.listener.SqsMessageDeletionPolicy;
-import io.awspring.cloud.messaging.listener.annotation.SqsListener;
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +30,7 @@ public class TodoSharingListener {
     this.autoConfirmCollaborations = autoConfirmCollaborations;
   }
 
-  @SqsListener(value = "${custom.sharing-queue}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+  @SqsListener(value = "${custom.sharing-queue}")
   public void listenToSharingMessages(TodoCollaborationNotification payload) {
     LOG.info("Incoming todo sharing payload: {}", payload);
 
