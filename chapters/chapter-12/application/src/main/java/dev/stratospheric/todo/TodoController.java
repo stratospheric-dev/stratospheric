@@ -53,8 +53,8 @@ public class TodoController {
   @PostMapping
   public String add(
     @Valid Todo toBeCreatedTodo,
-    @AuthenticationPrincipal OidcUser user,
     BindingResult bindingResult,
+    @AuthenticationPrincipal OidcUser user,
     Model model,
     RedirectAttributes redirectAttributes
   ) {
