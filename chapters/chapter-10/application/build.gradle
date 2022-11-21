@@ -16,7 +16,7 @@ repositories {
 ext {
   set('awsSpringVersion', '3.0.0-M3')
   set('testcontainersVersion', '1.17.6')
-  set('thymeleafExtrasSpringSecurityVersion', '3.1.0.RC2')
+  set('thymeleafExtrasSpringSecurityVersion', '3.1.0.RELEASE')
 }
 
 dependencies {
