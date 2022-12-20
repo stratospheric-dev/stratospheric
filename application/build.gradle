@@ -16,8 +16,8 @@ ext {
   set('awsSpringVersion', '3.0.0-M3')
   set('testcontainersVersion', '1.17.6')
   set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
-  set('springBootStarterActiveMQVersion', '2.7.5')
-  set('selenium.version', '4.6.0')
+  set('springBootStarterActiveMQVersion', '2.7.6')
+  set('selenium.version', '4.7.2')
 }
 
 dependencies {
