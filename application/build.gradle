@@ -16,7 +16,6 @@ ext {
   set('awsSpringVersion', '3.0.0-M3')
   set('testcontainersVersion', '1.17.6')
   set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
-  set('springBootStarterActiveMQVersion', '2.7.6')
 }
 
 dependencies {
@@ -35,7 +34,13 @@ dependencies {
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-ses'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
-  implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
+  implementation 'org.springframework:spring-jms:6.0.3' // implementation 'org.springframework:spring-jms:5.3.24'
+  implementation('org.apache.activemq:activemq-broker:5.17.3') { // ('org.apache.activemq:activemq-broker:5.16.5')
+    exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
+    exclude group: 'org.apache.geronimo.specs', module: 'geronimo-j2ee-management_1.1_spec'
+  }
+  implementation 'jakarta.jms:jakarta.jms-api:3.1.0' // implementation 'jakarta.jms:jakarta.jms-api:2.0.3'
+  implementation 'jakarta.management.j2ee:jakarta.management.j2ee-api:1.1.4'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
