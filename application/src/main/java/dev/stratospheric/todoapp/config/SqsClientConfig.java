@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
-public class MessagingTemplateConfig {
+public class SqsClientConfig {
 
   @Bean
   public SqsClient sqsClient() {
