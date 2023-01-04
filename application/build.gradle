@@ -10,15 +10,16 @@ sourceCompatibility = '17'
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 ext {
-  set('awsSpringVersion', '3.0.0-M3')
   set('selenium.version', '4.7.2')
   set('httpclient5.version', '5.2.1')
   set('thymeleafExtrasSpringsecurity5Version', '3.1.0.RC1')
   set('springCloudStarterAwsVersion', '2.4.2')
   set('springBootStarterActivemqVersion', '2.7.5')
+  set('awsSpringVersion', '3.0.0-SNAPSHOT')
   set('testcontainersVersion', '1.17.6')
   set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
   set('springBootStarterActiveMQVersion', '2.7.7')
