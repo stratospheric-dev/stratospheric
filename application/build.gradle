@@ -18,6 +18,10 @@ ext {
   set('testcontainersVersion', '1.17.6')
   set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
   set('springBootStarterActiveMQVersion', '2.7.8')
+  set('jsr305Version', '3.0.2')
+  set('logbackAwslogsJsonEncoderVersion', '1.1.1')
+  set('errorHandlingSpringBootStarterVersion', '4.1.0')
+  set('selenideVersion', '6.11.2')
 }
 
 dependencies {
@@ -43,15 +47,15 @@ dependencies {
   implementation 'org.webjars:stomp-websocket:2.3.4'
   implementation 'org.webjars:bootstrap:5.2.3'
   implementation 'org.webjars:popper.js:2.9.3'
-  implementation 'org.webjars:jquery:3.6.1'
-  implementation 'org.webjars:font-awesome:6.2.0'
+  implementation 'org.webjars:jquery:3.6.3'
+  implementation 'org.webjars:font-awesome:6.2.1'
   implementation 'org.flywaydb:flyway-core'
   implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
   implementation 'com.amazonaws:aws-java-sdk-ses'
   implementation 'com.amazonaws:aws-java-sdk-dynamodb'
-  implementation 'com.google.code.findbugs:jsr305:3.0.2'
-  implementation 'de.siegmar:logback-awslogs-json-encoder:1.1.1'
-  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:4.1.0'
+  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
+  implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -67,7 +71,7 @@ dependencies {
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
 
-  testImplementation 'com.codeborne:selenide:6.10.3'
+  testImplementation "com.codeborne:selenide:${selenideVersion}"
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
