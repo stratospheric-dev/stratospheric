@@ -20,7 +20,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
       .csrf()
-      .ignoringAntMatchers(
+      .ignoringRequestMatchers(
         "/stratospheric-todo-updates/**",
         "/websocket/**"
       )
