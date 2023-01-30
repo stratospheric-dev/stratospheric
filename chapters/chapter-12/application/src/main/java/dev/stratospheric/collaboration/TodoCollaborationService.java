@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.sqs.SqsClient;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import jakarta.transaction.Transactional;
@@ -22,7 +22,7 @@ public class TodoCollaborationService {
   private final PersonRepository personRepository;
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
-  private final SqsClient sqsClient;
+  private final SqsTemplate sqsTemplate;
   private final String todoSharingQueueName;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
@@ -36,11 +36,11 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository,
-    SqsClient sqsClient) {
+    SqsTemplate sqsTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
-    this.sqsClient = sqsClient;
+    this.sqsTemplate = sqsTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
   }
 
@@ -70,17 +70,7 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
-    sqsClient.sendMessage(
-      SendMessageRequest
-        .builder()
-        .queueUrl(todoSharingQueueName)
-        .messageBody(
-          objectMapper.writeValueAsString(
-            new TodoCollaborationNotification(collaboration)
-          )
-        )
-        .build()
-    );
+    sqsTemplate.sendAsync(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
   }

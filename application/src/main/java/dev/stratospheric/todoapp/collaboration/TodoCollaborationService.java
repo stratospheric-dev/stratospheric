@@ -1,19 +1,16 @@
 package dev.stratospheric.todoapp.collaboration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
 import dev.stratospheric.todoapp.todo.Todo;
 import dev.stratospheric.todoapp.todo.TodoRepository;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.sqs.SqsClient;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import java.util.UUID;
 
@@ -25,12 +22,10 @@ public class TodoCollaborationService {
   private final PersonRepository personRepository;
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
-  private final SqsClient sqsClient;
+  private final SqsTemplate sqsTemplate;
   private final String todoSharingQueueName;
 
   private final SimpMessagingTemplate simpMessagingTemplate;
-
-  private final ObjectMapper objectMapper;
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoCollaborationService.class.getName());
 
@@ -43,18 +38,17 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository,
-    SqsClient sqsClient,
-    SimpMessagingTemplate simpMessagingTemplate, ObjectMapper objectMapper) {
+    SqsTemplate sqsTemplate,
+    SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
-    this.sqsClient = sqsClient;
+    this.sqsTemplate = sqsTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
     this.simpMessagingTemplate = simpMessagingTemplate;
-    this.objectMapper = objectMapper;
   }
 
-  public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) throws JsonProcessingException {
+  public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository
       .findByIdAndOwnerEmail(todoId, todoOwnerEmail)
@@ -80,17 +74,7 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
-    sqsClient.sendMessage(
-      SendMessageRequest
-        .builder()
-        .queueUrl(todoSharingQueueName)
-        .messageBody(
-          objectMapper.writeValueAsString(
-            new TodoCollaborationNotification(collaboration)
-          )
-        )
-        .build()
-    );
+    sqsTemplate.sendAsync(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
   }
