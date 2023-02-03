@@ -97,4 +97,3 @@ bootRun {
 jar {
   enabled = false
 }
-
