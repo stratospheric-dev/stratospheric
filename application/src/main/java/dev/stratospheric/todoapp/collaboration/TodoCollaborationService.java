@@ -74,7 +74,7 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
-    sqsTemplate.sendAsync(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
+    sqsTemplate.send(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
   }
