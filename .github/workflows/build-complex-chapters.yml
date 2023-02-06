@@ -49,7 +49,7 @@ jobs:
 
           echo "TODO: sort out chapter 1 as this is already built with a different workflow"
 
-          echo "::set-output name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-numbers": $chapters}' | jq -c .)"
+          echo "name=matrix::$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-numbers": $chapters}' | jq -c .)" >> $GITHUB_OUTPUT
 
     outputs:
       matrix: ${{ steps.set-changed-folders.outputs.matrix }}

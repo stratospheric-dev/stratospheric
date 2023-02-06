@@ -50,7 +50,7 @@ jobs:
 
       - name: Create Docker image tag
         id: dockerImageTag
-        run: echo "::set-output name=tag::$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}"
+        run: echo "tag={$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}}" >> $GITHUB_OUTPUT
 
       - name: Publish Docker image to ECR registry
         if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
