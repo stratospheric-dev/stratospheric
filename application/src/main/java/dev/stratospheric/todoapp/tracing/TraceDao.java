@@ -6,9 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Component
 public class TraceDao {
@@ -34,37 +39,57 @@ public class TraceDao {
     LOG.info("Successfully stored breadcrumb trace");
   }
 
-  public List<Breadcrumb> findAllEventsForUser(String username) {
+  public PageIterable<Breadcrumb> findAllEventsForUser(String username) {
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);
 
-    // TODO: Convert to AWS SDK v2
-//    DynamoDb<Breadcrumb> queryExpression =
-//      new DynamoDBQueryExpression<Breadcrumb>()
-//        .withHashKeyValues(breadcrumb);
-//
-//    return dynamoDBMapper.query(Breadcrumb.class, queryExpression);
-    return List.of();
+    return dynamoDbTemplate.query(
+      QueryEnhancedRequest
+        .builder()
+        .queryConditional(
+          QueryConditional.keyEqualTo(
+            Key
+              .builder()
+              .partitionValue(breadcrumb.getId())
+              .build()
+          )
+        )
+        .build(),
+      Breadcrumb.class
+    );
   }
 
-  public List<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
-    // TODO: Convert to AWS SDK v2
+  public PageIterable<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
+    ZonedDateTime twoWeeksAgo = ZonedDateTime.now().minusWeeks(2);
 
-//    ZonedDateTime now = ZonedDateTime.now();
-//    ZonedDateTime twoWeeksAgo = now.minusWeeks(2);
-//    Condition timestampCondition = new Condition()
-//      .withComparisonOperator(ComparisonOperator.GT.toString())
-//      .withAttributeValueList(new AttributeValue().withS(twoWeeksAgo.toString()));
-//
-//    Breadcrumb breadcrumb = new Breadcrumb();
-//    breadcrumb.setUsername(username);
-//
-//    DynamoDBQueryExpression<Breadcrumb> queryExpression =
-//      new DynamoDBQueryExpression<Breadcrumb>()
-//        .withHashKeyValues(breadcrumb)
-//        .withRangeKeyCondition("timestamp", timestampCondition);
-//
-//    return dynamoDBMapper.query(Breadcrumb.class, queryExpression);
-    return List.of();
+    Breadcrumb breadcrumb = new Breadcrumb();
+    breadcrumb.setUsername(username);
+
+    return dynamoDbTemplate.query(
+      QueryEnhancedRequest
+        .builder()
+        .queryConditional(
+          QueryConditional.keyEqualTo(
+            Key
+              .builder()
+              .partitionValue(breadcrumb.getId())
+              .build()
+          )
+        )
+        .filterExpression(
+          Expression
+            .builder()
+            .expression("timestamp > :twoWeeksAgo")
+            .putExpressionValue(":twoWeeksAgo",
+              AttributeValue
+                .builder()
+                .s(twoWeeksAgo.toString())
+                .build()
+            )
+            .build()
+        )
+        .build(),
+      Breadcrumb.class
+    );
   }
 }
