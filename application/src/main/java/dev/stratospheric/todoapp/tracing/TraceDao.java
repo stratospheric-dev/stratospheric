@@ -26,7 +26,6 @@ public class TraceDao {
     this.dynamoDbTemplate = dynamoDbTemplate;
   }
 
-
   @Async
   @EventListener(TracingEvent.class)
   public void storeTracingEvent(TracingEvent tracingEvent) {
