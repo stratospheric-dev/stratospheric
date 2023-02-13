@@ -14,7 +14,7 @@ public class AwsConfig {
 
   @Bean
   public AWSCognitoIdentityProvider awsCognitoIdentityProvider(
-    @Value("${cloud.aws.region.static}") String region,
+    @Value("${spring.cloud.aws.region.static}") String region,
     AWSCredentialsProvider awsCredentialsProvider) {
     return AWSCognitoIdentityProviderAsyncClientBuilder.standard()
       .withCredentials(awsCredentialsProvider)

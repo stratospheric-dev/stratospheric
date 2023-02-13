@@ -25,7 +25,7 @@ public class WebSecurityConfig {
       .and()
       .authorizeRequests()
       .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-      .mvcMatchers("/", "/health", "/register").permitAll()
+      .requestMatchers("/", "/health", "/register").permitAll()
       .anyRequest().authenticated()
       .and()
       .logout()
