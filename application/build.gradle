@@ -23,7 +23,7 @@ ext {
   set('jsr305Version', '3.0.2')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
-  set('selenideVersion', '6.11.0')
+  set('selenideVersion', '6.11.2')
 }
 
 dependencies {
