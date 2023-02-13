@@ -21,7 +21,7 @@ public class LocalAwsConfig {
   @ConditionalOnProperty(prefix = "custom", name = "provide-dynamodb-via-aws", havingValue = "false")
   // re-using the awspring SQS config for DynamoDB as both connect to LocalStack
   public AmazonDynamoDB amazonDynamoDB(
-    @Value("${cloud.aws.sqs.endpoint}") String endpointUrl,
+    @Value("${spring.cloud.aws.endpoint}") String endpointUrl,
     AwsRegionProvider regionProvider
     ) {
     return AmazonDynamoDBClientBuilder.standard()
