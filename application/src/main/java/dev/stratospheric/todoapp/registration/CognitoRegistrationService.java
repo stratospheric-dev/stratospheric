@@ -14,15 +14,15 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.DeliveryMed
 @ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "true")
 public class CognitoRegistrationService implements RegistrationService {
 
-  private final CognitoIdentityProviderClient awsCognitoIdentityProvider;
+  private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
   private final MeterRegistry meterRegistry;
   private final String userPooldId;
 
   public CognitoRegistrationService(
     @Value("${COGNITO_USER_POOL_ID}") String userPoolId,
-    CognitoIdentityProviderClient awsCognitoIdentityProvider,
+    CognitoIdentityProviderClient cognitoIdentityProviderClient,
     MeterRegistry meterRegistry) {
-    this.awsCognitoIdentityProvider = awsCognitoIdentityProvider;
+    this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
     this.meterRegistry = meterRegistry;
     this.userPooldId = userPoolId;
   }
@@ -41,7 +41,7 @@ public class CognitoRegistrationService implements RegistrationService {
       .forceAliasCreation(Boolean.FALSE)
       .build();
 
-    awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+    cognitoIdentityProviderClient.adminCreateUser(registrationRequest);
 
     Counter successCounter = Counter.builder("stratospheric.registration.signups")
       .description("Number of user registrations")
