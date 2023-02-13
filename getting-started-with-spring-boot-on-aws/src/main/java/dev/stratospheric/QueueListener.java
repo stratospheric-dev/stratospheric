@@ -15,7 +15,7 @@ public class QueueListener {
 
   @SqsListener(value = "${custom.sqs-queue-name}")
   public void onS3UploadEvent(S3EventNotification event) {
-    LOGGER.info("Incoming S3EventNotification: " + event.toJson());
+    LOGGER.info("Incoming S3EventNotification: {}", event.toJson());
 
     if (event.getRecords() == null) {
       return;

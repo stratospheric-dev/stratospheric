@@ -1,4 +1,12 @@
 spring:
+  cloud:
+    aws:
+      endpoint: http://localhost:4566
+      region:
+        static: eu-central-1
+      credentials:
+        access-key: foo
+        secret-key: bar
   security:
     oauth2:
       client:
@@ -18,17 +26,3 @@ spring:
 custom:
   auto-confirm-collaborations: true
   use-cognito-as-identity-provider: false
-
-cloud:
-  aws:
-    rds:
-      enabled: false
-    sqs:
-      endpoint: http://localhost:4566
-      region: eu-central-1
-    mail:
-      endpoint: http://localhost:4566
-      region: eu-central-1
-    credentials:
-      access-key: foo
-      secret-key: bar

@@ -14,6 +14,8 @@ repositories {
 }
 
 ext {
+  set('selenium.version', '4.7.2')
+  set('httpclient5.version', '5.2.1')
   set('awsSpringVersion', '3.0.0-RC1')
   set('testcontainersVersion', '1.17.6')
   set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
@@ -21,7 +23,7 @@ ext {
   set('jsr305Version', '3.0.2')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
-  set('selenideVersion', '6.11.0')
+  set('selenideVersion', '6.11.2')
 }
 
 dependencies {
@@ -35,10 +37,9 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  implementation "io.awspring.cloud:spring-cloud-aws-core:${awsSpringVersion}"
-  implementation 'io.awspring.cloud:spring-cloud-aws-starter'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-ses'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb'
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
   implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
   implementation 'org.webjars:webjars-locator-core'
@@ -50,9 +51,8 @@ dependencies {
   implementation 'org.webjars:jquery:3.6.3'
   implementation 'org.webjars:font-awesome:6.2.1'
   implementation 'org.flywaydb:flyway-core'
-  implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
-  implementation 'com.amazonaws:aws-java-sdk-ses'
-  implementation 'com.amazonaws:aws-java-sdk-dynamodb'
+  implementation 'software.amazon.awssdk:cognitoidentityprovider'
+  implementation 'software.amazon.awssdk:ses'
   implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
   implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
@@ -70,9 +70,7 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
-
   testImplementation "com.codeborne:selenide:${selenideVersion}"
-
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 

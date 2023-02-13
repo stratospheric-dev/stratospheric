@@ -1,15 +1,3 @@
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: eu-central-1
-    instance:
-      data:
-        enabled: false
-    sns:
-      enabled: false
-
 server:
   forward-headers-strategy: framework
 
@@ -20,6 +8,12 @@ spring:
     open-in-view: false
   application:
     name: todo-app
+  cloud:
+    aws:
+      region:
+        static: eu-central-1
+      sns:
+        enabled: false
 
 management:
   metrics:
