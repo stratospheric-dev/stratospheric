@@ -1,14 +1,10 @@
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: eu-central-1
-    instance:
-      data:
+spring:
+  cloud:
+    aws:
+      region:
+        static: eu-central-1
+      sns:
         enabled: false
-    sns:
-      enabled: false
 
 server:
   forward-headers-strategy: framework
