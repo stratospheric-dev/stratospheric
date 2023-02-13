@@ -8,12 +8,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
-import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Component
 public class TraceDao {
@@ -39,57 +39,62 @@ public class TraceDao {
     LOG.info("Successfully stored breadcrumb trace");
   }
 
-  public PageIterable<Breadcrumb> findAllEventsForUser(String username) {
+  public List<Breadcrumb> findAllEventsForUser(String username) {
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);
 
     return dynamoDbTemplate.query(
-      QueryEnhancedRequest
-        .builder()
-        .queryConditional(
-          QueryConditional.keyEqualTo(
-            Key
-              .builder()
-              .partitionValue(breadcrumb.getId())
-              .build()
+        QueryEnhancedRequest
+          .builder()
+          .queryConditional(
+            QueryConditional.keyEqualTo(
+              Key
+                .builder()
+                .partitionValue(breadcrumb.getId())
+                .build()
+            )
           )
-        )
-        .build(),
-      Breadcrumb.class
-    );
+          .build(),
+        Breadcrumb.class
+      ).items()
+      .stream()
+      .toList();
   }
 
-  public PageIterable<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
+  public List<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
     ZonedDateTime twoWeeksAgo = ZonedDateTime.now().minusWeeks(2);
 
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);
 
     return dynamoDbTemplate.query(
-      QueryEnhancedRequest
-        .builder()
-        .queryConditional(
-          QueryConditional.keyEqualTo(
-            Key
-              .builder()
-              .partitionValue(breadcrumb.getId())
-              .build()
-          )
-        )
-        .filterExpression(
-          Expression
-            .builder()
-            .expression("timestamp > :twoWeeksAgo")
-            .putExpressionValue(":twoWeeksAgo",
-              AttributeValue
+        QueryEnhancedRequest
+          .builder()
+          .queryConditional(
+            QueryConditional.keyEqualTo(
+              Key
                 .builder()
-                .s(twoWeeksAgo.toString())
+                .partitionValue(breadcrumb.getId())
                 .build()
             )
-            .build()
-        )
-        .build(),
-      Breadcrumb.class
-    );
+          )
+          .filterExpression(
+            Expression
+              .builder()
+              .expression("timestamp > :twoWeeksAgo")
+              .putExpressionValue(":twoWeeksAgo",
+                AttributeValue
+                  .builder()
+                  .s(twoWeeksAgo.toString())
+                  .build()
+              )
+              .build()
+          )
+          .build(),
+        Breadcrumb.class
+      )
+      .items()
+      .stream()
+      .toList();
   }
 }
