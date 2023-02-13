@@ -20,13 +20,9 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation "io.awspring.cloud:spring-cloud-aws-core:${awsSpringVersion}"
-  implementation 'io.awspring.cloud:spring-cloud-aws-starter'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
-  implementation 'com.amazonaws:aws-java-sdk-s3'
-
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
