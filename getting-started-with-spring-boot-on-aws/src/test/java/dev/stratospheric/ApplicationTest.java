@@ -32,7 +32,7 @@ class ApplicationTest {
   @Container
   static LocalStackContainer localStack =
     new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.0"))
-      .withServices(SQS, SNS, S3, SSM);
+      .withServices(SQS, S3, SSM);
 
   @BeforeAll
   static void beforeAll() throws IOException, InterruptedException {
@@ -43,8 +43,9 @@ class ApplicationTest {
   @DynamicPropertySource
   static void overrideConfiguration(DynamicPropertyRegistry registry) {
     registry.add("custom.bucket-name", () -> SAMPLE_BUCKET);
-    registry.add("custom.sqs-queue-name", () -> SAMPLE_QUEUE);
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
+     registry.add("custom.sqs-queue-name", () -> SAMPLE_QUEUE);
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(S3));
+    registry.add("spring.cloud.aws.region.static", localStack::getRegion);
     registry.add("spring.cloud.aws.credentials.access-key", localStack::getAccessKey);
     registry.add("spring.cloud.aws.credentials.secret-key", localStack::getSecretKey);
   }
@@ -58,3 +59,4 @@ class ApplicationTest {
       .isEqualTo(200);
   }
 }
+

@@ -1,6 +1,6 @@
 package dev.stratospheric;
 
-import com.amazonaws.services.s3.event.S3EventNotification;
+import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ public class QueueListener {
 
   @SqsListener(value = "${custom.sqs-queue-name}")
   public void onS3UploadEvent(S3EventNotification event) {
-    LOGGER.info("Incoming S3EventNotification: {}", event.toJson());
+    LOGGER.info("Incoming S3EventNotification: {}", event);
 
     if (event.getRecords() == null) {
       return;
