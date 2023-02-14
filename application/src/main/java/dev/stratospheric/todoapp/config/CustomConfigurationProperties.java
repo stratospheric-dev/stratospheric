@@ -45,9 +45,6 @@ class CustomConfigurationProperties {
   private Boolean useCognitoAsIdentityProvider;
 
   @NotNull
-  private Boolean provideDynamodbViaAws;
-
-  @NotNull
   private Boolean provideTestTodoController;
 
   public Set<String> getInvitationCodes() {
@@ -136,14 +133,6 @@ class CustomConfigurationProperties {
 
   public void setUseCognitoAsIdentityProvider(Boolean useCognitoAsIdentityProvider) {
     this.useCognitoAsIdentityProvider = useCognitoAsIdentityProvider;
-  }
-
-  public Boolean getProvideDynamodbViaAws() {
-    return provideDynamodbViaAws;
-  }
-
-  public void setProvideDynamodbViaAws(Boolean provideDynamodbViaAws) {
-    this.provideDynamodbViaAws = provideDynamodbViaAws;
   }
 
   public Boolean getProvideTestTodoController() {
