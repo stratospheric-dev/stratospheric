@@ -26,4 +26,3 @@ custom:
   web-socket-relay-use-ssl: true
   provide-test-todo-controller: false
   use-cognito-as-identity-provider: true
-  provide-dynamodb-via-aws: true
