@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TraceDao {
@@ -30,12 +31,12 @@ public class TraceDao {
   @EventListener(TracingEvent.class)
   public void storeTracingEvent(TracingEvent tracingEvent) {
     Breadcrumb breadcrumb = new Breadcrumb();
+    breadcrumb.setId(UUID.randomUUID().toString());
     breadcrumb.setUri(tracingEvent.getUri());
     breadcrumb.setUsername(tracingEvent.getUsername());
     breadcrumb.setTimestamp(ZonedDateTime.now().toString());
 
     dynamoDbTemplate.save(breadcrumb);
-
 
     LOG.info("Successfully stored breadcrumb trace");
   }
