@@ -43,7 +43,7 @@ class ApplicationTest {
   @DynamicPropertySource
   static void overrideConfiguration(DynamicPropertyRegistry registry) {
     registry.add("custom.bucket-name", () -> SAMPLE_BUCKET);
-     registry.add("custom.sqs-queue-name", () -> SAMPLE_QUEUE);
+    registry.add("custom.sqs-queue-name", () -> SAMPLE_QUEUE);
     registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(S3));
     registry.add("spring.cloud.aws.region.static", localStack::getRegion);
     registry.add("spring.cloud.aws.credentials.access-key", localStack::getAccessKey);
