@@ -36,6 +36,7 @@ public class TraceDao {
 
     dynamoDbTemplate.save(breadcrumb);
 
+
     LOG.info("Successfully stored breadcrumb trace");
   }
 
