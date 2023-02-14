@@ -25,7 +25,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter'
-  implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
+  implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${thymeleafExtrasSpringSecurityVersion}"
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
