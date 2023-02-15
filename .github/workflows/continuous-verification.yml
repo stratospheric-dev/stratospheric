@@ -4,7 +4,6 @@
 name: Continuously verify the projects can be build
 
 on:
-  push:
   schedule:
     - cron: '0 5 * * SUN' # Every Sunday at 5 AM
   workflow_dispatch:
