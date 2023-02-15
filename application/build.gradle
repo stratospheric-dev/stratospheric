@@ -52,7 +52,6 @@ dependencies {
   implementation 'org.webjars:font-awesome:6.3.0'
   implementation 'org.flywaydb:flyway-core'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
-  implementation 'software.amazon.awssdk:ses'
   implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
   implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
