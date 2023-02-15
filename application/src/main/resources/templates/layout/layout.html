@@ -29,7 +29,7 @@
   <script th:src="@{/js/todo-updates.js}" sec:authorize="isAuthenticated()"></script>
 </head>
 <body>
-<div>
+<div class="min-vh-100 d-flex flex-column justify-content-between">
   <div th:replace="~{fragments/header :: header}"></div>
 
   <div th:replace="~{fragments/toast :: toast}"></div>

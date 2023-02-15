@@ -90,6 +90,9 @@ bootRun {
   ]
 }
 
+gitProperties {
+}
+
 jar {
   enabled = false
 }
