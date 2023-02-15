@@ -35,7 +35,7 @@ jobs:
 
   verify-local-development-mode:
     runs-on: ubuntu-20.04
-    name: Ensure we can start the sample application locally
+    name: Verify local development mode
     steps:
 
       - name: Checkout code
@@ -54,3 +54,10 @@ jobs:
           docker compose up -d
           ./gradlew bootRun &
           timeout 60 ../.github/workflows/health-check.sh 8080
+
+      - name: Stop local environment
+        working-directory: application
+        if: always()
+        run: |
+          docker compose logs
+          docker compose down
