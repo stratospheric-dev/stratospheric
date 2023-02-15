@@ -1,6 +1,7 @@
 plugins {
   id 'org.springframework.boot' version '3.0.2'
   id 'io.spring.dependency-management' version '1.1.0'
+  id 'com.gorylenko.gradle-git-properties' version '2.4.1'
   id 'java'
 }
 
@@ -18,7 +19,6 @@ ext {
   set('httpclient5.version', '5.2.1')
   set('awsSpringVersion', '3.0.0-RC1')
   set('testcontainersVersion', '1.17.6')
-  set('thymeleafExtrasSpringSecurityVersion', '3.1.1.RELEASE')
   set('springBootStarterActiveMQVersion', '2.7.8')
   set('jsr305Version', '3.0.2')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
@@ -29,7 +29,7 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${thymeleafExtrasSpringSecurityVersion}"
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
