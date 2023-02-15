@@ -16,7 +16,7 @@ jobs:
       matrix:
         folder: [ 'application', 'chapters/chapter-1/application', 'chapters/chapter-6/application', 'chapters/chapter-10/application', 'chapters/chapter-11/application', 'chapters/chapter-12/application', 'getting-started-with-spring-boot-on-aws' ]
     runs-on: ubuntu-20.04
-    name: Deploy the application within the ${{ matrix.folder }} folder
+    name: Test ${{ matrix.folder }}
     steps:
 
       - name: Checkout code
@@ -53,4 +53,4 @@ jobs:
         run: |
           docker compose up -d
           ./gradlew bootRun &
-          timeout 60 .github/workflows/health-check.sh 8080
+          timeout 60 ../.github/workflows/health-check.sh 8080
