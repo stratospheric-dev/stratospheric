@@ -1,1 +1,6 @@
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
 rootProject.name = 'todo-application-chapter-11'

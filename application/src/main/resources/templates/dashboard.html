@@ -50,9 +50,9 @@
             </button>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
-                  No collaborator available
-                </span>
+              <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
+                No collaborator available
+              </span>
               <form th:method="POST"
                     th:each="collaborator : ${collaborators}"
                     th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">

@@ -29,7 +29,7 @@ aws_access_key_id=XYZ
 aws_secret_access_key=XYZ
 ```
 
-2. Ensure you have JDK 11 installed: `java -version`
+2. Ensure you have JDK 17 installed: `java -version`
 3. Create the required infrastructure for the application:
 ```
 cd cloudformation

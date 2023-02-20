@@ -1,10 +1,9 @@
 package dev.stratospheric.todoapp.todo;
 
-import java.time.LocalDate;
-
 import dev.stratospheric.todoapp.config.WebSecurityConfig;
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.util.SecurityContextFactory;
+import dev.stratospheric.todoapp.util.TestGitProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +17,15 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDate;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(TodoController.class)
-@Import(WebSecurityConfig.class)
+@Import({WebSecurityConfig.class, TestGitProperties.class})
 class TodoControllerTest {
 
   @Autowired

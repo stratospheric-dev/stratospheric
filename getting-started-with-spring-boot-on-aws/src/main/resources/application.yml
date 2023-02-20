@@ -2,17 +2,15 @@ spring:
   application:
     name: demo-application
   config:
-    import: 'aws-parameterstore:'
+    import: 'aws-parameterstore:/config/app'
+  cloud:
+    aws:
+      credentials:
+        profile:
+          name: stratospheric
+      region:
+        static: eu-central-1
 
-cloud:
-  aws:
-    credentials:
-      profile-name: stratospheric
-    region:
-      static: eu-central-1
-    stack:
-      auto: false # Automatic stack detection
-    sns:
-      enabled: true
-    sqs:
-      enabled: true
+custom:
+  bucket-name: stratospheric-demo-application
+

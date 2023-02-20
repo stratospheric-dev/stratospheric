@@ -1,6 +1,6 @@
 package dev.stratospheric.registration;
 
-import com.amazonaws.services.cognitoidp.model.AWSCognitoIdentityProviderException;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/register")
@@ -46,7 +46,7 @@ public class RegistrationController {
       redirectAttributes.addFlashAttribute("messageType", "success");
 
       return "redirect:/";
-    } catch (AWSCognitoIdentityProviderException exception) {
+    } catch (CognitoIdentityProviderException exception) {
 
       model.addAttribute("registration", registration);
       model.addAttribute("message", exception.getMessage());

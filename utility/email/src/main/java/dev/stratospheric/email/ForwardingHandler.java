@@ -1,11 +1,5 @@
 package dev.stratospheric.email;
 
-import javax.mail.Address;
-import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -15,12 +9,14 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.simpleemail.model.Body;
-import com.amazonaws.services.simpleemail.model.Content;
-import com.amazonaws.services.simpleemail.model.Destination;
-import com.amazonaws.services.simpleemail.model.Message;
-import com.amazonaws.services.simpleemail.model.SendEmailRequest;
+import com.amazonaws.services.simpleemail.model.*;
 import org.apache.commons.mail.util.MimeMessageParser;
+
+import javax.mail.Address;
+import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

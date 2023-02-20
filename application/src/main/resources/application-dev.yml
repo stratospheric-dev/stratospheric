@@ -24,7 +24,14 @@ spring:
         period: 0
   jpa:
     show-sql: true
-
+  cloud:
+    aws:
+      credentials:
+        secret-key: foo
+        access-key: bar
+      endpoint: http://localhost:4566
+      region:
+        static: eu-central-1
 
 management:
   metrics:
@@ -40,19 +47,5 @@ custom:
   auto-confirm-collaborations: true
   provide-test-todo-controller: true
   use-cognito-as-identity-provider: false
-  provide-dynamodb-via-aws: false
   environment: local
 
-cloud:
-  aws:
-    rds:
-      enabled: false
-    sqs:
-      endpoint: http://localhost:4566
-      region: eu-central-1
-    mail:
-      endpoint: http://localhost:4566
-      region: eu-central-1
-    credentials:
-      secret-key: foo
-      access-key: bar

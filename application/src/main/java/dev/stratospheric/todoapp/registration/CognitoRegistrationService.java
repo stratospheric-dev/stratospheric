@@ -1,46 +1,47 @@
 package dev.stratospheric.todoapp.registration;
 
-import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
-import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
-import com.amazonaws.services.cognitoidp.model.AttributeType;
-import com.amazonaws.services.cognitoidp.model.DeliveryMediumType;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.DeliveryMediumType;
 
 @Service
 @ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "true")
 public class CognitoRegistrationService implements RegistrationService {
 
-  private final AWSCognitoIdentityProvider awsCognitoIdentityProvider;
+  private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
   private final MeterRegistry meterRegistry;
   private final String userPooldId;
 
   public CognitoRegistrationService(
     @Value("${COGNITO_USER_POOL_ID}") String userPoolId,
-    AWSCognitoIdentityProvider awsCognitoIdentityProvider,
+    CognitoIdentityProviderClient cognitoIdentityProviderClient,
     MeterRegistry meterRegistry) {
-    this.awsCognitoIdentityProvider = awsCognitoIdentityProvider;
+    this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
     this.meterRegistry = meterRegistry;
     this.userPooldId = userPoolId;
   }
 
   @Override
   public void registerUser(Registration registration) {
-    AdminCreateUserRequest registrationRequest = new AdminCreateUserRequest()
-      .withUserPoolId(userPooldId)
-      .withUsername(registration.getUsername())
-      .withUserAttributes(
-        new AttributeType().withName("email").withValue(registration.getEmail()),
-        new AttributeType().withName("name").withValue(registration.getUsername()),
-        new AttributeType().withName("email_verified").withValue("true")
+    AdminCreateUserRequest registrationRequest = AdminCreateUserRequest.builder()
+      .userPoolId(userPooldId)
+      .username(registration.getUsername())
+      .userAttributes(
+        AttributeType.builder().name("email").value(registration.getEmail()).build(),
+        AttributeType.builder().name("name").value(registration.getUsername()).build(),
+        AttributeType.builder().name("email_verified").value("true").build()
       )
-      .withDesiredDeliveryMediums(DeliveryMediumType.EMAIL)
-      .withForceAliasCreation(Boolean.FALSE);
+      .desiredDeliveryMediums(DeliveryMediumType.EMAIL)
+      .forceAliasCreation(Boolean.FALSE)
+      .build();
 
-    awsCognitoIdentityProvider.adminCreateUser(registrationRequest);
+    cognitoIdentityProviderClient.adminCreateUser(registrationRequest);
 
     Counter successCounter = Counter.builder("stratospheric.registration.signups")
       .description("Number of user registrations")

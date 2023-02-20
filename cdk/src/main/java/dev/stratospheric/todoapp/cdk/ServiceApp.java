@@ -145,7 +145,7 @@ public class ServiceApp {
             .sid("AllowDynamoTableAccess")
             .effect(Effect.ALLOW)
             .resources(
-              List.of(String.format("arn:aws:dynamodb:%s:%s:table/%s", region, accountId, applicationEnvironment.prefix("breadcrumbs")))
+              List.of(String.format("arn:aws:dynamodb:%s:%s:table/%s", region, accountId, applicationEnvironment.prefix("breadcrumb")))
             )
             .actions(List.of(
               "dynamodb:Scan",

@@ -1,25 +1,27 @@
 package dev.stratospheric.todoapp.config;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import io.awspring.cloud.dynamodb.DynamoDbTableNameResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import java.util.Locale;
 
 @Configuration
 public class AmazonDynamoDBConfig {
 
   @Bean
-  public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB amazonDynamoDB, Environment environment) {
-
+  public DynamoDbTableNameResolver dynamoDbTableNameResolver(Environment environment) {
     String environmentName = environment.getProperty("custom.environment");
     String applicationName = environment.getProperty("spring.application.name");
 
-    return new DynamoDBMapper(amazonDynamoDB, DynamoDBMapperConfig.builder()
-      .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride
-        .withTableNamePrefix(environmentName + "-" + applicationName + "-"))
-      .build());
+    return new DynamoDbTableNameResolver() {
+      @Override
+      public <T> String resolve(Class<T> clazz) {
+        String className = clazz.getSimpleName().replaceAll("(.)(\\p{Lu})", "$1_$2").toLowerCase(Locale.ROOT);
+        return environmentName + "-" + applicationName + "-" + className;
+      }
+    };
   }
 }
 
