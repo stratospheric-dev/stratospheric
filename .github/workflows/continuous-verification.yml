@@ -1,7 +1,7 @@
 # Without continuously working on the source code, we may encounter startup/test issues
 # quite late. That's why we regularly run at least all tests and verify that the
 # application can be started in local development mode
-name: Continuously verify the projects can be build
+name: Continuous Project Verification
 
 on:
   schedule:
@@ -52,7 +52,7 @@ jobs:
         run: |
           docker compose up -d
           ./gradlew bootRun &
-          timeout 60 ../.github/workflows/health-check.sh 8080
+          timeout 180 ../.github/workflows/health-check.sh 8080
 
       - name: Stop local environment
         working-directory: application
