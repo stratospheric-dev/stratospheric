@@ -31,6 +31,9 @@ AWS solution to it: Synthetic monitoring within Amazon CloudWatch
 
 ## Explain setup
 
+- Require a sample user
+- Could be improved and completely automated but for now requires the user to be present
+- First deploy the application and then create the technical user and store the password in a secret store (e.g. GitHub Secrets or the AWS Secrets Manager or Parameter Store)
 
 ## Include in our pipeline
 

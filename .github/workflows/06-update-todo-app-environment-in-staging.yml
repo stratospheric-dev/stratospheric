@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stacks: ['messaging', 'activeMq', 'dynamo', 'database', 'cognito', 'monitoring']
+        stacks: ['messaging', 'activeMq', 'dynamo', 'database', 'cognito', 'monitoring', 'canary']
     name: Deploy the ${{ matrix.stacks }} stack
     steps:
       - name: Checkout code
@@ -39,4 +39,4 @@ jobs:
 
       - name: Deploy the AWS CDK stack
         working-directory: cdk
-        run: npm run ${{ matrix.stacks }}:deploy -- -c canaryUserPassword=${{ secrets.CANARY_USER_PASSWORD }}
+        run: npm run ${{ matrix.stacks }}:deploy -- -c canaryUserPassword=${{ secrets.CANARY_USER_PASSWORD_STAGING }}
