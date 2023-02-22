@@ -12,8 +12,17 @@ Helpful technique to identify issue before a customer reports a failure. Continu
 
 ## What does AWS Offer?
 
+Amazon CloudWatch canaries are a feature of Amazon CloudWatch that allows you to monitor your applications and infrastructure using synthetic transactions. The purpose of CloudWatch canaries is to simulate user behavior and monitor application health, so you can proactively detect issues before they affect real users.
+
+CloudWatch canaries work by creating scripts that simulate user interactions with your application. These scripts can be customized to perform specific actions, such as clicking buttons, filling out forms, or navigating to different pages. You can schedule these canaries to run at regular intervals to monitor your application's availability, responsiveness, and functionality.
+
+CloudWatch canaries can also be used to monitor third-party services that your application depends on, such as databases, APIs, or content delivery networks. By simulating user interactions with these services, you can detect performance issues or errors that may impact your application's performance.
+
+Overall, the purpose of CloudWatch canaries is to provide an automated and proactive monitoring solution that can detect and diagnose issues in your application or infrastructure. By using CloudWatch canaries, you can improve application reliability, reduce downtime, and ultimately deliver a better user experience.
+
 AWS solution to it: Synthetic monitoring within Amazon CloudWatch
 - Canaries are scripts written in Node.js or Python. They create Lambda functions in your account that use Node.js or Python as a framework. Canaries work over both HTTP and HTTPS protocols.
+- those runtimes get depracted over time, see https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_Library.html. You get an email 60 days before the deprecation
 - Think of it as a scheduled cron job that performs verification
 - Canaries offer programmatic access to a headless Google Chrome Browser via Puppeteer or Selenium Webdriver.
 - Canaries can run as often as once per minute. You can use both cron and rate expressions to schedule canaries.
