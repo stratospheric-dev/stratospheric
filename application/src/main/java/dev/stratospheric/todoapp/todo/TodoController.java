@@ -3,6 +3,7 @@ package dev.stratospheric.todoapp.todo;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,9 @@ public class TodoController {
 
     model.addAttribute("todo", todo);
 
+    MDC.put("todoId", String.valueOf(id));
+    logger.info("Showing todo with id {}", id);
+
     return "todo/show";
   }
 
@@ -70,7 +74,7 @@ public class TodoController {
     redirectAttributes.addFlashAttribute("messageType", "success");
     redirectAttributes.addFlashAttribute("todoId", savedTodo.getId());
 
-    logger.info("successfully created todo");
+    logger.info("Successfully created todo");
 
     return "redirect:/dashboard";
   }
