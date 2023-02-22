@@ -2,8 +2,8 @@ package dev.stratospheric.registration;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Set;
 
 public class InvitationCodeValidator implements ConstraintValidator<ValidInvitationCode, String> {

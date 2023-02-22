@@ -1,6 +1,7 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
-  id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+  id 'org.springframework.boot' version '3.0.2'
+  id 'io.spring.dependency-management' version '1.1.0'
+  id 'com.gorylenko.gradle-git-properties' version '2.4.1'
   id 'java'
 }
 
@@ -10,41 +11,49 @@ sourceCompatibility = '17'
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 ext {
-  set('awsSpringVersion', '2.4.1')
-  set('testcontainersVersion', '1.17.2')
+  set('selenium.version', '4.7.2')
+  set('httpclient5.version', '5.2.1')
+  set('awsSpringVersion', '3.0.0-RC1')
+  set('testcontainersVersion', '1.17.6')
+  set('springBootStarterActiveMQVersion', '2.7.8')
+  set('jsr305Version', '3.0.2')
+  set('logbackAwslogsJsonEncoderVersion', '1.1.1')
+  set('errorHandlingSpringBootStarterVersion', '4.1.0')
+  set('selenideVersion', '6.11.2')
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-mail'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-ses'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb'
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
-  implementation 'org.springframework.boot:spring-boot-starter-activemq'
+  implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
   implementation 'org.webjars:stomp-websocket:2.3.4'
-  implementation 'org.webjars:bootstrap:5.2.0'
-  implementation 'org.webjars:font-awesome:6.1.2'
+  implementation 'org.webjars:bootstrap:5.2.3'
+  implementation 'org.webjars:popper.js:2.9.3'
+  implementation 'org.webjars:jquery:3.6.3'
+  implementation 'org.webjars:font-awesome:6.3.0'
   implementation 'org.flywaydb:flyway-core'
-  implementation 'com.amazonaws:aws-java-sdk-cognitoidp'
-  implementation 'com.amazonaws:aws-java-sdk-ses'
-  implementation 'com.amazonaws:aws-java-sdk-dynamodb'
-  implementation 'com.google.code.findbugs:jsr305:3.0.2'
-  implementation 'de.siegmar:logback-awslogs-json-encoder:1.1.1'
-  implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:3.1.0'
+  implementation 'software.amazon.awssdk:cognitoidentityprovider'
+  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
+  implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -59,9 +68,7 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
-
-  testImplementation 'com.codeborne:selenide:6.7.4'
-
+  testImplementation "com.codeborne:selenide:${selenideVersion}"
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
@@ -81,6 +88,9 @@ bootRun {
     "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
     "-Dspring.profiles.active=dev",
   ]
+}
+
+gitProperties {
 }
 
 jar {

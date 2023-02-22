@@ -1,11 +1,11 @@
 package dev.stratospheric.todoapp.config;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
-
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Set;
 
 @ConfigurationProperties(prefix = "custom")
 @Validated
@@ -43,9 +43,6 @@ class CustomConfigurationProperties {
 
   @NotNull
   private Boolean useCognitoAsIdentityProvider;
-
-  @NotNull
-  private Boolean provideDynamodbViaAws;
 
   @NotNull
   private Boolean provideTestTodoController;
@@ -136,14 +133,6 @@ class CustomConfigurationProperties {
 
   public void setUseCognitoAsIdentityProvider(Boolean useCognitoAsIdentityProvider) {
     this.useCognitoAsIdentityProvider = useCognitoAsIdentityProvider;
-  }
-
-  public Boolean getProvideDynamodbViaAws() {
-    return provideDynamodbViaAws;
-  }
-
-  public void setProvideDynamodbViaAws(Boolean provideDynamodbViaAws) {
-    this.provideDynamodbViaAws = provideDynamodbViaAws;
   }
 
   public Boolean getProvideTestTodoController() {

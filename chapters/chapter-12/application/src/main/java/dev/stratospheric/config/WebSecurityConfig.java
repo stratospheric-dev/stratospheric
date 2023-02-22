@@ -20,7 +20,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
       .csrf()
-      .ignoringAntMatchers(
+      .ignoringRequestMatchers(
         "/stratospheric-todo-updates/**",
         "/websocket/**"
       )
@@ -29,7 +29,7 @@ public class WebSecurityConfig {
       .and()
       .authorizeRequests()
       .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-      .mvcMatchers("/", "/health", "/register").permitAll()
+      .requestMatchers("/", "/health", "/register").permitAll()
       .anyRequest().authenticated()
       .and()
       .logout()

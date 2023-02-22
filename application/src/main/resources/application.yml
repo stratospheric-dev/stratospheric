@@ -3,7 +3,7 @@ cloud:
     stack:
       auto: false
     region:
-      static: eu-west-1
+      static: eu-central-1
     instance:
       data:
         enabled: false
@@ -20,6 +20,12 @@ spring:
     open-in-view: false
   application:
     name: todo-app
+  cloud:
+    aws:
+      region:
+        static: eu-central-1
+      sns:
+        enabled: false
 
 management:
   metrics:

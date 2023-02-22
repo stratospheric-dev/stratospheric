@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 @Configuration
-public class MessagingTemplateConfig {
+public class SqsTemplateConfig {
 
   @Bean
   public SqsTemplate sqsTemplate(SqsAsyncClient sqsAsyncClient) {

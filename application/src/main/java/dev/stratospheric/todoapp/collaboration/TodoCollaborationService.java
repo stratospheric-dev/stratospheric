@@ -1,19 +1,18 @@
 package dev.stratospheric.todoapp.collaboration;
 
-import javax.transaction.Transactional;
-import java.util.UUID;
-
 import dev.stratospheric.todoapp.person.Person;
 import dev.stratospheric.todoapp.person.PersonRepository;
 import dev.stratospheric.todoapp.todo.Todo;
 import dev.stratospheric.todoapp.todo.TodoRepository;
-import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
-import io.micrometer.core.annotation.Timed;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -23,7 +22,7 @@ public class TodoCollaborationService {
   private final PersonRepository personRepository;
   private final TodoCollaborationRequestRepository todoCollaborationRequestRepository;
 
-  private final QueueMessagingTemplate queueMessagingTemplate;
+  private final SqsTemplate sqsTemplate;
   private final String todoSharingQueueName;
 
   private final SimpMessagingTemplate simpMessagingTemplate;
@@ -39,21 +38,16 @@ public class TodoCollaborationService {
     TodoRepository todoRepository,
     PersonRepository personRepository,
     TodoCollaborationRequestRepository todoCollaborationRequestRepository,
-    QueueMessagingTemplate queueMessagingTemplate,
+    SqsTemplate sqsTemplate,
     SimpMessagingTemplate simpMessagingTemplate) {
     this.todoRepository = todoRepository;
     this.personRepository = personRepository;
     this.todoCollaborationRequestRepository = todoCollaborationRequestRepository;
-    this.queueMessagingTemplate = queueMessagingTemplate;
+    this.sqsTemplate = sqsTemplate;
     this.todoSharingQueueName = todoSharingQueueName;
     this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
-  @Timed(
-    value = "stratospheric.collaboration.sharing2",
-    description = "Measure the time how long it takes to share a todo",
-    extraTags = {"foo", "bar"}
-  )
   public String shareWithCollaborator(String todoOwnerEmail, Long todoId, Long collaboratorId) {
 
     Todo todo = todoRepository
@@ -80,7 +74,7 @@ public class TodoCollaborationService {
 
     todoCollaborationRequestRepository.save(collaboration);
 
-    queueMessagingTemplate.convertAndSend(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
+    sqsTemplate.send(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();
   }

@@ -1,5 +1,7 @@
 # Elb5xxAlarm
 
+This is a sample runbook for one of our alarms to provide a basic template.
+
 ## Meaning
 
 The users and clients of the Stratospheric Todo application experience a high failure rate of their HTTP responses as the load balancer returns 5xx server errors.

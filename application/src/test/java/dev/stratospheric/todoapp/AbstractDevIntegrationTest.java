@@ -10,9 +10,7 @@ import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.DYNAMODB;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SES;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.*;
 
 @ActiveProfiles("dev")
 public abstract class AbstractDevIntegrationTest {
@@ -45,8 +43,7 @@ public abstract class AbstractDevIntegrationTest {
   static void properties(DynamicPropertyRegistry registry) {
     registry.add("spring.datasource.url", () -> database.getJdbcUrl());
     registry.add("spring.security.oauth2.client.provider.cognito.issuerUri", () -> "http://localhost:" + keycloak.getMappedPort(8080) + "/auth/realms/stratospheric");
-    registry.add("cloud.aws.sqs.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
-    registry.add("cloud.aws.mail.endpoint", () -> localStack.getEndpointOverride(SES).toString());
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
     registry.add("custom.web-socket-relay-endpoint", () -> "localhost:" + activeMq.getMappedPort(61613));
   }
 

@@ -45,20 +45,14 @@
             <i class="fas fa-edit"></i>
           </a>
           <div class="dropdown d-inline-block" th:unless="${todo.isCollaboration}">
-            <a class="btn btn-warning dropdown-toggle"
-               title="Share"
-               href="#"
-               role="button"
-               id="dropdownMenuButton"
-               data-toggle="dropdown"
-               aria-haspopup="true"
-               aria-expanded="true">
+            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-share"></i>
-            </a>
+            </button>
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
-                  No collaborator available
-                </span>
+              <span class="dropdown-item" th:if="${collaborators.isEmpty()}">
+                No collaborator available
+              </span>
               <form th:method="POST"
                     th:each="collaborator : ${collaborators}"
                     th:action="@{/todo/{todoId}/collaborations/{collaboratorId}(todoId=${todo.id}, collaboratorId=${collaborator.id})}">
@@ -75,8 +69,8 @@
                   title="Delete"
                   type="button"
                   data-th-attr="data-href=${'/todo/delete/' + todo.id}"
-                  data-toggle="modal"
-                  data-target="#confirm-delete"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirm-delete"
                   th:unless="${todo.isCollaboration}">
             <i class="far fa-trash-alt"></i>
           </button>

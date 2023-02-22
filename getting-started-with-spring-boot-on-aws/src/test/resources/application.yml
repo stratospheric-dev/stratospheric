@@ -1,16 +1,3 @@
 spring:
   application:
-    name: stratospheric-demo
-
-cloud:
-  aws:
-    credentials:
-      profile-name: stratospheric
-    region:
-      static: eu-central-1
-    stack:
-      auto: false # Automatic stack detection
-    sns:
-      enabled: true
-    sqs:
-      enabled: true
+    name: demo-application

@@ -1,12 +1,8 @@
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: eu-central-1
-    instance:
-      data:
-        enabled: false
+spring:
+  cloud:
+    aws:
+      region:
+        static: eu-central-1
 
 server:
   forward-headers-strategy: framework

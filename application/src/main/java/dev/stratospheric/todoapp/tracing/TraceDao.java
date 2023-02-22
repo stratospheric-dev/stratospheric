@@ -1,39 +1,42 @@
 package dev.stratospheric.todoapp.tracing;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
+import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TraceDao {
 
   private static final Logger LOG = LoggerFactory.getLogger(TraceDao.class);
 
-  private final DynamoDBMapper dynamoDBMapper;
+  private final DynamoDbTemplate dynamoDbTemplate;
 
-  public TraceDao(DynamoDBMapper dynamoDBMapper) {
-    this.dynamoDBMapper = dynamoDBMapper;
+  public TraceDao(DynamoDbTemplate dynamoDbTemplate) {
+    this.dynamoDbTemplate = dynamoDbTemplate;
   }
 
   @Async
   @EventListener(TracingEvent.class)
   public void storeTracingEvent(TracingEvent tracingEvent) {
     Breadcrumb breadcrumb = new Breadcrumb();
+    breadcrumb.setId(UUID.randomUUID().toString());
     breadcrumb.setUri(tracingEvent.getUri());
     breadcrumb.setUsername(tracingEvent.getUsername());
     breadcrumb.setTimestamp(ZonedDateTime.now().toString());
 
-    dynamoDBMapper.save(breadcrumb);
+    dynamoDbTemplate.save(breadcrumb);
 
     LOG.info("Successfully stored breadcrumb trace");
   }
@@ -42,28 +45,58 @@ public class TraceDao {
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);
 
-    DynamoDBQueryExpression<Breadcrumb> queryExpression =
-      new DynamoDBQueryExpression<Breadcrumb>()
-        .withHashKeyValues(breadcrumb);
-
-    return dynamoDBMapper.query(Breadcrumb.class, queryExpression);
+    return dynamoDbTemplate.query(
+        QueryEnhancedRequest
+          .builder()
+          .queryConditional(
+            QueryConditional.keyEqualTo(
+              Key
+                .builder()
+                .partitionValue(breadcrumb.getId())
+                .build()
+            )
+          )
+          .build(),
+        Breadcrumb.class
+      ).items()
+      .stream()
+      .toList();
   }
 
   public List<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
-    ZonedDateTime now = ZonedDateTime.now();
-    ZonedDateTime twoWeeksAgo = now.minusWeeks(2);
-    Condition timestampCondition = new Condition()
-      .withComparisonOperator(ComparisonOperator.GT.toString())
-      .withAttributeValueList(new AttributeValue().withS(twoWeeksAgo.toString()));
+    ZonedDateTime twoWeeksAgo = ZonedDateTime.now().minusWeeks(2);
 
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);
 
-    DynamoDBQueryExpression<Breadcrumb> queryExpression =
-      new DynamoDBQueryExpression<Breadcrumb>()
-        .withHashKeyValues(breadcrumb)
-        .withRangeKeyCondition("timestamp", timestampCondition);
-
-    return dynamoDBMapper.query(Breadcrumb.class, queryExpression);
+    return dynamoDbTemplate.query(
+        QueryEnhancedRequest
+          .builder()
+          .queryConditional(
+            QueryConditional.keyEqualTo(
+              Key
+                .builder()
+                .partitionValue(breadcrumb.getId())
+                .build()
+            )
+          )
+          .filterExpression(
+            Expression
+              .builder()
+              .expression("timestamp > :twoWeeksAgo")
+              .putExpressionValue(":twoWeeksAgo",
+                AttributeValue
+                  .builder()
+                  .s(twoWeeksAgo.toString())
+                  .build()
+              )
+              .build()
+          )
+          .build(),
+        Breadcrumb.class
+      )
+      .items()
+      .stream()
+      .toList();
   }
 }

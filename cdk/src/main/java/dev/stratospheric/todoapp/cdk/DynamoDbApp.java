@@ -39,7 +39,7 @@ public class DynamoDbApp {
       dynamoDbStack,
       "BreadcrumbTable",
       applicationEnvironment,
-      new BreadcrumbsDynamoDbTable.InputParameter("breadcrumbs")
+      new BreadcrumbsDynamoDbTable.InputParameter("breadcrumb")
     );
 
     app.synth();

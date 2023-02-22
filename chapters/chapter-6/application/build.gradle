@@ -1,6 +1,6 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'org.springframework.boot' version '3.0.2'
+  id 'io.spring.dependency-management' version '1.1.0'
   id 'java'
 }
 
@@ -13,14 +13,15 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '2.4.1')
+  set('awsSpringVersion', '3.0.0-RC1')
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter'
+  implementation 'software.amazon.awssdk:aws-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:webjars-locator-core'
   implementation 'org.webjars:bootstrap:4.6.1'

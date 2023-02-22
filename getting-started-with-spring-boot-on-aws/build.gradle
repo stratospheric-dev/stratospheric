@@ -1,31 +1,35 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'org.springframework.boot' version '3.0.2'
+  id 'io.spring.dependency-management' version '1.1.0'
   id 'java'
 }
 
 group = 'dev.stratospheric'
 version = 'final'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 repositories {
   mavenCentral()
 }
 
 ext {
-  set('awsSpringVersion', '2.3.3')
-  set('testcontainersVersion', '1.16.3')
+  set('awsSpringVersion', '3.0.0-RC1')
+  set('testcontainersVersion', '1.17.6')
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging'
-  implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config'
-
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
+  // AWS Java SDK v1/v2 agnostic library for type-safe access to the S3 event object
+  implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
+  // Required to compile due to coupling between the LocalStack Testcontainers module and the AWS Java SDK v1
+  testImplementation 'com.amazonaws:aws-java-sdk-core'
 }
 
 dependencyManagement {

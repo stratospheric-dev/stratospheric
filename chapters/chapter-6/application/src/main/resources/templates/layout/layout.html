@@ -25,18 +25,18 @@
 </head>
 <body>
 <div>
-  <div th:replace="fragments/header :: header"></div>
+  <div th:replace="~{fragments/header :: header}"></div>
 
-  <div th:replace="fragments/toast :: toast"></div>
+  <div th:replace="~{fragments/toast :: toast}"></div>
 
   <div class="container has-text-centered">
     <h1 th:text="${headline}" class="title text-center"></h1>
-    <div th:replace="fragments/messages :: messages"></div>
+    <div th:replace="~{fragments/messages :: messages}"></div>
     <div layout:fragment="page-content"></div>
   </div>
 
-  <div th:replace="fragments/modals :: confirmDeletionModal"></div>
-  <div th:replace="fragments/footer :: footer"></div>
+  <div th:replace="~{fragments/modals :: confirmDeletionModal}"></div>
+  <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>

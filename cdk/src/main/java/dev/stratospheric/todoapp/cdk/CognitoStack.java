@@ -2,18 +2,12 @@ package dev.stratospheric.todoapp.cdk;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.customresources.AwsCustomResource;
-import software.amazon.awscdk.customresources.AwsCustomResourcePolicy;
-import software.amazon.awscdk.customresources.AwsSdkCall;
-import software.amazon.awscdk.customresources.PhysicalResourceId;
-import software.amazon.awscdk.customresources.SdkCallsPolicyOptions;
 import software.amazon.awscdk.services.cognito.AccountRecovery;
 import software.amazon.awscdk.services.cognito.AutoVerifiedAttrs;
 import software.amazon.awscdk.services.cognito.CognitoDomainOptions;
@@ -31,8 +25,6 @@ import software.amazon.awscdk.services.cognito.UserPoolClientIdentityProvider;
 import software.amazon.awscdk.services.cognito.UserPoolDomain;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.constructs.Construct;
-
-import static software.amazon.awscdk.customresources.AwsCustomResourcePolicy.ANY_RESOURCE;
 
 class CognitoStack extends Stack {
 
@@ -103,7 +95,7 @@ class CognitoStack extends Stack {
         .build())
       .build();
 
-    createOutputParameters(awsEnvironment);
+    createOutputParameters();
 
     applicationEnvironment.tag(this);
   }
@@ -114,14 +106,14 @@ class CognitoStack extends Stack {
   private static final String PARAMETER_USER_POOL_LOGOUT_URL = "userPoolLogoutUrl";
   private static final String PARAMETER_USER_POOL_PROVIDER_URL = "userPoolProviderUrl";
 
-  private void createOutputParameters(Environment awsEnvironment) {
+  private void createOutputParameters() {
 
-    StringParameter.Builder.create(this, "userPoolId")
+    StringParameter.Builder.create(this, PARAMETER_USER_POOL_ID)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_ID))
       .stringValue(this.userPool.getUserPoolId())
       .build();
 
-    StringParameter.Builder.create(this, "userPoolClientId")
+    StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_ID)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_ID))
       .stringValue(this.userPoolClient.getUserPoolClientId())
       .build();
@@ -136,37 +128,9 @@ class CognitoStack extends Stack {
       .stringValue(this.userPool.getUserPoolProviderUrl())
       .build();
 
-    // CloudFormation does not expose the UserPoolClient secret, so we can't access it directly with
-    // CDK. As a workaround, we create a custom resource that calls the AWS API to get the secret, and
-    // then store it in the parameter store like the other parameters.
-    // Source: https://github.com/aws/aws-cdk/issues/7225
+    this.userPoolClientSecret = this.userPoolClient.getUserPoolClientSecret().unsafeUnwrap();
 
-    AwsSdkCall fetchUserPoolClientMetadata = AwsSdkCall.builder()
-      .region(awsEnvironment.getRegion())
-      .service("CognitoIdentityServiceProvider")
-      .action("describeUserPoolClient")
-      .parameters(Map.of(
-        "UserPoolId", this.userPool.getUserPoolId(),
-        "ClientId", this.userPoolClient.getUserPoolClientId()
-      ))
-      .physicalResourceId(PhysicalResourceId.of(this.userPoolClient.getUserPoolClientId()))
-      .build();
-
-    AwsCustomResource describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
-      .resourceType("Custom::DescribeCognitoUserPoolClient")
-      .installLatestAwsSdk(false)
-      .onUpdate(fetchUserPoolClientMetadata)
-      .onCreate(fetchUserPoolClientMetadata)
-      .policy(AwsCustomResourcePolicy.fromSdkCalls(
-        SdkCallsPolicyOptions.builder()
-          .resources(ANY_RESOURCE)
-          .build()
-      ))
-      .build();
-
-    this.userPoolClientSecret = describeUserPoolResource.getResponseField("UserPoolClient.ClientSecret");
-
-    StringParameter.Builder.create(this, "userPoolClientSecret")
+    StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_SECRET)
       .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
       .stringValue(this.userPoolClientSecret)
       .build();
@@ -180,7 +144,7 @@ class CognitoStack extends Stack {
     return new CognitoOutputParameters(
       this.userPool.getUserPoolId(),
       this.userPoolClient.getUserPoolClientId(),
-      userPoolClientSecret,
+      this.userPoolClientSecret,
       this.logoutUrl,
       this.userPool.getUserPoolProviderUrl());
   }
@@ -271,5 +235,4 @@ class CognitoStack extends Stack {
       return providerUrl;
     }
   }
-
 }

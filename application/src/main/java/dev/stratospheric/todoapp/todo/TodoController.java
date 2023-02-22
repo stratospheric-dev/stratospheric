@@ -1,7 +1,6 @@
 package dev.stratospheric.todoapp.todo;
 
-import javax.validation.Valid;
-
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -57,8 +56,8 @@ public class TodoController {
   @PostMapping
   public String add(
     @Valid Todo toBeCreatedTodo,
-    @AuthenticationPrincipal OidcUser user,
     BindingResult bindingResult,
+    @AuthenticationPrincipal OidcUser user,
     Model model,
     RedirectAttributes redirectAttributes
   ) {
