@@ -44,7 +44,7 @@ public class CanaryStack extends Stack {
     this.applicationEnvironment = applicationEnvironment;
 
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
-      .bucketName(applicationEnvironment.prefix("canary-resources"))
+      .bucketName(applicationEnvironment.prefix("canary-bucket"))
       .removalPolicy(RemovalPolicy.DESTROY)
       .autoDeleteObjects(true)
       .build();
@@ -76,7 +76,7 @@ public class CanaryStack extends Stack {
 
     CfnCanary.Builder.create(this, "canary")
       .name(applicationEnvironment.prefix("canary", 21))
-      .runtimeVersion("syn-nodejs-puppeteer-3.1")
+      .runtimeVersion("syn-nodejs-puppeteer-3.9")
       .artifactS3Location(bucket.s3UrlForObject("create-todo-canary"))
       .startCanaryAfterCreation(Boolean.TRUE)
       .executionRoleArn(executionRole.getRoleArn())
