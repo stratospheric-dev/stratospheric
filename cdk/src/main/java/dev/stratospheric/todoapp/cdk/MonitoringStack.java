@@ -1,27 +1,10 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.util.Map;
-
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.Fn;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.cloudwatch.Alarm;
-import software.amazon.awscdk.services.cloudwatch.AlarmProps;
-import software.amazon.awscdk.services.cloudwatch.AlarmRule;
-import software.amazon.awscdk.services.cloudwatch.AlarmState;
-import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
-import software.amazon.awscdk.services.cloudwatch.CompositeAlarm;
-import software.amazon.awscdk.services.cloudwatch.CompositeAlarmProps;
-import software.amazon.awscdk.services.cloudwatch.CreateAlarmOptions;
-import software.amazon.awscdk.services.cloudwatch.Metric;
-import software.amazon.awscdk.services.cloudwatch.MetricOptions;
-import software.amazon.awscdk.services.cloudwatch.MetricProps;
-import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.cloudwatch.*;
 import software.amazon.awscdk.services.cloudwatch.actions.SnsAction;
 import software.amazon.awscdk.services.logs.FilterPattern;
 import software.amazon.awscdk.services.logs.LogGroup;
@@ -31,6 +14,8 @@ import software.amazon.awscdk.services.sns.Topic;
 import software.amazon.awscdk.services.sns.TopicProps;
 import software.amazon.awscdk.services.sns.subscriptions.EmailSubscription;
 import software.constructs.Construct;
+
+import java.util.Map;
 
 public class MonitoringStack extends Stack {
 
@@ -153,7 +138,7 @@ public class MonitoringStack extends Stack {
         .build());
 
     Topic snsAlarmingTopic = new Topic(this, "snsAlarmingTopic", TopicProps.builder()
-      .topicName(applicationEnvironment + "-alarming-topic")
+      .topicName(applicationEnvironment + "-alarming-topic-new")
       .displayName("SNS Topic to further route Amazon CloudWatch Alarms")
       .build());
 

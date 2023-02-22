@@ -1,34 +1,21 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Scanner;
-
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.RemovalPolicy;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.cloudwatch.Alarm;
-import software.amazon.awscdk.services.cloudwatch.AlarmProps;
-import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
-import software.amazon.awscdk.services.cloudwatch.Metric;
-import software.amazon.awscdk.services.cloudwatch.MetricProps;
-import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
-import software.amazon.awscdk.services.iam.AnyPrincipal;
-import software.amazon.awscdk.services.iam.Effect;
-import software.amazon.awscdk.services.iam.PolicyDocument;
-import software.amazon.awscdk.services.iam.PolicyStatement;
-import software.amazon.awscdk.services.iam.Role;
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.cloudwatch.*;
+import software.amazon.awscdk.services.iam.*;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.synthetics.CfnCanary;
 import software.amazon.awscdk.services.synthetics.CfnCanary.CodeProperty;
 import software.amazon.awscdk.services.synthetics.CfnCanary.RunConfigProperty;
 import software.amazon.awscdk.services.synthetics.CfnCanary.ScheduleProperty;
 import software.constructs.Construct;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Scanner;
 
 import static java.util.Collections.singletonList;
 
@@ -57,7 +44,7 @@ public class CanaryStack extends Stack {
     this.applicationEnvironment = applicationEnvironment;
 
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
-      .bucketName(applicationEnvironment.prefix("canary-bucket"))
+      .bucketName(applicationEnvironment.prefix("canary-resources"))
       .removalPolicy(RemovalPolicy.DESTROY)
       .autoDeleteObjects(true)
       .build();

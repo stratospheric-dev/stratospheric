@@ -34,8 +34,13 @@ AWS solution to it: Synthetic monitoring within Amazon CloudWatch
 - Require a sample user
 - Could be improved and completely automated but for now requires the user to be present
 - First deploy the application and then create the technical user and store the password in a secret store (e.g. GitHub Secrets or the AWS Secrets Manager or Parameter Store)
+- L2 CDK construct is still in Alpha (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-synthetics-alpha-readme.html), we're falling back to L1 and CloudFormation constructs
 
 ## Include in our pipeline
 
+- Include an alarm to get notified when the canary fails
 
 ## View results
+
+- Show objects in bucket
+- Show results
