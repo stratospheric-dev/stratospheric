@@ -1,28 +1,9 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Scanner;
-
 import dev.stratospheric.cdk.ApplicationEnvironment;
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.RemovalPolicy;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.cloudwatch.Alarm;
-import software.amazon.awscdk.services.cloudwatch.AlarmProps;
-import software.amazon.awscdk.services.cloudwatch.ComparisonOperator;
-import software.amazon.awscdk.services.cloudwatch.Metric;
-import software.amazon.awscdk.services.cloudwatch.MetricProps;
-import software.amazon.awscdk.services.cloudwatch.TreatMissingData;
-import software.amazon.awscdk.services.iam.AnyPrincipal;
-import software.amazon.awscdk.services.iam.Effect;
-import software.amazon.awscdk.services.iam.PolicyDocument;
-import software.amazon.awscdk.services.iam.PolicyStatement;
-import software.amazon.awscdk.services.iam.Role;
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.cloudwatch.*;
+import software.amazon.awscdk.services.iam.*;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.synthetics.CfnCanary;
 import software.amazon.awscdk.services.synthetics.CfnCanary.CodeProperty;
@@ -30,11 +11,15 @@ import software.amazon.awscdk.services.synthetics.CfnCanary.RunConfigProperty;
 import software.amazon.awscdk.services.synthetics.CfnCanary.ScheduleProperty;
 import software.constructs.Construct;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Scanner;
+
 import static java.util.Collections.singletonList;
 
 public class CanaryStack extends Stack {
-
-  private final ApplicationEnvironment applicationEnvironment;
 
   public CanaryStack(
     final Construct scope,
@@ -53,8 +38,6 @@ public class CanaryStack extends Stack {
         .env(awsEnvironment)
         .build()
     );
-
-    this.applicationEnvironment = applicationEnvironment;
 
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
       .bucketName(applicationEnvironment.prefix("canary-bucket"))
@@ -83,13 +66,15 @@ public class CanaryStack extends Stack {
           .build()))
       .build();
 
-    // It's not yet possible to create environment variables with the Level 2 Canary construct, so we have
-    // to fall back to the Level 1 CloudFormation construct.
-    // See https://github.com/aws/aws-cdk/issues/10515.
+    String canaryName = applicationEnvironment.prefix("canary", 21);
+
+    // There are no stable L2 constructs available yet. Hence, we fall back to the L1 CloudFormation construct
+    // However, there is an experimental construct library available @aws-cdk/aws-synthetics-alpha which
+    // may become GA in the near future.
 
     CfnCanary.Builder.create(this, "canary")
-      .name(applicationEnvironment.prefix("canary", 21))
-      .runtimeVersion("syn-nodejs-puppeteer-3.1")
+      .name(canaryName)
+      .runtimeVersion("syn-nodejs-puppeteer-3.9")
       .artifactS3Location(bucket.s3UrlForObject("create-todo-canary"))
       .startCanaryAfterCreation(Boolean.TRUE)
       .executionRoleArn(executionRole.getRoleArn())
@@ -110,12 +95,15 @@ public class CanaryStack extends Stack {
         .build())
       .build();
 
-    Alarm canaryAlarm = new Alarm(this, "canaryAlarm", AlarmProps.builder()
+    new Alarm(this, "canaryAlarm", AlarmProps.builder()
       .alarmName("canary-failed-alarm")
       .alarmDescription("Alert on multiple Canary failures")
       .metric(new Metric(MetricProps.builder()
         .namespace("CloudWatchSynthetics")
         .metricName("Failed")
+        .dimensionsMap(
+          Map.of("CanaryName", canaryName)
+        )
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(50))
         .statistic("sum")
@@ -130,12 +118,13 @@ public class CanaryStack extends Stack {
   }
 
   private String getScriptFromResource(String path) throws IOException {
-    Scanner scanner = new Scanner(Path.of(path));
-    StringBuilder script = new StringBuilder();
-    while (scanner.hasNextLine()) {
-      script.append(scanner.nextLine());
-      script.append("\n");
+    try (Scanner scanner = new Scanner(Path.of(path))) {
+      StringBuilder script = new StringBuilder();
+      while (scanner.hasNextLine()) {
+        script.append(scanner.nextLine());
+        script.append("\n");
+      }
+      return script.toString();
     }
-    return script.toString();
   }
 }
