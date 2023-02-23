@@ -66,11 +66,11 @@ public class CanaryStack extends Stack {
           .build()))
       .build();
 
-    // It's not yet possible to create environment variables with the Level 2 Canary construct, so we have
-    // to fall back to the Level 1 CloudFormation construct.
-    // See https://github.com/aws/aws-cdk/issues/10515.
-
     String canaryName = applicationEnvironment.prefix("canary", 21);
+
+    // There are no L2 constructs available yet. Hence, we fall back to the L1 CloudFormation construct
+    // However, there is an experimental construct library available @aws-cdk/aws-synthetics-alpha which
+    // may become GA in the near future.
 
     CfnCanary.Builder.create(this, "canary")
       .name(canaryName)
