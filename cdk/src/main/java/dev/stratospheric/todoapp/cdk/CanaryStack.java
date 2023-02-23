@@ -21,8 +21,6 @@ import static java.util.Collections.singletonList;
 
 public class CanaryStack extends Stack {
 
-  private final ApplicationEnvironment applicationEnvironment;
-
   public CanaryStack(
     final Construct scope,
     final String id,
@@ -40,8 +38,6 @@ public class CanaryStack extends Stack {
         .env(awsEnvironment)
         .build()
     );
-
-    this.applicationEnvironment = applicationEnvironment;
 
     Bucket bucket = Bucket.Builder.create(this, "canaryBucket")
       .bucketName(applicationEnvironment.prefix("canary-bucket"))
@@ -74,8 +70,10 @@ public class CanaryStack extends Stack {
     // to fall back to the Level 1 CloudFormation construct.
     // See https://github.com/aws/aws-cdk/issues/10515.
 
+    String canaryName = applicationEnvironment.prefix("canary", 21);
+
     CfnCanary.Builder.create(this, "canary")
-      .name(applicationEnvironment.prefix("canary", 21))
+      .name(canaryName)
       .runtimeVersion("syn-nodejs-puppeteer-3.9")
       .artifactS3Location(bucket.s3UrlForObject("create-todo-canary"))
       .startCanaryAfterCreation(Boolean.TRUE)
@@ -97,12 +95,15 @@ public class CanaryStack extends Stack {
         .build())
       .build();
 
-    Alarm canaryAlarm = new Alarm(this, "canaryAlarm", AlarmProps.builder()
+    new Alarm(this, "canaryAlarm", AlarmProps.builder()
       .alarmName("canary-failed-alarm")
       .alarmDescription("Alert on multiple Canary failures")
       .metric(new Metric(MetricProps.builder()
         .namespace("CloudWatchSynthetics")
         .metricName("Failed")
+        .dimensionsMap(
+          Map.of("CanaryName", canaryName)
+        )
         .region(awsEnvironment.getRegion())
         .period(Duration.minutes(50))
         .statistic("sum")
@@ -117,12 +118,13 @@ public class CanaryStack extends Stack {
   }
 
   private String getScriptFromResource(String path) throws IOException {
-    Scanner scanner = new Scanner(Path.of(path));
-    StringBuilder script = new StringBuilder();
-    while (scanner.hasNextLine()) {
-      script.append(scanner.nextLine());
-      script.append("\n");
+    try (Scanner scanner = new Scanner(Path.of(path))) {
+      StringBuilder script = new StringBuilder();
+      while (scanner.hasNextLine()) {
+        script.append(scanner.nextLine());
+        script.append("\n");
+      }
+      return script.toString();
     }
-    return script.toString();
   }
 }

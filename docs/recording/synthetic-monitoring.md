@@ -24,6 +24,7 @@ AWS solution to it: Synthetic monitoring within Amazon CloudWatch
 - Canaries are scripts written in Node.js or Python. They create Lambda functions in your account that use Node.js or Python as a framework. Canaries work over both HTTP and HTTPS protocols.
 - those runtimes get depracted over time, see https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_Library.html. You get an email 60 days before the deprecation
 - Think of it as a scheduled cron job that performs verification
+- Use cases: hearbeat monitoring, broken link checker, visual monitoring blueprint (compare screenshots to a baseline)
 - Canaries offer programmatic access to a headless Google Chrome Browser via Puppeteer or Selenium Webdriver.
 - Canaries can run as often as once per minute. You can use both cron and rate expressions to schedule canaries.
 
