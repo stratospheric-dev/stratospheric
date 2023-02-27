@@ -10,11 +10,11 @@ Overall, synthetic monitoring provides a comprehensive view of application and s
 
 Helpful technique to identify issue before a customer reports a failure. Continuously run important operations on production.
 
+The term “canary testing” comes from the rather morbid practice of taking canary birds down into mines to act as an early warning of poisonous and odorless gases. Due to their faster oxygen consumption, the birds would drop dead before any human would notice a change.
+
 ## What does AWS Offer?
 
 Amazon CloudWatch canaries are a feature of Amazon CloudWatch that allows you to monitor your applications and infrastructure using synthetic transactions. The purpose of CloudWatch canaries is to simulate user behavior and monitor application health, so you can proactively detect issues before they affect real users.
-
-The term “canary testing” comes from the rather morbid practice of taking canary birds down into mines to act as an early warning of poisonous and odorless gases. Due to their faster oxygen consumption, the birds would drop dead before any human would notice a change.
 
 CloudWatch canaries work by creating scripts that simulate user interactions with your application. These scripts can be customized to perform specific actions, such as clicking buttons, filling out forms, or navigating to different pages. You can schedule these canaries to run at regular intervals to monitor your application's availability, responsiveness, and functionality.
 
