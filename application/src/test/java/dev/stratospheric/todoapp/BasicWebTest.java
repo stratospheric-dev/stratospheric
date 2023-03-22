@@ -26,7 +26,8 @@ class BasicWebTest extends AbstractDevIntegrationTest {
     Configuration.browserCapabilities = new DesiredCapabilities();
     Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, new ChromeOptions()
       .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage"));
+      .addArguments("--disable-dev-shm-usage")
+      .addArguments("--remote-allow-origins=*"));
     Configuration.baseUrl = "http://localhost:" + environment.getProperty("local.server.port", Integer.class);
   }
 
