@@ -22,13 +22,15 @@ class BasicWebTest extends AbstractDevIntegrationTest {
 
   @BeforeAll
   static void setup(@Autowired Environment environment) {
+    String baseUrl = "http://localhost:" + environment.getProperty("local.server.port", Integer.class);
+
     Configuration.headless = true;
     Configuration.browserCapabilities = new DesiredCapabilities();
     Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, new ChromeOptions()
       .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage")
-      .addArguments("--remote-allow-origins=*"));
-    Configuration.baseUrl = "http://localhost:" + environment.getProperty("local.server.port", Integer.class);
+      .addArguments("--disable-dev-shm-usage"));
+//      .addArguments("--remote-allow-origins=" + baseUrl));
+    Configuration.baseUrl = baseUrl;
   }
 
   @Test
