@@ -17,7 +17,7 @@ repositories {
 ext {
   set('selenium.version', '4.8.1')
   set('httpclient5.version', '5.2.1')
-  set('awsSpringVersion', '3.0.0-RC1')
+  set('awsSpringVersion', '3.0.0-RC2')
   set('testcontainersVersion', '1.17.6')
   set('springBootStarterActiveMQVersion', '2.7.9')
   set('jsr305Version', '3.0.2')
