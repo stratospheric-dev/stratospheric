@@ -48,7 +48,7 @@ dependencies {
   implementation 'org.webjars:bootstrap:5.2.3'
   implementation 'org.webjars:popper.js:2.9.3'
   implementation 'org.webjars:jquery:3.6.4'
-  implementation 'org.webjars:font-awesome:6.3.0'
+  implementation 'org.webjars:font-awesome:6.4.0'
   implementation 'org.flywaydb:flyway-core'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
