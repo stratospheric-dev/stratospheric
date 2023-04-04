@@ -48,15 +48,6 @@ jobs:
           name: reports
           path: reports.zip
 
-      - name: Report test results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Maven test results
-          path: application/build/test-results/test/*.xml
-          reporter: java-junit
-          fail-on-error: true
-
       - name: Create Docker image tag
         id: dockerImageTag
         run: echo "tag=$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}" >> $GITHUB_OUTPUT
