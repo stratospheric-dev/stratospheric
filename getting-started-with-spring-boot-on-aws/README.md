@@ -1,5 +1,9 @@
 # Getting Started with Spring Boot on AWS
 
+This source code refers to a blog article we've published as part of the AWS Open Source Blog:
+- [Read part I](https://aws.amazon.com/blogs/opensource/getting-started-with-spring-boot-on-aws-part-1/)
+- [Read part II](https://aws.amazon.com/blogs/opensource/getting-started-with-spring-boot-on-aws-part-2/)
+
 [![Demo](docs/s3simpleFileViewer.png)](https://stratospheric.dev)
 
 **UPDATE**: As Spring Cloud AWS is [no longer part of the Spring Cloud release train](https://spring.io/blog/2020/04/17/spring-cloud-2020-0-0-m1-released), the sample application has been migrated to the successor [awspring](https://awspring.io/). Read more about the rationale behind this move [here](https://maciejwalkowiak.com/blog/spring-cloud-aws-2-3-rc2-released/).
@@ -30,7 +34,7 @@ aws_secret_access_key=XYZ
 ```
 
 2. Ensure you have JDK 17 installed: `java -version`
-3. Create the required infrastructure for the application:
+3. Create the required infrastructure for the application (make sure to replace `your-unique-bucket-name` with a globally unique name):
 ```
 cd cloudformation
 ./create.sh your-unique-bucket-name
