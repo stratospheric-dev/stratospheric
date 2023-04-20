@@ -1,5 +1,7 @@
 # Deployment Sequencer Lambda
 
+> :warning: This feature was superseded by a native GitHub Actions feature. This repository is kept for reference. We do not recommend using this approach as this involves more code and moving parts to maintain. Furthermore, we do not monitor any API changes for this approach and the code may no longer work. Download a recent version of the Stratospheric ebook in your Leanpub library if you're still reading an ebook version that favors this approach.
+
 This is the source for a Lambda function that makes sure that the latest deployment event will trigger a GitHub Actions workflow.
 
 Events have this shape:
