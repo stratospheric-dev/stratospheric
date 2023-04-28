@@ -5,7 +5,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: java11
+  runtime: java17
   stage: dev
   region: eu-central-1
   timeout: 10

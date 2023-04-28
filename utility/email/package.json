@@ -12,7 +12,7 @@
     "package-json": "8.1.0"
   },
   "dependencies": {
-    "serverless-plugin-aws-alerts": "^1.7.4"
+    "serverless-plugin-aws-alerts": "^1.7.5"
   },
   "devDependencies": {
     "npm-force-resolutions": "^0.0.10"
