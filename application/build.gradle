@@ -45,7 +45,7 @@ dependencies {
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
   implementation 'org.webjars:stomp-websocket:2.3.4'
-  implementation 'org.webjars:bootstrap:5.2.3'
+  implementation 'org.webjars:bootstrap:5.3.0'
   implementation 'org.webjars:popper.js:2.9.3'
   implementation 'org.webjars:jquery:3.6.4'
   implementation 'org.webjars:font-awesome:6.4.0'
