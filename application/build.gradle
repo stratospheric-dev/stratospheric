@@ -19,7 +19,6 @@ ext {
   set('httpclient5.version', '5.2.1')
   set('awsSpringVersion', '3.0.1')
   set('testcontainersVersion', '1.18.1')
-  set('springBootStarterActiveMQVersion', '2.7.10')
   set('jsr305Version', '3.0.2')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
@@ -40,7 +39,7 @@ dependencies {
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb'
   implementation 'io.micrometer:micrometer-registry-cloudwatch'
-  implementation "org.springframework.boot:spring-boot-starter-activemq:${springBootStarterActiveMQVersion}"
+  implementation "org.springframework.boot:spring-boot-starter-activemq"
   implementation 'org.webjars:webjars-locator-core'
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:sockjs-client:1.5.1'
