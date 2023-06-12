@@ -6,7 +6,9 @@ import software.amazon.awscdk.CfnOutputProps;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.certificatemanager.DnsValidatedCertificate;
+import software.amazon.awscdk.services.certificatemanager.Certificate;
+import software.amazon.awscdk.services.certificatemanager.CertificateValidation;
+import software.amazon.awscdk.services.certificatemanager.ICertificate;
 import software.amazon.awscdk.services.route53.HostedZone;
 import software.amazon.awscdk.services.route53.HostedZoneProviderProps;
 import software.amazon.awscdk.services.route53.IHostedZone;
@@ -29,13 +31,12 @@ public class CertificateStack extends Stack {
       .domainName(hostedZoneDomain)
       .build());
 
-    DnsValidatedCertificate websiteCertificate = DnsValidatedCertificate.Builder.create(this, "WebsiteCertificate")
-      .hostedZone(hostedZone)
-      .region(awsEnvironment.getRegion())
+    ICertificate websiteCertificate = Certificate.Builder.create(this, "WebsiteCertificate")
       .domainName(applicationDomain)
+      .validation(CertificateValidation.fromDns(hostedZone))
       .build();
 
-    CfnOutput sslCertificateArn = new CfnOutput(this, "sslCertificateArn", CfnOutputProps.builder()
+    new CfnOutput(this, "sslCertificateArn", CfnOutputProps.builder()
       .exportName("sslCertificateArn")
       .value(websiteCertificate.getCertificateArn())
       .build());
