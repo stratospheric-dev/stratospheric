@@ -34,9 +34,9 @@ spring:
         static: eu-central-1
 
 management:
-  metrics:
-    export:
-      cloudwatch:
+  cloudwatch:
+    metrics:
+      export:
         enabled: false
 
 custom:

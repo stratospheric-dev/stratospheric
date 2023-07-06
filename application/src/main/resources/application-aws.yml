@@ -13,9 +13,9 @@ spring:
             issuerUri: ${COGNITO_PROVIDER_URL}
 
 management:
-  metrics:
-    export:
-      cloudwatch:
+  cloudwatch:
+    metrics:
+      export:
         enabled: false # disabled to save some $$$ on our monthly AWS bill
 
 custom:

@@ -16,12 +16,13 @@ spring:
         enabled: false
 
 management:
-  metrics:
-    export:
-      cloudwatch:
+  cloudwatch:
+    metrics:
+      export:
         enabled: true
         namespace: stratospheric
         step: 1m
+  metrics:
     tags:
       environment: ${ENVIRONMENT_NAME}
 
@@ -29,6 +30,7 @@ management:
 error:
   handling:
     exception-logging: WITH_STACKTRACE
+
 
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
