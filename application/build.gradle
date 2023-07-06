@@ -19,7 +19,6 @@ ext {
   set('httpclient5.version', '5.2.1')
   set('awsSpringVersion', '3.0.1')
   set('testcontainersVersion', '1.18.3')
-  set('jsr305Version', '3.0.2')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
   set('selenideVersion', '6.16.0')
@@ -50,7 +49,6 @@ dependencies {
   implementation 'org.webjars:font-awesome:6.4.0'
   implementation 'org.flywaydb:flyway-core'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
-  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
   implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
 
