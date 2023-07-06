@@ -11,6 +11,10 @@ spring:
         provider:
           cognito:
             issuerUri: ${COGNITO_PROVIDER_URL}
+  activemq:
+    broker-url: ${WEB_SOCKET_RELAY_ENDPOINT}
+    user: ${WEB_SOCKET_RELAY_USERNAME}
+    password: ${WEB_SOCKET_RELAY_PASSWORD}
 
 management:
   cloudwatch:
@@ -20,9 +24,6 @@ management:
 
 custom:
   sharing-queue: ${TODO_SHARING_QUEUE_NAME}
-  web-socket-relay-endpoint: ${WEB_SOCKET_RELAY_ENDPOINT}
-  web-socket-relay-username: ${WEB_SOCKET_RELAY_USERNAME}
-  web-socket-relay-password: ${WEB_SOCKET_RELAY_PASSWORD}
   web-socket-relay-use-ssl: true
   provide-test-todo-controller: false
   use-cognito-as-identity-provider: true

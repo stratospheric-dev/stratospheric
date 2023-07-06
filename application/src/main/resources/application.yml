@@ -31,7 +31,6 @@ error:
   handling:
     exception-logging: WITH_STACKTRACE
 
-
 custom:
   invitation-codes: DUKE, HELLO_WORLD, STRATOSPHERIC # TODO: outsource them -> e.g. env variable or database
   sharing-queue: stratospheric-todo-sharing
