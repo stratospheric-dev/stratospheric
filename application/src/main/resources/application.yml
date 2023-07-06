@@ -16,6 +16,9 @@ spring:
         enabled: false
 
 management:
+  health:
+    jms:
+      enabled: false # don't verify the health of the JMS broker
   cloudwatch:
     metrics:
       export:
