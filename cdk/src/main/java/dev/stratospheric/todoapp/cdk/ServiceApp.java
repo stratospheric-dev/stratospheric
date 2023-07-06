@@ -1,10 +1,5 @@
 package dev.stratospheric.todoapp.cdk;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.PostgresDatabase;
@@ -18,6 +13,11 @@ import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.secretsmanager.ISecret;
 import software.amazon.awscdk.services.secretsmanager.Secret;
 import software.constructs.Construct;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.singletonList;
 
@@ -102,6 +102,8 @@ public class ServiceApp {
           activeMqOutputParameters,
           springProfile,
           environmentName))
+        .withCpu(512)
+        .withMemory(1024)
         .withTaskRolePolicyStatements(List.of(
           PolicyStatement.Builder.create()
             .sid("AllowSQSAccess")
