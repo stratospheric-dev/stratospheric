@@ -4,7 +4,6 @@ server:
 spring:
   jpa:
     hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: validate
     open-in-view: false
   application:
