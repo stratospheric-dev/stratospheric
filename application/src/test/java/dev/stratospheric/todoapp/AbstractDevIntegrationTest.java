@@ -44,7 +44,7 @@ public abstract class AbstractDevIntegrationTest {
     registry.add("spring.datasource.url", () -> database.getJdbcUrl());
     registry.add("spring.security.oauth2.client.provider.cognito.issuerUri", () -> "http://localhost:" + keycloak.getMappedPort(8080) + "/auth/realms/stratospheric");
     registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
-    registry.add("custom.web-socket-relay-endpoint", () -> "localhost:" + activeMq.getMappedPort(61613));
+    registry.add("spring.activemq.broker-url", () -> "localhost:" + activeMq.getMappedPort(61613));
   }
 
   static {
