@@ -1,0 +1,27 @@
+# Simple means that this chapter version doesn't require and entire AWS ECS setup to test
+name: Build Simple Chapter Versions
+
+on:
+  push:
+    paths:
+      - 'chapters/chapter-1/**'
+
+jobs:
+  build-first-chapter:
+    runs-on: ubuntu-20.04
+    name: Build the Application for Chapter 1
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Build the application
+        working-directory: chapters/chapter-1/application
+        run: ./gradlew build --stacktrace

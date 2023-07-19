@@ -1,0 +1,142 @@
+# Complex means that this chapter version requires an entire CDK infrastructure
+# setup to be tested unlike chapters where we can just run 'cdk deploy'
+name: Build Complex Chapter Versions
+
+on:
+  push:
+    paths:
+      - 'chapters/chapter-6/**'
+      - 'chapters/chapter-10/**'
+      - 'chapters/chapter-11/**'
+      - 'chapters/chapter-12/**'
+      - '!chapters/chapter-1/**'
+
+jobs:
+  determine-changed-folders:
+    name: Determine changed chapter folders
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: lots0logs/gh-action-get-changed-files@2.2.2
+        id: files
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: set-changed-folders
+        run: |
+          echo ${{ steps.files.outputs.all }}
+          cat ${HOME}/files.json
+          readarray -t changed_files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.all }}')"
+
+          FOUND_CHAPTERS=()
+
+          for changed_file in ${changed_files[@]}; do
+            POSSIBLE_CHAPTER=$(echo "${changed_file}" | cut -d / -f 2 | cut -d'-' -f 2)
+            if [[ $POSSIBLE_CHAPTER =~ ^[0-9]+$ ]]; then
+              echo "Chapter number found! - ${POSSIBLE_CHAPTER}"
+              FOUND_CHAPTERS+=($POSSIBLE_CHAPTER)
+            else
+              echo "No Number - ${POSSIBLE_CHAPTER}"
+            fi
+
+          done
+          echo "Found chapters: ${FOUND_CHAPTERS[@]}"
+
+          UNIQUE_CHAPTER_LIST=$(printf "%s\n" "${FOUND_CHAPTERS[@]}" | sort -u | tr '\n' ' ')
+          CHAPTER_LIST_JSON_ARRAY=$(printf '%s\n' "${UNIQUE_CHAPTER_LIST[@]}" | jq -R -r . | jq -s -c .)
+
+          echo "Unique chapter list: ${CHAPTER_LIST_JSON_ARRAY}"
+
+          echo "TODO: sort out chapter 1 as this is already built with a different workflow"
+
+          echo "matrix=$(jq -n --argjson chapters $CHAPTER_LIST_JSON_ARRAY '{"chapter-numbers": $chapters}' | jq -c .)" >> $GITHUB_OUTPUT
+
+    outputs:
+      matrix: ${{ steps.set-changed-folders.outputs.matrix }}
+
+  build-chapters:
+    needs: determine-changed-folders
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.determine-changed-folders.outputs.matrix) }}
+    runs-on: ubuntu-20.04
+    name: Chapter ${{ matrix.chapter-numbers }} | Build application and infrastructure
+    env:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      APPLICATION_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
+      ENVIRONMENT_NAME: chapter-${{ matrix.chapter-numbers }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Prepare the CDK context
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        run: |
+          echo $(cat cdk.json | jq \
+          --arg env "$ENVIRONMENT_NAME" \
+          --arg region "$AWS_REGION" \
+          --arg id "$AWS_ACCOUNT_ID" \
+          --arg app "$APPLICATION_NAME" \
+          '. * {context: {environmentName: $env, region: $region, accountId: $id, applicationName: $app}}') > cdk.json
+
+      - name: Create the AWS infrastructure
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        run: |
+          npm install
+          npm run network:deploy
+          npm run repository:deploy
+          npm run cognito:deploy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run database:deploy --if-present
+          npm run messaging:deploy --if-present
+
+      - name: Build the application
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        run: |
+          ./gradlew build --stacktrace
+
+      - name: Publish the Docker image to ECR
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/application
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        env:
+          DOCKER_IMAGE_NAME: todo-app-chapter-${{ matrix.chapter-numbers }}
+        run: |
+          docker build -t ${DOCKER_IMAGE_NAME} .
+          docker tag ${DOCKER_IMAGE_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${DOCKER_IMAGE_NAME}:latest
+
+      - name: Deploy the application
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        run: |
+          echo "TODO - now deploy the latest Docker image to ECS using the Service CDK construct"
+
+      - name: Delete all images inside the ECR
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        run: |
+          IMAGES_TO_DELETE=$( aws ecr list-images --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --query 'imageIds[*]' --output json )
+          aws ecr batch-delete-image --region $AWS_REGION --repository-name todo-app-chapter-${{ matrix.chapter-numbers }} --image-ids "$IMAGES_TO_DELETE" || true
+
+      - name: Destroy the AWS infrastructure
+        if: ${{ false }}  # disable for now, verifying the entire infrastructure for all chapters takes too much time
+        working-directory: chapters/chapter-${{ matrix.chapter-numbers }}/cdk
+        run: |
+          npm run messaging:destroy --if-present
+          npm run database:destroy --if-present
+          npm run cognito:destroy --if-present -- -c loginPageDomainPrefix=${APPLICATION_NAME}
+          npm run repository:destroy
+          npm run network:destroy
