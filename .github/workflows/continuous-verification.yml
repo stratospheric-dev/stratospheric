@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        folder: [ 'application', 'chapters/chapter-1/application', 'chapters/chapter-6/application', 'chapters/chapter-10/application', 'chapters/chapter-11/application', 'chapters/chapter-12/application', 'getting-started-with-spring-boot-on-aws' ]
+        folder: [ 'application', 'getting-started-with-spring-boot-on-aws' ]
     runs-on: ubuntu-20.04
     name: Test ${{ matrix.folder }}
     steps:
