@@ -13,7 +13,7 @@ spring:
             scope: openid
         provider:
           cognito:
-            issuerUri: http://localhost:8888/auth/realms/stratospheric
+            issuerUri: http://localhost:4566/<pool_id>
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/

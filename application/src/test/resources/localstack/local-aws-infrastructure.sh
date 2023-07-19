@@ -14,4 +14,12 @@ awslocal dynamodb create-table \
     --key-schema AttributeName=id,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=10 \
 
+awslocal cognito-idp create-user-pool --pool-name local-stratospheric --auto-verified-attributes email --user-pool-tags "_custom_id_=stratospheric"
+awslocal cognito-idp create-user-pool-client --user-pool-id stratospheric --client-name local-todo-app --client-tags "_custom_id_=local-todo-app"
+
+awslocal cognito-idp sign-up --client-id stratospheric --username duke --password stratospheric --user-attributes Name=email,Value=duke@stratospheric.dev
+awslocal cognito-idp sign-up --client-id stratospheric --username tom --password stratospheric --user-attributes Name=email,Value=tom@stratospheric.dev
+awslocal cognito-idp sign-up --client-id stratospheric --username bjoern --password stratospheric --user-attributes Name=email,Value=bjoern@stratospheric.dev
+awslocal cognito-idp sign-up --client-id stratospheric --username philip --password stratospheric --user-attributes Name=email,Value=philip@stratospheric.dev
+
 echo "Initialized."
