@@ -11,13 +11,11 @@
   </a>
 </p>
 
-» Get Your Discounted Copy of Stratospheric by [Joining Our Mailing List](https://stratospheric.dev/#mailing-list)
+## About Stratospheric
 
-## About the Book
+With Stratospheric, we teach you everything you need to know to get your Spring Boot application into production with AWS.
 
-This comprehensive book teaches everything you need to know to get your Spring Boot application into production with AWS.
-
-Throughout the book, we incrementally build a real-world Spring Boot application with a focus on the following topics:
+Throughout the project, we incrementally build a real-world Spring Boot application with a focus on the following topics:
 
 **Infrastructure As Code**:
 
@@ -46,6 +44,53 @@ We don't stop here. Once our application is running in production, things are ge
 ![Landing Page While Being Logged In](https://stratospheric.dev/images/application/stratospheric-overview-page-with-login.png)
 ![Todo Dashboard](https://stratospheric.dev/images/application/stratospheric-dashboard-page.png)
 ![Creating New Todos](https://stratospheric.dev/images/application/stratospheric-create-todo-page.png)
+
+## Available Bundles
+
+The Stratospheric project is available in [various bundles](https://stratospheric.dev/#bundles):
+
+**Radiant Reader**
+
+- eBook version of Stratospheric
+- Stratospheric Slack community membership
+- Lifetime eBook updates for free
+
+**Lively Learner**
+
+- Everything that comes with the Radiant Reader option
+- Access to the Stratospheric Online Course
+
+**Mighty Member**
+
+- Everything bundled inside the Lively Learner package
+- the Stratospheric AI prompt: Ask questions about the book and the course materials.
+- Access to a private Slack channel with the authors
+
+» Get 30% off the Radiant Reader bundle by [Joining Our Mailing List](https://stratospheric.dev/#mailing-list)
+
+## About the eBook
+
+The eBook comes with a PDF, ePUB and web-based version.
+
+You can also purchase a Kindle version [on Amazon](https://www.amazon.com/Stratospheric-Zero-Production-Spring-Boot-ebook/dp/B09F69FFZM).
+
+## About the Online Course
+
+As part of buying a bundle option that includes the online course, you'll receive a PDF with instructions on how to enroll of the online course on Leanpub after the checkout.
+
+## Testimonials
+
+Ricardo Sueiras (Principal Advocate at AWS):
+
+> If you are a Spring Boot developer and looking to explore how to deploy your applications onto AWS, then you need to check out this book. The authors have put together a well thought out and easy to follow book that walks you through the typical use cases you will need. Perfect for beginners and an invaluable reference guide for those more experienced, they continue to add new content to this book and I cannot say enough great things about it.
+
+Dennis Traub (Advocate at AWS):
+
+> One of the most-frequent questions I get from developers is how they can get started with AWS without having to first learn and understand all the details of the hundreds of available services. In their book, Tom, Philip, and Björn do an excellent job, initially focusing on just a few basic services to quickly get you started. Once your application is up and running, you gradually add additional capabilities, like continuous integration, monitoring, alerting, and automated incident response.
+
+Andreas Wittig (AWS Consultant and Co-Author of Amazon Web Services in Action):
+
+> Björn, Philip, and Tom do a great job on teaching how to build a Java application on AWS. I highly recommend the book to Java developers. The book uses modern AWS services, that are ready for production workloads, and avoids the bleeding edge. The examples show how to bundle your app into a container image and deploy it with ECS and Fargate, which I highly appreciate, that the book even covers monitoring and creating a deployment pipeline.
 
 ## Authors
 
