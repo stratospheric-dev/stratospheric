@@ -1,6 +1,5 @@
 package dev.stratospheric.todoapp.collaboration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -28,7 +27,7 @@ public class TodoCollaborationController {
     @PathVariable("collaboratorId") Long collaboratorId,
     @AuthenticationPrincipal OidcUser user,
     RedirectAttributes redirectAttributes
-  ) throws JsonProcessingException {
+  ) {
     String collaboratorName = todoCollaborationService.shareWithCollaborator(user.getEmail(), todoId, collaboratorId);
 
     redirectAttributes.addFlashAttribute("message",
