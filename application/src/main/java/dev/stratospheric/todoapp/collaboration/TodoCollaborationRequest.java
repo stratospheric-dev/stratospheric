@@ -54,14 +54,14 @@ public class TodoCollaborationRequest {
 
   @Override
   public String toString() {
-    return "TodoCollaborationRequest{" +
-      "todoId=" + todo.getId() +
-      ", todoTitle='" + todo.getTitle() + '\'' +
-      ", todoDescription='" + todo.getDescription() + '\'' +
-      ", todoPriority=" + todo.getPriority() +
-      ", collaboratorId=" + collaborator.getId() +
-      ", collaboratorName='" + collaborator.getName() + '\'' +
-      ", collaboratorEmail='" + collaborator.getEmail() + '\'' +
-      '}';
+    return "{" +
+      "\"todoId\": " + todo.getId() + "," +
+      "\"todoTitle\": \"" + todo.getTitle() + "\"," +
+      "\"todoDescription\": \"" + todo.getDescription() + "\"," +
+      "\"todoPriority: \"" + todo.getPriority()  + "\"," +
+      "\"collaboratorId\": " + collaborator.getId() + "," +
+      "\"collaboratorName\": \"" + collaborator.getName() + "\"," +
+      "\"collaboratorEmail\": \"" + collaborator.getEmail() + "\"" +
+      "}";
   }
 }

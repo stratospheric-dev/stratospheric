@@ -17,7 +17,7 @@ services:
       - 61614:61614
       - 61616:61616
   localstack:
-    image: localstack/localstack:0.14.4
+    image: localstack/localstack
     ports:
       - 4566:4566
     environment:
