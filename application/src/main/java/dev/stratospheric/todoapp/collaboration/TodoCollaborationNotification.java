@@ -95,15 +95,15 @@ public class TodoCollaborationNotification {
 
   @Override
   public String toString() {
-    return "TodoCollaborationNotification{" +
-      "collaboratorEmail='" + collaboratorEmail + '\'' +
-      ", collaboratorName='" + collaboratorName + '\'' +
-      ", collaboratorId=" + collaboratorId +
-      ", todoTitle='" + todoTitle + '\'' +
-      ", todoDescription='" + todoDescription + '\'' +
-      ", todoPriority=" + todoPriority +
-      ", todoId=" + todoId +
-      ", token='" + token + '\'' +
-      '}';
+    return "{" +
+      "\"collaboratorEmail\": \"" + collaboratorEmail + "\"," +
+      "\"collaboratorName\": \"" + collaboratorName + "\"," +
+      "\"collaboratorId\": " + collaboratorId + "," +
+      "\"todoTitle\": \"" + todoTitle + "\"," +
+      "\"todoDescription\": \"" + todoDescription + "\"," +
+      "\"todoPriority\": \"" + todoPriority + "\"," +
+      "\"todoId\": " + todoId + "," +
+      "\"token\": \"" + token + "\"" +
+      "}";
   }
 }
