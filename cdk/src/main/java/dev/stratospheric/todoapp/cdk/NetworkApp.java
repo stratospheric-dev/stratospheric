@@ -32,11 +32,11 @@ public class NetworkApp {
 
     NetworkInputParameters inputParameters = new NetworkInputParameters();
 
-    if(sslCertificateArn != null && !sslCertificateArn.isEmpty()){
+    if(!sslCertificateArn.isEmpty()){
       inputParameters.withSslCertificateArn(sslCertificateArn);
     }
 
-    Network network = new Network(
+    new Network(
       networkStack,
       "Network",
       awsEnvironment,
