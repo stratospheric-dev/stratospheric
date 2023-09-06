@@ -64,8 +64,10 @@ public class ServiceApp {
       .env(awsEnvironment)
       .build());
 
+    String stackPrefix = "Service";
+
     Stack serviceStack = new Stack(app, "ServiceStack", StackProps.builder()
-      .stackName(applicationEnvironment.prefix("Service"))
+      .stackName(applicationEnvironment.prefix(stackPrefix))
       .env(awsEnvironment)
       .build());
 
@@ -88,7 +90,7 @@ public class ServiceApp {
 
     new Service(
       serviceStack,
-      "Service",
+      stackPrefix,
       awsEnvironment,
       applicationEnvironment,
       new Service.ServiceInputParameters(

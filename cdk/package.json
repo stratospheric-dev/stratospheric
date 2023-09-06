@@ -30,7 +30,9 @@
     "canary:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --require-approval never",
     "canary:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.CanaryApp\" --force --require-approval never",
     "dynamo:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DynamoDbApp\" --require-approval never",
-    "dynamo:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DynamoDbApp\" --force --require-approval never"
+    "dynamo:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.DynamoDbApp\" --force --require-approval never",
+    "github-actions:deploy": "cdk deploy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.GitHubActionsApp\" --require-approval never --all",
+    "github-actions:destroy": "cdk destroy --app \"./mvnw -e -q compile exec:java -Dexec.mainClass=dev.stratospheric.todoapp.cdk.GitHubActionsApp\" --force --require-approval never --all"
   },
   "devDependencies": {
     "aws-cdk": "2.43.1"
