@@ -102,9 +102,9 @@ public class ServiceApp {
         databaseOutputParameters.getEndpointPort(),
         databaseOutputParameters.getDbName()));
     vars.put("SPRING_DATASOURCE_USERNAME",
-      databaseSecret.secretValueFromJson("username").toString());
+      databaseSecret.secretValueFromJson("username").unsafeUnwrap());
     vars.put("SPRING_DATASOURCE_PASSWORD",
-      databaseSecret.secretValueFromJson("password").toString());
+      databaseSecret.secretValueFromJson("password").unsafeUnwrap());
 
     return vars;
   }
