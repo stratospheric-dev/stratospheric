@@ -35,7 +35,7 @@ We don't stop here. Once our application is running in production, things are ge
 
 ## What We're Going to Build
 
-![Stratospheric Technical Architecture](https://stratospheric.dev/images/application/stratospheric-technical-architecture-transparent.png)
+![Stratospheric Technical Architecture](https://stratospheric.dev/images/application/stratospheric-technical-architecture.png)
 
 ## What It's Going to Look Like
 
