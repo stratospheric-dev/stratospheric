@@ -10,14 +10,14 @@ body:
     id: what-happened
     attributes:
       label: "What can we improve?"
-      description: "Try to be as specific as possible - for example: On page 47, there's a typo in the word 'Strotospheric'."
+      description: "Try to be as specific as possible - for example: On page 47, there's a typo in the word 'Stratospheric'."
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: Version
-      description: "Which eBook version are you referring to? You can find the version as part of the changelog (one of the last pages). Pick 'latest' if you can't find it."
+      description: "Which course version are you referring to? You can find the version as part of the changelog. Pick 'latest' if you can't find it."
     validations:
       required: true
   - type: textarea
