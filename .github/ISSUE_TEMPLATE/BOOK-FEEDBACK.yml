@@ -1,4 +1,4 @@
-name: Feedback for the eBook
+name: Feedback for the ebook
 description: "Everything related to the eBook: typos, layout issues, broken links, explanation gaps, inconsistencies, testimonials, etc."
 labels: [ "ebook-feedback", "triage" ]
 body:

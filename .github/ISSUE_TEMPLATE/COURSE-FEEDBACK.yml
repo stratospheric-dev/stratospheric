@@ -1,4 +1,4 @@
-name: Feedback for the ebook
+name: Feedback for the online course
 description: "Suggestions for improvements related to the online course, explanations, quizzes, etc."
 labels: [ "course-feedback", "triage" ]
 body:
