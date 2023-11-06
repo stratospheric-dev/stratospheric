@@ -17,7 +17,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: "Which course version are you referring to? You can find the version as part of the changelog. Pick 'latest' if you can't find it."
+      description: "Which online course version are you referring to? You can find the version as part of the changelog. Pick 'latest' if you can't find it."
     validations:
       required: true
   - type: textarea
