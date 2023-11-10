@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "3.363.0",
-    "axios": "0.21.2"
+    "axios": "1.6.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.31"
