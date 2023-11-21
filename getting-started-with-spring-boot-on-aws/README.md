@@ -69,7 +69,7 @@ docker build -t stratospheric-demo .
 docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
 ```
 
-9. Make sure to clean up all AWS resources afterwards. Empty all files within your S3 bucket and then delete the CloudFormation stack inside the AWS console.
+9. Make sure to clean up all AWS resources afterward. Empty all files within your S3 bucket and then delete the CloudFormation stack inside the AWS console.
 
 
 ## Further resources
