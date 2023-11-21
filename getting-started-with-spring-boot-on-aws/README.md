@@ -65,7 +65,7 @@ aws s3api put-object --bucket your-unique-bucket-name --key stratospheric-book-c
 8. (Optional) Build and run the application inside a Docker Container
 ```
 ./gradlew assemble
-docker build -t statospheric-demo .
+docker build -t stratospheric-demo .
 docker run -p 8080:8080 -e AWS_REGION=eu-central-1 -e AWS_ACCESS_KEY_ID=XYZ -e AWS_SECRET_KEY=SECRET stratospheric-demo
 ```
 
