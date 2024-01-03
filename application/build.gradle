@@ -15,13 +15,13 @@ repositories {
 }
 
 ext {
-  set('selenium.version', '4.9.1')
-  set('httpclient5.version', '5.2.1')
+  set('selenium.version', '4.16.1')
+  set('httpclient5.version', '5.3')
   set('awsSpringVersion', '3.0.1')
-  set('testcontainersVersion', '1.18.3')
+  set('testcontainersVersion', '1.19.3')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
-  set('selenideVersion', '6.15.0')
+  set('selenideVersion', '7.0.4')
 }
 
 dependencies {
