@@ -17,7 +17,7 @@ repositories {
 ext {
   set('selenium.version', '4.16.1')
   set('httpclient5.version', '5.3')
-  set('awsSpringVersion', '3.0.1')
+  set('awsSpringVersion', '3.1.0')
   set('testcontainersVersion', '1.19.3')
   set('logbackAwslogsJsonEncoderVersion', '1.1.1')
   set('errorHandlingSpringBootStarterVersion', '4.1.0')
