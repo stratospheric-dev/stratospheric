@@ -15,7 +15,8 @@ on:
 
 jobs:
   deploy-instructure-stacks:
-    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
+    if: ${{ false }}  # disabled for now as we ran out of AWS credits
+    # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -42,7 +43,8 @@ jobs:
         run: npm run ${{ matrix.stacks }}:deploy -- -c canaryUserPassword=${{ secrets.CANARY_USER_PASSWORD }}
 
   deploy-sequencer-lambda:
-    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
+    if: ${{ false }}  # disabled for now as we ran out of AWS credits
+    # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     runs-on: ubuntu-20.04
     name: Deploy the deployment sequencer stack
     steps:

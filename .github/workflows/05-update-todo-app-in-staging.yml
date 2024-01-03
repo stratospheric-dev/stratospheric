@@ -17,7 +17,8 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
     name: Deploy Todo App
-    if: github.ref == 'refs/heads/main'
+    if: ${{ false }}  # disabled for now as we ran out of AWS credits
+    # if: github.ref == 'refs/heads/main'
     steps:
 
     - name: Checkout code
