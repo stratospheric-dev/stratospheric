@@ -1,8 +1,5 @@
 package dev.stratospheric.todoapp;
 
-import java.io.File;
-import java.time.Duration;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+
+import java.io.File;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,6 +24,7 @@ class DockerComposeEnvironmentVerificationTest {
         .withStartupTimeout(Duration.ofSeconds(45)))
       .withExposedService("activemq_1", 61613, Wait.forListeningPort())
       .withExposedService("localstack_1", 4566, Wait.forListeningPort())
+      .withOptions("--compatibility")
       .withLocalCompose(true);
 
   static {
