@@ -37,7 +37,7 @@ dependencies {
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-ses'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb'
-  implementation 'io.micrometer:micrometer-registry-cloudwatch'
+  implementation 'io.micrometer:micrometer-registry-cloudwatch2'
   implementation 'org.springframework.boot:spring-boot-starter-activemq'
   implementation 'org.apache.activemq:activemq-stomp'
   implementation 'org.apache.activemq:activemq-kahadb-store'
