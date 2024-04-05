@@ -15,7 +15,7 @@ public class LogoutSuccessHandlerConfig {
   @ConditionalOnProperty(prefix = "custom", name = "use-cognito-as-identity-provider", havingValue = "true")
   public LogoutSuccessHandler cognitoOidcLogoutSuccessHandler(
     @Value("${COGNITO_CLIENT_ID}") String clientId,
-    @Value("${COGNITO_USER_POOL_LOGOUT_URL}") String userPoolLogoutUrl) {
+    @Value("${COGNITO_LOGOUT_URL}") String userPoolLogoutUrl) {
     return new CognitoOidcLogoutSuccessHandler(userPoolLogoutUrl, clientId);
   }
 
