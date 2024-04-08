@@ -65,6 +65,7 @@ public class ServiceApp {
     Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.getEnvironmentName());
     Service.ServiceInputParameters serviceInputParameters = new Service.ServiceInputParameters(dockerImageSource,Collections.emptyList(), environmentVariables(springProfile, cognitoOutputParameters))
       .withHealthCheckIntervalSeconds(30)
+      .withStickySessionsEnabled(true)
       .withTaskRolePolicyStatements(List.of(
         PolicyStatement.Builder.create()
           .sid("AllowCreatingUsers")
