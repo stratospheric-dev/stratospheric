@@ -91,7 +91,11 @@ public class CognitoStack extends Stack {
           String.format("https://%s/login/oauth2/code/cognito", networkOutputParameters.getLoadBalancerDnsName()),
           "http://localhost:8080/login/oauth2/code/cognito"
         ))
-        .logoutUrls(Arrays.asList(inputParameters.applicationUrl, "http://localhost:8080"))
+        .logoutUrls(Arrays.asList(
+          inputParameters.applicationUrl,
+          "http://localhost:8080",
+            "https://" + networkOutputParameters.getLoadBalancerDnsName()
+        ))
         .flows(OAuthFlows.builder()
           .authorizationCodeGrant(true)
           .build())
