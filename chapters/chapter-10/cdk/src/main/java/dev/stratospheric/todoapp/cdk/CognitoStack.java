@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import dev.stratospheric.cdk.ApplicationEnvironment;
+import dev.stratospheric.cdk.Network;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
@@ -78,6 +79,8 @@ public class CognitoStack extends Stack {
         .build())
       .build();
 
+    Network.NetworkOutputParameters networkOutputParameters = Network.getOutputParametersFromParameterStore(this, applicationEnvironment.getEnvironmentName());
+
     this.userPoolClient = UserPoolClient.Builder.create(this, "userPoolClient")
       .userPoolClientName(inputParameters.applicationName + "-client")
       .generateSecret(true)
@@ -85,9 +88,14 @@ public class CognitoStack extends Stack {
       .oAuth(OAuthSettings.builder()
         .callbackUrls(Arrays.asList(
           String.format("%s/login/oauth2/code/cognito", inputParameters.applicationUrl),
+          String.format("https://%s/login/oauth2/code/cognito", networkOutputParameters.getLoadBalancerDnsName()),
           "http://localhost:8080/login/oauth2/code/cognito"
         ))
-        .logoutUrls(Arrays.asList(inputParameters.applicationUrl, "http://localhost:8080"))
+        .logoutUrls(Arrays.asList(
+          inputParameters.applicationUrl,
+          "http://localhost:8080",
+            "https://" + networkOutputParameters.getLoadBalancerDnsName()
+        ))
         .flows(OAuthFlows.builder()
           .authorizationCodeGrant(true)
           .build())
