@@ -39,11 +39,8 @@ public class ServiceApp {
     String springProfile = (String) app.getNode().tryGetContext("springProfile");
     requireNonEmpty(springProfile, "context variable 'springProfile' must not be null");
 
-    String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    requireNonEmpty(dockerRepositoryName, "context variable 'dockerRepositoryName' must not be null");
-
-    String dockerImageTag = (String) app.getNode().tryGetContext("dockerImageTag");
-    requireNonEmpty(dockerImageTag, "context variable 'dockerImageTag' must not be null");
+    String dockerImageUrl = (String) app.getNode().tryGetContext("dockerImageUrl");
+    requireNonEmpty(dockerImageUrl, "context variable 'dockerImageUrl' must not be null");
 
     String region = (String) app.getNode().tryGetContext("region");
     requireNonEmpty(region, "context variable 'region' must not be null");
@@ -81,7 +78,7 @@ public class ServiceApp {
       awsEnvironment,
       applicationEnvironment,
       new Service.ServiceInputParameters(
-        new Service.DockerImageSource(dockerRepositoryName, dockerImageTag),
+        new Service.DockerImageSource(dockerImageUrl),
         Collections.singletonList(databaseOutputParameters.getDatabaseSecurityGroupId()),
         environmentVariables(
           serviceStack,
