@@ -36,7 +36,6 @@ dependencies {
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.webjars:bootstrap:4.6.1'
   implementation 'org.webjars:font-awesome:5.15.3'
-  developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.postgresql:postgresql'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:localstack'
