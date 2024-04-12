@@ -18,7 +18,7 @@ services:
       - DEFAULT_REGION=eu-central-1
       - USE_SINGLE_REGION=true
     volumes:
-      - ./src/test/resources/localstack/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+      - ./src/test/resources/localstack/:/docker-entrypoint-initaws.d/
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0-legacy
     ports:
