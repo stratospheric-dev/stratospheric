@@ -28,6 +28,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-ses'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+  implementation 'org.flywaydb:flyway-core'
   implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity6:${thymeleafExtrasSpringSecurityVersion}"
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
