@@ -43,7 +43,7 @@ public class DatabaseApp {
       "Database",
       awsEnvironment,
       applicationEnvironment,
-      new PostgresDatabase.DatabaseInputParameters());
+      new PostgresDatabase.DatabaseInputParameters().withPostgresVersion("16.1").withInstanceClass("db.t3.micro"));
 
     app.synth();
   }
