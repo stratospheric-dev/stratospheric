@@ -41,7 +41,6 @@ public class ServiceApp {
     String dockerImageUrl = (String) app.getNode().tryGetContext("dockerImageUrl");
     requireNonEmpty(dockerImageUrl, "context variable 'dockerImageUrl' must not be null");
 
-
     Environment awsEnvironment = makeEnv(accountId, region);
 
     ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment(
