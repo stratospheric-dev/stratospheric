@@ -13,10 +13,10 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '3.0.1')
-  set('testcontainersVersion', '1.18.0')
-  set('awsLambdaJavaEventsVersion', '3.11.2')
-  set('awsJavaSdkCoreVersion', '1.12.481')
+  set('awsSpringVersion', '3.1.1')
+  set('testcontainersVersion', '1.19.8')
+  set('awsLambdaJavaEventsVersion', '3.11.5')
+  set('awsJavaSdkCoreVersion', '1.12.739')
 }
 
 dependencies {
@@ -28,6 +28,7 @@ dependencies {
   // AWS Java SDK v1/v2 agnostic library for type-safe access to the S3 event object
   implementation "com.amazonaws:aws-lambda-java-events:${awsLambdaJavaEventsVersion}"
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.testcontainers:localstack'
   testImplementation 'org.testcontainers:junit-jupiter'
   // Required to compile due to coupling between the LocalStack Testcontainers module and the AWS Java SDK v1

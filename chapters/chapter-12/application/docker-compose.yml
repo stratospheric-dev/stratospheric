@@ -10,13 +10,11 @@ services:
       - POSTGRES_PASSWORD=stratospheric
       - POSTGRES_DB=stratospheric
   localstack:
-    image: localstack/localstack:0.14.4
+    image: localstack/localstack
     ports:
       - 4566:4566
     environment:
       - SERVICES=sqs,ses,dynamodb
-      - DEFAULT_REGION=eu-central-1
-      - USE_SINGLE_REGION=true
     volumes:
       - ./src/test/resources/localstack/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
   keycloak:

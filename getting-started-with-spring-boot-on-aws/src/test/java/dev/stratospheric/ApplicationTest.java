@@ -31,7 +31,7 @@ class ApplicationTest {
 
   @Container
   static LocalStackContainer localStack =
-    new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.0"))
+    new LocalStackContainer(DockerImageName.parse("localstack/localstack"))
       .withServices(SQS, S3, SSM);
 
   @BeforeAll

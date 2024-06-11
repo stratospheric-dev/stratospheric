@@ -42,7 +42,6 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
 
   @Test
   void shouldAllowCrudOperationOnTodo() throws Exception {
-
     OidcUser todoOwner = createOidcUser("duke@stratospheric.dev", "duke");
 
     Long createdTodoId = shouldCreateTodo(todoOwner);
@@ -54,7 +53,6 @@ class TodoControllerIntegrationTest extends AbstractDevIntegrationTest {
 
   @Test
   void shouldAllowCollaboratingOnSharedTodo() throws Exception {
-
     OidcUser collaborator = createOidcUser("collaborator@stratospheric.dev", "collaborator");
 
     Long sharedTodoId = givenSharedTodo();
