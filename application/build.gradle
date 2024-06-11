@@ -24,7 +24,7 @@ ext {
   set('httpclient5.version', '5.3.1')
   set('awsSpringVersion', '3.1.1')
   set('testcontainersVersion', '1.19.8')
-  set('logbackAwslogsJsonEncoderVersion', '2.0.1')
+  set('logbackAwslogsJsonEncoderVersion', '2.0.0')
   set('errorHandlingSpringBootStarterVersion', '4.3.0')
   set('selenideVersion', '7.3.2')
 }
