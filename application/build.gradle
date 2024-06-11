@@ -50,6 +50,7 @@ dependencies {
   implementation 'org.webjars:jquery:3.7.1'
   implementation 'org.webjars:font-awesome:6.5.2'
   implementation 'org.flywaydb:flyway-core'
+  implementation 'org.flywaydb:flyway-database-postgresql'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
