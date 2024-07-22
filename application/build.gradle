@@ -63,7 +63,7 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
   // Fixing Console Warning on M1 Processors
-  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.1.111.Final'
+  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.1.112.Final'
 
   runtimeOnly 'org.postgresql:postgresql'
 
