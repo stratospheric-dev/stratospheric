@@ -10,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.current()
   }
 }
 
@@ -61,6 +61,7 @@ dependencies {
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
   // Fixing Console Warning on M1 Processors
   implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.1.114.Final'
