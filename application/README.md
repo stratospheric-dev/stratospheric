@@ -20,7 +20,7 @@ You can now log in with the following users: `duke`, `tom`, `bjoern`, `philip`. 
 
 ### Application Profiles
 
-- `dev` running the application locally for development. You don't need any AWS account or running AWS services for this. All infrastructure components are started within `docker-compose.yml`.
+- `dev` running the application locally for development. You don't need any AWS account or running AWS services for this. All infrastructure components are started from within the `compose.yaml` in the `application` directory.
 - `aws` running the application inside AWS. This requires the whole infrastructure setup inside your AWS account.
 
 ### Running the Tests
