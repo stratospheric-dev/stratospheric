@@ -1,7 +1,7 @@
 plugins {
   id 'org.springframework.boot' version '3.4.4'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'com.gorylenko.gradle-git-properties' version '2.4.2'
+  id 'com.gorylenko.gradle-git-properties' version '2.5.0'
   id 'java'
 }
 
@@ -62,7 +62,7 @@ dependencies {
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
   // Fixing Console Warning on M1 Processors
-  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.1.118.Final'
+  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.1.119.Final'
 
   runtimeOnly 'org.postgresql:postgresql'
 
