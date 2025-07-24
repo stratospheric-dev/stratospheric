@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 jobs:
   build-and-publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build and publish Todo App
     outputs:
       dockerImageTag: ${{ steps.dockerImageTag.outputs.tag }}
@@ -80,7 +80,7 @@ jobs:
 #            --message-body "$EVENT_PAYLOAD"
 
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy Todo App
     needs: build-and-publish
     timeout-minutes: 15

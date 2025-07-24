@@ -14,7 +14,7 @@ on:
 jobs:
   determine-changed-folders:
     name: Determine changed chapter folders
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: lots0logs/gh-action-get-changed-files@2.2.2
@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix: ${{ fromJSON(needs.determine-changed-folders.outputs.matrix) }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Chapter ${{ matrix.chapter-numbers }} | Build application and infrastructure
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}

@@ -16,7 +16,7 @@ on:
 jobs:
   deploy-messaging-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the messaging stack
     steps:
 
@@ -40,7 +40,7 @@ jobs:
 
   deploy-database-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the database stack
     steps:
 
@@ -64,7 +64,7 @@ jobs:
 
   deploy-cognito-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the Cognito stack
     steps:
 
@@ -88,7 +88,7 @@ jobs:
 
   deploy-activemq-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the ActiveMq stack
     steps:
 
@@ -112,7 +112,7 @@ jobs:
 
   deploy-sequencer-lambda:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the Deployment Sequencer
     steps:
 
@@ -144,7 +144,7 @@ jobs:
 
   deploy-monitoring-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the Monitoring stack
     steps:
 
@@ -168,7 +168,7 @@ jobs:
 
   deploy-canary-stack:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the Canary stack
     steps:
 
