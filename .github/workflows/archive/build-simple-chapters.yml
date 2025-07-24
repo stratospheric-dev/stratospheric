@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-first-chapter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build the Application for Chapter 1
     steps:
 

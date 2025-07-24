@@ -15,7 +15,7 @@ on:
         required: true
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy Todo App
     if: ${{ false }}  # disabled for now as we ran out of AWS credits
     # if: github.ref == 'refs/heads/main'

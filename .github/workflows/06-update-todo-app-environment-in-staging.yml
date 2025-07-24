@@ -17,7 +17,7 @@ jobs:
   deploy-instructure-stacks:
     if: ${{ false }}  # disabled for now as we ran out of AWS credits
     # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -45,7 +45,7 @@ jobs:
   deploy-sequencer-lambda:
     if: ${{ false }}  # disabled for now as we ran out of AWS credits
     # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy the deployment sequencer stack
     steps:
 

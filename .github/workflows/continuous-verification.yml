@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         folder: [ 'application', 'getting-started-with-spring-boot-on-aws' ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Test ${{ matrix.folder }}
     steps:
 
@@ -33,7 +33,7 @@ jobs:
         run: ./gradlew build --stacktrace
 
   verify-local-development-mode:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Verify local development mode
     steps:
 
