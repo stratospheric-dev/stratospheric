@@ -99,6 +99,7 @@ bootRun {
 }
 
 gitProperties {
+  failOnNoGitDirectory = false
 }
 
 jar {
