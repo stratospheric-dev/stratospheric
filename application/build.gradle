@@ -19,14 +19,6 @@ repositories {
   mavenLocal()
 }
 
-ext {
-  set('awsSpringVersion', '3.2.1')
-  set('testcontainersVersion', '1.20.4')
-  set('logbackAwslogsJsonEncoderVersion', '2.0.0')
-  set('errorHandlingSpringBootStarterVersion', '4.5.0')
-  set('selenideVersion', '7.5.1')
-}
-
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -55,8 +47,8 @@ dependencies {
   implementation 'org.flywaydb:flyway-core'
   implementation 'org.flywaydb:flyway-database-postgresql'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
-  implementation "de.siegmar:logback-awslogs-json-encoder:${logbackAwslogsJsonEncoderVersion}"
-  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:${errorHandlingSpringBootStarterVersion}"
+  implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:4.5.0"
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
@@ -73,7 +65,7 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
-  testImplementation "com.codeborne:selenide:${selenideVersion}"
+  testImplementation "com.codeborne:selenide:7.5.1"
   testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.8'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -82,8 +74,8 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}"
-    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0"
+    mavenBom "org.testcontainers:testcontainers-bom:1.21.3"
   }
 }
 
