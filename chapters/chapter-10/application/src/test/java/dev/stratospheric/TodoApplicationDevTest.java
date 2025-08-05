@@ -18,9 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class TodoApplicationDevTest {
 
   public static DockerComposeContainer<?> environment =
-    new DockerComposeContainer<>(new File("docker-compose.yml"))
+    new DockerComposeContainer<>(new File("compose.yaml"))
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
-        .withStartupTimeout(Duration.ofSeconds(30)));
+        .withStartupTimeout(Duration.ofSeconds(45)))
+      .withLocalCompose(true)
+      .withOptions("--compatibility");
 
   static {
     environment.start();
