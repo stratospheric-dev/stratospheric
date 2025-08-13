@@ -28,7 +28,7 @@ public abstract class AbstractDevIntegrationTest {
 
   @Container
   static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.7.0"))
-    .withClasspathResourceMapping("/localstack", "/docker-entrypoint-initaws.d", BindMode.READ_ONLY)
+    .withClasspathResourceMapping("/localstack", "/etc/localstack/init/ready.d", BindMode.READ_ONLY)
     .withServices(SQS, SES, DYNAMODB)
     .waitingFor(Wait.forLogMessage(".*Ready.*\n", 1));
 

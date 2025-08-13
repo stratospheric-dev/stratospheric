@@ -21,7 +21,7 @@ services:
     environment:
       - SERVICES=sqs,ses,dynamodb
     volumes:
-      - ./src/test/resources/localstack/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+      - ./src/test/resources/localstack/local-aws-infrastructure.sh:/etc/localstack/init/ready.d/init-aws.sh
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0-legacy
     ports:

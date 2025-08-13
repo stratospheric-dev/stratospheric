@@ -50,7 +50,6 @@ dependencies {
   implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:4.5.0"
 
-  developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
   // Fixing Console Warning on M1 Processors

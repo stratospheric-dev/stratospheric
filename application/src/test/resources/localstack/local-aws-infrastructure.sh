@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export AWS_ACCESS_KEY_ID=000000000000 AWS_SECRET_ACCESS_KEY=000000000000
+
 awslocal sqs create-queue --queue-name stratospheric-todo-sharing
 
 awslocal ses verify-email-identity --email-address noreply@stratospheric.dev
