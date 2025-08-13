@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:12.9
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_USER=stratospheric
       - POSTGRES_PASSWORD=stratospheric
@@ -10,14 +10,14 @@ services:
   activemq:
     image: stratospheric/activemq-docker-image
     ports:
-      - 5672:5672
-      - 61613:61613
-      - 61614:61614
-      - 61616:61616
+      - "5672:5672"
+      - "61613:61613"
+      - "61614:61614"
+      - "61616:61616"
   localstack:
-    image: localstack/localstack
+    image: localstack/localstack:4.7.0
     ports:
-      - 4566:4566
+      - "4566:4566"
     environment:
       - SERVICES=sqs,ses,dynamodb
     volumes:
@@ -25,7 +25,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0-legacy
     ports:
-      - 8888:8080
+      - "8888:8080"
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak

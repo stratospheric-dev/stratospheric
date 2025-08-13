@@ -27,7 +27,7 @@ public abstract class AbstractDevIntegrationTest {
     .withPassword("stratospheric");
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack"))
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.7.0"))
     .withClasspathResourceMapping("/localstack", "/docker-entrypoint-initaws.d", BindMode.READ_ONLY)
     .withServices(SQS, SES, DYNAMODB)
     .waitingFor(Wait.forLogMessage(".*Ready.*\n", 1));
