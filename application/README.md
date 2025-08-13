@@ -11,8 +11,8 @@ The purpose of this todo application is to serve as an example for the various u
 
 ### Running the Application on Your Local Machine
 
-* Make sure you have Docker up- and running (`docker info`) and Docker Compose installed (`docker-compose -v`)
-* Start the required infrastructure with `docker-compose up`
+* Make sure you have Docker up- and running (`docker info`) and Docker Compose installed (`docker compose version`)
+* Start the required infrastructure with `docker compose up`
 * Run `./gradlew bootRun` to start the application
 * Access http://localhost:8080 in your browser
 
@@ -25,15 +25,16 @@ You can now log in with the following users: `duke`, `tom`, `bjoern`, `philip`. 
 
 ### Running the Tests
 
-Run `./gradlew build` from the command line.
+Run `./gradlew test` from the command line.
 
 ### Deployment
 
 You can deploy the application by using the standard Spring Boot deployment mechanism (see these three articles for more
 information on Spring Boot deployment techniques and alternatives:
-[Deploying Spring Boot Applications](https://spring.io/blog/2014/03/07/deploying-spring-boot-applications),
-[Running your application](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html),
-[Installing Spring Boot applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html)):
+
+- [Deploying Spring Boot Applications](https://spring.io/blog/2014/03/07/deploying-spring-boot-applications),
+- [Running your application](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html),
+- [Installing Spring Boot applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html)):
 
 ## Architecture
 
