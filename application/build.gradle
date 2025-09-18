@@ -65,7 +65,7 @@ dependencies {
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
   testImplementation "com.codeborne:selenide:7.10.1"
-  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.11'
+  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.12'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
