@@ -43,7 +43,7 @@ dependencies {
   implementation 'org.webjars:bootstrap:5.3.8'
   implementation 'org.webjars:popper.js:2.11.7'
   implementation 'org.webjars:jquery:3.7.1'
-  implementation 'org.webjars:font-awesome:7.0.0'
+  implementation 'org.webjars:font-awesome:7.0.1'
   implementation 'org.flywaydb:flyway-core'
   implementation 'org.flywaydb:flyway-database-postgresql'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
@@ -64,8 +64,8 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
-  testImplementation "com.codeborne:selenide:7.10.0"
-  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.11'
+  testImplementation "com.codeborne:selenide:7.10.1"
+  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.12'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

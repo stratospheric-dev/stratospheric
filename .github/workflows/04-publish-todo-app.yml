@@ -105,7 +105,7 @@ jobs:
 
       - name: Deploy service stack
         working-directory: cdk
-        run: npm run service:deploy -- -c dockerImageTag=${{ needs.build-and-publish.outputs.dockerImageTag }}
+        run: npm run service:deploy -- --all -c dockerImageTag=${{ needs.build-and-publish.outputs.dockerImageTag }}
 
       # Each Service stack updates creates a new parameter stack that CloudFormation does not clean up for us.
       # This step deletes all "*Service-Parameters*" stacks except the latest one to keep the house clean.
