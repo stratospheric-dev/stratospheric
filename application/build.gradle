@@ -64,8 +64,8 @@ dependencies {
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:localstack'
-  testImplementation "com.codeborne:selenide:7.11.1"
-  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.13'
+  testImplementation "com.codeborne:selenide:7.12.1"
+  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.14'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -73,8 +73,8 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0"
-    mavenBom "org.testcontainers:testcontainers-bom:2.0.1"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.4.1"
+    mavenBom "org.testcontainers:testcontainers-bom:2.0.2"
   }
 }
 
