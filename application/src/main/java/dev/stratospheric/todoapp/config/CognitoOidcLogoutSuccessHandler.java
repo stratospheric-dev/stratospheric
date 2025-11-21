@@ -26,7 +26,7 @@ public class CognitoOidcLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
                                       Authentication authentication) {
 
     UriComponents baseUrl = UriComponentsBuilder
-      .fromUriString(UrlUtils.buildFullRequestUrl(request))
+      .fromHttpUrl(UrlUtils.buildFullRequestUrl(request))
       .replacePath(request.getContextPath())
       .replaceQuery(null)
       .fragment(null)
