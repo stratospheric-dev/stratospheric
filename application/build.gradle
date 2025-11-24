@@ -20,7 +20,7 @@ repositories {
 }
 
 ext {
-  testcontainersVersion = '1.21.3'
+  testcontainersVersion = '2.0.2'
 }
 
 dependencies {
@@ -65,9 +65,9 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.security:spring-security-test'
 
-  testImplementation "org.testcontainers:localstack:${testcontainersVersion}"
-  testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-  testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
+  testImplementation "org.testcontainers:testcontainers-localstack:${testcontainersVersion}"
+  testImplementation "org.testcontainers:testcontainers-junit-jupiter:${testcontainersVersion}"
+  testImplementation "org.testcontainers:testcontainers-postgresql:${testcontainersVersion}"
   testImplementation "com.codeborne:selenide:7.12.1"
   testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.14'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
