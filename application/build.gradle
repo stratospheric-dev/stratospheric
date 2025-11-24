@@ -14,20 +14,20 @@ java {
   }
 }
 
+ext {
+  set('awsSpringVersion', '3.4.1')
+}
+
 repositories {
   mavenCentral()
   mavenLocal()
-}
-
-ext {
-  testcontainersVersion = '2.0.2'
 }
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-webmvc'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -52,7 +52,7 @@ dependencies {
   implementation 'org.flywaydb:flyway-database-postgresql'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
-  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:4.6.0"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.0.0"
 
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
@@ -65,9 +65,9 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.security:spring-security-test'
 
-  testImplementation "org.testcontainers:testcontainers-localstack:${testcontainersVersion}"
-  testImplementation "org.testcontainers:testcontainers-junit-jupiter:${testcontainersVersion}"
-  testImplementation "org.testcontainers:testcontainers-postgresql:${testcontainersVersion}"
+  testImplementation "org.testcontainers:testcontainers-localstack"
+  testImplementation "org.testcontainers:testcontainers-junit-jupiter"
+  testImplementation "org.testcontainers:testcontainers-postgresql"
   testImplementation "com.codeborne:selenide:7.12.1"
   testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.14'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -77,12 +77,11 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.4.1"
-    mavenBom "org.testcontainers:testcontainers-bom:2.0.2"
+    mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}"
   }
 }
 
-test {
+tasks.named('test') {
   useJUnitPlatform()
 }
 
