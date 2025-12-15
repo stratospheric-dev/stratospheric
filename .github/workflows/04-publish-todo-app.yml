@@ -42,7 +42,7 @@ jobs:
         run: zip -r reports.zip **/build/reports
 
       - name: Upload build reports
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: reports
