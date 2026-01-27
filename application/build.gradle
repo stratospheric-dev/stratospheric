@@ -52,7 +52,7 @@ dependencies {
   implementation 'org.flywaydb:flyway-database-postgresql'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
-  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.0.1"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.1.0"
 
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
