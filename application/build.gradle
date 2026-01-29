@@ -15,7 +15,7 @@ java {
 }
 
 ext {
-  set('awsSpringVersion', '3.4.1')
+  set('awsSpringVersion', '4.0.0')
 }
 
 repositories {
