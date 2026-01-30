@@ -70,6 +70,7 @@ dependencies {
   testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
   testImplementation 'org.testcontainers:testcontainers-postgresql'
   testImplementation 'com.codeborne:selenide:7.14.0'
+  implementation("org.seleniumhq.selenium:selenium-devtools-v144:4.40.0")
   testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.0.15'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
