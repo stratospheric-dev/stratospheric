@@ -85,17 +85,17 @@ class TodoControllerTest {
     this.mockMvc
       .perform(get("/todo/show/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
 
     this.mockMvc
       .perform(get("/todo/edit/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
 
     this.mockMvc
       .perform(get("/todo/delete/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
   }
 
   private OidcUser createOidcUser(String emailAddress) {

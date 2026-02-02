@@ -63,7 +63,7 @@ dependencies {
 
   testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-  testImplementation 'org.springframework.security:spring-security-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
   testImplementation 'org.springframework.boot:spring-boot-starter-flyway-test'
 
   testImplementation 'org.testcontainers:testcontainers-localstack'
