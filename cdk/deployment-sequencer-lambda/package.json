@@ -9,7 +9,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "3.631.0",
+    "@aws-sdk/client-sqs": "3.984.0",
     "axios": "1.12.0"
   },
   "devDependencies": {
