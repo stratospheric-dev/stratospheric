@@ -26,7 +26,7 @@ public class WebSecurityConfig {
       .authorizeHttpRequests(httpRequests -> httpRequests
         .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-        .requestMatchers("/", "/register").permitAll()
+        .requestMatchers("/", "/register", "/error").permitAll()
         .anyRequest().authenticated())
       .csrf(csrf -> csrf.ignoringRequestMatchers(
         "/stratospheric-todo-updates/**",
