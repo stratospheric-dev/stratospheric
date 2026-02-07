@@ -21,8 +21,12 @@ class LoggingContextInterceptor implements HandlerInterceptor {
     final Object handler) {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String userId = getUserIdFromPrincipal(authentication.getPrincipal());
-    MDC.put("userId", userId);
+
+    if(authentication != null && authentication.isAuthenticated()) {
+      String userId = getUserIdFromPrincipal(authentication.getPrincipal());
+      MDC.put("userId", userId);
+    }
+
     return true;
   }
 

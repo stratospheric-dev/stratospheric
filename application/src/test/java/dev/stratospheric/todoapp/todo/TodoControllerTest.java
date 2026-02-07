@@ -7,7 +7,7 @@ import dev.stratospheric.todoapp.util.TestGitProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -85,17 +85,17 @@ class TodoControllerTest {
     this.mockMvc
       .perform(get("/todo/show/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
 
     this.mockMvc
       .perform(get("/todo/edit/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
 
     this.mockMvc
       .perform(get("/todo/delete/1"))
       .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-      .andExpect(header().string("Location", "http://localhost/login"));
+      .andExpect(header().string("Location", "/login"));
   }
 
   private OidcUser createOidcUser(String emailAddress) {
