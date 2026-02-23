@@ -49,7 +49,7 @@ dependencies {
   implementation 'org.webjars:bootstrap:5.3.8'
   implementation 'org.webjars:popper.js:2.11.7'
   implementation 'org.webjars:jquery:4.0.0'
-  implementation 'org.webjars:font-awesome:7.1.0'
+  implementation 'org.webjars:font-awesome:7.2.0'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
   implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.1.0"
