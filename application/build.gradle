@@ -53,7 +53,7 @@ dependencies {
   implementation 'org.webjars:font-awesome:7.2.0'
   implementation 'software.amazon.awssdk:cognitoidentityprovider'
   implementation "de.siegmar:logback-awslogs-json-encoder:2.0.0"
-  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.1.0"
+  implementation "io.github.wimdeblauwe:error-handling-spring-boot-starter:5.1.1"
 
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
