@@ -58,7 +58,7 @@ dependencies {
   runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 
   // Fixing Console Warning on M1 Processors
-  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.2.13.Final'
+  implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64', version: '4.2.14.Final'
 
   runtimeOnly 'org.postgresql:postgresql'
 
