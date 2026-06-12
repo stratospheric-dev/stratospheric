@@ -9,7 +9,7 @@ repositories {
 }
 
 ext {
-  set('awsSpringVersion', '3.4.1')
+  set('awsSpringVersion', '4.0.0')
   set('awsLambdaJavaEventsVersion', '3.14.0')
   set('awsJavaSdkCoreVersion', '1.12.778')
 }

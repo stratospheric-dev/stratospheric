@@ -2,10 +2,8 @@ package dev.stratospheric;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.localstack.LocalStackContainer;
@@ -14,6 +12,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -26,8 +28,10 @@ class ApplicationTest {
   private static final String SAMPLE_BUCKET = "sample-bucket";
   private static final String SAMPLE_QUEUE = "sample-queue";
 
-  @Autowired
-  private TestRestTemplate testRestTemplate;
+  private final HttpClient httpClient = HttpClient.newHttpClient();
+
+  @LocalServerPort
+  private int port;
 
   @Container
   static LocalStackContainer localStack =
@@ -36,7 +40,7 @@ class ApplicationTest {
 
   @BeforeAll
   static void beforeAll() throws IOException, InterruptedException {
-    localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", SAMPLE_BUCKET);
+    localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", SAMPLE_QUEUE);
     localStack.execInContainer("awslocal", "s3", "mb", "s3://" + SAMPLE_BUCKET);
   }
 
@@ -51,12 +55,14 @@ class ApplicationTest {
   }
 
   @Test
-  void contextLoads() {
-    ResponseEntity<String> result = this.testRestTemplate
-      .getForEntity("/", String.class);
+  void contextLoads() throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/"))
+      .GET()
+      .build();
 
-    assertThat(result.getStatusCode().value())
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertThat(response.statusCode())
       .isEqualTo(200);
   }
 }
-
