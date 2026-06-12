@@ -17,7 +17,6 @@ ext {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-webmvc'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.springframework.boot:spring-boot-starter-restclient'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
   implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
@@ -25,7 +24,6 @@ dependencies {
   implementation "com.amazonaws:aws-lambda-java-events:${awsLambdaJavaEventsVersion}"
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-  testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
   testImplementation 'org.testcontainers:testcontainers-localstack'
   testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
   // Required to compile due to coupling between the LocalStack Testcontainers module and the AWS Java SDK v1
