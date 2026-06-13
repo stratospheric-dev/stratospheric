@@ -6,20 +6,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.springframework.web.client.RestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.*;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SSM;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -28,7 +27,7 @@ class ApplicationTest {
   private static final String SAMPLE_BUCKET = "sample-bucket";
   private static final String SAMPLE_QUEUE = "sample-queue";
 
-  private final HttpClient httpClient = HttpClient.newHttpClient();
+  private final RestClient restClient = RestClient.create();
 
   @LocalServerPort
   private int port;
@@ -55,14 +54,14 @@ class ApplicationTest {
   }
 
   @Test
-  void contextLoads() throws IOException, InterruptedException {
-    HttpRequest request = HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/"))
-      .GET()
-      .build();
+  void contextLoads() {
+    String response = restClient.get()
+      .uri("http://localhost:" + port + "/")
+      .retrieve()
+      .body(String.class);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    assertThat(response.statusCode())
-      .isEqualTo(200);
+    assertThat(response)
+      .as("Response body should not be empty")
+      .isNotEmpty();
   }
 }
