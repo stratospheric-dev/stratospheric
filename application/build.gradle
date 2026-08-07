@@ -72,7 +72,7 @@ dependencies {
   testImplementation 'org.testcontainers:testcontainers-postgresql'
   testImplementation 'com.codeborne:selenide:7.17.0'
   implementation("org.seleniumhq.selenium:selenium-devtools-v144:4.42.0")
-  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.2.3'
+  testImplementation 'digital.pragmatech.testing:spring-test-profiler:0.3.0'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
