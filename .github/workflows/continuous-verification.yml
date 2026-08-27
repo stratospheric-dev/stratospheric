@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
 
       - name: Build and test the application
@@ -44,7 +44,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
 
       - name: Start the local environment and verify the application startup
